@@ -1,0 +1,75 @@
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+span,
+a,
+li,
+th,
+td,
+label,
+button {
+    font-family: "Montserrat";
+    color: white;
+}
+
+p {
+    font-size: 16px;
+    margin: 0;
+    @include mq("phone", max) {
+        font-size: 14px;
+        line-height: 20px;
+    }
+}
+
+h1 {
+    font-weight: 700;
+    font-size: 91px;
+    line-height: 70px;
+    @include mq("tablet", max) {
+        font-size: 30px;
+        line-height: 32px;
+    }
+}
+
+h2 {
+    font-weight: 700;
+    font-size: 66px;
+    line-height: 80px;
+    @include mq("tablet", max) {
+        font-size: 25px;
+        line-height: 30px;
+    }
+}
+
+h3 {
+    font-weight: 500;
+    font-size: 38px;
+    line-height: 38px;
+    @include mq("tablet", max) {
+        font-size: 20px;
+        line-height: 26px;
+    }
+}
+
+h4 {
+    font-weight: 700;
+    font-size: 25px;
+    line-height: 30px;
+    @include mq("tablet", max) {
+        font-size: 18px;
+        line-height: 20px;
+    }
+}
+
+h5 {
+    font-weight: 600;
+    font-size: 16px;
+    line-height: 27px;
+    @include mq("tablet", max) {
+        font-size: 16px;
+    }
+}

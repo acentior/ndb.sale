@@ -1,0 +1,71 @@
+.btn {
+    &-primary {
+        font-weight: bold;
+        font-size: 30px;
+        font-family: "Montserrat";
+        line-height: 37px;
+        color: white;
+        padding: 7px 33px;
+        background: $black;
+        border: 1px solid #ffffff;
+        text-transform: uppercase;
+        &:hover {
+            background: $black;
+            border: 1px solid #ffffff;
+        }
+        &:active {
+            background-color: $black;
+            border-color: white;
+        }
+        &:focus {
+            background-color: $black;
+            border-color: white;
+            box-shadow: unset;
+        }
+        @include mq("phone", max) {
+            font-size: 20px;
+            line-height: 24px;
+        }
+    }
+    &-second {
+        font-weight: 500;
+        font-size: 18px;
+        line-height: 22px;
+        letter-spacing: 0.04em;
+        color: $black;
+        padding: 12px;
+        background-color: white;
+        border: unset;
+    }
+    &-link {
+        border: unset;
+        background-color: unset;
+        font-size: 16px;
+        line-height: 20px;
+        text-decoration: underline;
+        color: white;
+        &:hover {
+            color: $green;
+        }
+    }
+    &-green {
+        background: $green;
+        border: unset;
+        color: white;
+        font-weight: bold;
+        font-size: 30px;
+        line-height: 37px;
+        text-transform: uppercase;
+        @include mq("phone", max) {
+            padding: 8px;
+            width: 100%;
+        }
+    }
+}
+.learn-more {
+    text-decoration: underline;
+    font-weight: 500;
+    font-size: 18px;
+    line-height: 30px;
+    color: white;
+}

@@ -1,0 +1,41 @@
+.status {
+    width: 14px;
+    height: 14px;
+    border-radius: 50%;
+    flex-shrink: 0;
+    &.active {
+        background-color: $green;
+    }
+    &.deactive {
+        background-color: #333333;
+    }
+}
+
+.pre-wrap {
+    white-space: pre-wrap;
+}
+.txt-green {
+    color: $green;
+}
+.txt-grey {
+    color: $grey;
+}
+.txt-red {
+    color: $red;
+}
+.txt-light-red {
+    color: $light-red;
+}
+.txt-cyan {
+    color: $cyan;
+}
+.txt-underline {
+    text-decoration: underline;
+}
+
+.bg-green {
+    background-color: $green;
+}
+.bg-white {
+    background-color: white;
+}

@@ -1,0 +1,134 @@
+main.purchaseWithSign-page {
+    background: radial-gradient(73.12% 156.15% at 24.15% 95.07%, rgba(0, 0, 0, 0.22) 19.22%, rgba(0, 0, 0, 0.62) 39.09%, #000000 92.94%);
+    position: relative;
+    overflow: hidden;
+    div.back-image {
+        position: absolute;
+        z-index: -1;
+        width: 30%;
+        height: 200vh;
+        top:-20%;
+        left: 30%;
+        transform: rotate(-15deg);
+        background-image: url("/images/hero1.png");
+        background-size: contain;
+        opacity: 0.4;
+        @media screen and (max-width: 1400px) {
+            width: 40%;
+        }
+        @media screen and (max-width: 768px) {
+            left: 0;
+            width: 100%;
+        }
+    }
+    nav.menu {
+        background-color: transparent;
+    }
+    .home-section {
+        height: 90vh;
+        display: flex;
+        align-items: center;
+        div.container {
+            width: 100%;
+            div.row {
+                .clock-div {
+                    h4.clock-title {
+                        font-size: 24px;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        text-align: center;
+                    }
+                    p.time {
+                        font-size: 100px;
+                        line-height: 122px;
+                    }
+                    small.time-text {
+                        font-size: 24px;
+                        font-weight: 600;
+                        color: dimgray;
+                        text-transform: none;
+                    }
+                    @media screen and (max-width: 1480px) {
+                        h4.clock-title {
+                            font-size: 18px;
+                        }
+                        p.time {
+                            font-size: 72px;
+                            line-height: 96px;
+                        }
+                        small.time-text {
+                            font-size: 24px;
+                        }
+                    }
+                    @media screen and (max-width: 768px) {
+                        h4.clock-title {
+                            font-size: 12px;
+                        }
+                        p.time {
+                            font-size: 48px;
+                            line-height: 60px;
+                        }
+                        small.time-text {
+                            font-size: 16px;
+                        }
+                    }
+                }
+                .col-sm-6 {
+                    h4.title1 {
+                        font-size: 24px;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        margin-bottom: 1vw;               
+                    }
+                    h3.title2 {
+                        margin-left: 2vw;
+                        margin-bottom: 2vw;
+                        font-size: 48px;
+                        font-style: italic;
+                        font-weight: 800;
+                        text-transform: uppercase;
+                    }
+                    p.text {
+                        font-size: 16px;
+                        font-weight: 500;
+                        margin-bottom: 2vw;
+                    }
+                    button.btn-green {
+                        display: block;
+                        margin: auto;
+                        width: 320px;
+                        padding: 12px;
+                        font-size: 30px;
+                        font-weight: 700;
+                    }
+                    @media screen and (max-width: 1480px) {
+                        button.btn-green {
+                            width: 250px;
+                            padding: 10px;
+                            font-size: 22px;
+                        }
+                    }
+                    @media screen and (max-width: 768px) {
+                        h4.title1 {
+                            font-size: 16px;
+                            text-align: center;
+                        }
+                        h3.title2 {
+                            font-size: 20px;
+                            text-align: center;
+                        }
+                        p.text {
+                            font-size: 12px;
+                            text-align: center;
+                        }
+                        button.btn-green {
+                            width: 200px;
+                            padding: 7px;
+                            font-size: 16px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

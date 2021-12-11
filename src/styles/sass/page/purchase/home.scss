@@ -1,0 +1,95 @@
+main.purchase-page {
+    .home-section {
+        height: 80vh;
+        display: flex;
+        align-items: center;
+        @media screen and (max-width: 768px) {
+            height: 100vh;
+        }
+        div.container {
+            width: 100%;
+            div.row {
+                .col-sm-7 {
+                    h4.title1 {
+                        font-size: 48px;
+                        font-weight: 700;
+                        text-transform: uppercase;
+                        margin-bottom: 1.5vw;               
+                    }
+                    h3.title2 {
+                        margin-left: 5vw;
+                        margin-bottom: 3vw;
+                        font-size: 72px;
+                        font-style: italic;
+                        font-weight: 800;
+                        text-transform: uppercase;
+                    }
+                    p.text {
+                        margin-left: 5vw;
+                        font-size: 24px;
+                        font-weight: 600;
+                    }
+                    button.btn-green {
+                        display: block;
+                        margin: auto;
+                        width: 320px;
+                        padding: 10px;
+                        font-size: 30px;
+                        font-weight: 700;
+                    }
+                    @media screen and (max-width: 1480px) {
+                        padding: 0 20px;
+
+                        h4.title1 {
+                            font-size: 36px;
+                        }
+                        h3.title2 {
+                            font-size: 48px;
+                        }
+                        p.text {
+                            font-size: 20px;
+                            margin-right: 5vw;
+                        }
+                        button.btn-green {
+                            width: 250px;
+                            font-size: 22px;
+                        }
+                    }
+                    @media screen and (max-width: 768px) {
+                        text-align: center;
+                        h4.title1 {
+                            font-size: 16px;
+                        }
+                        h3.title2 {
+                            font-size: 20px;
+                            margin: 5px;
+                        }
+                        p.text {
+                            font-size: 12px;
+                        }
+                        button.btn-green {
+                            margin-top: 20px;
+                            width: 200px;
+                            padding: 7px;
+                            font-size: 16px;
+                        }
+                    }
+                }
+                .col-sm-5 {
+                    div.hero-image {
+                        width: 100%;
+                        padding-top: 90%;
+                        background-image:
+                        linear-gradient(282.88deg, #1E1E1E 28.38%, rgba(30, 30, 30, 0.81) 44.4%, rgba(30, 30, 30, 0.35) 62.26%, rgba(30, 30, 30, 0) 78.81%),
+                            url("/images/hero3.png");
+                            background-repeat: no-repeat;
+                            background-size: contain;
+                        img {
+                            width: 100%;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

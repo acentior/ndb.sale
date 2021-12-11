@@ -1,0 +1,41 @@
+*,
+*::before,
+*::after {
+    box-sizing: border-box;
+}
+*:focus {
+    outline: none;
+}
+
+body {
+    background-color: $black;
+}
+
+a,
+button,
+.btn {
+    cursor: pointer;
+    text-decoration: none;
+    transition: all 0.3s ease-in-out;
+}
+a:hover {
+    text-decoration: none;
+}
+
+ul {
+    margin: 0;
+    padding-left: 0;
+    list-style: none;
+}
+
+input[type="number"]::-webkit-inner-spin-button,
+input[type="number"]::-webkit-outer-spin-button {
+    -webkit-appearance: none;
+    margin: 0;
+}
+.z-999 {
+    z-index: 999 !important;
+}
+.z-n999 {
+    z-index: -999 !important;
+}

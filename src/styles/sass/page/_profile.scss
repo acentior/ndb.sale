@@ -1,0 +1,453 @@
+.profile-page {
+    // section > div {
+    //     @include mq("laptop") {
+    //         height: 100%;
+    //     }
+    //     @media screen and (max-height: 745px) {
+    //         height: auto;
+    //     }
+    // }
+    &__left {
+        padding: 8px 32px;
+        border-right: 1px solid #ffffff;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        max-height: 507px;
+        .user-info {
+            margin: 48px 0 105px;
+            text-align: center;
+            @include mq("laptop", max) {
+                margin: 24px 0;
+            }
+            @include mq("phone", max) {
+                margin: 48px 0;
+            }
+            &__avatar {
+                width: 123.42px;
+                height: 93.17px;
+            }
+            &__name {
+                margin-top: 24px;
+                font-weight: 600;
+                font-size: 24px;
+                line-height: 23px;
+                color: white;
+            }
+        }
+        @include mq("laptop", max) {
+            padding-left: 12px;
+            padding-right: 12px;
+        }
+        @include mq("laptop", max) {
+            border: unset;
+        }
+        .profile-tab {
+            .react-tabs__tab {
+                font-weight: bold;
+                font-size: 24px;
+                line-height: 29px;
+                color: #464646;
+                text-transform: uppercase;
+                padding: 10px 0;
+                @include mq("laptop", max) {
+                    font-size: 18px;
+                }
+                &--selected {
+                    background-color: unset;
+                    border: unset;
+                    color: white;
+                }
+                &-list {
+                    display: flex;
+                    flex-direction: column;
+                    border: unset;
+                    @include mq("laptop", max) {
+                        display: none;
+                    }
+                }
+            }
+            &__select {
+                display: none;
+                width: 300px;
+                margin: 0 auto;
+                .css-1s2u09g-control,
+                .css-1pahdxg-control {
+                    @extend %selectStyle;
+                    padding-top: 7px;
+                    padding-bottom: 7px;
+                }
+                .css-1okebmr-indicatorSeparator {
+                    display: none;
+                }
+                .css-319lph-ValueContainer {
+                    padding: 0;
+                    .css-qc6sy-singleValue {
+                        text-align: center;
+                        font-weight: bold;
+                        font-size: 24px;
+                        line-height: 29px;
+                        color: white;
+                        text-transform: uppercase;
+                    }
+                }
+                .css-tlfecz-indicatorContainer {
+                    padding: 0;
+                }
+                .css-6j8wv5-Input {
+                    display: none;
+                }
+                @include mq("laptop", max) {
+                    display: block;
+                }
+            }
+            .react-tabs__tab-panel {
+                display: none;
+            }
+        }
+    }
+    &__right {
+        padding: 0 32px;
+        @include mq("phone", max) {
+            padding-left: 12px;
+            padding-right: 12px;
+            padding-bottom: 50px;
+        }
+        h4 {
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 22px;
+            letter-spacing: 0.04em;
+            color: white;
+            text-transform: uppercase;
+        }
+        .br {
+            border-right: 2px solid #464646;
+            @include mq("tablet", max) {
+                border: none;
+            }
+        }
+        .account-details {
+            h4 {
+                border-bottom: 2px solid #464646;
+                padding-bottom: 15px;
+                margin-bottom: 0;
+                @include mq("phone", max) {
+                    padding-top: 35px;
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+            }
+            .account-detail {
+                .row {
+                    border-bottom: 2px solid #464646;
+                    .col-6 {
+                        font-family: "Montserrat";
+                        font-weight: bold;
+                        font-size: 18px;
+                        line-height: 22px;
+                        letter-spacing: 0.04em;
+                        color: white;
+                        text-transform: uppercase;
+                        padding: 25px 12px;
+                        @include mq("phone", max) {
+                            font-size: 16px;
+                            font-weight: normal;
+                            line-height: 19.5px;
+                            padding-left: 0;
+                            padding-right: 0;
+                        }
+                        .btn-primary {
+                            font-weight: bold;
+                            font-size: 18px;
+                            line-height: 22px;
+                            letter-spacing: 0.04em;
+                            text-transform: uppercase;
+                            padding: 15px 26px;
+                            background: #1e1e1e;
+                            @include mq("tablet", max) {
+                                display: none;
+                            }
+                        }
+                    }
+                }
+                .change-password {
+                    .col-6 {
+                        padding: 9px 12px;
+                        display: flex;
+                        align-items: center;
+                        @include mq("tablet", max) {
+                            padding: 25px 12px;
+                        }
+                        @include mq("phone", max) {
+                            padding-left: 0;
+                            padding-right: 0;
+                        }
+                    }
+                }
+            }
+            .btn-pwd {
+                display: none;
+                font-weight: bold;
+                font-size: 18px;
+                line-height: 22px;
+                letter-spacing: 0.04em;
+                text-transform: uppercase;
+                padding: 15px 26px;
+                background: #1e1e1e;
+                @include mq("tablet", max) {
+                    display: block;
+                }
+            }
+            .account-security {
+                margin-top: 32px;
+                .row {
+                    .col-sm-6 {
+                        padding: 25px 12px;
+                        display: flex;
+                        align-items: center;
+                        border-bottom: 2px solid #464646;
+                        @include mq("phone", max) {
+                            padding-left: 0;
+                            padding-right: 0;
+                        }
+                        .security-item {
+                            margin-left: 12px;
+                            display: flex;
+                            flex-direction: column;
+                            width: 100%;
+                            @include mq("phone", max) {
+                                flex-direction: row;
+                                justify-content: space-between;
+                            }
+                            p {
+                                font-weight: 500;
+                                font-size: 13px;
+                                line-height: 19px;
+                            }
+                            .security-name {
+                                color: white;
+                            }
+                            .security-link {
+                                cursor: pointer;
+                                text-decoration: underline;
+                            }
+                        }
+                    }
+                }
+            }
+        }
+        .notification-set {
+            @include mq("phone", max) {
+                margin-top: 35px;
+            }
+            .notification-tab {
+                .react-tabs__tab {
+                    font-weight: bold;
+                    font-size: 18px;
+                    line-height: 22px;
+                    letter-spacing: 0.04em;
+                    color: #626161;
+                    padding: 0 24px 16px 0;
+                    text-transform: uppercase;
+                    &-list {
+                        border-bottom: 2px solid #464646;
+                    }
+                    &--selected {
+                        color: white;
+                        background-color: unset;
+                        border: unset;
+                    }
+                }
+                .recent-item,
+                .notification-item {
+                    display: flex;
+                    align-items: center;
+                    padding: 20px 16px;
+                    border-bottom: 2px solid #464646;
+                    @include mq("phone", max) {
+                        padding-left: 0;
+                        padding-right: 0;
+                    }
+                }
+                .recent-item {
+                    p {
+                        font-size: 18px;
+                        line-height: 22px;
+                        color: white;
+                        margin-left: 11px;
+                    }
+                }
+                .notification-item {
+                    justify-content: space-between;
+                    p {
+                        font-weight: bold;
+                        font-size: 17.9787px;
+                        line-height: 22px;
+                        letter-spacing: 0.04em;
+                        color: #ffffff;
+                        text-transform: uppercase;
+                    }
+                    .react-switch-bg {
+                        svg {
+                            display: none !important;
+                        }
+                    }
+                }
+            }
+        }
+        .connect-wallet {
+            text-align: center;
+            h4 {
+                padding-bottom: 16px;
+                border-bottom: 2px solid #464646;
+                text-align: left;
+                @include mq("phone", max) {
+                    padding-top: 35px;
+                }
+            }
+            .row {
+                margin-top: 85px;
+                @include mq("laptop", max) {
+                    margin-top: 24px;
+                }
+            }
+            .col-sm-6 {
+                margin-bottom: 16px;
+            }
+            .wallet-item {
+                cursor: pointer;
+                width: 100%;
+                height: 100%;
+                padding-top: 20px;
+                padding-bottom: 20px;
+                border: 2px solid #525252;
+                img {
+                    margin-bottom: 16px;
+                    width: 42px;
+                    height: 42px;
+                    @include mq("phone", max) {
+                        width: 32px;
+                        height: 32px;
+                    }
+                }
+                p {
+                    font-weight: 500;
+                    font-size: 16px;
+                    line-height: 20px;
+                    color: #8f8f8f;
+                }
+                &.active {
+                    background-color: white;
+                    border-color: white;
+                }
+            }
+            .btn-primary {
+                margin-top: 56px;
+                font-size: 24px;
+                line-height: 29px;
+                padding: 7px 92px;
+                @include mq("laptop", max) {
+                    margin-top: 24px;
+                }
+                @include mq("phone", max) {
+                    width: 100%;
+                }
+            }
+        }
+        .sign-out {
+            text-align: center;
+            height: 100%;
+            h4 {
+                padding-bottom: 16px;
+                border-bottom: 2px solid #464646;
+                text-align: left;
+                @include mq("laptop", max) {
+                    margin-top: 16px;
+                }
+            }
+            p {
+                font-weight: bold;
+                font-size: 24px;
+                line-height: 29px;
+                margin-bottom: 46px;
+            }
+            .btn-primary {
+                font-size: 24px;
+                line-height: 29px;
+                padding: 7px 92px;
+                @include mq("phone", max) {
+                    width: 100%;
+                }
+            }
+        }
+    }
+    .get-verify {
+        text-decoration: underline;
+        &:hover {
+            color: white;
+        }
+    }
+}
+
+.pwd-modal {
+    max-width: 539px;
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 22px;
+        text-transform: uppercase;
+        color: white;
+    }
+    &__footer {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        button {
+            display: block;
+        }
+        .btn-cancel {
+            margin-top: 11px;
+            background-color: unset;
+            border: unset;
+            font-size: 12px;
+            line-height: 23px;
+            color: white;
+        }
+        .btn-primary {
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 22px;
+            padding: 15px 95px;
+            margin-top: 24px;
+        }
+    }
+    .form {
+        padding: 18px 51px;
+        @include mq("phone", max) {
+            padding-left: 0;
+            padding-right: 0;
+        }
+    }
+}
+
+.tfa-modal {
+    max-width: 539px;
+    &__header {
+        text-align: right;
+    }
+    &__body {
+        margin-left: auto;
+        margin-right: auto;
+        text-align: center;
+        max-width: 340px;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 22px;
+        letter-spacing: 0.04em;
+        color: #ffffff;
+    }
+}

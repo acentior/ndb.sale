@@ -1,0 +1,77 @@
+{
+  "name": "gatsby-starter-default",
+  "private": true,
+  "description": "A simple starter to get up and developing quickly with Gatsby",
+  "version": "0.1.0",
+  "author": "Kyle Mathews <mathews.kyle@gmail.com>",
+  "dependencies": {
+    "@apollo/client": "^3.4.17",
+    "@fortawesome/fontawesome-free-regular": "^5.0.13",
+    "@fortawesome/fontawesome-svg-core": "^1.2.36",
+    "@fortawesome/free-solid-svg-icons": "^5.15.4",
+    "@fortawesome/react-fontawesome": "^0.1.16",
+    "@gatsbyjs/reach-router": "^1.3.6",
+    "@popperjs/core": "^2.11.0",
+    "bootstrap": "^5.1.3",
+    "echarts": "^5.2.2",
+    "echarts-for-react": "^3.0.2",
+    "gatsby": "^4.1.0",
+    "gatsby-plugin-apollo": "^3.0.2",
+    "gatsby-plugin-gatsby-cloud": "^4.1.0",
+    "gatsby-plugin-google-fonts": "^1.0.1",
+    "gatsby-plugin-image": "^2.1.0",
+    "gatsby-plugin-manifest": "^4.1.0",
+    "gatsby-plugin-offline": "^5.1.0",
+    "gatsby-plugin-react-helmet": "^5.1.0",
+    "gatsby-plugin-sass": "^5.1.0",
+    "gatsby-plugin-sharp": "^4.1.0",
+    "gatsby-source-filesystem": "^4.1.0",
+    "gatsby-transformer-sharp": "^4.1.0",
+    "graphql": "^15.7.2",
+    "isomorphic-fetch": "^3.0.0",
+    "jquery": "^3.6.0",
+    "node-sass": "^6.0.1",
+    "popper.js": "^1.16.1",
+    "prop-types": "^15.7.2",
+    "random-names-generator": "^1.0.2",
+    "rc-slider": "^9.7.4",
+    "react": "^17.0.1",
+    "react-copy-to-clipboard": "^5.0.4",
+    "react-dom": "^17.0.1",
+    "react-fontawesome": "^1.7.1",
+    "react-helmet": "^6.1.0",
+    "react-modal": "^3.14.4",
+    "react-select": "^5.2.1",
+    "react-star-ratings": "^2.3.0",
+    "react-switch": "^6.0.0",
+    "react-tabs": "^3.2.3",
+    "react-use-file-upload": "^0.9.1",
+    "react-webcam": "^6.0.0",
+    "sass": "^1.43.4",
+    "styled-components": "^5.3.3",
+    "validator": "^13.7.0"
+  },
+  "devDependencies": {
+    "prettier": "^2.4.1"
+  },
+  "keywords": [
+    "gatsby"
+  ],
+  "license": "0BSD",
+  "scripts": {
+    "build": "gatsby build",
+    "develop": "gatsby develop --port 4000",
+    "format": "prettier --write \"**/*.{js,jsx,ts,tsx,json,md}\"",
+    "start": "gatsby develop",
+    "serve": "gatsby serve",
+    "clean": "gatsby clean",
+    "test": "echo \"Write tests! -> https://gatsby.dev/unit-testing\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/gatsbyjs/gatsby-starter-default"
+  },
+  "bugs": {
+    "url": "https://github.com/gatsbyjs/gatsby/issues"
+  }
+}

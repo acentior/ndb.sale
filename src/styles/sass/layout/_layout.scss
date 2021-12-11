@@ -1,0 +1,130 @@
+.menu {
+    padding: 22px 0;
+    position: sticky;
+    top: 0;
+    width: 100%;
+    z-index: 100;
+    @include mq("tablet", max) {
+        padding: 9px 0;
+    }
+    @include mq("phone", max) {
+        padding: 15px 0;
+    }
+    background-color: $black;
+    .logo {
+        width: 92px;
+        height: 35px;
+        @include mq("phone", max) {
+            width: 56px;
+            height: 21px;
+        }
+    }
+    .hamburger {
+        background: none;
+        border: none;
+        margin-left: 60px;
+        cursor: pointer;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        z-index: 100;
+        span {
+            background-color: #fff;
+            height: 3px;
+            margin-bottom: 8px;
+            position: relative;
+            transition: all 0.3s ease;
+            @include mq("tablet") {
+                margin-bottom: 14px;
+            }
+            &:first-child {
+                width: 27px;
+                @include mq("tablet") {
+                    width: 40px;
+                }
+            }
+            &:nth-last-child(2) {
+                width: 16px;
+                @include mq("tablet") {
+                    width: 24px;
+                }
+            }
+            &:last-child {
+                width: 24px;
+                margin-bottom: 0;
+                @include mq("tablet") {
+                    width: 36px;
+                }
+            }
+        }
+    }
+    .sign-in {
+        @include mq("phone", max) {
+            display: none;
+        }
+    }
+    .navbar-nav {
+        position: absolute;
+        right: 0;
+        top: 150px;
+        right: 400px;
+        z-index: 2;
+        .nav-link {
+            font-weight: bold;
+            font-size: 30px;
+            line-height: 37px;
+            color: white;
+            padding: 17.5px 0;
+        }
+        @include mq("laptop-wide", max) {
+            top: 150px;
+            right: 150px;
+        }
+        @include mq("laptop", max) {
+            top: 100px;
+            right: 100px;
+        }
+        @include mq("tablet", max) {
+            top: 100px;
+            right: 50px;
+        }
+        @include mq("phone", max) {
+            display: flex;
+            position: absolute;
+            padding: 0 12px;
+            height: calc(100vh - 57px);
+            width: 100vw;
+            overflow: auto;
+            background-color: $black;
+            top: 57px;
+            right: 0;
+        }
+    }
+    &.active {
+        .hamburger {
+            span {
+                &:first-child {
+                    top: 11px;
+                    width: 27px;
+                    transform: rotate(45deg);
+                    @include mq("tablet") {
+                        top: 16px;
+                        width: 40px;
+                    }
+                }
+                &:nth-child(2) {
+                    opacity: 0;
+                }
+                &:last-child {
+                    top: -11px;
+                    width: 27px;
+                    transform: rotate(-45deg);
+                    @include mq("tablet") {
+                        width: 40px;
+                        top: -18px;
+                    }
+                }
+            }
+        }
+    }
+}

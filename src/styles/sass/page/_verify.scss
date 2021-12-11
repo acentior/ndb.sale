@@ -1,0 +1,538 @@
+.verify-page {
+    section {
+        @extend %setHeight2;
+        overflow: auto;
+        .trees-img {
+            display: block;
+        }
+    }
+    .step {
+        &-bar {
+            display: flex;
+            position: relative;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 500px;
+            width: 65%;
+            height: 3px;
+            margin: 0 auto;
+            margin-bottom: 80px;
+            background-color: white;
+        }
+        &-progress {
+            position: absolute;
+            height: 100%;
+            width: 0;
+            background-color: $green;
+        }
+    }
+    .left-circle,
+    .right-circle {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        position: relative;
+        &::before {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            font-family: "Montserrat";
+            font-size: 16px;
+            line-height: 30px;
+            color: #929292;
+            transform: translateX(-50%);
+            text-align: center;
+            white-space: pre;
+        }
+    }
+    .left-circle::before {
+        content: "Identity document";
+    }
+    .right-circle::before {
+        content: "Selfie";
+    }
+    h5 {
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 30px;
+        text-transform: uppercase;
+        margin-bottom: 24px;
+        @include mq("phone", max) {
+            font-size: 18px;
+        }
+    }
+    .verify {
+        &-step0 {
+            max-width: 646px;
+            margin: 0 auto;
+            .pre-wrap {
+                margin-top: 60px;
+                font-size: 18px;
+                line-height: 30px;
+                @include mq("phone", max) {
+                    margin-top: 40px;
+                    font-size: 14px;
+                }
+            }
+            .form {
+                &-group {
+                    margin-top: 72px;
+                    @include mq("phone", max) {
+                        margin-top: 24px;
+                    }
+                }
+                &-check {
+                    display: flex;
+                    &-input {
+                        flex-shrink: 0;
+                        width: 20px;
+                        height: 20px;
+                        background-color: $black;
+                        border: 1px solid white;
+                        border-radius: unset;
+                    }
+                    &-label {
+                        font-weight: 400;
+                        font-size: 18px;
+                        line-height: 30px;
+                        @include mq("phone", max) {
+                            font-size: 13px;
+                        }
+                    }
+                }
+            }
+        }
+        &-step1 {
+            max-width: 365px;
+            margin: 0 auto;
+            .css-1s2u09g-control {
+                border-radius: unset;
+                .css-319lph-ValueContainer {
+                    .css-qc6sy-singleValue {
+                        font-family: "Montserrat";
+                        font-size: 13px;
+                    }
+                    @include mq("phone", max) {
+                        padding: 8px;
+                    }
+                }
+            }
+        }
+        &-step2 {
+            margin-bottom: 24px;
+            .upload {
+                &-doc {
+                    @include mq("phone", max) {
+                        display: none;
+                    }
+                    .file-upload {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                        justify-content: center;
+                        border: 1px dashed #828282;
+                        height: 100%;
+                        @include mq("phone") {
+                            padding: 55px 90px;
+                        }
+                        .new-doc {
+                            display: flex;
+                            align-items: center;
+                            justify-content: center;
+                            background-color: #474747;
+                            width: 86px;
+                            height: 86px;
+                            border-radius: 50%;
+                        }
+                        &.uploaded {
+                            padding-top: 33px;
+                            padding-bottom: 33px;
+                            .new-doc {
+                                display: none;
+                            }
+                            .file-browse {
+                                margin: 0;
+                            }
+                        }
+                        .file-browse {
+                            margin-top: 30px;
+                            span {
+                                color: $green;
+                                cursor: pointer;
+                                &:hover {
+                                    text-decoration: underline;
+                                }
+                            }
+                        }
+                    }
+                    .file-list {
+                        text-align: center;
+                    }
+                }
+                &-rule {
+                    max-width: 455px;
+                    p,
+                    li {
+                        font-size: 16px;
+                        line-height: 30px;
+                        color: #fbfbfb;
+                        strong {
+                            font-weight: 500;
+                        }
+                    }
+                    ul {
+                        list-style: disc;
+                        list-style-position: inside;
+                        text-indent: 10px;
+                        li {
+                            &::marker {
+                                font-size: 10px;
+                                vertical-align: middle;
+                            }
+                        }
+                    }
+                    p,
+                    ul {
+                        padding: 0 16px;
+                    }
+                    &__img {
+                        display: flex;
+                        @include mq("phone", max) {
+                            justify-content: space-between;
+                        }
+                        @include mq("tablet", max) {
+                            img {
+                                width: 30%;
+                            }
+                        }
+                    }
+                }
+            }
+            .uploaded-list {
+                display: none;
+                &__text {
+                    text-align: center;
+                    margin-bottom: 11.5px 0;
+                    font-size: 16px;
+                    line-height: 29px;
+                    color: #fbfbfb;
+                }
+                .file-list {
+                    margin: 8px 0;
+                }
+                .btn-add {
+                    padding: 20px;
+                    margin-bottom: 16px;
+                    width: 100%;
+                    font-size: 16px;
+                    line-height: 39px;
+                    color: #e8e8e8;
+                    background: #292929;
+                    border: unset;
+                    span {
+                        position: relative;
+                        &::before,
+                        &::after {
+                            content: "";
+                            position: absolute;
+                            box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+                            background: white;
+                            top: 50%;
+                            transform: translateY(-50%);
+                        }
+                        &::before {
+                            width: 14px;
+                            height: 1px;
+                            left: -30px;
+                        }
+                        &::after {
+                            width: 1px;
+                            height: 14px;
+                            left: -23px;
+                        }
+                    }
+                }
+                @include mq("phone", max) {
+                    display: block;
+                    width: 100%;
+                }
+            }
+            .file-list {
+                margin-top: 50px;
+                display: flex;
+                justify-content: space-around;
+                @include mq("phone", max) {
+                    display: block;
+                }
+                .file-item {
+                    display: flex;
+                    flex-direction: column;
+                    align-items: center;
+                    @include mq("phone") {
+                        text-align: center;
+                    }
+                    @include mq("phone", max) {
+                        margin-bottom: 14px;
+                    }
+                    &__info {
+                        position: relative;
+                        padding: 22px 0 16px;
+                        width: 80px;
+                        background: rgba(62, 62, 62, 0.3);
+                        cursor: pointer;
+                        @include mq("phone", max) {
+                            display: flex;
+                            justify-content: space-between;
+                            align-items: center;
+                            padding: 18px 25px;
+                            width: 100%;
+                            & > div {
+                                display: flex;
+                                align-items: center;
+                                img {
+                                    margin-bottom: 0 !important;
+                                    height: 100%;
+                                }
+                                div {
+                                    margin-left: 24px;
+                                }
+                            }
+                        }
+                        .remove-file {
+                            position: absolute;
+                            top: -10.5px;
+                            right: -10.5px;
+                            width: 21px;
+                            height: 21px;
+                            background: #c4c4c4;
+                            border-radius: 50%;
+                            cursor: pointer;
+                            @include mq("phone", max) {
+                                position: relative;
+                                top: 0;
+                                right: 0;
+                                background-color: unset;
+                            }
+                            span {
+                                position: relative;
+                                &::before,
+                                &::after {
+                                    content: "";
+                                    position: absolute;
+                                    top: 10px;
+                                    width: 13px;
+                                    height: 1px;
+                                    background-color: black;
+                                    box-shadow: 0px 0.870469px 0.870469px rgba(0, 0, 0, 0.1);
+                                    @include mq("phone", max) {
+                                        width: 14px;
+                                        background-color: white;
+                                        box-shadow: 0px 1px 1px rgba(0, 0, 0, 0.1);
+                                    }
+                                }
+                                &::before {
+                                    left: -6.5px;
+                                    transform: rotate(45deg);
+                                    @include mq("phone", max) {
+                                        left: unset;
+                                    }
+                                }
+                                &::after {
+                                    right: -6.5px;
+                                    transform: rotate(-45deg);
+                                    @include mq("phone", max) {
+                                        right: unset;
+                                    }
+                                }
+                            }
+                        }
+                        .file-name {
+                            display: none;
+                            @include mq("phone", max) {
+                                display: block;
+                            }
+                        }
+                        .file-size {
+                            color: #626262;
+                        }
+                    }
+                    &__name {
+                        margin-top: 8px;
+                        @include mq("phone", max) {
+                            display: none;
+                        }
+                    }
+                }
+            }
+        }
+        &-step3 {
+            text-align: center;
+            &__heading {
+                font-weight: 600;
+                font-size: 20px;
+                line-height: 30px;
+                text-transform: uppercase;
+            }
+            &__text {
+                max-width: 537px;
+                margin: 0 auto;
+                font-size: 16px;
+                line-height: 26px;
+                br {
+                    display: none;
+                }
+                @include mq("phone", max) {
+                    width: 258px;
+                    br {
+                        display: block;
+                    }
+                }
+            }
+            .selfie-img {
+                margin: 16px 0;
+                width: 183px;
+                height: 236px;
+                @include mq("phone", max) {
+                    width: 122px;
+                    height: 157px;
+                }
+            }
+        }
+        &-step4 {
+            .selfie-content {
+                margin: 80px 0 50px;
+            }
+        }
+    }
+    .btn-link {
+        @include mq("phone", max) {
+            display: none;
+        }
+    }
+    .btn-group {
+        display: flex;
+        justify-content: center;
+        margin: 50px 0;
+        padding-bottom: 50px;
+        .btn-primary,
+        .btn-green,
+        .btn-ready {
+            padding: 14px;
+            font-size: 20px;
+            line-height: 24px;
+            width: 196px;
+            @include mq("phone", max) {
+                padding: 10px;
+                font-size: 15px;
+                font-weight: bold;
+                line-height: 19px;
+                width: 150px;
+            }
+        }
+        .btn-ready,
+        .btn-upload,
+        .btn-take {
+            background-color: $green;
+            text-transform: uppercase;
+            border: unset;
+            font-weight: bold;
+        }
+        .btn-green,
+        .btn-take {
+            display: none;
+        }
+        @include mq("phone", max) {
+            .btn-take {
+                display: block;
+            }
+            .btn-green {
+                display: inline-block;
+            }
+            .btn-next,
+            .btn-ready {
+                display: none;
+            }
+        }
+    }
+}
+
+.phone-modal {
+    max-width: 713px;
+    padding: 35px;
+    text-align: center;
+    &__header {
+        text-align: right;
+    }
+    .btn-green {
+        font-weight: bold;
+        font-size: 20px;
+        line-height: 24px;
+        text-transform: uppercase;
+        padding: 14px 38px;
+        border: unset;
+    }
+}
+
+.file-modal {
+    max-width: 539px;
+    padding: 26px 20px;
+    text-align: center;
+    &__body {
+        padding: 30px;
+        @include mq("phone", max) {
+            padding: 0;
+        }
+        img {
+            margin: 8px 0;
+            width: 100%;
+        }
+        p {
+            color: #e8e8e8;
+            @include mq("phone", max) {
+                font-size: 13px;
+                line-height: 39px;
+            }
+        }
+    }
+    .btn-primary {
+        margin-top: 24px;
+        padding: 14px 49px;
+        @include mq("phone") {
+            display: none;
+        }
+    }
+}
+
+.selfie-modal {
+    max-width: 539px;
+    padding: 29px 33px;
+    text-align: center;
+    @include mq("phone", max) {
+        display: none;
+    }
+    &__body {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        .selfie-content {
+            margin-top: 33px;
+            width: 237px;
+            height: 306px;
+        }
+        .btn-group {
+            margin-top: 42px;
+            .btn-primary {
+                font-weight: bold;
+                font-size: 20px;
+                line-height: 24px;
+                padding: 14px 60px;
+                @include mq("phone", max) {
+                    font-size: 15px;
+                    line-height: 19px;
+                    padding: 10px 35px;
+                }
+            }
+        }
+    }
+}

@@ -1,0 +1,565 @@
+.history-page {
+    background-color: $black;
+    @extend %setHeight;
+    .menu {
+        border-bottom: 2px solid #464646;
+    }
+    .section-history {
+        width: 100%;
+        height: 100%;
+        display: flex;
+        flex-wrap: wrap;
+        .verify-link {
+            font-weight: 500;
+            font-size: 16px;
+            line-height: 20px;
+            text-decoration: underline;
+            color: white;
+            &:hover {
+                color: $green;
+            }
+        }
+        &__left {
+            padding-right: 24px;
+            border-right: 2px solid #464646;
+            @include mq("laptop", max) {
+                border: none;
+                padding: 0;
+                width: 100%;
+            }
+            .verify-link {
+                display: none;
+                @include mq("laptop", max) {
+                    display: block;
+                }
+            }
+            .react-tabs {
+                margin-top: 24px;
+                &__tab-list {
+                    display: flex;
+                    justify-content: space-between;
+                    border-bottom: 2px solid #464646;
+                    .react-tabs__tab {
+                        font-weight: bold;
+                        font-size: 28px;
+                        line-height: 37px;
+                        text-transform: uppercase;
+                        color: $grey;
+                        @include mq("laptop", max) {
+                            font-size: 22px;
+                        }
+                        &--selected {
+                            background: none;
+                            border: none;
+                            border-bottom: 2px solid $green;
+                            color: white;
+                        }
+                    }
+                }
+                &__tab-panel {
+                    margin-top: 24px;
+                    .bid-activity {
+                        li {
+                            padding: 19px 0;
+                            border-bottom: 1px solid $green;
+                        }
+                        .bid {
+                            &-name {
+                                font-size: 13px;
+                                line-height: 16px;
+                                color: white;
+                            }
+                            &-date {
+                                font-size: 10px;
+                                line-height: 12px;
+                                color: #8e8e8e;
+                            }
+                            &-price {
+                                font-weight: 500;
+                                font-size: 15px;
+                                line-height: 18px;
+                                letter-spacing: 0.01em;
+                                color: white;
+                            }
+                        }
+                    }
+                    h5 {
+                        font-weight: bold;
+                        font-size: 18px;
+                        line-height: 22px;
+                        letter-spacing: 0.04em;
+                        text-transform: uppercase;
+                    }
+                    .profile-value {
+                        .value-box {
+                            margin-top: 16px;
+                            background: rgba(43, 43, 43, 0.5);
+                            padding: 24px 12px;
+                        }
+                        .value-label {
+                            font-size: 17px;
+                            color: #5e5e5e;
+                        }
+                        .value {
+                            font-size: 40px;
+                            line-height: 54px;
+                        }
+                        .max-value {
+                            font-size: 15px;
+                            line-height: 18px;
+                            color: #959595;
+                        }
+                    }
+                    .transaction {
+                        border-bottom: 2px solid #464646;
+                        padding: 16px 0;
+                        &-history {
+                            margin-top: 32px;
+                        }
+                        &-date {
+                            font-weight: 500;
+                            font-size: 9px;
+                            line-height: 11px;
+                            letter-spacing: 0.04em;
+                            color: #787878;
+                        }
+                        &-name {
+                            font-weight: 500;
+                            font-size: 15px;
+                            line-height: 18px;
+                            letter-spacing: 0.04em;
+                        }
+                        &-price {
+                            font-weight: bold;
+                            font-size: 15px;
+                            line-height: 18px;
+                            letter-spacing: 0.04em;
+                        }
+                    }
+                }
+            }
+        }
+        &__right {
+            @include mq("laptop", max) {
+                width: 100%;
+            }
+            .verify-link {
+                @include mq("laptop", max) {
+                    display: none;
+                }
+            }
+            .tab-top {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                @include mq("phone", max) {
+                    display: block;
+                    .react-tabs__tab-list {
+                        padding: 24px 0;
+                    }
+                    .react-tabs__tab {
+                        padding: 0;
+                        font-size: 16px;
+                    }
+                }
+            }
+            .react-tabs {
+                height: 100%;
+                &__tab-list {
+                    margin: 0;
+                    padding: 24px;
+                    border: none;
+                    @include mq("phone", max) {
+                        display: flex;
+                        justify-content: space-between;
+                    }
+                }
+                &__tab {
+                    text-transform: uppercase;
+                    font-weight: bold;
+                    font-size: 18px;
+                    line-height: 22px;
+                    color: #757575;
+                    &--selected {
+                        background: unset;
+                        color: white;
+                        border: unset;
+                    }
+                }
+                &__tab-panel {
+                    &--selected {
+                        height: 100%;
+                        border-top: 2px solid #464646;
+                    }
+                    table {
+                        width: 100%;
+                        thead {
+                            border-bottom: 2px solid #464646;
+                            th {
+                                padding: 16px 16px;
+                            }
+                        }
+                        th {
+                            font-size: 16px;
+                            line-height: 20px;
+                            letter-spacing: 0.04em;
+                            color: #8f8f8f;
+                        }
+                        td {
+                            font-size: 18px;
+                            line-height: 22px;
+                            color: white;
+                        }
+                        tbody {
+                            padding-left: 24px;
+                            padding-right: 24px;
+                            tr {
+                                border-bottom: 2px solid #464646;
+                                td {
+                                    padding: 16px 8px;
+                                }
+                            }
+                        }
+                        .mobile-not {
+                            @include mq("phone", max) {
+                                display: none;
+                            }
+                        }
+                    }
+                    .coin {
+                        &-abbr {
+                            font-weight: 500;
+                            font-size: 18px;
+                            line-height: 22px;
+                            letter-spacing: 0.04em;
+                            color: white;
+                        }
+                        &-name {
+                            font-weight: 500;
+                            font-size: 15px;
+                            line-height: 18px;
+                            letter-spacing: 0.04em;
+                            color: #959595;
+                        }
+                        &-price {
+                            font-size: 18px;
+                            line-height: 22px;
+                            color: #ffffff;
+                            text-align: right;
+                        }
+                        &-percent {
+                            font-size: 15px;
+                            line-height: 18px;
+                            text-align: right;
+                        }
+                        &-status {
+                            position: relative;
+                            text-indent: 16px;
+                            &::before {
+                                content: "";
+                                position: absolute;
+                                width: 9px;
+                                height: 9px;
+                                border-radius: 50%;
+                                top: 50%;
+                                left: 0;
+                                transform: translateY(-50%);
+                            }
+                            &.active {
+                                &::before {
+                                    background-color: $green;
+                                }
+                            }
+                            &.deactive {
+                                &::before {
+                                    background-color: $red;
+                                }
+                            }
+                        }
+                        &-reward {
+                            font-weight: 600;
+                            font-size: 16px;
+                            line-height: 20px;
+                            letter-spacing: 0.04em;
+                            color: $green;
+                        }
+                        &-operations {
+                            display: flex;
+                            justify-content: space-around;
+                            @include mq("laptop", max) {
+                                flex-direction: column;
+                            }
+                        }
+                    }
+                    .airdrop-link {
+                        cursor: pointer;
+                    }
+                    .airdrop-detail {
+                        display: flex;
+                        flex-wrap: wrap;
+                        width: 100%;
+                        height: 100%;
+                        &__left {
+                            padding: 16px;
+                            border-right: 2px solid #464646;
+                            @include mq("tablet", max) {
+                                border: none;
+                            }
+                            .detail-header {
+                                display: flex;
+                                align-items: center;
+                                background: #242424;
+                                padding: 14px 16px;
+                                &__icon {
+                                    width: 35.5px;
+                                    height: 35.5px;
+                                    margin-right: 12px;
+                                }
+                                &__name {
+                                    font-weight: bold;
+                                    font-size: 22px;
+                                    line-height: 27px;
+                                    letter-spacing: 0.04em;
+                                    color: white;
+                                }
+                                &__end {
+                                    font-weight: 300;
+                                    font-size: 14px;
+                                    line-height: 17px;
+                                    letter-spacing: 0.04em;
+                                    color: #757575;
+                                }
+                            }
+                            .detail-body {
+                                margin-top: 16px;
+                                li {
+                                    display: flex;
+                                    justify-content: space-between;
+                                    padding: 14px;
+                                    border-bottom: 2px solid #464646;
+                                    .value {
+                                        font-weight: 500;
+                                        font-size: 18px;
+                                        line-height: 22px;
+                                        letter-spacing: 0.04em;
+                                        color: #ffffff;
+                                    }
+                                }
+                            }
+                            .detail-footer {
+                                margin-top: 16px;
+                                padding: 14px;
+                                h6 {
+                                    font-weight: 600;
+                                    font-size: 16px;
+                                    line-height: 20px;
+                                    letter-spacing: 0.04em;
+                                    color: white;
+                                    margin-bottom: 16px;
+                                }
+                                ul {
+                                    list-style: disc;
+                                    li {
+                                        font-weight: 500;
+                                        font-size: 14px;
+                                        line-height: 15px;
+                                        letter-spacing: 0.04em;
+                                        color: #787878;
+                                        padding-bottom: 16px;
+                                        list-style-position: inside;
+                                    }
+                                }
+                            }
+                        }
+                        &__right {
+                            padding: 16px;
+                            .time-remaining {
+                                background: #242424;
+                                text-align: center;
+                                h5 {
+                                    font-weight: bold;
+                                    font-size: 18px;
+                                    line-height: 22px;
+                                    text-align: center;
+                                    letter-spacing: 0.04em;
+                                    text-transform: uppercase;
+                                }
+                                .countdown-wrapper {
+                                    margin: 16px 0;
+                                    .time {
+                                        font-size: 48px;
+                                        line-height: 59px;
+                                        &-text {
+                                            font-size: 9.3198px;
+                                            line-height: 11px;
+                                        }
+                                    }
+                                }
+                                .btn-primary {
+                                    background: #1e1e1e;
+                                    text-transform: uppercase;
+                                    font-weight: bold;
+                                    font-size: 14.6601px;
+                                    line-height: 18px;
+                                    letter-spacing: 0.04em;
+                                }
+                            }
+                            .about-company {
+                                margin-top: 16px;
+                                padding: 22px 19px;
+                                background-color: #242424;
+                                h6 {
+                                    font-weight: 500;
+                                    font-size: 14px;
+                                    line-height: 17px;
+                                    letter-spacing: 0.04em;
+                                }
+                                p {
+                                    font-size: 14px;
+                                    line-height: 17px;
+                                    letter-spacing: 0.04em;
+                                }
+                            }
+                        }
+                        .read-more {
+                            font-weight: 500;
+                            font-size: 15px;
+                            line-height: 18px;
+                            letter-spacing: 0.04em;
+                            color: #ffffff;
+                        }
+                    }
+                }
+
+                .operation-link {
+                    font-size: 18px;
+                    line-height: 22px;
+                    letter-spacing: 0.04em;
+                    color: white;
+                    cursor: pointer;
+                    &:hover {
+                        text-decoration: underline;
+                    }
+                    @include mq("tablet", max) {
+                        font-size: 14px;
+                    }
+                }
+            }
+        }
+    }
+}
+
+.deposit-modal {
+    max-width: 545px;
+    .cryptocoin-select {
+        margin: 14px 0;
+        height: 45px;
+        width: 100%;
+        .css-1s2u09g-control,
+        .css-1pahdxg-control {
+            @extend %selectStyle;
+        }
+        .css-1okebmr-indicatorSeparator {
+            display: none;
+        }
+        .css-319lph-ValueContainer {
+            padding: 0;
+            .css-qc6sy-singleValue {
+                display: flex;
+                align-items: center;
+                font-weight: 500;
+                font-size: 18px;
+                line-height: 22px;
+                align-items: center;
+                color: white;
+                img {
+                    margin-right: 4px;
+                    width: 24px;
+                    height: 24px;
+                }
+            }
+        }
+        .css-tlfecz-indicatorContainer {
+            padding: 0;
+        }
+        .css-6j8wv5-Input {
+            display: none;
+        }
+    }
+    .deposit-tab {
+        .react-tabs__tab-list {
+            border: 1px solid white;
+            margin-bottom: 14px;
+            .react-tabs__tab {
+                width: 50%;
+                font-weight: 500;
+                font-size: 18px;
+                line-height: 22px;
+                letter-spacing: 0.04em;
+                color: #ffffff;
+                text-align: center;
+                border: unset;
+                bottom: unset;
+                border-radius: unset;
+                padding: 10px;
+                &--selected {
+                    color: $black;
+                }
+            }
+        }
+        .deposit-panel {
+            .clipboard {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                padding: 10px;
+                border: 1px solid white;
+                p,
+                code {
+                    font-size: 16px;
+                    line-height: 20px;
+                    letter-spacing: 0.04em;
+                    color: white;
+                }
+                img {
+                    cursor: pointer;
+                }
+            }
+            .bitcoin-address {
+                text-align: center;
+                p {
+                    margin-top: 22px;
+                    margin-bottom: 14px;
+                    font-size: 12px;
+                    line-height: 15px;
+                }
+            }
+        }
+        .withdraw-panel {
+            .form-control {
+                font-size: 16px;
+                line-height: 20px;
+                letter-spacing: 0.04em;
+                color: #ffffff;
+                border: 1px solid white;
+                background-color: $black;
+                padding: 10px;
+            }
+            .available-balance,
+            .minimum-transfer {
+                display: flex;
+                justify-content: space-between;
+                padding: 2px 0;
+                p {
+                    font-size: 12px;
+                    line-height: 15px;
+                    letter-spacing: 0.04em;
+                    color: #ffffff;
+                }
+            }
+            .available-balance {
+                border-bottom: 1px solid rgba(255, 255, 255, 0.3);
+            }
+        }
+    }
+}

@@ -1,0 +1,34 @@
+// Colors
+$black: #1e1e1e;
+$green: #23c865;
+$grey: #c4c4c4;
+$red: #f7361a;
+$light-red: #ff6868;
+$cyan: #59d8f3;
+
+// Media query breakpoints
+$breakpoints: (
+    "phone": 576px,
+    "tablet": 769px,
+    "laptop": 1025px,
+    "laptop-wide": 1441px,
+);
+
+$grid-breakpoints: (
+    xs: 0,
+    sm: 576px,
+    md: 769px,
+    lg: 1025px,
+    xl: 1441px,
+    xxl: 1900px,
+);
+
+$container-max-widths: (
+    sm: 668px,
+    md: 924px,
+    lg: 1290px,
+    xl: 1340px,
+    xxl: 1610px,
+);
+
+$min-contrast-ratio: 2.5;

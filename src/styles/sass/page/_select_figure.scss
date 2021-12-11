@@ -1,0 +1,137 @@
+.profile-page {
+    @extend %setHeight2;
+    .figure-section {
+        max-width: 992px;
+        margin: 0 auto;
+        position: relative;
+        height: 100%;
+        @include mq("laptop", max) {
+            width: 100%;
+        }
+        .header-text {
+            font-weight: bold;
+            font-size: 36px;
+            line-height: 44px;
+            margin: 24px 0 35px;
+            @include mq("phone", max) {
+                font-size: 23px;
+                margin: 16px 0;
+            }
+        }
+        .figure-select {
+            .figure-search {
+                width: 100%;
+                font-weight: 500;
+                font-size: 14px;
+                line-height: 23px;
+                letter-spacing: -0.02em;
+                padding: 4px 16px;
+                margin-bottom: 16px;
+            }
+            .figure-item {
+                border: 1px solid rgba(255, 255, 255, 0.5);
+                text-align: center;
+                cursor: pointer;
+                &__avatar {
+                    padding: 30px 10px;
+                }
+                &__name {
+                    padding: 8px 0;
+                    border-top: 1px solid rgba(255, 255, 255, 0.5);
+                    font-weight: 800;
+                    font-size: 16.5704px;
+                    line-height: 21px;
+                    width: 100%;
+                }
+                &.active {
+                    border: 1px solid white;
+                    .figure-item__name {
+                        background-color: white;
+                        color: $black;
+                    }
+                }
+            }
+        }
+        .figure-intro {
+            @include mq("phone", max) {
+                display: none;
+            }
+            &__box {
+                width: 100%;
+                border: 1px solid #ffffff;
+                .figure-name {
+                    border-bottom: 1px solid white;
+                    padding: 14px 0;
+                    font-weight: 600;
+                    font-size: 20px;
+                    line-height: 24px;
+                    text-align: center;
+                }
+                &--body {
+                    padding: 30px;
+                    p {
+                        font-size: 14px;
+                        line-height: 17px;
+                    }
+                    .star-container {
+                        vertical-align: unset !important;
+                    }
+                    .star-ratings {
+                        display: flex !important;
+                        flex-shrink: 1;
+                    }
+                    .form-label {
+                        font-size: 18px;
+                        line-height: 23px;
+                    }
+                    .form-control {
+                        font-size: 16px;
+                    }
+                    .random-text {
+                        font-size: 14px;
+                        line-height: 23px;
+                        text-decoration: underline;
+                        text-align: end;
+                    }
+                    svg {
+                        cursor: pointer;
+                    }
+                }
+            }
+        }
+    }
+    .trees-img {
+        @include mq("tablet", max) {
+            display: none;
+        }
+    }
+}
+
+.figure-modal {
+    display: none;
+    @include mq("phone", max) {
+        display: block;
+    }
+    &__overlay {
+        display: none;
+        @include mq("phone", max) {
+            display: block;
+        }
+    }
+}
+
+.mobile-figure-header {
+    position: relative;
+    font-size: 20px;
+    font-weight: bold;
+    line-height: 24px;
+    text-align: center;
+    svg {
+        width: 17.5px !important;
+        height: 17.5px;
+        position: absolute;
+        top: 50%;
+        transform: translateY(-50%);
+        right: 0;
+    }
+}

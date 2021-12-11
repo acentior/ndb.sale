@@ -1,0 +1,215 @@
+.signup-page {
+    @extend %setHeight;
+    section {
+        @extend %setHeight2;
+    }
+    .signup {
+        position: relative;
+        width: 100%;
+        max-width: 395px;
+        margin: 0 auto;
+        &-head {
+            font-weight: bold;
+            font-size: 36px;
+            line-height: 30px;
+            text-align: center;
+            margin-bottom: 24px;
+            @include mq("phone", max) {
+                font-size: 24px;
+            }
+        }
+        &-subhead {
+            font-size: 18px;
+            line-height: 23px;
+            text-align: center;
+            margin: 24px 0 30px;
+        }
+        &-link {
+            font-size: 16px;
+            line-height: 23px;
+            font-weight: 600;
+            color: white;
+            &:hover {
+                text-decoration: underline;
+            }
+        }
+        &-text-link {
+            color: white;
+            font-size: 14px;
+            opacity: 0.95;
+            line-height: 23px;
+        }
+        .terms-link:hover {
+            color: #0d6efd;
+            text-decoration: underline;
+        }
+        .forget-pwd {
+            font-size: 13px;
+            line-height: 10px;
+            &:hover {
+                color: $green;
+                text-decoration: underline;
+            }
+            @include mq("phone", max) {
+                font-size: 11px;
+            }
+        }
+        .verify-link {
+            font-weight: 600;
+            font-size: 18px;
+            line-height: 30px;
+            color: $green;
+            text-decoration: underline;
+            &:hover {
+                color: $green;
+            }
+        }
+        .form {
+            &-group {
+                margin-bottom: 8px;
+            }
+            &-label {
+                font-weight: 500;
+                font-size: 12px;
+                line-height: 19px;
+            }
+            &-check {
+                display: flex;
+                align-items: center;
+                margin: 14px 0;
+                &-input {
+                    padding: 0 !important;
+                    width: 16px;
+                    height: 16px;
+                    background-color: $black;
+                    border: 1px solid white;
+                    border-radius: unset;
+                    margin-top: 0;
+                }
+                &-label {
+                    font-weight: 500;
+                    font-size: 13px;
+                    line-height: 19px;
+                    margin-left: 10px;
+                    @include mq("phone", max) {
+                        font-size: 11px;
+                    }
+                }
+            }
+            .css-1s2u09g-control,
+            .css-1pahdxg-control {
+                border: 1px solid #ced4da;
+                border-radius: unset;
+                color: $black;
+                font-family: "Montserrat";
+                font-size: 13px;
+                line-height: 19px;
+                .css-1okebmr-indicatorSeparator {
+                    display: none;
+                }
+            }
+            .btn-primary {
+                font-weight: bold;
+                font-size: 20px;
+                line-height: 24px;
+            }
+        }
+        .social-links {
+            display: flex;
+            justify-content: center;
+            margin: 40px 0 25px;
+            li {
+                padding: 0 8px;
+            }
+        }
+    }
+}
+
+.apart-img,
+.trees-img {
+    position: absolute;
+    bottom: 0;
+    z-index: -1;
+    @include mq("tablet", max) {
+        display: none;
+    }
+}
+.apart-img {
+    height: 80%;
+}
+
+.twoFA-modal {
+    max-width: 880px;
+    padding: 27px 30px;
+    h3 {
+        margin: 0 auto;
+        font-weight: bold;
+        font-size: 36px;
+        line-height: 40px;
+    }
+    .next-step {
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 29px;
+        width: 322px;
+        @include mq("phone", max) {
+            width: 100%;
+        }
+    }
+    .tfa-select {
+        max-width: 614px;
+        margin: 0 auto;
+        text-align: center;
+        h3 {
+            max-width: 445px;
+        }
+        .select-tfa {
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 20px;
+            padding: 18px 20px;
+            width: 322px;
+            text-transform: none;
+            text-align: left;
+            &.active {
+                color: $black;
+                background: white;
+                &:focus {
+                    box-shadow: unset;
+                }
+            }
+            @include mq("phone", max) {
+                width: 100%;
+            }
+        }
+    }
+    .get-code {
+        margin: 0 auto;
+        text-align: center;
+        .step1-label {
+            max-width: 348px;
+            margin: 0 auto;
+            padding: 11px 0 15px;
+        }
+        .form-control {
+            width: 322px;
+            padding: 18px 20px;
+            margin: 0 auto;
+            font-size: 18px;
+            line-height: 20px;
+            color: #ffffff;
+            opacity: 0.2;
+            background: $black;
+            border: 2px solid #ffffff;
+            @include mq("phone", max) {
+                width: 100%;
+            }
+        }
+    }
+}
+
+#signup-country-dropdown {
+    svg {
+        color: black !important;
+    }
+}

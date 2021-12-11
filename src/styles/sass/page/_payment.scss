@@ -1,0 +1,410 @@
+.payment-page {
+    & > section {
+        .title {
+            color: white;
+            font-style: normal;
+            font-weight: bold;
+            font-size: 36px;
+            line-height: 60px;
+            @include mq("tablet", max) {
+                font-size: 24px;
+            }
+        }
+        .sub-title {
+            color: white;
+            font-style: normal;
+            font-weight: normal;
+            font-size: 18px;
+            line-height: 23px;
+            text-align: center;
+            font-weight: 300;
+            opacity: 0.95;
+        }
+    }
+    .payment-expire {
+        font-weight: bold;
+        font-size: 11px !important;
+        line-height: 13px !important;
+        text-transform: uppercase;
+        display: none;
+    }
+    .payment-type__tab {
+        padding: 0 60px;
+        @include mq("tablet", max) {
+            padding: 0;
+        }
+        .react-tabs__tab-list {
+            @include mq("tablet", max) {
+                display: none;
+            }
+            display: flex;
+            justify-content: space-between;
+            border: none;
+            margin-bottom: 55px;
+        }
+        &-list {
+            font-weight: 600;
+            font-size: 24px;
+            line-height: 29px;
+            padding: 8px 30px;
+            border: 1px solid white;
+            &[aria-selected="false"] {
+                color: rgba(255, 255, 255, 0.5);
+            }
+            text-transform: uppercase;
+            cursor: pointer;
+            @include mq("laptop-wide", max) {
+                font-size: 18px;
+                padding: 8px 16px;
+            }
+            @include mq("laptop", max) {
+                font-size: 16px;
+            }
+        }
+        .form-check-input {
+            border: 1px solid #ffffff;
+            background-color: $black;
+            width: 24px;
+            height: 24px;
+            border-radius: unset;
+        }
+        .form-check-label {
+            display: flex;
+            align-items: center;
+            font-size: 11px;
+            font-weight: bold;
+        }
+        .react-tabs__tab--selected {
+            border-radius: unset;
+        }
+        .creditcard-tab {
+            @include mq("laptop", max) {
+                margin-top: 50px;
+            }
+            .form-control {
+                border: 1px solid #ffffff;
+                background-color: $black;
+                color: white;
+                font-size: 16px;
+                line-height: 20px;
+                padding: 12px 16px;
+            }
+            .form-check {
+                display: flex;
+                align-items: center;
+            }
+            input {
+                &::placeholder {
+                    color: white;
+                    opacity: 0.95;
+                }
+            }
+        }
+        .cryptocoin-tab,
+        .wallet-tab {
+            @include mq("laptop", max) {
+                margin-top: 50px;
+            }
+            .form-control {
+                border: 1px solid white;
+                background-color: $black;
+                font-weight: bold;
+                font-size: 24px;
+                line-height: 29px;
+                padding: 9px 29px;
+                color: white;
+            }
+            .css-1s2u09g-control,
+            .css-1pahdxg-control {
+                @extend %selectStyle;
+            }
+            .css-1okebmr-indicatorSeparator {
+                display: none;
+            }
+            .css-319lph-ValueContainer {
+                padding: 0;
+            }
+            .css-tlfecz-indicatorContainer {
+                padding: 0;
+            }
+            .css-6j8wv5-Input {
+                display: none;
+            }
+        }
+        .cryptocoin-tab {
+            .cryptocoin-select {
+                margin-bottom: 8px;
+                margin-right: 8px;
+                .css-26l3qy-menu {
+                    background-color: $black;
+                    border: 1px solid #ffffff;
+                    border-radius: unset;
+                    .css-4ljt47-MenuList {
+                        max-height: unset;
+                        & > div {
+                            display: flex;
+                            align-items: center;
+                            justify-content: start;
+                            .coin-label {
+                                font-weight: bold;
+                                font-size: 18px;
+                                line-height: 22px;
+                                text-transform: uppercase;
+                                color: white;
+                                margin-left: 11px;
+                            }
+                        }
+                    }
+                }
+            }
+            .clipboard {
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+                background-color: white;
+                padding: 13px;
+                cursor: pointer;
+                code {
+                    font-family: "Montserrat";
+                    font-size: 16px;
+                    line-height: 20px;
+                    color: black;
+                }
+                @include mq("laptop", max) {
+                    padding: 10px;
+                    code {
+                        font-size: 13px;
+                        line-height: 16px;
+                    }
+                }
+            }
+            .qr-code {
+                text-align: center;
+                @include mq("tablet", max) {
+                    margin-top: 26px;
+                    img {
+                        width: 179px;
+                        height: 179px;
+                    }
+                }
+            }
+        }
+        .wallet-tab {
+            .balance-select {
+                @include mq("laptop", max) {
+                    margin-bottom: 16px;
+                }
+                .css-1s2u09g-control {
+                    padding-top: 9px;
+                    padding-bottom: 9px;
+                    border: none;
+                    @include mq("laptop", max) {
+                        border: 1px solid white;
+                    }
+                    .css-qc6sy-singleValue {
+                        color: white;
+                        text-transform: uppercase;
+                        font-weight: bold;
+                        font-size: 18px;
+                        line-height: 22px;
+                    }
+                }
+                .css-1pahdxg-control {
+                    border: none;
+                    @include mq("laptop", max) {
+                        border: 1px solid white;
+                    }
+                }
+                .css-26l3qy-menu {
+                    border-radius: unset;
+                    background-color: $black;
+                    width: calc(100% - 24px);
+                    .css-4ljt47-MenuList {
+                        padding: 0;
+                        & > div {
+                            background-color: $black;
+                            cursor: pointer;
+                            border: 1px solid white;
+                            border-bottom: none;
+                            padding: 20px 15px;
+                            &:last-child {
+                                border-bottom: 1px solid white;
+                            }
+                        }
+                    }
+                    .custom-option {
+                        display: flex;
+                        justify-content: space-between;
+                        p {
+                            font-weight: bold;
+                            font-size: 20px;
+                            line-height: 24px;
+                        }
+                    }
+                }
+            }
+            .choosed-icon {
+                background-color: $black;
+                border: 1px solid white;
+                padding: 4px 23px;
+                display: flex;
+                align-items: center;
+                margin-right: 8px;
+            }
+        }
+        .payment-expire {
+            display: block;
+            padding-left: 30px !important;
+            @include mq("tablet", max) {
+                display: none;
+            }
+        }
+    }
+    .payment-type__select {
+        display: none;
+        @include mq("tablet", max) {
+            display: block;
+        }
+        .css-1s2u09g-control,
+        .css-1pahdxg-control {
+            @extend %selectStyle;
+            .css-qc6sy-singleValue {
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 20px;
+                color: white;
+                text-transform: uppercase;
+                text-align: center;
+            }
+        }
+        .css-1okebmr-indicatorSeparator {
+            display: none;
+        }
+        .css-319lph-ValueContainer {
+            padding: 0;
+        }
+        .css-tlfecz-indicatorContainer {
+            padding: 0;
+        }
+        .css-6j8wv5-Input {
+            display: none;
+        }
+    }
+    .order-summary {
+        border-left: 1px solid white;
+        padding-left: 24px;
+        @include mq("tablet", max) {
+            border: none;
+            padding-left: 12px;
+            margin-top: 32px;
+            & > h3 {
+                font-weight: 600;
+                font-size: 24px;
+                line-height: 29px;
+            }
+            & > p {
+                font-size: 12px;
+                line-height: 15px;
+            }
+            .btn-primary {
+                width: 100%;
+            }
+            .payment-expire {
+                display: block;
+                text-align: center;
+                margin-bottom: 16px;
+            }
+        }
+        .total-amount {
+            margin-top: 18px;
+            margin-bottom: 32px;
+            .amount {
+                font-weight: bold;
+                font-size: 24px;
+                line-height: 29px;
+                @include mq("tablet", max) {
+                    font-size: 18px;
+                    line-height: 22px;
+                }
+                &-label {
+                    font-weight: bold;
+                    font-size: 18px;
+                    line-height: 22px;
+                    text-transform: uppercase;
+                }
+            }
+        }
+        .btn-primary {
+            font-weight: bold;
+            font-size: 24px;
+            line-height: 29px;
+        }
+    }
+    .remain-token__value {
+        padding: 0px 60px;
+        margin-top: 80px;
+        margin-bottom: 80px;
+        .current-value,
+        .end-value {
+            font-weight: bold;
+            font-size: 11px;
+            line-height: 13px;
+            text-transform: uppercase;
+        }
+        .timeframe-bar {
+            background-color: #263a2b;
+            height: 17px;
+            margin-top: 8px;
+            .timeleft {
+                border-radius: 0 8.5px 8.5px 0;
+                position: relative;
+                &__value {
+                    position: absolute;
+                    bottom: -23px;
+                    right: 0;
+                    color: white;
+                    font-weight: bold;
+                    font-size: 11px;
+                    line-height: 13px;
+                    white-space: pre-line;
+                    text-transform: uppercase;
+                }
+            }
+        }
+    }
+}
+
+.allow-text {
+    font-size: 11px !important;
+    font-weight: bold;
+    text-transform: uppercase;
+    margin-top: auto;
+    margin-bottom: auto;
+}
+
+.css-4ljt47-MenuList {
+    text-align: center !important;
+    padding-top: 0px !important;
+    padding-bottom: 0px !important;
+}
+.css-1s2u09g-control {
+    padding: 0px 4px !important;
+}
+
+.payment-type__tab-list {
+    flex: 1 !important;
+    margin-right: 15px;
+    &:last-child {
+        margin-right: 0px;
+    }
+}
+
+.css-qc6sy-singleValue {
+    margin: auto !important;
+}
+.css-14el2xx-placeholder {
+    color: white;
+    font-size: 18px;
+    margin-top: 0px;
+    text-align: center;
+}

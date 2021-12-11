@@ -1,0 +1,21 @@
+.ReactModal__Content {
+    position: absolute;
+    padding: 19px 23px;
+    top: 50%;
+    left: 50%;
+    width: calc(100% - 24px);
+    background-color: $black;
+    border: 1px solid #ffffff;
+    border-radius: unset;
+    transform: translate(-50%, -50%);
+}
+
+.ReactModal__Overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(black, 0.7);
+    z-index: 1111;
+}

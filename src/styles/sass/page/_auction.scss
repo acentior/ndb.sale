@@ -1,0 +1,390 @@
+.auction-page {
+    background-color: $black;
+    @extend %setHeight;
+    .menu {
+        border-bottom: 2px solid #464646;
+    }
+    .section-auction {
+        width: 100%;
+        height: 100%;
+        .current-round {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 24px 0;
+            border-bottom: 1px solid #464646;
+            @include mq("tablet") {
+                display: none;
+            }
+            h4 {
+                font-weight: bold;
+                font-size: 30px;
+                line-height: 37px;
+                @include mq("phone", max) {
+                    font-size: 24px;
+                    line-height: 29px;
+                }
+            }
+            p {
+                font-size: 18px;
+                line-height: 22px;
+                color: #c4c4c4;
+                span {
+                    font-weight: 500;
+                    color: white;
+                }
+                @include mq("phone", max) {
+                    font-weight: 500;
+                    font-size: 14px;
+                    line-height: 17px;
+                    span {
+                        font-weight: bold;
+                    }
+                }
+            }
+            .show-chart {
+                width: 64px;
+                height: 64px;
+                cursor: pointer;
+                @include mq("phone", max) {
+                    width: 24px;
+                    height: 24px;
+                }
+            }
+        }
+        .timeframe-bar {
+            margin-top: 50px;
+            background: linear-gradient(270deg, #23c865 0%, #23c865 35.94%, #e8503a 57.81%);
+            .timeleft {
+                &__value {
+                    font-weight: 500;
+                    font-size: 9px;
+                    line-height: 11px;
+                    bottom: 24px;
+                    right: unset;
+                    color: white;
+                    position: absolute;
+                    display: none;
+                }
+                &::after {
+                    content: "";
+                    position: absolute;
+                    height: 21px;
+                    width: 2px;
+                    background: #de4934;
+                    bottom: 0;
+                }
+                &:hover {
+                    .timeleft__value {
+                        display: block;
+                    }
+                }
+            }
+        }
+        .auction-left {
+            padding-right: 50px;
+            @include mq("tablet") {
+                display: block !important;
+            }
+            @include mq("laptop", max) {
+                padding-right: 12px;
+            }
+            @include mq("phone", max) {
+                width: 100%;
+            }
+            .round-tab,
+            .statistics-tab {
+                .react-tabs__tab-list {
+                    display: flex;
+                    justify-content: space-between;
+                    border-bottom: 2px solid #464646;
+                    .react-tabs__tab {
+                        font-weight: 600;
+                        font-size: 14px;
+                        line-height: 17px;
+                        text-transform: uppercase;
+                        color: $grey;
+                        @include mq("tablet", max) {
+                            font-size: 18px;
+                            line-height: 22px;
+                        }
+                        @include mq("phone", max) {
+                            font-size: 14px;
+                            line-height: 17px;
+                        }
+                        &--selected {
+                            background: none;
+                            border: none;
+                            border-bottom: 2px solid $green;
+                        }
+                    }
+                }
+            }
+            .round-tab {
+                margin-top: 16px;
+                @include mq("tablet", max) {
+                    display: none;
+                }
+                .react-tabs__tab-list {
+                    .react-tabs__tab {
+                        display: flex;
+                        align-items: center;
+                        font-weight: bold;
+                        font-size: 14px;
+                        line-height: 17px;
+                        padding-left: 0;
+                        padding-right: 0;
+                        &--selected {
+                            font-size: 30px;
+                            line-height: 37px;
+                            letter-spacing: -0.01em;
+                            color: white;
+                            @include mq("phone", max) {
+                                font-size: 24px;
+                                line-height: 29px;
+                            }
+                        }
+                        @include mq("phone", max) {
+                            padding: 0;
+                        }
+                    }
+                }
+                .react-tabs__tab-panel {
+                    color: $grey;
+                    font-weight: 500;
+                    font-size: 18px;
+                    line-height: 22px;
+                }
+            }
+            .statistics-tab {
+                margin-top: 32px;
+                @include mq("tablet", max) {
+                    margin-top: 16px;
+                }
+                @include mq("phone", max) {
+                    margin-top: 32px;
+                }
+                .react-tabs__tab-list {
+                    display: flex;
+                    justify-content: space-between;
+                    border-bottom: 2px solid #464646;
+                    @include mq("tablet", max) {
+                        justify-content: flex-start;
+                    }
+                }
+                .react-tabs__tab-panel {
+                    .text {
+                        padding-top: 27px;
+                        white-space: pre-line;
+                        font-weight: normal;
+                        font-size: 12px;
+                        line-height: 17px;
+                        @include mq("tablet", max) {
+                            font-size: 18px;
+                            line-height: 141.4%;
+                        }
+                        @include mq("phone", max) {
+                            font-size: 12px;
+                            line-height: 17px;
+                        }
+                    }
+                    table {
+                        width: 100%;
+                        th {
+                            font-weight: 600;
+                            font-size: 12px;
+                            line-height: 141.4%;
+                            letter-spacing: 0.03em;
+                        }
+                        td {
+                            font-size: 16px;
+                            line-height: 141.4%;
+                        }
+                        tr {
+                            display: flex;
+                            justify-content: space-between;
+                            padding: 3px 0;
+                            border-bottom: 1px solid #525252;
+                        }
+                    }
+                    .caption {
+                        font-size: 18px;
+                        line-height: 22px;
+                        letter-spacing: -0.02em;
+                        color: $grey;
+                        @include mq("phone", max) {
+                            font-size: 14px;
+                            line-height: 17px;
+                        }
+                    }
+                    .value {
+                        font-weight: 600;
+                        font-size: 18px;
+                        line-height: 22px;
+                        @include mq("phone", max) {
+                            font-size: 14px;
+                            line-height: 17px;
+                        }
+                    }
+                    .btn-increase {
+                        font-weight: bold;
+                        font-size: 30px;
+                        line-height: 20px;
+                        padding: 14px 35px;
+                    }
+                }
+            }
+        }
+        .auction-right {
+            border-left: 2px solid #464646;
+            @include mq("tablet", max) {
+                border: none;
+            }
+
+            .place-bid {
+                display: none;
+                margin-top: 65px;
+                @include mq("laptop") {
+                    display: block;
+                }
+            }
+            .chart-area {
+                margin: 0 auto;
+                padding: 40px;
+                @include mq("laptop") {
+                    display: none;
+                }
+                @include mq("tablet", max) {
+                    padding-left: 0;
+                    padding-right: 0;
+                }
+                .css-1s2u09g-control,
+                .css-1pahdxg-control {
+                    background: #1e1e1e;
+                    border: 1px solid #ffffff;
+                    border-radius: unset;
+                    .css-6j8wv5-Input,
+                    .css-qc6sy-singleValue {
+                        font-family: "Montserrat";
+                        font-style: normal;
+                        font-weight: bold;
+                        font-size: 24px;
+                        line-height: 29px;
+                        color: white;
+                    }
+                    .css-1okebmr-indicatorSeparator {
+                        display: none;
+                    }
+                }
+                .select-label {
+                    font-weight: 600;
+                    font-size: 24px;
+                    line-height: 54px;
+                    color: #c4c4c4;
+                    margin: 45px 0 25px;
+                }
+            }
+        }
+    }
+}
+
+.place-bid {
+    margin: 0 auto;
+    padding: 31px 41px;
+    border: 1px solid #464646;
+    max-width: 683px;
+    @include mq("tablet", max) {
+        padding: 19px 12px;
+    }
+    .range-label {
+        font-weight: bold;
+        font-size: 30px;
+        line-height: 37px;
+        text-transform: uppercase;
+    }
+    .range-input,
+    .total-input {
+        padding: 8px 10px;
+        margin-right: 18px;
+        background: #1e1e1e;
+        border: 1px solid #ffffff;
+        width: 87px;
+        font-weight: bold;
+        font-size: 16px;
+        line-height: 20px;
+        color: white;
+        text-align: center;
+    }
+    .total-input {
+        width: 300px;
+        font-weight: bold;
+        font-size: 30px;
+        line-height: 37px;
+        margin-left: 48px;
+    }
+    .rc-slider {
+        &-rail {
+            height: 5px;
+            background-color: white;
+        }
+        &-track {
+            height: 5px;
+            background-color: $green;
+        }
+        &-handle {
+            width: 24px;
+            height: 24px;
+            border-color: $green;
+            background-color: $green;
+            margin-top: -10px;
+        }
+    }
+    .btn-primary {
+        margin-top: 60px;
+    }
+    .desktop-view {
+        @include mq("tablet", max) {
+            display: none;
+        }
+    }
+    .tablet-view {
+        display: none;
+        text-align: center;
+        @include mq("tablet", max) {
+            display: block;
+        }
+        .range-label {
+            font-size: 24px;
+            line-height: 29px;
+        }
+        .range-input {
+            width: 100%;
+            padding: 17px;
+            margin-top: 16px;
+            margin-bottom: 25px;
+            &::placeholder {
+                font-size: 14px;
+                line-height: 17px;
+                color: white;
+                opacity: 0.5;
+                text-transform: uppercase;
+            }
+        }
+        .total-input {
+            width: 100%;
+            margin: 0;
+            margin-top: 16px;
+            margin-bottom: 25px;
+            padding: 8px;
+            font-weight: bold;
+            font-size: 30px;
+            line-height: 37px;
+            color: $green;
+        }
+        .btn-primary {
+            font-size: 30px;
+            line-height: 37px;
+            padding: 8px 44px;
+        }
+    }
+}

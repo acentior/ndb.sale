@@ -1,0 +1,35 @@
+* {
+    font-family: "Montserrat" !important;
+}
+.form-control {
+    font-family: "Montserrat";
+    border: 1px solid #ced4da;
+    border-radius: unset;
+    font-size: 13px;
+    line-height: 19px;
+    color: $black;
+    padding: 8px 12px;
+}
+
+.timeframe-bar {
+    position: relative;
+    width: 100%;
+    margin: 0 auto;
+    margin-top: 24px;
+    height: 12px;
+    background-color: #263a2b;
+    .timeleft {
+        position: absolute;
+        right: 0;
+        height: 100%;
+        width: 0;
+        cursor: pointer;
+        line-height: 12px;
+        box-sizing: border-box;
+    }
+}
+* {
+    &:focus {
+        box-shadow: none !important;
+    }
+}
