@@ -50,7 +50,6 @@ const SelectedValue = (props) => {
                 style={{ width: "30px", height: "auto" }}
                 alt={props.data.label}
             />
-            {/* {props.data.label} */}
         </SingleValue>
     )
 }
@@ -63,7 +62,11 @@ const CustomOption = (props) => (
     </Option>
 )
 const CustomSingleValue = (props) => {
-    return <SingleValue {...props}>{props.data.value + " - " + props.data.label}</SingleValue>
+    return (
+        <SingleValue {...props}>
+            <p className="wallet-select__value">{props.data.value + " - " + props.data.label}</p>
+        </SingleValue>
+    )
 }
 
 const Payment = () => {

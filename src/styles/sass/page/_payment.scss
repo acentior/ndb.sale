@@ -194,7 +194,7 @@
                     @include mq("laptop", max) {
                         border: 1px solid white;
                     }
-                    .css-qc6sy-singleValue {
+                    .wallet-select__valuee {
                         color: white;
                         text-transform: uppercase;
                         font-weight: bold;
@@ -396,8 +396,8 @@
     margin: auto !important;
 }
 .css-14el2xx-placeholder {
-    color: white;
+    color: white !important;
+    font-weight: bold;
     font-size: 18px;
-    margin-top: 0px;
-    text-align: center;
+    line-height: 22px;
 }
