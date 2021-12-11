@@ -32,7 +32,7 @@ const payment_types = [
 
 const IconOption = (props) => (
     <Option {...props}>
-        <div className="d-flex justify-content-between align-items-center">
+        <div className="d-flex justify-content-start align-items-center">
             <img
                 src={props.data.icon}
                 style={{ width: "30px", height: "auto" }}

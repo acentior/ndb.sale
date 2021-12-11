@@ -140,19 +140,14 @@
                     border: 1px solid #ffffff;
                     border-radius: unset;
                     .css-4ljt47-MenuList {
-                        max-height: unset;
-                        & > div {
-                            display: flex;
-                            align-items: center;
-                            justify-content: start;
-                            .coin-label {
-                                font-weight: bold;
-                                font-size: 18px;
-                                line-height: 22px;
-                                text-transform: uppercase;
-                                color: white;
-                                margin-left: 11px;
-                            }
+                        max-height: unset !important;
+                        .coin-label {
+                            font-weight: bold !important;
+                            font-size: 18px !important;
+                            line-height: 22px !important;
+                            text-transform: uppercase !important;
+                            color: white !important;
+                            margin-left: 11px !important;
                         }
                     }
                 }
