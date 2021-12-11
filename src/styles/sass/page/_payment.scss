@@ -124,9 +124,6 @@
             .css-319lph-ValueContainer {
                 padding: 0;
             }
-            .css-tlfecz-indicatorContainer {
-                padding: 0;
-            }
             .css-6j8wv5-Input {
                 display: none;
             }
@@ -135,11 +132,12 @@
             .cryptocoin-select {
                 margin-bottom: 8px;
                 margin-right: 8px;
+
                 .css-26l3qy-menu {
                     background-color: $black;
                     border: 1px solid #ffffff;
                     border-radius: unset;
-                    .css-4ljt47-MenuList {
+                    & > div {
                         max-height: unset !important;
                     }
                     .coin-label {
@@ -214,7 +212,7 @@
                     border-radius: unset;
                     background-color: $black;
                     width: calc(100% - 24px);
-                    .css-4ljt47-MenuList {
+                    & > div {
                         padding: 0;
                         & > div {
                             background-color: $black;
