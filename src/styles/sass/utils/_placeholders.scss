@@ -1,0 +1,31 @@
+//Placeholders
+
+%set-height {
+    overflow: hidden;
+    height: 100vh;
+    width: 100vw;
+    @include mq("laptop", max) {
+        overflow: auto;
+        position: relative;
+    }
+}
+
+%set-height2 {
+    height: calc(100vh - 97px);
+    @include mq("phone", max) {
+        height: calc(100vh - 55px);
+    }
+}
+
+%select-style {
+    border: 1px solid white;
+    border-radius: unset;
+    background-color: $black;
+    font-weight: bold;
+    font-size: 24px;
+    line-height: 29px;
+    padding: 4px 10px !important;
+    color: white;
+    box-shadow: unset;
+    height: 100%;
+}

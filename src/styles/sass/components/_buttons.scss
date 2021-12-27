@@ -68,4 +68,9 @@
     font-size: 18px;
     line-height: 30px;
     color: white;
+    cursor: pointer;
+    transition: 500ms;
+    &:hover {
+        opacity: 0.65;
+    }
 }

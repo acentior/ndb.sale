@@ -1,7 +1,6 @@
 .signup-page {
-    @extend %setHeight;
     section {
-        @extend %setHeight2;
+        @extend %set-height2;
     }
     .signup {
         position: relative;
@@ -112,6 +111,10 @@
                 font-weight: bold;
                 font-size: 20px;
                 line-height: 24px;
+                &:disabled {
+                    background-color: $black !important;
+                    border: 1px solid white !important;
+                }
             }
         }
         .social-links {
@@ -130,7 +133,7 @@
     position: absolute;
     bottom: 0;
     z-index: -1;
-    @include mq("tablet", max) {
+    @include mq("laptop", max) {
         display: none;
     }
 }
@@ -212,4 +215,13 @@
     svg {
         color: black !important;
     }
+}
+
+.keep-me-signed-in-text {
+    font-size: 14px;
+}
+
+.errorsapn {
+    color: rgb(231, 54, 54);
+    font-size: 14px;
 }

@@ -7,6 +7,7 @@ module.exports = {
     },
     plugins: [
         `gatsby-plugin-react-helmet`,
+        `gatsby-plugin-styled-components`,
         `gatsby-plugin-image`,
         {
             resolve: `gatsby-source-filesystem`,
@@ -33,14 +34,6 @@ module.exports = {
             resolve: `gatsby-plugin-google-fonts`,
             options: {
                 fonts: [`Montserrat\:300,400,500,700,800`],
-            },
-        },
-        {
-            resolve: "gatsby-plugin-apollo",
-            options: {
-                // uri: "https://ndb-auction.herokuapp.com/graphql",
-                // uri: "http://localhost:5000/graphql",
-                uri: "http://auction.us-east-1.elasticbeanstalk.com/graphql",
             },
         },
     ],

@@ -1,0 +1,269 @@
+main.create-direct-purchase-page {
+    .container {
+        @include mq("laptop-wide", max) {
+            max-width: 95%;
+        }
+        @include mq("phone", max) {
+            max-width: 100%;
+        }
+    }       
+    section.home {
+        div.container {
+            display: flex;
+            height: 80vh;
+            justify-content: center;
+            align-items: center;
+            @include mq('phone', max) {
+                height: auto;
+                overflow: auto;
+            }
+        }
+        div.createDiv {
+            width: 80%;
+            border: 1px solid #ffffff;   
+            padding: 24px;
+            position: relative;
+            margin-bottom: 20px;
+            min-height: 410px;
+            overflow: auto;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            a.close {
+                position: absolute;
+                font-size: 25px;
+                top: 20px;
+                right: 20px;
+            }
+            p.subtitle {
+                font-size: 20px;
+                font-weight: 500;
+                margin-bottom: 10px;
+            }
+            @include mq("tablet", max) {
+                width: 90%;
+            }  
+            @include mq("phone", max) {
+                width: 100%;
+                max-height: 100vh;
+                border: none;
+                display: block;
+                a.close {
+                    display: none;
+                }
+                p.subtitle {
+                    text-align: center;
+                }
+            }  
+            div.input_div {
+                width: 80%;
+                // padding: 20px 0;
+                height: 220px;
+                margin: auto;
+                overflow-y: auto;
+                overflow-x: hidden;
+                display: flex;
+                flex-direction: column;
+                justify-content: center;
+                div.div1 {
+                    display: flex;
+                    flex-direction: row; 
+
+                    &>div {
+                        width: 48%;
+                        margin: 0 1%;                        
+                    }
+                }
+                div.div2 {
+                    display: flex;
+                    flex-direction: row;
+                    &>div {
+                        width: 32%;
+                        margin: 0 1%;
+                    }
+                }
+                p {
+                    font-size: 12px;
+                    font-weight: 600;
+                    padding-bottom: 5px;
+                }
+                @include mq("tablet", max) {
+                    width: 100%;
+                }  
+                @include mq("phone", max) {
+                    height: auto;
+                    margin-bottom: 30px;
+                    div.div1 {
+                        display: flex;
+                        flex-direction: column;     
+                        &>div {
+                            width: 100%; 
+                            margin: 0;
+                            margin-top: 20px;                     
+                        }
+                    }
+                    div.div2 {
+                        display: flex;
+                        flex-direction: column;
+                        &>div {
+                            width: 100%;
+                            margin: 0;
+                            margin-top: 20px;
+                        }
+                    }
+                }  
+                div.token_div {
+                    display: flex;
+                    justify-content: space-between;
+                    input {
+                        width: 35%;
+                    }
+                    div {
+                        width: 60%;
+                        display: flex;
+                        justify-content: space-between;
+                        button {
+                            width: 24%;
+                            background: transparent;
+                            border: 1px solid white;
+                            font-size: 14px;
+                            font-weight: 400;
+                            height: 32px;
+                            &:hover {
+                                color: $green;
+                            }
+                        }
+                    }
+                    @include mq('phone', max) {
+                        flex-direction: column;
+                        input {
+                            width: 45%;
+                        }
+                        div {
+                            width: 100%;
+                            margin-top: 7px;
+                        }
+                    }
+                }
+                
+
+                div.condition_div {
+                    display: flex;
+                    margin: 5px 0;
+                    div.task_div {
+                        width: 95%;
+                        display: flex;
+                        justify-content: space-between;
+                        input {
+                            width: 49%;
+                        }
+                        
+                        @include mq('phone', max) {
+                            flex-direction: column;
+                            input {
+                                width: 100%;
+                                margin: 2px 0;
+                            }
+                        }
+                    }
+                    div.btn_div {
+                        width: 5%;
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                        svg {
+                            color: $light-red;
+                            font-size: 20px;
+                            cursor: pointer;
+                        }
+                    }
+                    @include mq('phone', max) {
+                        margin: 10px 0;
+                        div.task_div {
+                            width: 90%;
+                        }
+                        div.btn_div {
+                            width: 10%;
+                        }
+                    }
+                }
+                div.add_btn_div {
+                    svg {
+                        color: white;
+                        font-size: 30px;
+                        cursor: pointer;
+                        transition: 0.3s;
+                        &:hover {
+                            color: $green;
+                        }
+                    }
+                }
+                
+                div.item {
+                    padding: 4px 0;
+                    p {
+                        font-size: 14px;
+                        font-weight: 500;
+                    }
+                    img {
+                        width: 100px;
+                        height: 100px;
+                        display: block;
+                        margin: auto;
+                    }
+                }
+                @include mq('phone', max) {
+                    div.for_desktop {
+                        display: none;
+                    }
+                    div.for_phone {
+                        display: block;
+                    }
+                }
+                @include mq('phone', min) {
+                    div.for_desktop {
+                        display: block;
+                    }
+                    div.for_phone {
+                        display: none;
+                    }
+                }
+            }
+            div.button_div {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 15px;
+                .previous {
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: black;
+                    background-color: #ffffff;
+                    cursor: pointer;
+                    padding: 7px 15px;
+                    &:hover {
+                        border: 1px solid $green;
+                    }
+                }
+                .next {
+                    font-size: 14px;
+                    font-weight: 500;
+                    background-color: $green;
+                    color: white;
+                    cursor: pointer;
+                    padding: 7px 15px;
+                    &:hover {
+                        color: black;
+                    }
+                }
+            }
+            div.inform {
+                width: 80%;
+                margin: auto;
+                @include mq('phone', max) {
+                    width: 100%;
+                }
+            }
+        }        
+    } 
+}
+

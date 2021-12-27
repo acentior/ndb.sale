@@ -1,20 +1,20 @@
 .history-page {
     background-color: $black;
-    @extend %setHeight;
     .menu {
         border-bottom: 2px solid #464646;
     }
     .section-history {
-        width: 100%;
-        height: 100%;
-        display: flex;
-        flex-wrap: wrap;
+        height: calc(100vh - 97px);
+        @include mq("tablet", max) {
+            height: auto;
+        }
         .verify-link {
             font-weight: 500;
             font-size: 16px;
             line-height: 20px;
             text-decoration: underline;
             color: white;
+            flex-shrink: 0;
             &:hover {
                 color: $green;
             }
@@ -22,10 +22,9 @@
         &__left {
             padding-right: 24px;
             border-right: 2px solid #464646;
-            @include mq("laptop", max) {
-                border: none;
-                padding: 0;
-                width: 100%;
+            height: 100%;
+            @include mq("tablet", max) {
+                border-right: unset;
             }
             .verify-link {
                 display: none;
@@ -34,12 +33,12 @@
                 }
             }
             .react-tabs {
-                margin-top: 24px;
                 &__tab-list {
-                    display: flex;
-                    justify-content: space-between;
                     border-bottom: 2px solid #464646;
+                    display: flex;
+                    width: 100%;
                     .react-tabs__tab {
+                        padding: 21px 0 9px;
                         font-weight: bold;
                         font-size: 28px;
                         line-height: 37px;
@@ -47,6 +46,8 @@
                         color: $grey;
                         @include mq("laptop", max) {
                             font-size: 22px;
+                            width: 50%;
+                            text-align: center;
                         }
                         &--selected {
                             background: none;
@@ -59,6 +60,7 @@
                 &__tab-panel {
                     margin-top: 24px;
                     .bid-activity {
+                        @include custom-scroll(250px);
                         li {
                             padding: 19px 0;
                             border-bottom: 1px solid $green;
@@ -114,7 +116,10 @@
                         border-bottom: 2px solid #464646;
                         padding: 16px 0;
                         &-history {
-                            margin-top: 32px;
+                            @include custom-scroll(550px);
+                            @include mq("tablet", max) {
+                                max-height: 350px;
+                            }
                         }
                         &-date {
                             font-weight: 500;
@@ -140,9 +145,9 @@
             }
         }
         &__right {
-            @include mq("laptop", max) {
-                width: 100%;
-            }
+            position: relative;
+            height: 100%;
+            padding: 0;
             .verify-link {
                 @include mq("laptop", max) {
                     display: none;
@@ -158,19 +163,39 @@
                         padding: 24px 0;
                     }
                     .react-tabs__tab {
-                        padding: 0;
                         font-size: 16px;
                     }
                 }
             }
             .react-tabs {
+                // --scrollbar-width: 0.5rem;
+                // --mask-height: 78px;
+                // overflow-y: auto;
+                // padding-bottom: var(--mask-height);
+                // --mask-image-content: linear-gradient(
+                //     to bottom,
+                //     transparent,
+                //     0,
+                //     #1e1e1e calc(100% - var(--mask-height)),
+                //     transparent
+                // );
+                // --mask-size-content: calc(100% - var(--scrollbar-width)) 100%;
+                // --mask-image-scrollbar: linear-gradient(#1e1e1e, #1e1e1e);
+                // --mask-size-scrollbar: var(--scrollbar-width) 100%;
+                // -webkit-mask-image: var(--mask-image-content), var(--mask-image-scrollbar);
+                // -webkit-mask-size: var(--mask-size-content), var(--mask-size-scrollbar);
+                // -webkit-mask-position: 0 0, 100% 0;
+                // -webkit-mask-repeat: no-repeat, no-repeat;
+
                 height: 100%;
                 &__tab-list {
+                    display: flex;
+                    justify-content: space-between;
                     margin: 0;
                     padding: 24px;
+                    width: 100%;
                     border: none;
                     @include mq("phone", max) {
-                        display: flex;
                         justify-content: space-between;
                     }
                 }
@@ -187,16 +212,24 @@
                     }
                 }
                 &__tab-panel {
+                    padding: 0 20px;
                     &--selected {
                         height: 100%;
                         border-top: 2px solid #464646;
                     }
                     table {
                         width: 100%;
+                        thead,
+                        tbody tr {
+                            display: table;
+                            width: 100%;
+                            table-layout: fixed;
+                        }
                         thead {
                             border-bottom: 2px solid #464646;
+                            width: calc(100% - 26px);
                             th {
-                                padding: 16px 16px;
+                                padding: 16px 0px;
                             }
                         }
                         th {
@@ -204,6 +237,7 @@
                             line-height: 20px;
                             letter-spacing: 0.04em;
                             color: #8f8f8f;
+                            font-weight: normal;
                         }
                         td {
                             font-size: 18px;
@@ -211,17 +245,29 @@
                             color: white;
                         }
                         tbody {
-                            padding-left: 24px;
-                            padding-right: 24px;
+                            @include custom-scroll(250px);
+                            @include mq("tablet", max) {
+                                max-height: 350px;
+                            }
+                            display: block;
                             tr {
+                                margin-bottom: 23px;
                                 border-bottom: 2px solid #464646;
                                 td {
-                                    padding: 16px 8px;
+                                    padding: 16px 0;
+                                }
+                                &:hover {
+                                    background-color: #242424;
                                 }
                             }
                         }
                         .mobile-not {
                             @include mq("phone", max) {
+                                display: none;
+                            }
+                        }
+                        .laptop-not {
+                            @include mq("laptop", max) {
                                 display: none;
                             }
                         }
@@ -251,6 +297,8 @@
                             font-size: 15px;
                             line-height: 18px;
                             text-align: right;
+                            color: #959595;
+                            margin-top: 3px;
                         }
                         &-status {
                             position: relative;
@@ -285,149 +333,15 @@
                         }
                         &-operations {
                             display: flex;
-                            justify-content: space-around;
+                            justify-content: flex-end;
                             @include mq("laptop", max) {
                                 flex-direction: column;
+                                align-items: flex-end;
                             }
                         }
                     }
                     .airdrop-link {
                         cursor: pointer;
-                    }
-                    .airdrop-detail {
-                        display: flex;
-                        flex-wrap: wrap;
-                        width: 100%;
-                        height: 100%;
-                        &__left {
-                            padding: 16px;
-                            border-right: 2px solid #464646;
-                            @include mq("tablet", max) {
-                                border: none;
-                            }
-                            .detail-header {
-                                display: flex;
-                                align-items: center;
-                                background: #242424;
-                                padding: 14px 16px;
-                                &__icon {
-                                    width: 35.5px;
-                                    height: 35.5px;
-                                    margin-right: 12px;
-                                }
-                                &__name {
-                                    font-weight: bold;
-                                    font-size: 22px;
-                                    line-height: 27px;
-                                    letter-spacing: 0.04em;
-                                    color: white;
-                                }
-                                &__end {
-                                    font-weight: 300;
-                                    font-size: 14px;
-                                    line-height: 17px;
-                                    letter-spacing: 0.04em;
-                                    color: #757575;
-                                }
-                            }
-                            .detail-body {
-                                margin-top: 16px;
-                                li {
-                                    display: flex;
-                                    justify-content: space-between;
-                                    padding: 14px;
-                                    border-bottom: 2px solid #464646;
-                                    .value {
-                                        font-weight: 500;
-                                        font-size: 18px;
-                                        line-height: 22px;
-                                        letter-spacing: 0.04em;
-                                        color: #ffffff;
-                                    }
-                                }
-                            }
-                            .detail-footer {
-                                margin-top: 16px;
-                                padding: 14px;
-                                h6 {
-                                    font-weight: 600;
-                                    font-size: 16px;
-                                    line-height: 20px;
-                                    letter-spacing: 0.04em;
-                                    color: white;
-                                    margin-bottom: 16px;
-                                }
-                                ul {
-                                    list-style: disc;
-                                    li {
-                                        font-weight: 500;
-                                        font-size: 14px;
-                                        line-height: 15px;
-                                        letter-spacing: 0.04em;
-                                        color: #787878;
-                                        padding-bottom: 16px;
-                                        list-style-position: inside;
-                                    }
-                                }
-                            }
-                        }
-                        &__right {
-                            padding: 16px;
-                            .time-remaining {
-                                background: #242424;
-                                text-align: center;
-                                h5 {
-                                    font-weight: bold;
-                                    font-size: 18px;
-                                    line-height: 22px;
-                                    text-align: center;
-                                    letter-spacing: 0.04em;
-                                    text-transform: uppercase;
-                                }
-                                .countdown-wrapper {
-                                    margin: 16px 0;
-                                    .time {
-                                        font-size: 48px;
-                                        line-height: 59px;
-                                        &-text {
-                                            font-size: 9.3198px;
-                                            line-height: 11px;
-                                        }
-                                    }
-                                }
-                                .btn-primary {
-                                    background: #1e1e1e;
-                                    text-transform: uppercase;
-                                    font-weight: bold;
-                                    font-size: 14.6601px;
-                                    line-height: 18px;
-                                    letter-spacing: 0.04em;
-                                }
-                            }
-                            .about-company {
-                                margin-top: 16px;
-                                padding: 22px 19px;
-                                background-color: #242424;
-                                h6 {
-                                    font-weight: 500;
-                                    font-size: 14px;
-                                    line-height: 17px;
-                                    letter-spacing: 0.04em;
-                                }
-                                p {
-                                    font-size: 14px;
-                                    line-height: 17px;
-                                    letter-spacing: 0.04em;
-                                }
-                            }
-                        }
-                        .read-more {
-                            font-weight: 500;
-                            font-size: 15px;
-                            line-height: 18px;
-                            letter-spacing: 0.04em;
-                            color: #ffffff;
-                        }
                     }
                 }
 
@@ -445,6 +359,25 @@
                     }
                 }
             }
+            .connect-external {
+                position: absolute;
+                top: calc(100% - 100px);
+                width: 100%;
+                text-align: center;
+
+                .btn-primary {
+                    font-size: 22px;
+                    line-height: 27px;
+                }
+                @include mq("phone", max) {
+                    top: calc(100% - 24px);
+                    .btn-primary {
+                        font-size: 18px;
+                        line-height: 22px;
+                        padding: 13px 23px;
+                    }
+                }
+            }
         }
     }
 }
@@ -457,7 +390,7 @@
         width: 100%;
         .css-1s2u09g-control,
         .css-1pahdxg-control {
-            @extend %selectStyle;
+            @extend %select-style;
         }
         .css-1okebmr-indicatorSeparator {
             display: none;
@@ -560,6 +493,225 @@
             .available-balance {
                 border-bottom: 1px solid rgba(255, 255, 255, 0.3);
             }
+        }
+    }
+}
+
+.airdrop-detail {
+    display: none;
+    width: 100%;
+    height: 100%;
+    &__left {
+        padding: 16px;
+        border-right: 2px solid #464646;
+        @include mq("tablet", max) {
+            border: none;
+        }
+        .detail-header {
+            display: flex;
+            align-items: center;
+            background: #242424;
+            padding: 14px 16px;
+            &__icon {
+                width: 35.5px;
+                height: 35.5px;
+                margin-right: 12px;
+                @include mq("phone", max) {
+                    width: 23px;
+                    height: 23px;
+                }
+            }
+            &__name {
+                font-weight: bold;
+                font-size: 22px;
+                line-height: 27px;
+                letter-spacing: 0.04em;
+                color: white;
+                @include mq("phone", max) {
+                    font-size: 14px;
+                    line-height: 17px;
+                }
+            }
+            &__end {
+                font-weight: 300;
+                font-size: 14px;
+                line-height: 17px;
+                letter-spacing: 0.04em;
+                color: #757575;
+                @include mq("phone", max) {
+                    display: none;
+                }
+            }
+        }
+        .detail-body {
+            margin-top: 16px;
+            li {
+                display: flex;
+                justify-content: space-between;
+                padding: 14px;
+                border-bottom: 2px solid #464646;
+                p {
+                    color: #959595;
+                    font-weight: 500;
+                    font-size: 14px;
+                    line-height: 17px;
+                }
+                .value {
+                    font-weight: 500;
+                    font-size: 18px;
+                    line-height: 22px;
+                    letter-spacing: 0.04em;
+                    color: #ffffff;
+                }
+            }
+        }
+        .detail-footer {
+            margin-top: 16px;
+            padding: 14px 16px;
+            h6 {
+                font-weight: 600;
+                font-size: 16px;
+                line-height: 20px;
+                letter-spacing: 0.04em;
+                color: white;
+                margin-bottom: 16px;
+            }
+            ul {
+                list-style: disc;
+                li {
+                    font-weight: 500;
+                    font-size: 14px;
+                    line-height: 15px;
+                    letter-spacing: 0.04em;
+                    color: #787878;
+                    padding-bottom: 16px;
+                    list-style-position: outside;
+                    line-break: anywhere;
+                }
+            }
+        }
+    }
+    &__right {
+        padding: 16px;
+        .time-remaining {
+            background: #242424;
+            text-align: center;
+            h5 {
+                font-weight: bold;
+                font-size: 18px;
+                line-height: 22px;
+                text-align: center;
+                letter-spacing: 0.04em;
+                text-transform: uppercase;
+            }
+            .countdown-wrapper {
+                margin: 16px 0;
+                .time {
+                    font-size: 48px;
+                    line-height: 59px;
+                    &-text {
+                        font-size: 9.3198px;
+                        line-height: 11px;
+                    }
+                }
+            }
+            .btn-primary {
+                background: #1e1e1e;
+                text-transform: uppercase;
+                font-weight: bold;
+                font-size: 14.6601px;
+                line-height: 18px;
+                letter-spacing: 0.04em;
+                @include mq("phone", max) {
+                    padding: 12px 40px;
+                }
+            }
+        }
+        .about-company {
+            margin-top: 16px;
+            padding: 22px 19px;
+            background-color: #242424;
+            h6 {
+                font-weight: 500;
+                font-size: 14px;
+                line-height: 17px;
+                letter-spacing: 0.04em;
+            }
+            p {
+                font-size: 14px;
+                line-height: 17px;
+                letter-spacing: 0.04em;
+            }
+            @include mq("phone", max) {
+                display: none;
+            }
+        }
+    }
+    .read-more {
+        font-weight: 500;
+        font-size: 15px;
+        line-height: 18px;
+        letter-spacing: 0.04em;
+        color: #ffffff;
+    }
+}
+
+.airdrop-modal {
+    border: 2px solid #464646;
+    max-width: 859px;
+    @include mq("phone", max) {
+        display: none;
+    }
+    &__overlay {
+        @include mq("laptop") {
+            display: none;
+        }
+        @include mq("phone", max) {
+            display: none;
+        }
+    }
+}
+
+.join-modal {
+    max-width: 612px;
+    .join-airdrop {
+        .join-list {
+            li {
+                padding: 14px 0;
+                border-bottom: 2px solid #464646;
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                @include mq("phone", max) {
+                    flex-direction: column;
+                    p {
+                        margin-bottom: 13px;
+                    }
+                }
+                p {
+                    font-size: 14px;
+                    line-height: 17px;
+                    color: #f2f2f2;
+                }
+                .btn-green {
+                    border: 1px solid #ffffff;
+                    font-size: 12px;
+                    line-height: 15px;
+                    width: 205px;
+                    padding: 10px 0;
+                }
+            }
+        }
+        .form-label {
+            font-size: 14px;
+            line-height: 17px;
+            letter-spacing: 0.04em;
+            color: #f2f2f2;
+        }
+        .btn-primary {
+            font-size: 14.6601px;
+            line-height: 18px;
+            padding: 12px 40px;
         }
     }
 }

@@ -1,0 +1,333 @@
+p.title {
+    font-size: 18px;
+    font-weight: 700;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    height: 60px;
+    line-height: 60px;
+}
+
+a:hover {
+    color: $green;
+}
+
+nav.MuiPagination-root {
+    display: flex;
+    justify-content: end;
+
+    @include mq("phone", max) {
+        justify-content: center;
+    }
+    li {
+        width: 30px;
+    }
+    button {
+        color: #ffffff;
+        &:hover {
+            background-color: #23c86573;
+            @include mq("phone", max) {
+                background-color: transparent;
+            }
+        }
+    }
+    button.Mui-selected {
+        background-color: $green;
+        &:hover {
+            background-color: $green;
+        }
+    }
+    div.MuiPaginationItem-root {
+        color: #ffffff;
+    }
+}
+
+div.MuiFormControl-root {
+    width: 100%;
+    div.MuiOutlinedInput-root {
+        border: 1px solid #ffffff;
+        height: 32px;
+        border-radius: 0;
+        color: white;
+        width: 100%;
+        svg {
+            color: white;
+        }
+        .MuiOutlinedInput-notchedOutline {
+            border-color: transparent !important;
+        }
+    }
+}
+
+div.MuiPaper-root {
+    padding: 5px 0;
+    span.MuiTypography-caption {
+        color: black !important;
+    }
+}
+
+.MuiAlert-standardError {
+    background: transparent !important;
+    .MuiAlert-message {
+        color: #e17070;
+    }
+}
+.MuiAlert-standardSuccess {
+    background: transparent !important;
+    .MuiAlert-message {
+        color: #3bc545;
+    }
+}
+
+input.black_input {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    height: 32px;
+    font-size: 14px;
+    font-weight: 400;
+    border: 1px solid;
+    padding-left: 10px;
+    width: 100%;
+}
+
+textarea.black_input {
+    background-color: #1e1e1e;
+    color: #ffffff;
+    font-size: 14px;
+    font-weight: 400;
+    border: 1px solid #ffffff;
+    padding: 10px;
+    width: 100%;
+}
+
+input.white_input {
+    background-color: #ffffff;
+    color: #1e1e1e;
+    height: 32px;
+    font-size: 14px;
+    font-weight: 400;
+    border: 1px solid;
+    padding-left: 10px;
+    width: 100%;
+}
+
+p.error,
+svg.error {
+    color: #e17070 !important;
+}
+
+input.error,
+div.error,
+textarea.error {
+    border: 1px solid #e17070;
+}
+
+p.disabled {
+    color: dimgray;
+}
+
+input.disabled {
+    border: 1px solid dimgray !important;
+}
+
+.previous {
+    font-size: 14px;
+    font-weight: 500;
+    color: black;
+    background-color: #ffffff;
+    cursor: pointer;
+    padding: 7px 15px;
+    &:hover {
+        border: 1px solid $green;
+    }
+}
+.next {
+    font-size: 14px;
+    font-weight: 500;
+    background-color: $green;
+    color: white;
+    cursor: pointer;
+    padding: 7px 15px;
+    &:hover {
+        color: black;
+    }
+}
+
+.pwd-reset-modal {
+    max-width: 800px;
+    .pwd-modal__header {
+        text-transform: unset;
+        margin-bottom: 30px;
+        svg {
+            color: #ffffff;
+        }
+        p {
+            font-size: 20px;
+            font-weight: 500;
+            @include mq("phone", max) {
+                font-size: 14px;
+            }
+        }
+        @include mq("phone", max) {
+            margin-bottom: 20px;
+        }
+    }
+    form {
+        p {
+            color: lightgray;
+            margin-bottom: 1px;
+        }
+        div.description {
+            text-align: center;
+        }
+        div.input {
+            width: 60%;
+            margin: auto;
+        }
+        @include mq("phone", max) {
+            div.description {
+                text-align: left;
+            }
+            div.input {
+                width: 100%;
+            }
+        }
+    }
+    .pwd-modal__footer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.kyc-aml-modal {
+    max-width: 1000px;
+    .pwd-modal__header {
+        text-transform: unset;
+        margin-bottom: 30px;
+        svg {
+            color: #ffffff;
+        }
+        p {
+            font-size: 20px;
+            font-weight: 500;
+        }
+        @include mq("phone", max) {
+            margin-bottom: 20px;
+        }
+    }
+    form {
+        input.black_input {
+            height: 37px;
+            border: 1px solid #cccccc;
+        }
+        p {
+            margin-top: 15px;
+            margin-bottom: 1px;
+        }
+        div.input_div {
+            width: 86%;
+            margin: auto;
+            display: flex;
+            justify-content: space-between;
+            margin-top: 50px;
+            div.input {
+                width: 49%;
+            }
+            @include mq("tablet", max) {
+                width: 100%;
+            }
+            @include mq("phone", max) {
+                flex-direction: column;
+                margin-top: 0;
+                div.input {
+                    width: 100%;
+                }
+            }
+        }
+    }
+    .pwd-modal__footer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+}
+
+.wallet-balance-modal {
+    max-width: 800px;
+    .pwd-modal__header {
+        text-transform: unset;
+        margin-bottom: 30px;
+        svg {
+            color: #ffffff;
+        }
+        p {
+            font-size: 20px;
+            font-weight: 500;
+            @include mq("phone", max) {
+                font-size: 14px;
+            }
+        }
+        @include mq("phone", max) {
+            margin-bottom: 20px;
+        }
+    }
+    form {
+        margin-top: 10px;
+        max-height: 350px;
+        overflow: auto;
+        p {
+            margin-top: 15px;
+            margin-bottom: 1px;
+        }
+    }
+    div.input {
+        width: 80%;
+        margin: auto;
+        display: flex;
+        margin-bottom: 7px;
+        & > div > input {
+            width: 95%;
+        }
+        div.input_div {
+            width: 48%;
+        }
+        div.trash_btn {
+            width: 4%;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            svg {
+                color: #f32d2d;
+                font-size: 22px;
+                cursor: pointer;
+            }
+        }
+        @include mq("tablet", max) {
+            width: 100%;
+        }
+        @include mq("tablet", max) {
+            div.input_div {
+                width: 46%;
+            }
+            div.trash_btn {
+                width: 8%;
+            }
+        }
+
+        span.add_balance {
+            font-size: 25px;
+            cursor: pointer;
+            svg {
+                color: white;
+            }
+        }
+    }
+    .pwd-modal__footer {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+    }
+}

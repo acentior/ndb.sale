@@ -5,7 +5,51 @@
     padding: 22px;
     background-color: $black;
     z-index: 9999;
-    margin-bottom: 25px;
+    .user-avatar {
+        width: 56px;
+        height: 51px;
+    }
+    .user-dropdown {
+        position: relative;
+        display: flex;
+        &:hover {
+            .user-dropdown-menu {
+                display: block;
+            }
+        }
+        &-menu {
+            position: absolute;
+            right: 0;
+            top: 51px;
+            background-color: $black;
+            border: 1px solid white;
+            z-index: 999;
+            font-variant: small-caps;
+            color: white;
+            font-weight: bold;
+            font-size: 30px;
+            line-height: 37px;
+            display: none;
+            & > li {
+                cursor: pointer;
+                border-bottom: 1px solid white;
+                transition: 500ms;
+                a {
+                    display: inline-block;
+                    padding: 12px 25px;
+                }
+                &:last-child {
+                    border: none;
+                }
+                &:hover,
+                &:hover {
+                    a {
+                        color: rgba(white, 0.5) !important;
+                    }
+                }
+            }
+        }
+    }
 
     .sign-in {
         margin-right: 30px;
@@ -21,9 +65,9 @@
         padding: 15px 0;
     }
 
-    .container {
-        max-width: 100%;
-    }
+    // .container {
+    //     max-width: 100%;
+    // }
 
     .menu__logo {
         svg {

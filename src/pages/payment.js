@@ -181,7 +181,7 @@ const Payment = () => {
                                     </div>
                                 </div>
                                 <div className="mt-3 d-flex">
-                                    <label className="d-flex flex-row">
+                                    <p className="d-flex flex-row">
                                         <CheckBox
                                             type="checkbox"
                                             name="allow_fraction"
@@ -196,7 +196,7 @@ const Payment = () => {
                                             icon={faQuestionCircle}
                                             className="fa-2x ms-2"
                                         />
-                                    </label>
+                                    </p>
                                     <p className="payment-expire my-auto">
                                         payment expires in{" "}
                                         <span className="txt-green">10 minutes</span>
@@ -263,7 +263,7 @@ const Payment = () => {
                                     </div>
                                 </div>
                                 <div className="mt-3 d-flex">
-                                    <label className="d-flex flex-row">
+                                    <p className="d-flex flex-row">
                                         <CheckBox
                                             type="checkbox"
                                             name="allow_fraction"
@@ -278,14 +278,14 @@ const Payment = () => {
                                             icon={faQuestionCircle}
                                             className="fa-2x ms-2"
                                         />
-                                    </label>
+                                    </p>
                                     <p className="payment-expire my-auto">
                                         payment expires in{" "}
                                         <span className="txt-green">10 minutes</span>
                                     </p>
                                 </div>
                                 <div className="d-flex">
-                                    <label className="d-flex flex-row">
+                                    <p className="d-flex flex-row">
                                         <CheckBox
                                             type="checkbox"
                                             name="allow_fraction"
@@ -296,7 +296,7 @@ const Payment = () => {
                                         <div className="allow-text">
                                             Save card details for future purchase
                                         </div>
-                                    </label>
+                                    </p>
                                 </div>
                             </TabPanel>
                             <TabPanel className="wallet-tab">
@@ -328,7 +328,7 @@ const Payment = () => {
                                     </div>
                                 </div>
                                 <div className="mt-3 d-flex">
-                                    <label className="d-flex flex-row">
+                                    <p className="d-flex flex-row">
                                         <CheckBox
                                             type="checkbox"
                                             name="allow_fraction"
@@ -343,7 +343,7 @@ const Payment = () => {
                                             icon={faQuestionCircle}
                                             className="fa-2x ms-2"
                                         />
-                                    </label>
+                                    </p>
                                     <p className="payment-expire my-auto">
                                         payment expires in{" "}
                                         <span className="txt-green">10 minutes</span>

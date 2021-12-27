@@ -1,0 +1,52 @@
+.accordion {
+    padding-bottom: 8px;
+    border-bottom: 1px solid white;
+    transition: all 0.3s ease;
+
+    &.active {
+        .accordion__toggler {
+            .sign {
+                &::after {
+                    content: "–";
+                }
+            }
+        }
+        .accordion__content {
+            max-height: 500px;
+            margin-top: 8px;
+            margin-bottom: 16px;
+        }
+    }
+
+    .accordion__toggler {
+        padding: 10px 20px 10px 0;
+        text-align: left;
+        background: unset;
+        border: none;
+        font-size: 16px;
+        line-height: 20px;
+        font-weight: 800;
+        @include mq("phone", max) {
+            padding-right: 0;
+        }
+        .sign {
+            font-size: 32px;
+            font-weight: 400;
+
+            &::after {
+                content: "+";
+            }
+        }
+    }
+
+    .accordion__content {
+        max-height: 0px;
+        font-size: 16px;
+        overflow: hidden;
+        padding-right: 40px;
+        p {
+            font-weight: 500;
+            color: white;
+        }
+    }
+}

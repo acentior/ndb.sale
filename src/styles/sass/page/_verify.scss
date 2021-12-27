@@ -1,6 +1,6 @@
 .verify-page {
     section {
-        @extend %setHeight2;
+        @extend %set-height2;
         overflow: auto;
         .trees-img {
             display: block;
@@ -16,7 +16,7 @@
             width: 65%;
             height: 3px;
             margin: 0 auto;
-            margin-bottom: 80px;
+            margin-bottom: 40px;
             background-color: white;
         }
         &-progress {
@@ -59,6 +59,32 @@
         margin-bottom: 24px;
         @include mq("phone", max) {
             font-size: 18px;
+        }
+    }
+    .css-1s2u09g-control,
+    .css-1pahdxg-control {
+        border-radius: unset;
+        .css-319lph-ValueContainer {
+            justify-content: start;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            .css-qc6sy-singleValue {
+                font-family: "Montserrat";
+                font-size: 13px;
+            }
+            @include mq("phone", max) {
+                padding: 8px;
+            }
+        }
+        .css-1hb7zxy-IndicatorsContainer {
+            .css-1okebmr-indicatorSeparator {
+                display: none;
+            }
+        }
+        .css-6j8wv5-Input {
+            input {
+                color: transparent !important;
+            }
         }
     }
     .verify {
@@ -105,21 +131,9 @@
         &-step1 {
             max-width: 365px;
             margin: 0 auto;
-            .css-1s2u09g-control {
-                border-radius: unset;
-                .css-319lph-ValueContainer {
-                    .css-qc6sy-singleValue {
-                        font-family: "Montserrat";
-                        font-size: 13px;
-                    }
-                    @include mq("phone", max) {
-                        padding: 8px;
-                    }
-                }
-            }
         }
         &-step2 {
-            margin-bottom: 24px;
+            // margin-bottom: -30px;
             .upload {
                 &-doc {
                     @include mq("phone", max) {
@@ -170,7 +184,10 @@
                     }
                 }
                 &-rule {
-                    max-width: 455px;
+                    max-width: 555px;
+                    @include mq("phone", max) {
+                        width: 100%;
+                    }
                     p,
                     li {
                         font-size: 16px;
@@ -197,6 +214,7 @@
                     }
                     &__img {
                         display: flex;
+                        margin-top: 1.7rem;
                         @include mq("phone", max) {
                             justify-content: space-between;
                         }
@@ -205,6 +223,37 @@
                                 width: 30%;
                             }
                         }
+                    }
+                    .doc-select {
+                        width: 365px;
+                        @include mq("phone", max) {
+                            width: 100%;
+                        }
+                        .css-26l3qy-menu {
+                            border-radius: unset;
+                            & > div {
+                                max-height: unset !important;
+                                & > div {
+                                    border-bottom: 1px solid #c4c4c4;
+                                }
+                            }
+                            .company-doc {
+                                font-size: 12px;
+                                line-height: 19px;
+                                color: black;
+                            }
+                        }
+                    }
+                    .doc-rule {
+                        width: 365px;
+                        @include mq("phone", max) {
+                            width: 100%;
+                        }
+                        font-size: 12px;
+                        line-height: 19px;
+                        color: #8f8f8f;
+                        padding: 0;
+                        margin-top: 24px;
                     }
                 }
             }
@@ -367,6 +416,7 @@
         }
         &-step3 {
             text-align: center;
+
             &__heading {
                 font-weight: 600;
                 font-size: 20px;
@@ -412,8 +462,8 @@
     .btn-group {
         display: flex;
         justify-content: center;
-        margin: 50px 0;
-        padding-bottom: 50px;
+        margin-bottom: 50px;
+        margin-top: 20px;
         .btn-primary,
         .btn-green,
         .btn-ready {

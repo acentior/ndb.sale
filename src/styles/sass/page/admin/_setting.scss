@@ -1,0 +1,118 @@
+main.admin-setting-page {
+    a#link-setting {
+        p {
+            color: white;
+        }
+    }
+    .container {
+        @include mq("laptop-wide", max) {
+            max-width: 95%;
+        }
+        @include mq("phone", max) {
+            max-width: 100%;
+        }
+        .row {
+            .col-sm-10 {
+                @include mq("phone", max) {
+                    padding: 20px;
+                    p.title {
+                        font-size: 14px;
+                    }
+                }
+                .react-tabs__tab-panel {
+                    color: #ffffff;
+                }
+                div.tabs_container {
+                    overflow-y: auto;
+                    overflow-x: hidden;
+                    max-height: 80vh;
+                    @include mq('phone', max) {
+                        max-height: unset;
+                    }
+                    .react-tabs {
+                        .react-tabs__tab-list {
+                            padding-bottom: 10px;
+                            border-bottom: 2px solid #464646;
+                            margin: 0;
+                            @include mq("phone", max) {
+                                display: flex;
+                                justify-content: space-between;
+                            }
+                            .react-tabs__tab {
+                                color: $dimgrey;
+                                border: none;
+                                font-size: 18px;
+                                font-weight: 700;
+                                padding: 6px 0;
+                                margin-right: 4vw;
+                                text-transform: uppercase;
+                                transition: 0.3s;
+                                @include mq("laptop", max) {
+                                    font-size: 12px;
+                                }
+                                @include mq("tablet", max) {
+                                    font-size: 10px;
+                                    margin-right: 2vw;
+                                }
+                                &:hover {
+                                    color: $green;
+                                }
+                                &--selected {
+                                    background: transparent;
+                                    border: none;
+                                    color: #ffffff;
+                                }
+                            }
+                        }
+                    }
+                }
+                p {
+                    font-size: 16px;
+                    font-weight: 400;
+                    color: lightgrey;
+                    padding: 3px 0;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    &:hover {
+                        overflow: visible;
+                    }
+                    @include mq("laptop-wide", max) {
+                        font-size: 14px;
+                    }
+                    @include mq("tablet", max) {
+                        font-size: 12px;
+                        font-weight: 500;
+                    }
+                }
+                div.component {
+                    p {
+                        font-size: 18px;
+                        font-weight: 700;
+                        color: white;
+                        text-transform: uppercase;
+                        @include mq("laptop-wide", max) {
+                            font-size: 16px;
+                        }
+                        @include mq("tablet", max) {
+                            font-size: 14px;
+                        }
+                    }
+                }
+                div.task_table {
+                    p {
+                        font-size: 18px;
+                        font-weight: 700;
+                        color: white;
+                        text-transform: uppercase;
+                        @include mq("laptop-wide", max) {
+                            font-size: 14px;
+                        }
+                        @include mq("tablet", max) {
+                            font-size: 12px;
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

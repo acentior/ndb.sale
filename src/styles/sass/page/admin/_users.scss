@@ -1,0 +1,81 @@
+main.admin-users-page {
+    a#link-users {
+        p {
+            color: white;
+        }
+    }
+    .container {
+        @include mq("laptop-wide", max) {
+            max-width: 95%;
+        }
+        @include mq("phone", max) {
+            max-width: 100%;
+        }
+        
+        .row {
+            .col-sm-10 {
+                @include mq("phone", max) {
+                    padding: 20px;
+                    p.title {
+                        font-size: 14px;
+                    }
+                }
+                .react-tabs__tab-panel {
+                    color: #ffffff;                
+                }
+                div.tabs_container {
+                    .react-tabs {
+                        .react-tabs__tab-list {
+                            width: 85%;
+                            border: none;
+                            @include mq('phone', max) {
+                                display: flex;
+                                justify-content: space-between;
+                            }
+                            .react-tabs__tab {
+                                color: $dimgrey;
+                                border: none;
+                                font-size: 18px;
+                                font-weight: 700;
+                                padding: 6px 0;
+                                margin-right: 4vw;
+                                text-transform: uppercase;
+                                transition: 0.3s;
+                                @include mq('tablet', max) {
+                                    font-size: 14px;
+                                }
+                                &:hover {
+                                    color: $green;
+                                }
+                                &--selected {
+                                    background: transparent;
+                                    border: none;
+                                    color: #ffffff;
+                                }                                
+                            }
+                        }
+                    }
+                }
+                p {
+                    font-size: 16px;
+                    font-weight: 400;
+                    color: lightgrey;
+                    padding: 3px 0;
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                    &:hover {
+                        overflow: visible;
+                    }
+                    @include mq('laptop-wide', max) {
+                        font-size: 14px;
+                    }
+                    @include mq('tablet', max) {
+                        font-size: 12px;
+                        font-weight: 500;
+                    }
+                }                
+            }
+        }
+    }
+}
+

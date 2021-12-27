@@ -1,6 +1,5 @@
 .auction-page {
     background-color: $black;
-    @extend %setHeight;
     .menu {
         border-bottom: 2px solid #464646;
     }
@@ -111,6 +110,8 @@
                         @include mq("phone", max) {
                             font-size: 14px;
                             line-height: 17px;
+                            width: 33.33%;
+                            text-align: center;
                         }
                         &--selected {
                             background: none;
@@ -263,6 +264,7 @@
                     background: #1e1e1e;
                     border: 1px solid #ffffff;
                     border-radius: unset;
+                    box-shadow: unset;
                     .css-6j8wv5-Input,
                     .css-qc6sy-singleValue {
                         font-family: "Montserrat";

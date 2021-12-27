@@ -3,6 +3,7 @@ import {
     Cruto,
     Curie,
     Facebook,
+    Amazon,
     Failla,
     Fermi,
     Google,
@@ -15,255 +16,1025 @@ import {
 } from "./imgImport"
 
 export const countries = [
-    { label: "Afghanistan", value: "AF" },
-    { label: "Åland Islands", value: "AX" },
-    { label: "Albania", value: "AL" },
-    { label: "Algeria", value: "DZ" },
-    { label: "American Samoa", value: "AS" },
-    { label: "AndorrA", value: "AD" },
-    { label: "Angola", value: "AO" },
-    { label: "Anguilla", value: "AI" },
-    { label: "Antarctica", value: "AQ" },
-    { label: "Antigua and Barbuda", value: "AG" },
-    { label: "Argentina", value: "AR" },
-    { label: "Armenia", value: "AM" },
-    { label: "Aruba", value: "AW" },
-    { label: "Australia", value: "AU" },
-    { label: "Austria", value: "AT" },
-    { label: "Azerbaijan", value: "AZ" },
-    { label: "Bahamas", value: "BS" },
-    { label: "Bahrain", value: "BH" },
-    { label: "Bangladesh", value: "BD" },
-    { label: "Barbados", value: "BB" },
-    { label: "Belarus", value: "BY" },
-    { label: "Belgium", value: "BE" },
-    { label: "Belize", value: "BZ" },
-    { label: "Benin", value: "BJ" },
-    { label: "Bermuda", value: "BM" },
-    { label: "Bhutan", value: "BT" },
-    { label: "Bolivia", value: "BO" },
-    { label: "Bosnia and Herzegovina", value: "BA" },
-    { label: "Botswana", value: "BW" },
-    { label: "Bouvet Island", value: "BV" },
-    { label: "Brazil", value: "BR" },
-    { label: "British Indian Ocean Territory", value: "IO" },
-    { label: "Brunei Darussalam", value: "BN" },
-    { label: "Bulgaria", value: "BG" },
-    { label: "Burkina Faso", value: "BF" },
-    { label: "Burundi", value: "BI" },
-    { label: "Cambodia", value: "KH" },
-    { label: "Cameroon", value: "CM" },
-    { label: "Canada", value: "CA" },
-    { label: "Cape Verde", value: "CV" },
-    { label: "Cayman Islands", value: "KY" },
-    { label: "Central African Republic", value: "CF" },
-    { label: "Chad", value: "TD" },
-    { label: "Chile", value: "CL" },
-    { label: "China", value: "CN" },
-    { label: "Christmas Island", value: "CX" },
-    { label: "Cocos (Keeling) Islands", value: "CC" },
-    { label: "Colombia", value: "CO" },
-    { label: "Comoros", value: "KM" },
-    { label: "Congo", value: "CG" },
-    { label: "Congo, The Democratic Republic of the", value: "CD" },
-    { label: "Cook Islands", value: "CK" },
-    { label: "Costa Rica", value: "CR" },
-    { label: "Cote D'Ivoire", value: "CI" },
-    { label: "Croatia", value: "HR" },
-    { label: "Cuba", value: "CU" },
-    { label: "Cyprus", value: "CY" },
-    { label: "Czech Republic", value: "CZ" },
-    { label: "Denmark", value: "DK" },
-    { label: "Djibouti", value: "DJ" },
-    { label: "Dominica", value: "DM" },
-    { label: "Dominican Republic", value: "DO" },
-    { label: "Ecuador", value: "EC" },
-    { label: "Egypt", value: "EG" },
-    { label: "El Salvador", value: "SV" },
-    { label: "Equatorial Guinea", value: "GQ" },
-    { label: "Eritrea", value: "ER" },
-    { label: "Estonia", value: "EE" },
-    { label: "Ethiopia", value: "ET" },
-    { label: "Falkland Islands (Malvinas)", value: "FK" },
-    { label: "Faroe Islands", value: "FO" },
-    { label: "Fiji", value: "FJ" },
-    { label: "Finland", value: "FI" },
-    { label: "France", value: "FR" },
-    { label: "French Guiana", value: "GF" },
-    { label: "French Polynesia", value: "PF" },
-    { label: "French Southern Territories", value: "TF" },
-    { label: "Gabon", value: "GA" },
-    { label: "Gambia", value: "GM" },
-    { label: "Georgia", value: "GE" },
-    { label: "Germany", value: "DE" },
-    { label: "Ghana", value: "GH" },
-    { label: "Gibraltar", value: "GI" },
-    { label: "Greece", value: "GR" },
-    { label: "Greenland", value: "GL" },
-    { label: "Grenada", value: "GD" },
-    { label: "Guadeloupe", value: "GP" },
-    { label: "Guam", value: "GU" },
-    { label: "Guatemala", value: "GT" },
-    { label: "Guernsey", value: "GG" },
-    { label: "Guinea", value: "GN" },
-    { label: "Guinea-Bissau", value: "GW" },
-    { label: "Guyana", value: "GY" },
-    { label: "Haiti", value: "HT" },
-    { label: "Heard Island and Mcdonald Islands", value: "HM" },
-    { label: "Holy See (Vatican City State)", value: "VA" },
-    { label: "Honduras", value: "HN" },
-    { label: "Hong Kong", value: "HK" },
-    { label: "Hungary", value: "HU" },
-    { label: "Iceland", value: "IS" },
-    { label: "India", value: "IN" },
-    { label: "Indonesia", value: "ID" },
-    { label: "Iran, Islamic Republic Of", value: "IR" },
-    { label: "Iraq", value: "IQ" },
-    { label: "Ireland", value: "IE" },
-    { label: "Isle of Man", value: "IM" },
-    { label: "Israel", value: "IL" },
-    { label: "Italy", value: "IT" },
-    { label: "Jamaica", value: "JM" },
-    { label: "Japan", value: "JP" },
-    { label: "Jersey", value: "JE" },
-    { label: "Jordan", value: "JO" },
-    { label: "Kazakhstan", value: "KZ" },
-    { label: "Kenya", value: "KE" },
-    { label: "Kiribati", value: "KI" },
-    { label: "Korea, Democratic People'S Republic of", value: "KP" },
-    { label: "Korea, Republic of", value: "KR" },
-    { label: "Kuwait", value: "KW" },
-    { label: "Kyrgyzstan", value: "KG" },
-    { label: "Lao People'S Democratic Republic", value: "LA" },
-    { label: "Latvia", value: "LV" },
-    { label: "Lebanon", value: "LB" },
-    { label: "Lesotho", value: "LS" },
-    { label: "Liberia", value: "LR" },
-    { label: "Libyan Arab Jamahiriya", value: "LY" },
-    { label: "Liechtenstein", value: "LI" },
-    { label: "Lithuania", value: "LT" },
-    { label: "Luxembourg", value: "LU" },
-    { label: "Macao", value: "MO" },
-    { label: "Macedonia, The Former Yugoslav Republic of", value: "MK" },
-    { label: "Madagascar", value: "MG" },
-    { label: "Malawi", value: "MW" },
-    { label: "Malaysia", value: "MY" },
-    { label: "Maldives", value: "MV" },
-    { label: "Mali", value: "ML" },
-    { label: "Malta", value: "MT" },
-    { label: "Marshall Islands", value: "MH" },
-    { label: "Martinique", value: "MQ" },
-    { label: "Mauritania", value: "MR" },
-    { label: "Mauritius", value: "MU" },
-    { label: "Mayotte", value: "YT" },
-    { label: "Mexico", value: "MX" },
-    { label: "Micronesia, Federated States of", value: "FM" },
-    { label: "Moldova, Republic of", value: "MD" },
-    { label: "Monaco", value: "MC" },
-    { label: "Mongolia", value: "MN" },
-    { label: "Montserrat", value: "MS" },
-    { label: "Morocco", value: "MA" },
-    { label: "Mozambique", value: "MZ" },
-    { label: "Myanmar", value: "MM" },
-    { label: "Namibia", value: "NA" },
-    { label: "Nauru", value: "NR" },
-    { label: "Nepal", value: "NP" },
-    { label: "Netherlands", value: "NL" },
-    { label: "Netherlands Antilles", value: "AN" },
-    { label: "New Caledonia", value: "NC" },
-    { label: "New Zealand", value: "NZ" },
-    { label: "Nicaragua", value: "NI" },
-    { label: "Niger", value: "NE" },
-    { label: "Nigeria", value: "NG" },
-    { label: "Niue", value: "NU" },
-    { label: "Norfolk Island", value: "NF" },
-    { label: "Northern Mariana Islands", value: "MP" },
-    { label: "Norway", value: "NO" },
-    { label: "Oman", value: "OM" },
-    { label: "Pakistan", value: "PK" },
-    { label: "Palau", value: "PW" },
-    { label: "Palestinian Territory, Occupied", value: "PS" },
-    { label: "Panama", value: "PA" },
-    { label: "Papua New Guinea", value: "PG" },
-    { label: "Paraguay", value: "PY" },
-    { label: "Peru", value: "PE" },
-    { label: "Philippines", value: "PH" },
-    { label: "Pitcairn", value: "PN" },
-    { label: "Poland", value: "PL" },
-    { label: "Portugal", value: "PT" },
-    { label: "Puerto Rico", value: "PR" },
-    { label: "Qatar", value: "QA" },
-    { label: "Reunion", value: "RE" },
-    { label: "Romania", value: "RO" },
-    { label: "Russian Federation", value: "RU" },
-    { label: "RWANDA", value: "RW" },
-    { label: "Saint Helena", value: "SH" },
-    { label: "Saint Kitts and Nevis", value: "KN" },
-    { label: "Saint Lucia", value: "LC" },
-    { label: "Saint Pierre and Miquelon", value: "PM" },
-    { label: "Saint Vincent and the Grenadines", value: "VC" },
-    { label: "Samoa", value: "WS" },
-    { label: "San Marino", value: "SM" },
-    { label: "Sao Tome and Principe", value: "ST" },
-    { label: "Saudi Arabia", value: "SA" },
-    { label: "Senegal", value: "SN" },
-    { label: "Serbia and Montenegro", value: "CS" },
-    { label: "Seychelles", value: "SC" },
-    { label: "Sierra Leone", value: "SL" },
-    { label: "Singapore", value: "SG" },
-    { label: "Slovakia", value: "SK" },
-    { label: "Slovenia", value: "SI" },
-    { label: "Solomon Islands", value: "SB" },
-    { label: "Somalia", value: "SO" },
-    { label: "South Africa", value: "ZA" },
-    { label: "South Georgia and the South Sandwich Islands", value: "GS" },
-    { label: "Spain", value: "ES" },
-    { label: "Sri Lanka", value: "LK" },
-    { label: "Sudan", value: "SD" },
-    { label: "Suriname", value: "SR" },
-    { label: "Svalbard and Jan Mayen", value: "SJ" },
-    { label: "Swaziland", value: "SZ" },
-    { label: "Sweden", value: "SE" },
-    { label: "Switzerland", value: "CH" },
-    { label: "Syrian Arab Republic", value: "SY" },
-    { label: "Taiwan, Province of China", value: "TW" },
-    { label: "Tajikistan", value: "TJ" },
-    { label: "Tanzania, United Republic of", value: "TZ" },
-    { label: "Thailand", value: "TH" },
-    { label: "Timor-Leste", value: "TL" },
-    { label: "Togo", value: "TG" },
-    { label: "Tokelau", value: "TK" },
-    { label: "Tonga", value: "TO" },
-    { label: "Trinidad and Tobago", value: "TT" },
-    { label: "Tunisia", value: "TN" },
-    { label: "Turkey", value: "TR" },
-    { label: "Turkmenistan", value: "TM" },
-    { label: "Turks and Caicos Islands", value: "TC" },
-    { label: "Tuvalu", value: "TV" },
-    { label: "Uganda", value: "UG" },
-    { label: "Ukraine", value: "UA" },
-    { label: "United Arab Emirates", value: "AE" },
-    { label: "United Kingdom", value: "GB" },
-    { label: "United States", value: "US" },
-    { label: "United States Minor Outlying Islands", value: "UM" },
-    { label: "Uruguay", value: "UY" },
-    { label: "Uzbekistan", value: "UZ" },
-    { label: "Vanuatu", value: "VU" },
-    { label: "Venezuela", value: "VE" },
-    { label: "Viet Nam", value: "VN" },
-    { label: "Virgin Islands, British", value: "VG" },
-    { label: "Virgin Islands, U.S.", value: "VI" },
-    { label: "Wallis and Futuna", value: "WF" },
-    { label: "Western Sahara", value: "EH" },
-    { label: "Yemen", value: "YE" },
-    { label: "Zambia", value: "ZM" },
-    { label: "Zimbabwe", value: "ZW" },
+    {
+        label: "Afghanistan",
+        value: "Afghanistan",
+    },
+    {
+        label: "Åland Islands",
+        value: "Åland Islands",
+    },
+    {
+        label: "Albania",
+        value: "Albania",
+    },
+    {
+        label: "Algeria",
+        value: "Algeria",
+    },
+    {
+        label: "American Samoa",
+        value: "American Samoa",
+    },
+    {
+        label: "Andorra",
+        value: "Andorra",
+    },
+    {
+        label: "Angola",
+        value: "Angola",
+    },
+    {
+        label: "Anguilla",
+        value: "Anguilla",
+    },
+    {
+        label: "Antarctica",
+        value: "Antarctica",
+    },
+    {
+        label: "Antigua and Barbuda",
+        value: "Antigua and Barbuda",
+    },
+    {
+        label: "Argentina",
+        value: "Argentina",
+    },
+    {
+        label: "Armenia",
+        value: "Armenia",
+    },
+    {
+        label: "Aruba",
+        value: "Aruba",
+    },
+    {
+        label: "Asia/Pacific Region",
+        value: "Asia/Pacific Region",
+    },
+    {
+        label: "Australia",
+        value: "Australia",
+    },
+    {
+        label: "Austria",
+        value: "Austria",
+    },
+    {
+        label: "Azerbaijan",
+        value: "Azerbaijan",
+    },
+    {
+        label: "Bahamas",
+        value: "Bahamas",
+    },
+    {
+        label: "Bahrain",
+        value: "Bahrain",
+    },
+    {
+        label: "Bangladesh",
+        value: "Bangladesh",
+    },
+    {
+        label: "Barbados",
+        value: "Barbados",
+    },
+    {
+        label: "Belarus",
+        value: "Belarus",
+    },
+    {
+        label: "Belgium",
+        value: "Belgium",
+    },
+    {
+        label: "Belize",
+        value: "Belize",
+    },
+    {
+        label: "Benin",
+        value: "Benin",
+    },
+    {
+        label: "Bermuda",
+        value: "Bermuda",
+    },
+    {
+        label: "Bhutan",
+        value: "Bhutan",
+    },
+    {
+        label: "Bolivia",
+        value: "Bolivia",
+    },
+    {
+        label: "Bosnia and Herzegovina",
+        value: "Bosnia and Herzegovina",
+    },
+    {
+        label: "Botswana",
+        value: "Botswana",
+    },
+    {
+        label: "Bouvet Island",
+        value: "Bouvet Island",
+    },
+    {
+        label: "Brazil",
+        value: "Brazil",
+    },
+    {
+        label: "British Indian Ocean Territory",
+        value: "British Indian Ocean Territory",
+    },
+    {
+        label: "British Virgin Islands",
+        value: "British Virgin Islands",
+    },
+    {
+        label: "Brunei",
+        value: "Brunei",
+    },
+    {
+        label: "Bulgaria",
+        value: "Bulgaria",
+    },
+    {
+        label: "Burkina Faso",
+        value: "Burkina Faso",
+    },
+    {
+        label: "Burundi",
+        value: "Burundi",
+    },
+    {
+        label: "Cambodia",
+        value: "Cambodia",
+    },
+    {
+        label: "Cameroon",
+        value: "Cameroon",
+    },
+    {
+        label: "Canada",
+        value: "Canada",
+    },
+    {
+        label: "Cape Verde",
+        value: "Cape Verde",
+    },
+    {
+        label: "Caribbean Netherlands",
+        value: "Caribbean Netherlands",
+    },
+    {
+        label: "Cayman Islands",
+        value: "Cayman Islands",
+    },
+    {
+        label: "Central African Republic",
+        value: "Central African Republic",
+    },
+    {
+        label: "Chad",
+        value: "Chad",
+    },
+    {
+        label: "Chile",
+        value: "Chile",
+    },
+    {
+        label: "China",
+        value: "China",
+    },
+    {
+        label: "Christmas Island",
+        value: "Christmas Island",
+    },
+    {
+        label: "Cocos (Keeling) Islands",
+        value: "Cocos (Keeling) Islands",
+    },
+    {
+        label: "Colombia",
+        value: "Colombia",
+    },
+    {
+        label: "Comoros",
+        value: "Comoros",
+    },
+    {
+        label: "Congo",
+        value: "Congo",
+    },
+    {
+        label: "Cook Islands",
+        value: "Cook Islands",
+    },
+    {
+        label: "Costa Rica",
+        value: "Costa Rica",
+    },
+    {
+        label: "Cote d'Ivoire",
+        value: "Cote d'Ivoire",
+    },
+    {
+        label: "Croatia",
+        value: "Croatia",
+    },
+    {
+        label: "Cuba",
+        value: "Cuba",
+    },
+    {
+        label: "Curaçao",
+        value: "Curaçao",
+    },
+    {
+        label: "Cyprus",
+        value: "Cyprus",
+    },
+    {
+        label: "Czech Republic",
+        value: "Czech Republic",
+    },
+    {
+        label: "Democratic Republic of the Congo",
+        value: "Democratic Republic of the Congo",
+    },
+    {
+        label: "Denmark",
+        value: "Denmark",
+    },
+    {
+        label: "Djibouti",
+        value: "Djibouti",
+    },
+    {
+        label: "Dominica",
+        value: "Dominica",
+    },
+    {
+        label: "Dominican Republic",
+        value: "Dominican Republic",
+    },
+    {
+        label: "East Timor",
+        value: "East Timor",
+    },
+    {
+        label: "Ecuador",
+        value: "Ecuador",
+    },
+    {
+        label: "Egypt",
+        value: "Egypt",
+    },
+    {
+        label: "El Salvador",
+        value: "El Salvador",
+    },
+    {
+        label: "Equatorial Guinea",
+        value: "Equatorial Guinea",
+    },
+    {
+        label: "Eritrea",
+        value: "Eritrea",
+    },
+    {
+        label: "Estonia",
+        value: "Estonia",
+    },
+    {
+        label: "Ethiopia",
+        value: "Ethiopia",
+    },
+    {
+        label: "Europe",
+        value: "Europe",
+    },
+    {
+        label: "Falkland Islands",
+        value: "Falkland Islands",
+    },
+    {
+        label: "Faroe Islands",
+        value: "Faroe Islands",
+    },
+    {
+        label: "Fiji",
+        value: "Fiji",
+    },
+    {
+        label: "Finland",
+        value: "Finland",
+    },
+    {
+        label: "France",
+        value: "France",
+    },
+    {
+        label: "French Guiana",
+        value: "French Guiana",
+    },
+    {
+        label: "French Polynesia",
+        value: "French Polynesia",
+    },
+    {
+        label: "French Southern and Antarctic Lands",
+        value: "French Southern and Antarctic Lands",
+    },
+    {
+        label: "Gabon",
+        value: "Gabon",
+    },
+    {
+        label: "Gambia",
+        value: "Gambia",
+    },
+    {
+        label: "Georgia",
+        value: "Georgia",
+    },
+    {
+        label: "Germany",
+        value: "Germany",
+    },
+    {
+        label: "Ghana",
+        value: "Ghana",
+    },
+    {
+        label: "Gibraltar",
+        value: "Gibraltar",
+    },
+    {
+        label: "Greece",
+        value: "Greece",
+    },
+    {
+        label: "Greenland",
+        value: "Greenland",
+    },
+    {
+        label: "Grenada",
+        value: "Grenada",
+    },
+    {
+        label: "Guadeloupe",
+        value: "Guadeloupe",
+    },
+    {
+        label: "Guam",
+        value: "Guam",
+    },
+    {
+        label: "Guatemala",
+        value: "Guatemala",
+    },
+    {
+        label: "Guernsey",
+        value: "Guernsey",
+    },
+    {
+        label: "Guinea",
+        value: "Guinea",
+    },
+    {
+        label: "Guinea-Bissau",
+        value: "Guinea-Bissau",
+    },
+    {
+        label: "Guyana",
+        value: "Guyana",
+    },
+    {
+        label: "Haiti",
+        value: "Haiti",
+    },
+    {
+        label: "Heard Island and McDonald Islands",
+        value: "Heard Island and McDonald Islands",
+    },
+    {
+        label: "Honduras",
+        value: "Honduras",
+    },
+    {
+        label: "Hong Kong",
+        value: "Hong Kong",
+    },
+    {
+        label: "Hungary",
+        value: "Hungary",
+    },
+    {
+        label: "Iceland",
+        value: "Iceland",
+    },
+    {
+        label: "India",
+        value: "India",
+    },
+    {
+        label: "Indonesia",
+        value: "Indonesia",
+    },
+    {
+        label: "Iran",
+        value: "Iran",
+    },
+    {
+        label: "Iraq",
+        value: "Iraq",
+    },
+    {
+        label: "Ireland",
+        value: "Ireland",
+    },
+    {
+        label: "Isle of Man",
+        value: "Isle of Man",
+    },
+    {
+        label: "Israel",
+        value: "Israel",
+    },
+    {
+        label: "Italy",
+        value: "Italy",
+    },
+    {
+        label: "Jamaica",
+        value: "Jamaica",
+    },
+    {
+        label: "Japan",
+        value: "Japan",
+    },
+    {
+        label: "Jersey",
+        value: "Jersey",
+    },
+    {
+        label: "Jordan",
+        value: "Jordan",
+    },
+    {
+        label: "Kazakhstan",
+        value: "Kazakhstan",
+    },
+    {
+        label: "Kenya",
+        value: "Kenya",
+    },
+    {
+        label: "Kiribati",
+        value: "Kiribati",
+    },
+    {
+        label: "Kuwait",
+        value: "Kuwait",
+    },
+    {
+        label: "Kyrgyzstan",
+        value: "Kyrgyzstan",
+    },
+    {
+        label: "Laos",
+        value: "Laos",
+    },
+    {
+        label: "Latvia",
+        value: "Latvia",
+    },
+    {
+        label: "Lebanon",
+        value: "Lebanon",
+    },
+    {
+        label: "Lesotho",
+        value: "Lesotho",
+    },
+    {
+        label: "Liberia",
+        value: "Liberia",
+    },
+    {
+        label: "Libya",
+        value: "Libya",
+    },
+    {
+        label: "Liechtenstein",
+        value: "Liechtenstein",
+    },
+    {
+        label: "Lithuania",
+        value: "Lithuania",
+    },
+    {
+        label: "Luxembourg",
+        value: "Luxembourg",
+    },
+    {
+        label: "Macau",
+        value: "Macau",
+    },
+    {
+        label: "Macedonia (FYROM)",
+        value: "Macedonia (FYROM)",
+    },
+    {
+        label: "Madagascar",
+        value: "Madagascar",
+    },
+    {
+        label: "Malawi",
+        value: "Malawi",
+    },
+    {
+        label: "Malaysia",
+        value: "Malaysia",
+    },
+    {
+        label: "Maldives",
+        value: "Maldives",
+    },
+    {
+        label: "Mali",
+        value: "Mali",
+    },
+    {
+        label: "Malta",
+        value: "Malta",
+    },
+    {
+        label: "Marshall Islands",
+        value: "Marshall Islands",
+    },
+    {
+        label: "Martinique",
+        value: "Martinique",
+    },
+    {
+        label: "Mauritania",
+        value: "Mauritania",
+    },
+    {
+        label: "Mauritius",
+        value: "Mauritius",
+    },
+    {
+        label: "Mayotte",
+        value: "Mayotte",
+    },
+    {
+        label: "Mexico",
+        value: "Mexico",
+    },
+    {
+        label: "Micronesia",
+        value: "Micronesia",
+    },
+    {
+        label: "Moldova",
+        value: "Moldova",
+    },
+    {
+        label: "Monaco",
+        value: "Monaco",
+    },
+    {
+        label: "Mongolia",
+        value: "Mongolia",
+    },
+    {
+        label: "Montenegro",
+        value: "Montenegro",
+    },
+    {
+        label: "Montserrat",
+        value: "Montserrat",
+    },
+    {
+        label: "Morocco",
+        value: "Morocco",
+    },
+    {
+        label: "Mozambique",
+        value: "Mozambique",
+    },
+    {
+        label: "Myanmar (Burma)",
+        value: "Myanmar (Burma)",
+    },
+    {
+        label: "Namibia",
+        value: "Namibia",
+    },
+    {
+        label: "Nauru",
+        value: "Nauru",
+    },
+    {
+        label: "Nepal",
+        value: "Nepal",
+    },
+    {
+        label: "Netherlands",
+        value: "Netherlands",
+    },
+    {
+        label: "Netherlands Antilles",
+        value: "Netherlands Antilles",
+    },
+    {
+        label: "New Caledonia",
+        value: "New Caledonia",
+    },
+    {
+        label: "New Zealand",
+        value: "New Zealand",
+    },
+    {
+        label: "Nicaragua",
+        value: "Nicaragua",
+    },
+    {
+        label: "Niger",
+        value: "Niger",
+    },
+    {
+        label: "Nigeria",
+        value: "Nigeria",
+    },
+    {
+        label: "Niue",
+        value: "Niue",
+    },
+    {
+        label: "Norfolk Island",
+        value: "Norfolk Island",
+    },
+    {
+        label: "North Korea",
+        value: "North Korea",
+    },
+    {
+        label: "Northern Mariana Islands",
+        value: "Northern Mariana Islands",
+    },
+    {
+        label: "Norway",
+        value: "Norway",
+    },
+    {
+        label: "Oman",
+        value: "Oman",
+    },
+    {
+        label: "Pakistan",
+        value: "Pakistan",
+    },
+    {
+        label: "Palau",
+        value: "Palau",
+    },
+    {
+        label: "Palestine",
+        value: "Palestine",
+    },
+    {
+        label: "Panama",
+        value: "Panama",
+    },
+    {
+        label: "Papua New Guinea",
+        value: "Papua New Guinea",
+    },
+    {
+        label: "Paraguay",
+        value: "Paraguay",
+    },
+    {
+        label: "Peru",
+        value: "Peru",
+    },
+    {
+        label: "Philippines",
+        value: "Philippines",
+    },
+    {
+        label: "Pitcairn Islands",
+        value: "Pitcairn Islands",
+    },
+    {
+        label: "Poland",
+        value: "Poland",
+    },
+    {
+        label: "Portugal",
+        value: "Portugal",
+    },
+    {
+        label: "Puerto Rico",
+        value: "Puerto Rico",
+    },
+    {
+        label: "Qatar",
+        value: "Qatar",
+    },
+    {
+        label: "Réunion",
+        value: "Réunion",
+    },
+    {
+        label: "Romania",
+        value: "Romania",
+    },
+    {
+        label: "Russia",
+        value: "Russia",
+    },
+    {
+        label: "Rwanda",
+        value: "Rwanda",
+    },
+    {
+        label: "Saint Barthélemy",
+        value: "Saint Barthélemy",
+    },
+    {
+        label: "Saint Helena",
+        value: "Saint Helena",
+    },
+    {
+        label: "Saint Kitts and Nevis",
+        value: "Saint Kitts and Nevis",
+    },
+    {
+        label: "Saint Lucia",
+        value: "Saint Lucia",
+    },
+    {
+        label: "Saint Martin",
+        value: "Saint Martin",
+    },
+    {
+        label: "Saint Pierre and Miquelon",
+        value: "Saint Pierre and Miquelon",
+    },
+    {
+        label: "Saint Vincent and the Grenadines",
+        value: "Saint Vincent and the Grenadines",
+    },
+    {
+        label: "Samoa",
+        value: "Samoa",
+    },
+    {
+        label: "San Marino",
+        value: "San Marino",
+    },
+    {
+        label: "Sao Tome and Principe",
+        value: "Sao Tome and Principe",
+    },
+    {
+        label: "Saudi Arabia",
+        value: "Saudi Arabia",
+    },
+    {
+        label: "Senegal",
+        value: "Senegal",
+    },
+    {
+        label: "Serbia",
+        value: "Serbia",
+    },
+    {
+        label: "Seychelles",
+        value: "Seychelles",
+    },
+    {
+        label: "Sierra Leone",
+        value: "Sierra Leone",
+    },
+    {
+        label: "Singapore",
+        value: "Singapore",
+    },
+    {
+        label: "Sint Maarten",
+        value: "Sint Maarten",
+    },
+    {
+        label: "Slovakia",
+        value: "Slovakia",
+    },
+    {
+        label: "Slovenia",
+        value: "Slovenia",
+    },
+    {
+        label: "Solomon Islands",
+        value: "Solomon Islands",
+    },
+    {
+        label: "Somalia",
+        value: "Somalia",
+    },
+    {
+        label: "South Africa",
+        value: "South Africa",
+    },
+    {
+        label: "South Georgia and the South Sandwich Islands",
+        value: "South Georgia and the South Sandwich Islands",
+    },
+    {
+        label: "South Korea",
+        value: "South Korea",
+    },
+    {
+        label: "South Sudan",
+        value: "South Sudan",
+    },
+    {
+        label: "Spain",
+        value: "Spain",
+    },
+    {
+        label: "Sri Lanka",
+        value: "Sri Lanka",
+    },
+    {
+        label: "Sudan",
+        value: "Sudan",
+    },
+    {
+        label: "Suriname",
+        value: "Suriname",
+    },
+    {
+        label: "Svalbard and Jan Mayen",
+        value: "Svalbard and Jan Mayen",
+    },
+    {
+        label: "Swaziland",
+        value: "Swaziland",
+    },
+    {
+        label: "Sweden",
+        value: "Sweden",
+    },
+    {
+        label: "Switzerland",
+        value: "Switzerland",
+    },
+    {
+        label: "Syria",
+        value: "Syria",
+    },
+    {
+        label: "Taiwan",
+        value: "Taiwan",
+    },
+    {
+        label: "Tajikistan",
+        value: "Tajikistan",
+    },
+    {
+        label: "Tanzania",
+        value: "Tanzania",
+    },
+    {
+        label: "Thailand",
+        value: "Thailand",
+    },
+    {
+        label: "Togo",
+        value: "Togo",
+    },
+    {
+        label: "Tokelau",
+        value: "Tokelau",
+    },
+    {
+        label: "Tonga",
+        value: "Tonga",
+    },
+    {
+        label: "Trinidad and Tobago",
+        value: "Trinidad and Tobago",
+    },
+    {
+        label: "Tunisia",
+        value: "Tunisia",
+    },
+    {
+        label: "Turkey",
+        value: "Turkey",
+    },
+    {
+        label: "Turkmenistan",
+        value: "Turkmenistan",
+    },
+    {
+        label: "Turks and Caicos Islands",
+        value: "Turks and Caicos Islands",
+    },
+    {
+        label: "Tuvalu",
+        value: "Tuvalu",
+    },
+    {
+        label: "U.S. Virgin Islands",
+        value: "U.S. Virgin Islands",
+    },
+    {
+        label: "Uganda",
+        value: "Uganda",
+    },
+    {
+        label: "Ukraine",
+        value: "Ukraine",
+    },
+    {
+        label: "United Arab Emirates",
+        value: "United Arab Emirates",
+    },
+    {
+        label: "United Kingdom",
+        value: "United Kingdom",
+    },
+    {
+        label: "United States",
+        value: "United States",
+    },
+    {
+        label: "United States Minor Outlying Islands",
+        value: "United States Minor Outlying Islands",
+    },
+    {
+        label: "Uruguay",
+        value: "Uruguay",
+    },
+    {
+        label: "Uzbekistan",
+        value: "Uzbekistan",
+    },
+    {
+        label: "Vanuatu",
+        value: "Vanuatu",
+    },
+    {
+        label: "Vatican City",
+        value: "Vatican City",
+    },
+    {
+        label: "Venezuela",
+        value: "Venezuela",
+    },
+    {
+        label: "Vietnam",
+        value: "Vietnam",
+    },
+    {
+        label: "Wallis and Futuna",
+        value: "Wallis and Futuna",
+    },
+    {
+        label: "Western Sahara",
+        value: "Western Sahara",
+    },
+    {
+        label: "Yemen",
+        value: "Yemen",
+    },
+    {
+        label: "Zambia",
+        value: "Zambia",
+    },
+    {
+        label: "Zimbabwe",
+        value: "Zimbabwe",
+    },
 ]
 
 // export const API_BASE_URL = "http://localhost:5000";
-export const API_BASE_URL = "http://auction.us-east-1.elasticbeanstalk.com"
+export const API_BASE_URL = "https://api.ndb.money"
 
-export const OAUTH2_REDIRECT_URI = "http://localhost:4000/oauth2/redirect"
+// export const SUBSCRIPTION_BASE_URL = "ws://localhost:5000/subscriptions";
+export const SUBSCRIPTION_BASE_URL = "wss://api.ndb.money/subscriptions"
+
+// export const OAUTH2_REDIRECT_URI = "http://localhost:4000/oauth2"
+export const OAUTH2_REDIRECT_URI = "https://sale.ndb.money/oauth2"
+// export const OAUTH2_REDIRECT_URI = "https://ndbsale.gatsbyjs.io/oauth2"
 
 export const social_links = [
     {
@@ -286,6 +1057,10 @@ export const social_links = [
         icon: Apple,
         to: API_BASE_URL + "/oauth2/authorize/apple?redirect_uri=" + OAUTH2_REDIRECT_URI,
     },
+    {
+        icon: Amazon,
+        to: API_BASE_URL + "/oauth2/authorize/amazon?redirect_uri=" + OAUTH2_REDIRECT_URI,
+    },
 ]
 
 export const figures = [
@@ -301,7 +1076,7 @@ export const figures = [
             },
             {
                 type: "Memory",
-                rates: 4,
+                rates: 5,
             },
             {
                 type: "Resources",
@@ -322,7 +1097,7 @@ export const figures = [
     {
         id: 1,
         avatar: Volta,
-        firstname: "Nikola",
+        firstname: "Alessandro",
         lastname: "Volta",
         stars: [
             {
@@ -330,29 +1105,29 @@ export const figures = [
                 rates: 5,
             },
             {
-                type: "Memory",
+                type: "Relemodel",
                 rates: 4,
             },
             {
-                type: "Resources",
-                rates: 2,
+                type: "Introvert",
+                rates: 4,
             },
             {
-                type: "Charsima",
-                rates: 1,
+                type: "Charisma",
+                rates: 3,
             },
         ],
         abilities: [
-            { title: "Marital Status", text: "Pigeon" },
-            { title: "Major Enemy", text: "Thomas Edison" },
-            { title: "Inventions", text: "Tesla Coil, Alternating current, Death Ray" },
+            { title: "Marital Status", text: "Teresa Peregrini" },
+            { title: "Friend", text: "Luigi Galvani" },
+            { title: "Creation", text: "Electric battery, methane" },
         ],
-        intro: "Nikola Tesla was an engineer known for designing the alternating-current (AC) electric system, witch is still the predominant electrical system used across the world today. He also created the Tesla coil, which is still used in radio technology.",
+        intro: "In 1801 in Paris Volta gave a demonstration of his battery's generation of electric current before Napoleon, who made him a count and a senator of the kingdom of Lombardy.  The volt, a unit of the electromotive force that drives current, was named in his honour in 1881.",
     },
     {
         id: 2,
         avatar: Johnson,
-        firstname: "Nikola",
+        firstname: "Katherine",
         lastname: "Johnson",
         stars: [
             {
@@ -360,29 +1135,29 @@ export const figures = [
                 rates: 5,
             },
             {
-                type: "Memory",
-                rates: 4,
+                type: "Calculations",
+                rates: 5,
             },
             {
-                type: "Resources",
-                rates: 2,
+                type: "Accuracy",
+                rates: 5,
             },
             {
-                type: "Charsima",
-                rates: 1,
+                type: "Curiosity",
+                rates: 3,
             },
         ],
         abilities: [
-            { title: "Marital Status", text: "Pigeon" },
-            { title: "Major Enemy", text: "Thomas Edison" },
-            { title: "Inventions", text: "Tesla Coil, Alternating current, Death Ray" },
+            { title: "Age", text: "101" },
+            { title: "Title", text: "The Girl Who Loved to Count" },
+            { title: "Spacecraft", text: "Freedom 7, Frienship 7, Apollo 11 etc." },
         ],
-        intro: "Nikola Tesla was an engineer known for designing the alternating-current (AC) electric system, witch is still the predominant electrical system used across the world today. He also created the Tesla coil, which is still used in radio technology.",
+        intro: "Katherine Johnson made the most of limited educational opportunities for African Americans, graduating from college at age 18. As one of NASA's human 'computers,' austronauts have full trust in her and she performed the complex calculations that enabled humans to successfully achieve space flight. ",
     },
     {
         id: 3,
         avatar: Cruto,
-        firstname: "Nikola",
+        firstname: "Alessandro",
         lastname: "Cruto",
         stars: [
             {
@@ -390,29 +1165,29 @@ export const figures = [
                 rates: 5,
             },
             {
-                type: "Memory",
+                type: "Dream",
                 rates: 4,
             },
             {
-                type: "Resources",
-                rates: 2,
+                type: "Tinkerer",
+                rates: 4,
             },
             {
-                type: "Charsima",
-                rates: 1,
+                type: "Resource",
+                rates: 3,
             },
         ],
         abilities: [
-            { title: "Marital Status", text: "Pigeon" },
-            { title: "Major Enemy", text: "Thomas Edison" },
-            { title: "Inventions", text: "Tesla Coil, Alternating current, Death Ray" },
+            { title: "Competitor", text: "Thomas Edison" },
+            { title: "Title", text: "The Forgotten light" },
+            { title: "Creation", text: "Incandescent light bulb, Electrical fly" },
         ],
-        intro: "Nikola Tesla was an engineer known for designing the alternating-current (AC) electric system, witch is still the predominant electrical system used across the world today. He also created the Tesla coil, which is still used in radio technology.",
+        intro: "Alessandro Cruto studied physics and chemistry with the dream of crystallizing carbon to obtain diamonds. That dream fell short but he succeeded in producing thin sheets of graphite that later aided him in the creation of the Cruto lamp. ",
     },
     {
         id: 4,
         avatar: Fermi,
-        firstname: "Nikola",
+        firstname: "Enrico",
         lastname: "Fermi",
         stars: [
             {
@@ -420,29 +1195,29 @@ export const figures = [
                 rates: 5,
             },
             {
-                type: "Memory",
+                type: "Agility",
                 rates: 4,
             },
             {
-                type: "Resources",
-                rates: 2,
+                type: "Stamina",
+                rates: 5,
             },
             {
-                type: "Charsima",
+                type: "Willpower",
                 rates: 1,
             },
         ],
         abilities: [
-            { title: "Marital Status", text: "Pigeon" },
-            { title: "Major Enemy", text: "Thomas Edison" },
-            { title: "Inventions", text: "Tesla Coil, Alternating current, Death Ray" },
+            { title: "Marital Status", text: "Laura Capon" },
+            { title: "Offersprings", text: "Giulio, Nella" },
+            { title: "Projects", text: "Nuclear reactor, Atomic bomb" },
         ],
-        intro: "Nikola Tesla was an engineer known for designing the alternating-current (AC) electric system, witch is still the predominant electrical system used across the world today. He also created the Tesla coil, which is still used in radio technology.",
+        intro: "Enrico Fermi was an Italian physicis. He won the Nobel Prize in 1938 for his work in radioactivity, allowing him to settle in the United States. He then built the first nuclear reactor (Chicago Pile-1) and worked on the Manhattan Project. Element 100, fermium, is named in his honor.",
     },
     {
         id: 5,
         avatar: Meitner,
-        firstname: "Nikola",
+        firstname: "Lise",
         lastname: "Meitner",
         stars: [
             {
@@ -450,12 +1225,12 @@ export const figures = [
                 rates: 5,
             },
             {
-                type: "Memory",
-                rates: 4,
+                type: "Preserverance",
+                rates: 5,
             },
             {
-                type: "Resources",
-                rates: 2,
+                type: "Pacifist",
+                rates: 5,
             },
             {
                 type: "Charsima",
@@ -463,16 +1238,16 @@ export const figures = [
             },
         ],
         abilities: [
-            { title: "Marital Status", text: "Pigeon" },
-            { title: "Major Enemy", text: "Thomas Edison" },
-            { title: "Inventions", text: "Tesla Coil, Alternating current, Death Ray" },
+            { title: "BFF", text: "Otto Hahn" },
+            { title: "Countries", text: "Austria, Germany, Sweden, England" },
+            { title: "Discover", text: "Fission" },
         ],
-        intro: "Nikola Tesla was an engineer known for designing the alternating-current (AC) electric system, witch is still the predominant electrical system used across the world today. He also created the Tesla coil, which is still used in radio technology.",
+        intro: "Born in 1878 in Vienna, Austrian physicist Lise Meitner had to endure gender discrimination in the workplace but also the larger threat of ethnic cleansing. Despite all she was the first woman to acquire a professorial title in Germany. Element 109, Meitnerium, is named in her honor. ",
     },
     {
         id: 6,
         avatar: Failla,
-        firstname: "Nikola",
+        firstname: "Gioacchino",
         lastname: "Failla",
         stars: [
             {
@@ -480,29 +1255,29 @@ export const figures = [
                 rates: 5,
             },
             {
-                type: "Memory",
+                type: "Family",
+                rates: 5,
+            },
+            {
+                type: "Passion",
                 rates: 4,
             },
             {
-                type: "Resources",
-                rates: 2,
-            },
-            {
-                type: "Charsima",
-                rates: 1,
+                type: "Art",
+                rates: 3,
             },
         ],
         abilities: [
-            { title: "Marital Status", text: "Pigeon" },
-            { title: "Major Enemy", text: "Thomas Edison" },
-            { title: "Inventions", text: "Tesla Coil, Alternating current, Death Ray" },
+            { title: "Offspring", text: "Two lovely daughters" },
+            { title: "Fields", text: "Health and Medical Physicis" },
+            { title: "Research", text: "Radiation mutagenesis and cancer" },
         ],
-        intro: "Nikola Tesla was an engineer known for designing the alternating-current (AC) electric system, witch is still the predominant electrical system used across the world today. He also created the Tesla coil, which is still used in radio technology.",
+        intro: "Gioacchino Failla established the first research program devoted to improving the medical applications of radiation. To aid his research Failla constructed the first human phantom in the U.S. that could determine the effects of filtration and distance on X-ray fields in the body",
     },
     {
         id: 7,
         avatar: Curie,
-        firstname: "Nikola",
+        firstname: "Marie",
         lastname: "Curie",
         stars: [
             {
@@ -510,23 +1285,39 @@ export const figures = [
                 rates: 5,
             },
             {
-                type: "Memory",
+                type: "Willpower",
+                rates: 5,
+            },
+            {
+                type: "Rolemodel",
                 rates: 4,
             },
             {
                 type: "Resources",
-                rates: 2,
-            },
-            {
-                type: "Charsima",
                 rates: 1,
             },
         ],
         abilities: [
-            { title: "Marital Status", text: "Pigeon" },
-            { title: "Major Enemy", text: "Thomas Edison" },
-            { title: "Inventions", text: "Tesla Coil, Alternating current, Death Ray" },
+            { title: "Marital Status", text: "Pierre Curie" },
+            { title: "Offsprings", text: "Iréne, Éve" },
+            { title: "Discover", text: "Radioactivity, Polonium, Radium" },
         ],
-        intro: "Nikola Tesla was an engineer known for designing the alternating-current (AC) electric system, witch is still the predominant electrical system used across the world today. He also created the Tesla coil, which is still used in radio technology.",
+        intro: "Born Maria Sklodowska, Marie Curie was the first woman to win a Nobel Prize. Addint to her first win in physics, she later earned one in chemistry making her the first person to claim Nobel honors twice. She also became the first female professor at Sorbonne.",
     },
 ]
+
+
+export const passwordValidatorOptions = {
+    minLength: 8,
+    minLowercase: 1,
+    minUppercase: 1,
+    minNumbers: 1,
+    minSymbols: 0,
+    returnScore: false,
+    pointsPerUnique: 1,
+    pointsPerRepeat: 0.5,
+    pointsForContainingLower: 10,
+    pointsForContainingUpper: 10,
+    pointsForContainingNumber: 10,
+    pointsForContainingSymbol: 10,
+}

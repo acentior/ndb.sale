@@ -1,14 +1,12 @@
 .home-page {
-    @extend %setHeight;
     .menu {
         background-color: transparent;
     }
     .hero-image {
         width: 100%;
-        opacity: 0.4;
     }
     .home-section {
-        @extend %setHeight2;
+        @extend %set-height2;
         display: flex;
         align-items: center;
         text-align: center;
@@ -88,6 +86,75 @@
                     line-height: 15px;
                 }
             }
+        }
+    }
+}
+
+.refer-modal {
+    max-width: 539px;
+    border: unset;
+    padding: 30px 40px;
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        font-size: 25px;
+        line-height: 30px;
+        color: white;
+        letter-spacing: -0.025em;
+    }
+    &__body {
+        color: white;
+        font-size: 18px;
+        &-label {
+            font-size: 13px;
+            line-height: 16px;
+            font-weight: normal;
+            text-emphasis-color: white;
+        }
+        &-invite-btn {
+            font-size: 30px;
+            line-height: 40px;
+            font-variant: small-caps;
+            font-weight: bold;
+            background-color: $green;
+            transition: 500ms;
+            &:hover {
+                color: $black;
+            }
+            text-align: center;
+            display: inline-block;
+            cursor: pointer;
+            margin-top: 45px;
+            padding: 5px 64px;
+            padding-top: 2px;
+        }
+    }
+    &__footer {
+        align-items: center;
+        button {
+            display: block;
+        }
+        .btn-cancel {
+            margin-top: 11px;
+            background-color: unset;
+            border: unset;
+            font-size: 12px;
+            line-height: 23px;
+            color: white;
+        }
+        .btn-primary {
+            font-weight: bold;
+            font-size: 18px;
+            line-height: 22px;
+            padding: 15px 95px;
+        }
+    }
+    .form {
+        padding: 18px 51px;
+        @include mq("phone", max) {
+            padding-left: 0;
+            padding-right: 0;
         }
     }
 }

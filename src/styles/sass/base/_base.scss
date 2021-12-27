@@ -9,6 +9,10 @@
 
 body {
     background-color: $black;
+    main {
+        @extend %set-height;
+        overflow-x: hidden !important;
+    }
 }
 
 a,
@@ -38,4 +42,29 @@ input[type="number"]::-webkit-outer-spin-button {
 }
 .z-n999 {
     z-index: -999 !important;
+}
+
+.cursor-pointer {
+    cursor: pointer !important;
+}
+.border-transparent {
+    border-color: transparent !important;
+}
+.overflow-x-auto {
+    overflow-x: auto !important;
+    white-space: nowrap;
+}
+.overflow-y-hidden {
+    overflow-y: hidden !important;
+}
+
+.btn-primary {
+    transition: 500ms;
+    &:hover {
+        opacity: 0.65;
+    }
+}
+
+.bg-clip-unset {
+    background-clip: unset !important;
 }

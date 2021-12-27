@@ -2,31 +2,31 @@ import { gql } from "@apollo/client"
 
 export const SIGNUP = gql`
   mutation signup($email: String!, $password: String!, $country: String!) {
-    signup(email: $email, password: $password, country: $country) 
+    signup(email: $email, password: $password, country: $country)
   }
 `;
 
 export const VERIFY_ACCOUNT = gql`
   mutation verifyAccount($email: String!, $code: String!) {
-    verifyAccount(email: $email, code: $code) 
+    verifyAccount(email: $email, code: $code)
   }
 `;
 
 export const RESEND_VERIFY_CODE = gql`
   mutation resendVerifyCode($email: String!) {
-    resendVerifyCode(email: $email) 
+    resendVerifyCode(email: $email)
   }
 `;
 
 export const REQUEST_2FA = gql`
   mutation request2FA($email: String!, $method: String!, $phone: String!) {
-    request2FA(email: $email, method: $method, phone: $phone) 
+    request2FA(email: $email, method: $method, phone: $phone)
   }
 `;
 
 export const CONFIRM_REQUEST_2FA = gql`
   mutation confirmRequest2FA($email: String!, $code: String!) {
-    confirmRequest2FA(email: $email, code: $code) 
+    confirmRequest2FA(email: $email, code: $code)
   }
 `;
 
@@ -35,7 +35,7 @@ export const SIGNIN = gql`
     signin(email: $email, password: $password) {
       status
       token
-    } 
+    }
   }
 `;
 
@@ -44,18 +44,24 @@ export const SIGNIN_2FA = gql`
     confirm2FA(email: $email, token: $token, code: $code) {
       status
       token
-    } 
+    }
   }
 `;
 
 export const FORGOT_PASSWORD = gql`
   mutation forgotPassword($email: String!) {
-    forgotPassword(email: $email) 
+    forgotPassword(email: $email)
+  }
+`;
+
+export const CHANGE_PASSWORD = gql`
+  mutation changePassword($newPassword: String!) {
+    changePassword(newPassword: $newPassword)
   }
 `;
 
 export const RESET_PASSWORD = gql`
   mutation resetPassword($email: String!, $code: String!, $newPassword: String!) {
-    resetPassword(email: $email, code: $code, newPassword: $newPassword) 
+    resetPassword(email: $email, code: $code, newPassword: $newPassword)
   }
 `;

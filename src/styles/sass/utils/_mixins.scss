@@ -1,3 +1,5 @@
+// Mixins
+
 @mixin mq($width, $type: min) {
     @if map_has_key($breakpoints, $width) {
         $width: map_get($breakpoints, $width);
@@ -10,32 +12,18 @@
     }
 }
 
-%setHeight {
-    overflow: hidden;
-    height: 100vh;
-    width: 100vw;
-    @include mq("tablet", max) {
-        overflow: auto;
-        position: relative;
+@mixin custom-scroll($height) {
+    max-height: calc(100vh - $height);
+    padding-right: 20px;
+    overflow-y: auto;
+    &::-webkit-scrollbar {
+        width: 6px;
+        height: 0px;
     }
-}
-
-%setHeight2 {
-    height: calc(100vh - 122px);
-    @include mq("phone", max) {
-        height: calc(100vh - 82px);
+    &::-webkit-scrollbar-track {
+        background-color: #464646;
     }
-}
-
-%selectStyle {
-    border: 1px solid white;
-    border-radius: unset;
-    background-color: $black;
-    font-weight: bold;
-    font-size: 24px;
-    line-height: 29px;
-    padding: 4px 10px !important;
-    color: white;
-    box-shadow: unset;
-    height: 100%;
+    &::-webkit-scrollbar-thumb {
+        background-color: white;
+    }
 }

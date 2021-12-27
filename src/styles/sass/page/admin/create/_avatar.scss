@@ -1,0 +1,279 @@
+main.create-avatar-page {
+    .container {
+        @include mq("laptop-wide", max) {
+            max-width: 95%;
+        }
+        @include mq("phone", max) {
+            max-width: 100%;
+        }
+    }       
+    section.home {
+        div.container {
+            display: flex;
+            height: 86vh;
+            justify-content: center;
+            align-items: center;
+            @include mq('laptop-md', max) {
+                height: 100vh;
+            }
+            @include mq('phone', max) {
+                height: auto;
+            }
+        }
+        div.createDiv {
+            width: 80%;
+            border: 1px solid #ffffff;   
+            padding: 24px;
+            position: relative;
+            margin-bottom: 20px;
+            min-height: 410px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            a.close {
+                position: absolute;
+                font-size: 25px;
+                top: 20px;
+                right: 20px;
+            }
+            p.subtitle {
+                font-size: 20px;
+                font-weight: 500;
+                margin-bottom: 10px;
+            }
+            @include mq("tablet", max) {
+                width: 90%;
+            }  
+            @include mq("phone", max) {
+                width: 100%;
+                // max-height: 100vh;
+                border: none;
+                display: block;
+                a.close {
+                    display: none;
+                }
+                p.subtitle {
+                    text-align: center;
+                }
+            }  
+            div.input_div {
+                width: 80%;
+                // padding: 20px 0;
+                margin: auto;
+                div.avatar_div {
+                    display: flex;
+                    div.name_div {
+                        width: 29%;
+                        padding-right: 25px;
+                        input.black_input {
+                            height: 38px;
+                        }
+                    }
+                    div.items_div {
+                        width: 50%;
+                        &>div {
+                            margin-bottom: 5px;
+                            position: relative;
+                            .css-b62m3t-container {
+                                width: 52%;
+                            }
+                            &>svg {
+                                color: #ffffff;
+                                font-size: 25px;
+                                cursor: pointer;
+                                position: absolute;
+                                top: 5px;
+                                left: 55%;
+                            }
+                        }
+                    }
+                    div.preview {
+                        width: 20%;
+                        img {
+                            width: 100px;
+                            height: 100px;
+                            display: block;
+                            margin: auto;
+                        }   
+                        &_mobile {
+                            display: none;
+                            img {
+                                width: 100px;
+                                height: 100px;
+                                display: block;
+                                margin: auto;
+                            } 
+                        }
+                    }
+                    @include mq('phone', max) {
+                        flex-direction: column;
+                        div.name_div {
+                            width: 100%;
+                            margin-bottom: 30px;
+                            padding-left: 10%;
+                            padding-right: 22%;
+                        }
+                        div.items_div {
+                            width: 100%;
+                            padding: 0 10%;
+                            &>div {
+                                margin-bottom: 5px;
+                                position: relative;
+                                .css-b62m3t-container {
+                                    width: 85%;
+                                }
+                                &>svg {
+                                    left: 90%;
+                                }
+                            }
+                        }
+                        div.preview {
+                            display: none;
+                            &_mobile {
+                                display: flex;
+                                flex-direction: column;
+                                align-items: center;
+                            }
+                        }
+                    }
+                }
+                div.stats_div {
+                    width: 60%;
+                    margin: auto;
+                    &>div {
+                        margin: 10px 0;
+                        display: flex;
+                        div.rating {
+                            display: flex;
+                            justify-content: center;
+                        }
+                    }
+                    @include mq("phone", max) {
+                        width: 100%;
+                        margin: auto;
+                        height: auto;
+                        margin-bottom: 60px;
+                    }
+                    .MuiRating-iconEmpty {
+                        color: #747474;
+                    }
+                }
+                div.facts_div {
+                    width: 80%;
+                    margin: auto;
+                    div.facts {
+                        margin-bottom: 10px;
+                        display: flex;
+                        justify-content: space-between;
+                        input.topic {
+                            width: 30%;
+                        }
+                        input.detail {
+                            width: 68.5%;
+                        }
+                    }
+                    div.details {
+                        position: relative;
+                        margin-top: 2vh;
+                        textarea {
+                            max-height: 150px;
+                            min-height: 55px;
+                            padding-bottom: 2vh;
+                        }
+                        span {
+                            position: absolute;
+                            bottom: 1vh;
+                            right: 1vh;
+                            font-size: 14px;
+                            color: dimgrey;
+                        }
+                    }
+                    @include mq('phone', max) {
+                        width: 100%;
+                        div.facts {
+                            margin-bottom: 15px;
+                            flex-direction: column;
+                            input.topic {
+                                width: 100%;
+                                margin-bottom: 5px;
+                            }
+                            input.detail {
+                                width: 100%;
+                            }
+                        }
+                    }
+                }
+                div.preview_div {
+                    width: 70%;
+                    margin: auto;
+                    border: 1px solid #ffffff;
+                    padding: 2vh;                    
+                    p.name {
+                        font-size: 20px;
+                        font-weight: 600;
+                        padding-bottom: 5px;
+                        text-align: center;
+                    }
+                    div.avatarStats {
+                        margin-top: 20px; 
+                        padding: 0 10%;
+                        .col-sm-4 {
+                            display: flex;
+                            justify-content: center;
+                            align-items: center;
+                        }
+                        p {
+                            overflow: hidden;
+                            text-overflow: ellipsis;
+                        }
+                    }
+                    div.facts {
+                        margin-top: 2vh;
+                        .col-4 {
+                            p {
+                                font-weight: 700;
+                            }                            
+                        }
+                    }
+                    div.details {
+                        margin-top: 2vh;
+                    }
+                    @include mq("phone", max) {
+                        width: 100%;
+                        border: none;
+                        padding: 0;
+                    }
+                }
+                p {
+                    font-size: 14px;
+                    font-weight: 400;
+                    padding-bottom: 5px;
+                    @include mq("laptop-wide", max) {
+                        font-size: 12px;
+                    }
+                }
+                @include mq("tablet", max) {
+                    width: 100%;
+                }  
+                @include mq("phone", max) {
+                    margin: auto;
+                    height: auto;
+                    margin-bottom: 60px;
+                }                                  
+            }
+            div.button_div {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 15px;
+            }
+            div.inform {
+                width: 80%;
+                margin: auto;
+                @include mq('phone', max) {
+                    width: 100%;
+                }
+            }
+        }        
+    } 
+}
+

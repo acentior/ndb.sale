@@ -1,0 +1,67 @@
+main.admin-airdrop-page {
+    a#link-airdrop {
+        p {
+            color: white;
+        }
+    }
+    .container {
+        @include mq("laptop-wide", max) {
+            max-width: 95%;
+        }
+        @include mq("phone", max) {
+            max-width: 100%;
+        }
+        .row {
+            .col-sm-10 {
+                div.rounds_table {
+                    color: #ffffff;
+                    p {
+                        font-size: 16px;
+                        padding: 3px 0;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                        &:hover {
+                            overflow: visible;
+                        }
+                        @include mq('laptop-wide', max) {
+                            font-size: 14px;
+                        }
+                        @include mq('tablet', max) {
+                            font-size: 12px;
+                            font-weight: 500;
+                        }
+                    }
+                    p.first {
+                        font-weight: 700;
+                    }
+                    p.second {
+                        font-size: 14px;
+                        font-weight: 400;
+                        color: #6F727A;
+                        @include mq('laptop-wide', max) {
+                            font-size: 12px;
+                        }
+                        @include mq('tablet', max) {
+                            font-size: 10px;
+                            font-weight: 500;
+                        }
+                    }
+                    div.left p {
+                        font-size: 12px;
+                        font-weight: 500;
+                        color: dimgray;
+                    }
+                    div.right p {
+                        font-size: 14px;
+                        font-weight: 400;
+                    }
+                }
+                @include mq("phone", max) {
+                    p.title {
+                        font-size: 14px;
+                    }
+                }                
+            }
+        }
+    }
+}

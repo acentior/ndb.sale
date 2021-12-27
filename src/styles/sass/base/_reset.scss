@@ -1,3 +1,4 @@
+$enable-negative-margins: true;
 * {
     font-family: "Montserrat" !important;
 }
@@ -32,4 +33,8 @@
     &:focus {
         box-shadow: none !important;
     }
+}
+
+.form-control {
+    background-clip: unset !important;
 }

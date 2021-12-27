@@ -1,12 +1,5 @@
+@use "sass:math";
 .profile-page {
-    // section > div {
-    //     @include mq("laptop") {
-    //         height: 100%;
-    //     }
-    //     @media screen and (max-height: 745px) {
-    //         height: auto;
-    //     }
-    // }
     &__left {
         padding: 8px 32px;
         border-right: 1px solid #ffffff;
@@ -28,11 +21,32 @@
                 height: 93.17px;
             }
             &__name {
+                display: flex;
+                align-items: center;
                 margin-top: 24px;
                 font-weight: 600;
                 font-size: 24px;
                 line-height: 23px;
                 color: white;
+                @include mq("phone", max) {
+                    justify-content: center;
+                }
+            }
+            .silver-cnt {
+                font-weight: 600;
+                font-size: 12px;
+                line-height: 15px;
+                text-align: end;
+                margin-top: 16px;
+            }
+            .timeframe-bar {
+                background-color: #464646;
+                height: 6px;
+                margin-top: 0;
+                .timeleft {
+                    background: #23c865;
+                    left: 0;
+                }
             }
         }
         @include mq("laptop", max) {
@@ -73,15 +87,9 @@
                 margin: 0 auto;
                 .css-1s2u09g-control,
                 .css-1pahdxg-control {
-                    @extend %selectStyle;
+                    @extend %select-style;
                     padding-top: 7px;
                     padding-bottom: 7px;
-                }
-                .css-1okebmr-indicatorSeparator {
-                    display: none;
-                }
-                .css-319lph-ValueContainer {
-                    padding: 0;
                     .css-qc6sy-singleValue {
                         text-align: center;
                         font-weight: bold;
@@ -90,6 +98,12 @@
                         color: white;
                         text-transform: uppercase;
                     }
+                }
+                .css-1okebmr-indicatorSeparator {
+                    display: none;
+                }
+                .css-319lph-ValueContainer {
+                    padding: 0;
                 }
                 .css-tlfecz-indicatorContainer {
                     padding: 0;
@@ -127,10 +141,34 @@
                 border: none;
             }
         }
-        .account-details {
+        .detail-tab {
+            .react-tabs {
+                &__tab-list {
+                    border: none;
+                    margin-bottom: 24px;
+                }
+                &__tab {
+                    font-weight: bold;
+                    font-size: 18px;
+                    line-height: 22px;
+                    letter-spacing: 0.04em;
+                    color: white;
+                    opacity: 0.3;
+                    text-transform: uppercase;
+                    &--selected {
+                        opacity: 1;
+                        background: none;
+                        border: none;
+                    }
+                }
+            }
+        }
+        .account-details,
+        .tier-details {
             h4 {
                 border-bottom: 2px solid #464646;
                 padding-bottom: 15px;
+                padding-left: 12px;
                 margin-bottom: 0;
                 @include mq("phone", max) {
                     padding-top: 35px;
@@ -138,51 +176,52 @@
                     padding-right: 0;
                 }
             }
-            .account-detail {
-                .row {
-                    border-bottom: 2px solid #464646;
-                    .col-6 {
-                        font-family: "Montserrat";
+            .row {
+                border-bottom: 2px solid #464646;
+                &:first-child {
+                    border-top: 2px solid #464646;
+                }
+                .col-6 {
+                    font-family: "Montserrat";
+                    font-weight: bold;
+                    font-size: 18px;
+                    line-height: 22px;
+                    letter-spacing: 0.04em;
+                    color: white;
+                    text-transform: uppercase;
+                    padding: 25px 12px;
+                    @include mq("phone", max) {
+                        font-size: 16px;
+                        font-weight: normal;
+                        line-height: 19.5px;
+                        padding-left: 0;
+                        padding-right: 0;
+                    }
+                    .btn-primary {
                         font-weight: bold;
                         font-size: 18px;
                         line-height: 22px;
                         letter-spacing: 0.04em;
-                        color: white;
                         text-transform: uppercase;
-                        padding: 25px 12px;
-                        @include mq("phone", max) {
-                            font-size: 16px;
-                            font-weight: normal;
-                            line-height: 19.5px;
-                            padding-left: 0;
-                            padding-right: 0;
-                        }
-                        .btn-primary {
-                            font-weight: bold;
-                            font-size: 18px;
-                            line-height: 22px;
-                            letter-spacing: 0.04em;
-                            text-transform: uppercase;
-                            padding: 15px 26px;
-                            background: #1e1e1e;
-                            @include mq("tablet", max) {
-                                display: none;
-                            }
+                        padding: 15px 26px;
+                        background: #1e1e1e;
+                        @include mq("tablet", max) {
+                            display: none;
                         }
                     }
                 }
-                .change-password {
-                    .col-6 {
-                        padding: 9px 12px;
-                        display: flex;
-                        align-items: center;
-                        @include mq("tablet", max) {
-                            padding: 25px 12px;
-                        }
-                        @include mq("phone", max) {
-                            padding-left: 0;
-                            padding-right: 0;
-                        }
+            }
+            .change-password {
+                .col-6 {
+                    padding: 9px 12px;
+                    display: flex;
+                    align-items: center;
+                    @include mq("tablet", max) {
+                        padding: 25px 12px;
+                    }
+                    @include mq("phone", max) {
+                        padding-left: 0;
+                        padding-right: 0;
                     }
                 }
             }
@@ -402,9 +441,6 @@
         color: white;
     }
     &__footer {
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
         align-items: center;
         button {
             display: block;
@@ -422,7 +458,6 @@
             font-size: 18px;
             line-height: 22px;
             padding: 15px 95px;
-            margin-top: 24px;
         }
     }
     .form {
@@ -430,6 +465,134 @@
         @include mq("phone", max) {
             padding-left: 0;
             padding-right: 0;
+        }
+    }
+}
+
+.dressup-modal {
+    max-width: 950px;
+    padding: 0px;
+
+    &__header {
+        display: flex;
+        justify-content: end;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 22px;
+        text-transform: uppercase;
+        color: white;
+    }
+    &-avatar-name {
+        font-weight: 600;
+        font-size: 24px;
+        line-height: 23px;
+        margin-top: 30px;
+    }
+    &-sections-list {
+        color: #464646;
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 29px;
+        margin-top: 30px;
+        margin-left: 30px;
+        margin-bottom: 30px;
+        font-variant: small-caps;
+        & > div {
+            cursor: pointer;
+            &.active {
+                color: white;
+            }
+        }
+    }
+    .btn-save {
+        color: white;
+        font-variant: small-caps;
+        font-weight: bold;
+        font-size: 24px;
+        text-align: center;
+        width: auto;
+        border: 1px solid white;
+        padding: 3px 43px;
+        margin-left: 45px;
+        margin-bottom: 30px;
+        vertical-align: middle;
+        transition: 500ms;
+        cursor: pointer;
+        &:hover {
+            background-color: white;
+            color: $black;
+        }
+    }
+    &-hair-section {
+        color: white;
+        font-variant: small-caps;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 22px;
+        letter-spacing: 0.04em;
+    }
+
+    &-items-horizontal-list {
+        scroll-behavior: smooth;
+        float: none;
+        overflow-x: auto !important;
+        white-space: nowrap;
+        overflow-y: hidden;
+        padding: 0px;
+        display: flex;
+        justify-content: start;
+        align-items: center;
+        margin: 0px;
+        height: 200px;
+        & > div {
+            height: 200px;
+            width: 149px;
+            overflow: hidden;
+            display: inline-block;
+            float: none;
+            position: relative;
+            & > div {
+                position: absolute;
+                width: 100%;
+                text-align: center;
+                left: 0px;
+                bottom: 10px;
+            }
+            & > img {
+                bottom: 55px;
+                left: 13px;
+                position: absolute;
+                min-width: 118.92px;
+                min-height: 92.28px;
+                object-fit: cover;
+            }
+        }
+        &::-webkit-scrollbar {
+            height: 0px !important;
+        }
+        &::-webkit-scrollbar-track {
+            background: #666666 !important;
+        }
+        &::-webkit-scrollbar-thumb {
+            background: #ffffff !important;
+        }
+    }
+    &-avatar {
+        width: 107.69px;
+        height: 82.28px;
+        position: relative;
+        text-align: center;
+        margin: auto;
+        padding: 0px;
+        margin-top: 75px;
+        .empty-avatar {
+            width: max-content;
+            height: auto;
+        }
+        .isolated-icons {
+            width: max-content;
+            height: auto;
+            position: absolute;
         }
     }
 }

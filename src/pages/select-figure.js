@@ -1,17 +1,16 @@
 import React, { useState } from "react"
 import Header from "../components/common/header"
 import FigureItem from "../components/FigureItem"
-import { Trees } from "../utilities/imgImport"
+import { CloseIcon, Trees } from "../utilities/imgImport"
 import { figures } from "../utilities/staticData"
 import StarRatings from "react-star-ratings"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faTimes } from "@fortawesome/free-solid-svg-icons"
 import names from "random-names-generator"
 import Modal from "react-modal"
 
 const Profile = () => {
     const [selectedId, setSelectId] = useState(0)
     const [selected, setSelect] = useState(false)
+    const [searchValue, setSearchValue] = useState("")
     const [randomName, setRandomName] = useState("Tesla")
     const [modalIsOpen, setIsOpen] = useState(false)
 
@@ -32,21 +31,33 @@ const Profile = () => {
                     <h3 className="header-text">Select one Historical Figure</h3>
                     <div className="row">
                         <div className="figure-select col-md-5 col-lg-6">
-                            <input type="search" className="figure-search" placeholder="Search" />
+                            <input
+                                type="text"
+                                className="figure-search"
+                                placeholder="Search"
+                                value={searchValue}
+                                onChange={(e) => setSearchValue(e.target.value)}
+                            />
                             <div className="row">
-                                {figures.map((item, idx) => (
-                                    <div
-                                        className="col-lg-3 col-6 mb-3"
-                                        key={idx}
-                                        style={{ opacity: idx === selectedId ? "1" : "0.5" }}
-                                    >
-                                        <FigureItem
-                                            figure={item}
-                                            active={idx === selectedId}
-                                            onFigureSelect={handleFigure}
-                                        ></FigureItem>
-                                    </div>
-                                ))}
+                                {figures
+                                    .filter((item) =>
+                                        (item.firstname + item.lastname)
+                                            .toLowerCase()
+                                            .includes(searchValue.toLowerCase())
+                                    )
+                                    .map((item, idx) => (
+                                        <div
+                                            className="col-lg-3 col-6 mb-3"
+                                            key={idx}
+                                            style={{ opacity: idx === selectedId ? "1" : "0.5" }}
+                                        >
+                                            <FigureItem
+                                                figure={item}
+                                                active={idx === selectedId}
+                                                onFigureSelect={handleFigure}
+                                            ></FigureItem>
+                                        </div>
+                                    ))}
                             </div>
                         </div>
                         <div className="figure-intro col-md-7 col-lg-6">
@@ -106,43 +117,56 @@ const Profile = () => {
                                     ) : (
                                         <>
                                             <p className="text-end">
-                                                <FontAwesomeIcon
-                                                    icon={faTimes}
-                                                    className="text-white fa-2x"
+                                                <div
                                                     onClick={() => setSelect(false)}
                                                     onKeyDown={() => setSelect(false)}
                                                     role="button"
                                                     tabIndex="0"
-                                                />
-                                            </p>
-                                            <div className="d-flex align-items-end justify-content-between">
-                                                <h3 className="random-display mb-0">
-                                                    {randomName}.
-                                                </h3>
-                                                <div className="random-generate">
-                                                    <p className="form-label">Your display name</p>
-                                                    <input
-                                                        className="form-control"
-                                                        type="text"
-                                                        value={randomName}
-                                                        onChange={(e) =>
-                                                            setRandomName(e.target.value)
-                                                        }
+                                                >
+                                                    <img
+                                                        width="27px"
+                                                        height="27px"
+                                                        src={CloseIcon}
+                                                        alt="close"
                                                     />
                                                 </div>
-                                            </div>
-                                            <p
-                                                className="random-text"
-                                                onClick={() =>
-                                                    setRandomName(names.random().substring(0, 7))
-                                                }
-                                                onKeyDown={() =>
-                                                    setRandomName(names.random().substring(0, 7))
-                                                }
-                                                role="presentation"
-                                            >
-                                                Random generate
                                             </p>
+                                            <div className="main-content">
+                                                <div className="d-flex align-items-end justify-content-start">
+                                                    <h3 className="random-display mb-0 fw-bold me-4">
+                                                        {randomName}.
+                                                    </h3>
+                                                    <div className="random-generate">
+                                                        <p className="form-label">
+                                                            Your display name
+                                                        </p>
+                                                        <input
+                                                            className="form-control"
+                                                            type="text"
+                                                            value={randomName}
+                                                            onChange={(e) =>
+                                                                setRandomName(e.target.value)
+                                                            }
+                                                        />
+                                                    </div>
+                                                </div>
+                                                <p
+                                                    className="random-text"
+                                                    onClick={() =>
+                                                        setRandomName(
+                                                            names.random().substring(0, 7)
+                                                        )
+                                                    }
+                                                    onKeyDown={() =>
+                                                        setRandomName(
+                                                            names.random().substring(0, 7)
+                                                        )
+                                                    }
+                                                    role="presentation"
+                                                >
+                                                    Random generate
+                                                </p>
+                                            </div>
                                         </>
                                     )}
                                 </div>
@@ -174,14 +198,16 @@ const Profile = () => {
                 <div className="figure-intro__box">
                     <p className="mobile-figure-header">
                         {figures[selectedId].firstname + " " + figures[selectedId].lastname}
-                        <FontAwesomeIcon
-                            icon={faTimes}
-                            className="text-white modal-close"
+
+                        <div
                             onClick={() => closeModal()}
                             onKeyDown={() => closeModal()}
                             role="button"
                             tabIndex="0"
-                        />
+                            className="ms-auto"
+                        >
+                            <img width="14px" height="14px" src={CloseIcon} alt="close" />
+                        </div>
                     </p>
                     <div className="figure-intro__box--body">
                         {!selected ? (
@@ -219,26 +245,34 @@ const Profile = () => {
                             </>
                         ) : (
                             <>
-                                <div className="d-flex align-items-end justify-content-between">
-                                    <h3 className="me-3 mb-0">{randomName}.</h3>
-                                    <div className="form-group w-100">
-                                        <p className="form-label">Your display name</p>
-                                        <input
-                                            className="form-control"
-                                            type="text"
-                                            value={randomName}
-                                            onChange={(e) => setRandomName(e.target.value)}
-                                        />
+                                <div className="main-content">
+                                    <div className="d-flex align-items-end justify-content-start">
+                                        <h3 className="random-display mb-0 fw-bold me-4">
+                                            {randomName}.
+                                        </h3>
+                                        <div className="random-generate">
+                                            <p className="form-label">Your display name</p>
+                                            <input
+                                                className="form-control"
+                                                type="text"
+                                                value={randomName}
+                                                onChange={(e) => setRandomName(e.target.value)}
+                                            />
+                                        </div>
                                     </div>
+                                    <p
+                                        className="random-text"
+                                        onClick={() =>
+                                            setRandomName(names.random().substring(0, 7))
+                                        }
+                                        onKeyDown={() =>
+                                            setRandomName(names.random().substring(0, 7))
+                                        }
+                                        role="presentation"
+                                    >
+                                        Random generate
+                                    </p>
                                 </div>
-                                <p
-                                    className="text-end txt-underline"
-                                    onClick={() => setRandomName(names.random().substring(0, 7))}
-                                    onKeyDown={() => setRandomName(names.random().substring(0, 7))}
-                                    role="presentation"
-                                >
-                                    Random generate
-                                </p>
                             </>
                         )}
                     </div>

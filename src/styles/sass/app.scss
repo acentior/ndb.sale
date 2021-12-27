@@ -1,5 +1,6 @@
 @import "utils/variables";
 @import "utils/mixins";
+@import "utils/placeholders";
 
 @import "../../../node_modules/bootstrap/scss/bootstrap";
 
@@ -11,6 +12,9 @@
 @import "components/composition";
 @import "components/modal";
 @import "components/menu";
+@import "components/accordion";
+@import "components/loading";
+@import "components/admin/leftBar";
 
 @import "layout/layout";
 
@@ -22,6 +26,18 @@
 @import "page/history";
 @import "page/profile";
 @import "page/verify";
+@import "page/faq";
 @import "page/purchase/auction.scss";
 @import "page/purchase/home.scss";
 @import "page/purchase/homeWithSign.scss";
+
+// admin style
+@import "page/admin/common";
+@import "page/admin/index";
+@import "page/admin/rounds";
+@import "page/admin/users";
+@import "page/admin/create/auction";
+@import "page/admin/create/direct-purchase";
+@import "page/admin/create/avatar";
+@import "page/admin/airdrop";
+@import "page/admin/setting";
