@@ -8,6 +8,25 @@ export const getSecTomorrow = () => {
     let diff = tomorrow - now
     return Math.round(diff / 1000)
 }
+
+export const getTimeDiffOverall = (start, end) => {
+    if (end !== undefined){
+        let diff = new Date(end) - new Date()
+        return Math.round(diff / 1000)
+    }else{
+        return 0
+    }
+}
+
+export const getDiffOverall = (start, end) => {
+    if (end !== undefined){
+        let diff = new Date(end) - new Date(start)
+        return Math.round(diff / 1000)
+    }else{
+        return 0
+    }
+}
+
 export const numberSign = (num) => {
     return Math.sign(num) >= 0 ? "+" : ""
 }
