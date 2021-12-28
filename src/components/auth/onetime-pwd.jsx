@@ -7,13 +7,14 @@ import { getUser } from "../../utilities/auth"
 import CustomSpinner from "../common/custom-spinner"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons"
+import { ROUTES } from "../../utilities/routes"
 
 const OnetimePassword = () => {
     const [code, setCode] = useState("")
     const [codeError, setCodeError] = useState("")
     const user = getUser()
 
-    if (!user.tempToken) navigate("/app/signin")
+    if (!user.tempToken) navigate(ROUTES.signIn)
 
     const [signin2faMutation, signin2faMutationResults] = useSignIn2FA()
 

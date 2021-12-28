@@ -16,7 +16,7 @@ const GeoTable = ({data}) => {
             </TableHeadForMobile>
             <TableBody>
                 {data.map((datum, index) => {
-                    return <GoeDataRow key={index} datum={datum} />
+                    return <GoeDataRow key={index} datum={datum} index={index} />
                 })}
             </TableBody>
         </>

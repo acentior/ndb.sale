@@ -56,7 +56,7 @@ const DirectPurchase = () => {
             <DataRowForMobile>
                 <div>
                     <UnitRowForMobile>
-                        <div className='left' onClick={() => setShow(!show)} onKeyDown={() => setShow(!show)} aria-hidden="true">
+                        <div className='left'>
                             <p>Direct Purchase</p>
                         </div>
                         <div className='right'>
@@ -66,12 +66,12 @@ const DirectPurchase = () => {
                         </div>
                         <div className='right'>
                             <p style={{fontSize: 16}}>
-                                <span><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} onClick={() => setShow(!show)} /></span>
+                                <span><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} data-bs-toggle="collapse" data-bs-target='#direct_purchase'  onClick={() => setShow(!show)} /></span>
                             </p>
                         </div>
                     </UnitRowForMobile>
                 </div>
-                <ToggleForMobile show={show}>
+                <div id='direct_purchase' className='collapse'>
                     <UnitRowForMobile>
                         <div className='left'>
                             <p style={{color: 'dimgrey'}}>Point per direct purchase</p>
@@ -80,7 +80,7 @@ const DirectPurchase = () => {
                             <p>0.1 point/USD</p>
                         </div>
                     </UnitRowForMobile>
-                </ToggleForMobile>
+                </div>
             </DataRowForMobile>
             <Modal
                 isOpen={modalIsOpen}
@@ -183,12 +183,6 @@ const DataRowForMobile = styled.div`
         display: flex;
         flex-direction: column;
     } 
-`;
-
-const ToggleForMobile = styled.div`
-    display: ${props => {
-        return props.show? 'block': 'none';
-    }};
 `;
 
 const UnitRowForMobile = styled.div`

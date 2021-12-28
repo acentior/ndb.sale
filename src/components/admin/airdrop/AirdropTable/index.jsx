@@ -18,7 +18,7 @@ const AirdropTable = ({data}) => {
             </TableHeadForMobile>
             <TableBody>
                 {data.map((datum, index) => {
-                    return <AirdropDataRow key={index} datum={datum} />
+                    return <AirdropDataRow key={index} datum={datum} index={index}/>
                 })}
             </TableBody>
         </>

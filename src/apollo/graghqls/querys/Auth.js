@@ -3,79 +3,81 @@ import { gql } from "@apollo/client"
 export const GET_USER = gql`
     query getUser {
         getUser {
-            id,
-            name,
-            surname,
-            role,
-            birthDate,
-            email,
-            mobile,
-            country,
-            twoStep,
-            avatarPrefix,
-            avatarName,
-            tos,
-            notifySetting,
-            lastLogin,
+            id
+            name
+            surname
+            role
+            birthDate
+            email
+            mobile
+            country
+            twoStep
+            avatarPrefix
+            avatarName
+            tos
+            notifySetting
+            lastLogin
             avatar {
-                groupId,
+                groupId
                 compId
-            },
+            }
             avatarPurchased {
-                key,
+                key
                 value
-            },
+            }
             userExtWallet {
-                key,
+                key
                 value
-            },
+            }
             userSecurity {
-                key,
+                key
                 value
-            },
+            }
             userVerify {
-                key,
+                key
                 value
-            },
+            }
         }
-    }`;
+    }
+`
 
 export const GET_ALL_UNREAD_NOTIFICATIONS = gql`
     query getUser {
         getUser {
-            id,
-            name,
-            surname,
-            role,
-            birthDate,
-            email,
-            mobile,
-            country,
-            twoStep,
-            avatarPrefix,
-            avatarName,
-            tos,
-            notifySetting,
-            lastLogin,
+            id
+            name
+            surname
+            role
+            birthDate
+            email
+            mobile
+            country
+            twoStep
+            avatarPrefix
+            avatarName
+            tos
+            notifySetting
+            lastLogin
             avatar {
-                groupId,
+                groupId
                 compId
-            },
+            }
             avatarPurchased {
-                key,
+                key
                 value
-            },
+            }
             userExtWallet {
-                key,
+                key
                 value
-            },
+            }
             userSecurity {
-                key,
+                key
                 value
-            },
+            }
             userVerify {
-                key,
+                key
                 value
-            },
+            }
         }
-    }`;
+    }
+`

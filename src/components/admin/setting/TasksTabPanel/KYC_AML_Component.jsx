@@ -51,7 +51,7 @@ const KYC_AML_Component = () => {
             <DataRowForMobile>
                 <div>
                     <UnitRowForMobile>
-                        <div className='left' onClick={() => setShow(!show)} onKeyDown={() => setShow(!show)} aria-hidden="true">
+                        <div className='left'>
                             <p>KYC/AML COMPLETION</p>
                         </div>
                         <div className='right'>
@@ -61,12 +61,12 @@ const KYC_AML_Component = () => {
                         </div>
                         <div className='right'>
                             <p style={{fontSize: 16}}>
-                                <span><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} onClick={() => setShow(!show)} /></span>
+                                <span><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} data-bs-toggle="collapse" data-bs-target='#kyc_aml'  onClick={() => setShow(!show)} /></span>
                             </p>
                         </div>
                     </UnitRowForMobile>
                 </div>
-                <ToggleForMobile show={show}>
+                <div id='kyc_aml' className='collapse'>
                     <UnitRowForMobile>
                         <div className='left'>
                             <p style={{color: 'dimgrey'}}>Points</p>
@@ -75,7 +75,7 @@ const KYC_AML_Component = () => {
                             <p>500</p>
                         </div>
                     </UnitRowForMobile>
-                </ToggleForMobile>
+                </div>
             </DataRowForMobile>
             <Modal
                 isOpen={modalIsOpen}
@@ -178,12 +178,6 @@ const DataRowForMobile = styled.div`
         display: flex;
         flex-direction: column;
     } 
-`;
-
-const ToggleForMobile = styled.div`
-    display: ${props => {
-        return props.show? 'block': 'none';
-    }};
 `;
 
 const UnitRowForMobile = styled.div`

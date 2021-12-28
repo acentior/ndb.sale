@@ -5,109 +5,104 @@ import Modal from 'react-modal';
 import { device } from '../../../../utilities/device';
 import { width } from './columnWidth';
 
-const UserDataRow = ({datum}) => {
+const UserDataRow = ({datum, index}) => {
     const [show, setShow] = useState(false);
     const [showBtns, setShowBtns] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [email, setEmail] = useState(datum.email);
 
     return (
         <>
             <DataRow>
-                <div className='name' onClick={() => setShow(!show)} onKeyDown={() => setShow(!show)} aria-hidden="true">
-                    <Main>
+                <Main>
+                    <div className='name'>
                         <p style={{color: '#ffffff', fontWeight: '700'}}>{datum.name}</p>
                         <p style={{fontSize: 14, color: 'dimgrey'}}>{datum.avatar}</p>
-                    </Main>
-                    <Toggle show={show}>
-                        <p>{datum.ext_wallet_provider}</p>
-                    </Toggle>
-                </div>
-                <div className='contact' onClick={() => setShow(!show)} onKeyDown={() => setShow(!show)} aria-hidden="true">
-                    <Main>
+                    </div>
+                    <div className='contact'>
                         <p>{datum.email}</p>
-                        <p>{datum.phone}</p>
-                    </Main>
-                    <Toggle show={show}>
-                        <p>{datum.ext_wallet_address}</p>
-                    </Toggle>          
-                </div>
-                <div className='password'>
-                    <Main>
-                        <p>{datum.password} <span style={{fontSize: 18, marginLeft: 20}}><Icon icon="clarity:refresh-line" onClick={() => setModalIsOpen(true)}/></span></p>
-                    </Main>
-                    <Toggle show={show}>
-                        <p>{datum.terms_signed}</p>
-                    </Toggle>           
-                </div>
-                <div className='country' onClick={() => setShow(!show)} onKeyDown={() => setShow(!show)} aria-hidden="true">
-                    <Main>
-                        <p>{datum.country}</p>
-                    </Main>
-                    <Toggle show={show}>
-                        <p>{datum.birth}</p>
-                    </Toggle>               
-                </div>
-                <div className='privilege' onClick={() => setShow(!show)} onKeyDown={() => setShow(!show)} aria-hidden="true">
-                    <Main>
+                        <p>{datum.phone}</p>       
+                    </div>
+                    <div className='password'>
+                        <p>
+                            {datum.password} <span style={{fontSize: 18, marginLeft: 20}}><Icon icon="clarity:refresh-line" onClick={() => {setEmail(datum.email); setModalIsOpen(true);}}/></span>
+                        </p>          
+                    </div>
+                    <div className='country'>
+                        <p>{datum.country}</p>           
+                    </div>
+                    <div className='privilege'>
                         <p className='privilege'>
                             {datum.privilege}
                             {!show && <Icon icon="whh:avatar" />}                        
                         </p>
-                    </Main>
-                    <Toggle show={show}>
-                        <p>{datum.currency}</p>
-                    </Toggle>
-                </div>
-                <div className='action'>
-                    <Main>
+                    </div>
+                    <div className='action'>
                         <div className='btns'>
                             <span className='edit'><Icon icon="clarity:note-edit-line" /></span>
-                            <span className='eye'><Icon icon="akar-icons:eye" /></span>
+                            <span className='eye'><Icon icon="akar-icons:eye" data-bs-toggle="collapse" data-bs-target={`#id${index}`} onClick={() => setShow(!show)} /></span>
                             <span className='trash'><Icon icon="akar-icons:trash-can" /></span>
-                        </div>                    
-                    </Main>
-                    <Toggle show={show}>
-                        <div className='btns'>
-                            <span className='mailbox'><Icon icon="uil:mailbox" /></span>
-                            <span className='user'><Icon icon="ant-design:user-outlined" /></span>
-                            <span className='phone'><Icon icon="bi:phone" /></span>
-                        </div> 
-                    </Toggle>                
-                </div>
-                <div className='brief'>
-                    <Main>
-                        <div>
-                            {!show? <span><Icon icon={showBtns? "ep:close-bold": "bi:three-dots"} onClick={() => setShowBtns(!showBtns)}/></span>: <span><Icon icon="ant-design:caret-up-filled" onClick={() => setShow(!show)}/></span>}
                         </div>
-                    </Main>
-                    <Toggle show={show}>
+                    </div>
+                    <div className='brief'>
                         <div>
-                            <span><Icon icon={showBtns? "ep:close-bold": "bi:three-dots"} onClick={() => setShowBtns(!showBtns)}/></span>
-                        </div> 
-                    </Toggle>
-                    <BtnsContainer show={showBtns}>
-                        <Main>
-                            <div className='btns'>
-                                <span className='edit'><Icon icon="clarity:note-edit-line" /></span>
-                                <span className='eye'><Icon icon="akar-icons:eye" /></span>
-                                <span className='trash'><Icon icon="akar-icons:trash-can" /></span>
-                            </div>                    
-                        </Main>
-                        <Toggle show={show}>
-                            <div className='btns'>
+                            {!show? <span><Icon icon={showBtns? "ep:close-bold": "bi:three-dots"} onClick={() => setShowBtns(!showBtns)}/></span>: <span><Icon icon="ant-design:caret-up-filled" data-bs-toggle="collapse" data-bs-target={`#id${index}`} onClick={() => setShow(!show)}/></span>}
+                        </div>
+                        <BtnsContainer show={showBtns}>
+                            <Main>
+                                <div className='btns'>
+                                    <span className='edit'><Icon icon="clarity:note-edit-line" /></span>
+                                    <span className='eye'><Icon icon="akar-icons:eye" data-bs-toggle="collapse" data-bs-target={`#id${index}`} onClick={() => {setShow(!show); setShowBtns(!showBtns)}}/></span>
+                                    <span className='trash'><Icon icon="akar-icons:trash-can" /></span>
+                                </div>
+                            </Main>
+                            <Toggle style={{display: (show? 'flex': 'none')}}>
+                                <div className='btns'>
+                                    <span className='mailbox'><Icon icon="uil:mailbox" /></span>
+                                    <span className='user'><Icon icon="ant-design:user-outlined" /></span>
+                                    <span className='phone'><Icon icon="bi:phone" /></span>
+                                </div> 
+                            </Toggle>
+                        </BtnsContainer>
+                    </div>
+                </Main>
+                <div  id={`id${index}`} className='collapse'>
+                    <Toggle>
+                        <div className='name'>
+                            <p>{datum.ext_wallet_provider}</p>
+                        </div>
+                        <div className='contact'>
+                            <p>{datum.ext_wallet_address}</p>         
+                        </div>
+                        <div className='password'>
+                            <p>{datum.terms_signed}</p>         
+                        </div>
+                        <div className='country'>
+                            <p>{datum.birth}</p>             
+                        </div>
+                        <div className='privilege'>
+                            <p>{datum.currency}</p>
+                        </div>
+                        <div className='action'>
+                        <div className='btns'>
                                 <span className='mailbox'><Icon icon="uil:mailbox" /></span>
                                 <span className='user'><Icon icon="ant-design:user-outlined" /></span>
                                 <span className='phone'><Icon icon="bi:phone" /></span>
-                            </div> 
-                        </Toggle>
-                    </BtnsContainer>                
-                </div>
+                            </div>
+                        </div>
+                        <div className='brief'>
+                            <div>
+                                <span className='showBtns'><Icon icon={showBtns? "ep:close-bold": "bi:three-dots"} onClick={() => setShowBtns(!showBtns)}/></span>
+                            </div>
+                        </div>
+                    </Toggle>
+                </div>                
             </DataRow>
 
             <DataRowForMobile>
                 <div>
                     <UnitRowForMobile>
-                        <div className='left' onClick={() => setShow(!show)} onKeyDown={() => setShow(!show)} aria-hidden="true">
+                        <div className='left'>
                             <p className='text-white' style={{fontSize: 16, fontWeight: '700'}}>{datum.name}</p>
                             <p style={{color: 'dimgrey'}}>{datum.avatar}</p>
                         </div>
@@ -119,11 +114,11 @@ const UserDataRow = ({datum}) => {
                                 <Main>
                                     <div className='btns'>
                                         <span className='edit'><Icon icon="clarity:note-edit-line" /></span>
-                                        <span className='eye'><Icon icon="akar-icons:eye" /></span>
+                                        <span className='eye'><Icon icon="akar-icons:eye" data-bs-toggle="collapse" data-bs-target={`#id${index}`} onClick={() => {setShow(!show); setShowBtns(!showBtns)}} /></span>
                                         <span className='trash'><Icon icon="akar-icons:trash-can" /></span>
                                     </div>                    
                                 </Main>
-                                <Toggle show={show}>
+                                <Toggle style={{display: (show? 'flex': 'none')}}>
                                     <div className='btns'>
                                         <span className='mailbox'><Icon icon="uil:mailbox" /></span>
                                         <span className='user'><Icon icon="ant-design:user-outlined" /></span>
@@ -132,14 +127,14 @@ const UserDataRow = ({datum}) => {
                                 </Toggle>
                             </BtnsContainer>
                         </div> 
-                        <div className='right' onClick={() => setShow(!show)} onKeyDown={() => setShow(!show)} aria-hidden="true">
+                        <div className='right' data-bs-toggle="collapse" data-bs-target={`#id${index}`} onClick={() => setShow(!show)} onKeyDown={() => setShow(!show)} aria-hidden="true">
                             <p>
-                                {show? <span><Icon icon="ant-design:caret-up-filled" /></span>: <span><Icon icon="ant-design:caret-down-filled" /></span>}
+                                <span><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} /></span>
                             </p>
                         </div>
                     </UnitRowForMobile>
                 </div>
-                <ToggleForMobile show={show}>
+                <div id={`id${index}`} className='collapse'>
                     <UnitRowForMobile>
                         <div className='left'>
                             <p style={{color: 'dimgrey'}}>Contact</p>
@@ -173,7 +168,39 @@ const UserDataRow = ({datum}) => {
                             <p style={{textTransform: 'uppercase'}}>{datum.privilege} <span><Icon icon="whh:avatar" /></span></p>
                         </div>
                     </UnitRowForMobile>
-                </ToggleForMobile>
+                    <UnitRowForMobile>
+                        <div className='left'>
+                            <p style={{color: 'dimgray'}}>External Wallet Privider</p>
+                        </div>
+                        <div className='right'>
+                            <p>{datum.ext_wallet_provider}</p>
+                        </div>
+                    </UnitRowForMobile>
+                    <UnitRowForMobile>
+                        <div className='left'>
+                            <p style={{color: 'dimgray'}}>External Wallet Address</p>
+                        </div>
+                        <div className='right'>
+                            <p>{datum.ext_wallet_address}</p>
+                        </div>
+                    </UnitRowForMobile>
+                    <UnitRowForMobile>
+                        <div className='left'>
+                            <p style={{color: 'dimgray'}}>Terms Signed</p>
+                        </div>
+                        <div className='right'>
+                            <p>{datum.terms_signed}</p>
+                        </div>
+                    </UnitRowForMobile>
+                    <UnitRowForMobile>
+                        <div className='left'>
+                            <p style={{color: 'dimgray'}}>Birthday</p>
+                        </div>
+                        <div className='right'>
+                            <p>{datum.birth}</p>
+                        </div>
+                    </UnitRowForMobile>
+                </div>
             </DataRowForMobile>
             <Modal
                 isOpen={modalIsOpen}
@@ -200,7 +227,7 @@ const UserDataRow = ({datum}) => {
                     </div>
                     <div className='input'>
                         <p className='mt-4' style={{fontSize: 12}}>Email</p>
-                        <input className='black_input' />
+                        <input className='black_input' value={email} onChange={e => setEmail(e.target.value)} />
                     </div>                  
                     <div className="pwd-modal__footer mt-5">
                         <button
@@ -224,31 +251,25 @@ export default UserDataRow;
 const DataRow = styled.div`
     min-height: 80px;
     border-bottom: 1px solid #464646;
-    display: flex;
-    justify-content: space-between;
-    flex-flow: row wrap;
-    svg {
-        cursor: pointer;
-    }
 
-    &>div.name {width: ${width.name}; padding-left: 16px}
-    &>div.contact {width: ${width.contact};}
-    &>div.password {width: ${width.password};}
-    &>div.country {width: ${width.country};}
-    &>div.privilege {width: ${width.privilege};}
-    &>div.action {width: ${width.action};}
-    &>div.brief {width: ${width.brief};}
+    div.name {width: ${width.name}; padding-left: 16px}
+    div.contact {width: ${width.contact};}
+    div.password {width: ${width.password};}
+    div.country {width: ${width.country};}
+    div.privilege {width: ${width.privilege};}
+    div.action {width: ${width.action};}
+    div.brief {width: ${width.brief};}
 
-    &>div.brief {
+    div.brief {
         display: none;
         position: relative;
     }
     @media screen and (max-width: ${device['laptop-md']}){
-        &>div.privilege {width: 13%;}
-        &>div.action {
+        div.privilege {width: 13%;}
+        div.action {
             display: none;
         }
-        &>div.brief {
+        div.brief {
             display: block;
         }
     } 
@@ -261,10 +282,10 @@ const Main = styled.div`
     height: 80px;
     padding: 8px 2px;
     display: flex;
-    flex-direction: column;
-    justify-content: center;
+    justify-content: space-between;
+    align-items: center;
     
-    &>p.privilege{
+    p.privilege{
         text-transform: uppercase;
         position: relative;
         svg {
@@ -273,13 +294,15 @@ const Main = styled.div`
             top: 5px;
         }
     }
+    span {
+        width: 33%;
+        display: inline-block;
+        text-align: center;
+        font-size: 20px;
+        cursor: pointer;
+    }
     div.btns {
-        span {
-            width: 33%;
-            display: inline-block;
-            text-align: center;
-            font-size: 20px;
-        }
+        width: 100%;
         span.edit {
             color: #2E65F3;
             border-right: 2px solid dimgrey;
@@ -296,24 +319,21 @@ const Main = styled.div`
 
 const Toggle = styled.div`
     height: 80px;
-    padding: 8px 2px;
-    display: ${props => {
-        return props.show? 'flex': 'none';
-    }};
-    transition: 0.3s;
-    flex-direction: column;
-    justify-content: center;
-    
+    display: flex;
+    overflow: hidden;
+    justify-content: space-between;
+    align-items: center;
+    span.showBtns {
+        cursor: pointer;
+    }
     div.btns {
+        width: 100%;
         span {
             width: 33%;
             display: inline-block;
             text-align: center;
             font-size: 20px;
-            svg {
-                cursor: pointer;
-            }
-        }
+        }        
         span.mailbox {
             color: #23c865;
             border-right: 2px solid dimgrey;
@@ -331,8 +351,8 @@ const Toggle = styled.div`
 const BtnsContainer = styled.div`
     position: absolute;
     width: 200px;
-    right: 130%;
-    top: 0;
+    right: 120%;
+    top: -25px;
     border-radius: 5px;
     background: #000000;
     transition: 0.3s;
@@ -351,8 +371,9 @@ const BtnsContainer = styled.div`
     }
     @media screen and (max-width: ${device['phone']}){
         right: 90%;
+        top: -15px;
         &::after {
-            top: 12px;
+            top: 25px;
             bottom: unset;
         }
     }
@@ -361,23 +382,15 @@ const BtnsContainer = styled.div`
 
 // For Mobile
 const DataRowForMobile = styled.div`
-    min-height: 80px;
+    min-height: 70px;
     border-bottom: 1px solid #464646;
     padding: 16px;
     display: none;
-    svg {
-        cursor: pointer;
-    }
+    
     @media screen and (max-width: ${device['phone']}){
         display: flex;
         flex-direction: column;
     } 
-`;
-
-const ToggleForMobile = styled.div`
-    display: ${props => {
-        return props.show? 'block': 'none';
-    }};
 `;
 
 const UnitRowForMobile = styled.div`
@@ -394,5 +407,8 @@ const UnitRowForMobile = styled.div`
                 margin-left: 20px;
             }
         }
+    }
+    svg {
+        cursor: pointer;
     }
 `;

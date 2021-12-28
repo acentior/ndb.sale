@@ -22,7 +22,7 @@ const Menu = () => {
     const navigationLinks = [
         {
             label: "Home",
-            url: "/",
+            url: "https://ndb.money/",
         },
         {
             label: "Vision",
@@ -35,6 +35,10 @@ const Menu = () => {
         {
             label: "Learn",
             url: "https://ndb.money/learn",
+        },
+        {
+            label: "Sale",
+            url: "/",
         },
         {
             label: "Contact Us",

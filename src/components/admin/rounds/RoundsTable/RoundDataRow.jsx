@@ -4,7 +4,7 @@ import { Icon } from '@iconify/react';
 import { device } from '../../../../utilities/device';
 import { width } from './columnWidth';
 
-const RoundDataRow = ({datum}) => {
+const RoundDataRow = ({datum, index}) => {
     const [show, setShow] = useState(false);
 
     return (
@@ -41,7 +41,7 @@ const RoundDataRow = ({datum}) => {
                 </div>
             </DataRow>
             <DataRowForMobile>
-                <div onClick={() => setShow(!show)} onKeyDown={() => setShow(!show)} aria-hidden="true">
+                <div>
                     <UnitRowForMobile>
                         <div className='left'>
                             <p style={{fontSize: 16, fontWeight: 700, color: 'white'}}>{datum.round_id}</p>
@@ -52,12 +52,12 @@ const RoundDataRow = ({datum}) => {
                         </div>
                         <div className='right'>
                             <p style={{fontSize: 16}}>
-                                {show? <span><Icon icon="ant-design:caret-up-filled" /></span>: <span><Icon icon="ant-design:caret-down-filled" /></span>}
+                                <span><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} data-bs-toggle="collapse" data-bs-target={`#id${index}`} onClick={() => setShow(!show)} /></span>
                             </p>
                         </div>
                     </UnitRowForMobile>
                 </div>
-                <ToggleForMobile show={show}>
+                <div id={`id${index}`} className="collapse">
                     <UnitRowForMobile>
                         <div className='left'>
                             <p>Time</p>
@@ -90,7 +90,7 @@ const RoundDataRow = ({datum}) => {
                             <p>{datum.avg_price}</p>
                         </div>
                     </UnitRowForMobile>
-                </ToggleForMobile>
+                </div>
             </DataRowForMobile>
         </>
     );
@@ -141,12 +141,6 @@ const DataRowForMobile = styled.div`
         display: flex;
         flex-direction: column;
     } 
-`;
-
-const ToggleForMobile = styled.div`
-    display: ${props => {
-        return props.show? 'block': 'none';
-    }};
 `;
 
 const UnitRowForMobile = styled.div`

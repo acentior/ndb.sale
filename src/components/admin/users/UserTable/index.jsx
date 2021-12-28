@@ -21,7 +21,7 @@ const UserTable = ({data}) => {
             </TableHeadForMobile>
             <TableBody>
                 {data.map((datum, index) => {
-                    return <UserDataRow key={index} datum={datum} />
+                    return <UserDataRow key={index} datum={datum} index={index} />
                 })}
             </TableBody>
         </>

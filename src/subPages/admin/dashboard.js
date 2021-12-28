@@ -2,7 +2,7 @@ import React from "react"
 import { Link } from "gatsby"
 import { Icon } from '@iconify/react';
 
-import Seo from "./../../components/seo";
+import Seo from "../../components/seo";
 import LayoutWithMenu from "../../components/admin/LayoutWithMenu";
 
 const IndexPage = () => {
@@ -14,31 +14,31 @@ const IndexPage = () => {
                     <p className="title">Create</p>
                     <hr />
                     <div className="items_container">
-                        <Link className="select-item" to="/admin/create/create-auction">
+                        <Link className="select-item" to="/admin/create/auction">
                             <Icon icon="uil:university" />
                             Auction Round
                         </Link>
-                        <Link className="select-item" to="/admin/create/create-direct-purchase">
+                        <Link className="select-item" to="/admin/create/direct-purchase">
                             <Icon icon="grommet-icons:basket" />
                             Direct purchase round
                         </Link>
-                        <Link className="select-item" to="/admin/create/create-auction">
+                        <Link className="select-item" to="/admin/create/auction">
                             <Icon icon="ant-design:user-add-outlined" />
                             User
                         </Link>
-                        <Link className="select-item" to="/admin/create/create-auction">
+                        <Link className="select-item" to="/admin/create/auction">
                             <Icon icon="ic:sharp-pin-drop" />
                             Airdrop
                         </Link>
                         <Link className="select-item" to="/admin/avatar">
-                            <Icon icon="uil:university" />
+                            <Icon icon="clarity:avatar-outline-badged" />
                             Avatar customization
                         </Link>
-                        <Link className="select-item" to="/admin/create/create-avatar">
-                            <Icon icon="bx:bxs-user-rectangle" />
+                        <Link className="select-item" to="/admin/create/avatar">
+                            <Icon icon="clarity:avatar-line" />
                             Avatar
                         </Link>
-                    </div>   
+                    </div> 
                 </LayoutWithMenu>
             </main>
         </>

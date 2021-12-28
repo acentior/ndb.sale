@@ -20,7 +20,7 @@ const BidTable = ({data}) => {
             </TableHeadForMobile>
             <TableBody>
                 {data.map((datum, index) => {
-                    return <BidDataRow key={index} datum={datum} />
+                    return <BidDataRow key={index} datum={datum} index={index} />
                 })}
             </TableBody>
         </>

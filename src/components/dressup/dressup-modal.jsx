@@ -4,7 +4,7 @@ import { DressupData } from "../../utilities/dressup-data"
 import { CloseIcon, EmptyAvatar } from "../../utilities/imgImport"
 import DressupHorizontalList from "./dressup-horizontal-list"
 
-export default function DressupModal({ isDressUPModalOpen, setIsDressUPModalOpen }) {
+export default function DressupModal({ isModalOpen, setIsModalOpen }) {
     const [selectedHairStyle, setSelectedHairStyle] = useState(0)
     const [selectedHairColor, setSelectedHairColor] = useState(0)
     const [selectedFacialStyle, setSelectedFacialStyle] = useState(0)
@@ -12,7 +12,7 @@ export default function DressupModal({ isDressUPModalOpen, setIsDressUPModalOpen
     const [selectedHat, setSelectedHat] = useState(0)
     const [selectedOther, setSelectedOther] = useState(0)
     const [selectedTab, setSelectedTab] = useState(0)
-
+    
     const selectedHairStyleItem = DressupData.hairStyles[selectedHairStyle]
     const selectedHairColorItem = DressupData.hairColors[selectedHairColor]
     const selectedFacialStyleItem = DressupData.facialStyles[selectedFacialStyle]
@@ -21,9 +21,9 @@ export default function DressupModal({ isDressUPModalOpen, setIsDressUPModalOpen
     const selectedOtherItem = DressupData.others[selectedOther]
     return (
         <Modal
-            isOpen={isDressUPModalOpen}
+            isOpen={isModalOpen}
             onRequestClose={() => {
-                setIsDressUPModalOpen(false)
+                setIsModalOpen(false)
             }}
             ariaHideApp={false}
             className="dressup-modal"
@@ -31,8 +31,8 @@ export default function DressupModal({ isDressUPModalOpen, setIsDressUPModalOpen
         >
             <div className="dressup-modal__header">
                 <div
-                    onClick={() => setIsDressUPModalOpen(false)}
-                    onKeyDown={() => setIsDressUPModalOpen(false)}
+                    onClick={() => setIsModalOpen(false)}
+                    onKeyDown={() => setIsModalOpen(false)}
                     role="button"
                     tabIndex="0"
                 >
@@ -67,7 +67,7 @@ export default function DressupModal({ isDressUPModalOpen, setIsDressUPModalOpen
                             {selectedFacialStyleItem?.isolatedIcon && (
                                 <img
                                     src={selectedFacialStyleItem.isolatedIcon}
-                                    className="isolated-icons"
+                                    className="isolated-icons facial-style-icons"
                                     alt="Isolated Icon"
                                     style={{
                                         left: selectedFacialStyleItem.iconLeft,
@@ -78,7 +78,7 @@ export default function DressupModal({ isDressUPModalOpen, setIsDressUPModalOpen
                             {selectedExpressionItem?.isolatedIcon && (
                                 <img
                                     src={selectedExpressionItem.isolatedIcon}
-                                    className="isolated-icons"
+                                    className="isolated-icons expression-icons"
                                     alt="Isolated Icon"
                                     style={{
                                         left: selectedExpressionItem.iconLeft,

@@ -19,7 +19,7 @@ const RoundsTable = ({data}) => {
             </TableHeadForMobile>
             <TableBody>
                 {data.map((datum, index) => {
-                    return <RoundDataRow key={index} datum={datum} />
+                    return <RoundDataRow key={index} datum={datum} index={index} />
                 })}
             </TableBody>
         </>

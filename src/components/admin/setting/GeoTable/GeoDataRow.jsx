@@ -4,7 +4,7 @@ import { Icon } from '@iconify/react';
 import { device } from '../../../../utilities/device';
 import { width } from './columnWidth';
 
-const GeoDataRow = ({datum}) => {
+const GeoDataRow = ({datum, index}) => {
     const [show, setShow] = useState(false);
     return (
         <>
@@ -21,19 +21,19 @@ const GeoDataRow = ({datum}) => {
                 </div>
             </DataRow>
             <DataRowForMobile>
-                <div onClick={() => setShow(!show)} onKeyDown={() => setShow(!show)} aria-hidden="true">
+                <div>
                     <UnitRowForMobile>
                         <div className='left'>
                             <p className='text-white' style={{fontSize: 16, fontWeight: '700'}}>{datum.country}</p>
                         </div>
                         <div className='right'>
                             <p style={{fontSize: 16}}>
-                                <span><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} /></span>
+                                <span><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} data-bs-toggle="collapse" data-bs-target={`#id${index}`} onClick={() => setShow(!show)} /></span>
                             </p>
                         </div>
                     </UnitRowForMobile>
                 </div>
-                <ToggleForMobile show={show}>
+                <div id={`id${index}`} className='collapse'>
                     <UnitRowForMobile>
                         <div className='left'>
                             <p style={{color: 'dimgrey'}}>Note</p>
@@ -42,7 +42,7 @@ const GeoDataRow = ({datum}) => {
                             <p>Not allowed because ...</p>
                         </div>
                     </UnitRowForMobile>
-                </ToggleForMobile>
+                </div>
             </DataRowForMobile>
         </>
     );
@@ -89,12 +89,6 @@ const DataRowForMobile = styled.div`
         display: flex;
         flex-direction: column;
     } 
-`;
-
-const ToggleForMobile = styled.div`
-    display: ${props => {
-        return props.show? 'block': 'none';
-    }};
 `;
 
 const UnitRowForMobile = styled.div`

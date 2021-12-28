@@ -4,7 +4,7 @@ import { Icon } from '@iconify/react';
 import { device } from '../../../../utilities/device';
 import { width } from './columnWidth';
 
-const WalletDataRow = ({datum}) => {
+const WalletDataRow = ({datum, index}) => {
     const [show, setShow] = useState(false);
     return (
         <>
@@ -47,7 +47,7 @@ const WalletDataRow = ({datum}) => {
                 </div>
             </DataRow>
             <DataRowForMobile>
-                <div onClick={() => setShow(!show)} onKeyDown={() => setShow(!show)} aria-hidden="true">
+                <div>
                     <UnitRowForMobile>
                         <div className='left'>
                             <p className='text-white' style={{fontSize: 16, fontWeight: '700'}}>{datum.name}</p>
@@ -55,12 +55,12 @@ const WalletDataRow = ({datum}) => {
                         </div>
                         <div className='right'>
                             <p style={{fontSize: 16}}>
-                                {show? <span><Icon icon="ant-design:caret-up-filled" /></span>: <span><Icon icon="ant-design:caret-down-filled" /></span>}
+                                <span><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} data-bs-toggle="collapse" data-bs-target={`#id${index}`} onClick={() => setShow(!show)} /></span>
                             </p>
                         </div>
                     </UnitRowForMobile>
                 </div>
-                <ToggleForMobile show={show}>
+                <div id={`id${index}`} className='collapse'>
                     <UnitRowForMobile>
                         <div className='left'>
                             <p style={{color: 'dimgrey'}}>Currency 1</p>
@@ -101,7 +101,7 @@ const WalletDataRow = ({datum}) => {
                             <p>30 000 DAI</p>
                         </div>
                     </UnitRowForMobile>
-                </ToggleForMobile>
+                </div>
             </DataRowForMobile>
         </>
     );
@@ -154,15 +154,10 @@ const DataRowForMobile = styled.div`
     } 
 `;
 
-const ToggleForMobile = styled.div`
-    display: ${props => {
-        return props.show? 'block': 'none';
-    }};
-`;
-
 const UnitRowForMobile = styled.div`
     display: flex;
     justify-content: space-between;
+    padding: 2px 0;
     &>div.left {
         width: 60%;
     }

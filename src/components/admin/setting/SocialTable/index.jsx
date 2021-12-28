@@ -18,7 +18,7 @@ const SocialTable = ({data}) => {
             </TableHeadForMobile>
             <TableBody>
                 {data.map((datum, index) => {
-                    return <SocialDataRow key={index} datum={datum} />
+                    return <SocialDataRow key={index} datum={datum} index={index} />
                 })}
             </TableBody>
         </>

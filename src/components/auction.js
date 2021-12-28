@@ -1,17 +1,27 @@
 import React, { useReducer, useEffect, useState } from "react"
-import { navigate } from "gatsby"
+// import { navigate } from "gatsby"
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
 import Slider from "rc-slider"
 import Select from "react-select"
 import Modal from "react-modal"
 import ReactECharts from "echarts-for-react"
 import Header from "../components/common/header"
-import { useQuery, useLazyQuery, useMutation } from "@apollo/client"
-import { getSecTomorrow, numberWithCommas, numberWithLength, getTimeDiffOverall, getDiffOverall } from "../utilities/number"
+import { useQuery, useMutation } from "@apollo/client"
+import {
+    // getSecTomorrow,
+    numberWithCommas,
+    numberWithLength,
+    getTimeDiffOverall,
+    getDiffOverall,
+} from "../utilities/number"
 import { ChartIcon, Qmark, CloseIcon } from "../utilities/imgImport"
 import { useWindowSize } from "../utilities/customHook"
 import { PLACE_BID } from "../apollo/graghqls/mutations/Bid"
-import { GET_AUCTION_BY_STATUS, GET_AUCTION, GET_AUCTION_BY_NUMBER, GET_BIDLIST_BY_ROUND } from "../apollo/graghqls/querys/Auction"
+import {
+    GET_AUCTION,
+    GET_AUCTION_BY_NUMBER,
+    GET_BIDLIST_BY_ROUND,
+} from "../apollo/graghqls/querys/Auction"
 
 // import { AuctionService } from "../apollo/model/AuctionService"
 // import * as GraphQL from "../apollo/graghqls/querys/Auction"
@@ -60,14 +70,14 @@ const options = [
 
 const Auction = () => {
     const size = useWindowSize()
-   
+
     const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
         tabIndex: 0,
-        curTime: {
-            hours: 0,
-            minutes: 0,
-            seconds: 0,
-        },
+        // curTime: {
+        //     hours: 0,
+        //     minutes: 0,
+        //     seconds: 0,
+        // },
         amount: 1,
         price: 1,
         total: "",
@@ -112,12 +122,12 @@ const Auction = () => {
                 },
             ],
         },
-        round: "",
+        round,
     })
 
     const {
         tabIndex,
-        curTime,
+        // curTime,
         amount,
         price,
         place_bid,
@@ -127,60 +137,71 @@ const Auction = () => {
         bidChartData,
         round,
     } = state
+    const [selectedData, setSelectedData] = useState(1)
 
-    const { data, loading, error } = useQuery(GET_AUCTION)
+    const { data } = useQuery(GET_AUCTION)
 
-    const roundData = data?.getAuctions?.filter((item) =>{
-        if (item.status === 2 || item.status === 0){
-            return item
-        }
-    })  
+    const roundData = data?.getAuctions?.filter(
+        (item) => (item.status === 2 || item.status === 0) && item
+    )
 
     // get round based data
-    const { data: roundM, loading: loadingM, error: errorM } = useQuery(GET_AUCTION_BY_NUMBER, {
-        variables: { round: roundData? roundData[0].number : -1 },
+    const { data: roundM } = useQuery(GET_AUCTION_BY_NUMBER, {
+        variables: { round: roundData ? roundData[0].number : -1 },
     })
-
-    const { data: roundH, loading: loadingH, error: errorH } = useQuery(GET_AUCTION_BY_NUMBER, {
-        variables: { round: roundData? roundData[0]?.number + 1 : -1 },
+    const { data: roundH } = useQuery(GET_AUCTION_BY_NUMBER, {
+        variables: { round: roundData ? roundData[0]?.number + 1 : -1 },
     })
-
-    const { data: roundL, loading: loadingL, error: errorL } = useQuery(GET_AUCTION_BY_NUMBER, {
-        variables: { round: roundData? roundData[0]?.number - 1 : -1 },
+    const { data: roundL } = useQuery(GET_AUCTION_BY_NUMBER, {
+        variables: { round: roundData ? roundData[0]?.number - 1 : -1 },
     })
 
     // get history bids
-    const { data: historyBidListM, loading: loadingHistoryBidListM, error: errorHistoryBidListM } = useQuery(GET_BIDLIST_BY_ROUND, {
-        variables: { round: roundData? roundData[0].number : -1 },
+    const {
+        data: historyBidListM,
+        loading: loadingHistoryBidListM,
+        error: errorHistoryBidListM,
+    } = useQuery(GET_BIDLIST_BY_ROUND, {
+        variables: { round: roundData ? roundData[0].number : -1 },
     })
 
-    const { data: historyBidListH, loading: loadingHistoryBidListH, error: errorHistoryBidListH } = useQuery(GET_BIDLIST_BY_ROUND, {
-        variables: { round: roundData? roundData[0]?.number + 1 : -1  },
+    const {
+        data: historyBidListH,
+        loading: loadingHistoryBidListH,
+        error: errorHistoryBidListH,
+    } = useQuery(GET_BIDLIST_BY_ROUND, {
+        variables: { round: roundData ? roundData[0]?.number + 1 : -1 },
     })
 
-    const { data: historyBidListL, loading: loadingHistoryBidListL, error: errorHistoryBidListL } = useQuery(GET_BIDLIST_BY_ROUND, {
-        variables: { round: roundData? roundData[0]?.number - 1 : -1 },
+    const {
+        data: historyBidListL,
+        loading: loadingHistoryBidListL,
+        error: errorHistoryBidListL,
+    } = useQuery(GET_BIDLIST_BY_ROUND, {
+        variables: { round: roundData ? roundData[0]?.number - 1 : -1 },
     })
 
-    const [selectedData, setSelectedData] = useState(0)
+    const fnSelectedRoundData = () =>
+        selectedData === 0
+            ? roundL?.getAuctionByNumber
+            : selectedData === 1
+            ? roundM?.getAuctionByNumber
+            : roundH?.getAuctionByNumber
 
-    const fnSelectedRoundData = () => {
-        if(selectedData === 0){
-            return roundL?.getAuctionByNumber
-        }else if (selectedData === 1){
-            return roundM?.getAuctionByNumber
-        }else{
-            return roundH?.getAuctionByNumber
-        }
-    }
+    console.log(fnSelectedRoundData()?.minPrice)
+    // console.log(new Date(fnSelectedRoundData()?.startedAt))
+    // console.log(new Date(fnSelectedRoundData()?.endedAt))
 
-    console.log(new Date(fnSelectedRoundData()?.startedAt))
-    console.log(new Date(fnSelectedRoundData()?.endedAt))
-
-    const distanceToDate =  getTimeDiffOverall(fnSelectedRoundData()?.startedAt, fnSelectedRoundData()?.endedAt)  // 86400
-    const duration = getDiffOverall(fnSelectedRoundData()?.startedAt, fnSelectedRoundData()?.endedAt) //getSecTomorrow()
+    const distanceToDate = getTimeDiffOverall(
+        fnSelectedRoundData()?.startedAt,
+        fnSelectedRoundData()?.endedAt
+    ) // 86400
+    const duration = getDiffOverall(
+        fnSelectedRoundData()?.startedAt,
+        fnSelectedRoundData()?.endedAt
+    ) //getSecTomorrow()
     const percentage = (distanceToDate / duration) * 100
-   
+
     const [PlaceBid] = useMutation(PLACE_BID, {
         onCompleted: (data) => {
             console.log("received Mutation data", data)
@@ -189,27 +210,36 @@ const Auction = () => {
         onError: (err) => {
             console.log("received Mutation data", err)
             setState({ place_bid: true })
-        }
+        },
     })
 
-    useEffect(() => setState(
-        { 
-            round: data?.getAuctions[selectedData] 
-        }), []
-    )
-
-    console.log(selectedData)
-
     useEffect(() => {
-
-        console.log( new Date(fnSelectedRoundData()?.endedAt));
-        console.log(new Date(fnSelectedRoundData()?.startedAt));
+        // console.log(new Date(fnSelectedRoundData()?.endedAt))
+        // console.log(new Date(fnSelectedRoundData()?.startedAt))
         const id = setInterval(() => {
             setState({
                 curTime: {
-                    hours: parseInt(getTimeDiffOverall(fnSelectedRoundData()?.startedAt, fnSelectedRoundData()?.endedAt) / (60 * 60)),
-                    minutes: parseInt((getTimeDiffOverall(fnSelectedRoundData()?.startedAt, fnSelectedRoundData()?.endedAt) % (60 * 60)) / 60),
-                    seconds: parseInt(getTimeDiffOverall(fnSelectedRoundData()?.startedAt, fnSelectedRoundData()?.endedAt) % 60),
+                    hours: parseInt(
+                        getTimeDiffOverall(
+                            fnSelectedRoundData()?.startedAt,
+                            fnSelectedRoundData()?.endedAt
+                        ) /
+                            (60 * 60)
+                    ),
+                    minutes: parseInt(
+                        (getTimeDiffOverall(
+                            fnSelectedRoundData()?.startedAt,
+                            fnSelectedRoundData()?.endedAt
+                        ) %
+                            (60 * 60)) /
+                            60
+                    ),
+                    seconds: parseInt(
+                        getTimeDiffOverall(
+                            fnSelectedRoundData()?.startedAt,
+                            fnSelectedRoundData()?.endedAt
+                        ) % 60
+                    ),
                 },
             })
         }, 1000)
@@ -243,28 +273,28 @@ const Auction = () => {
                             show_chart ? "d-none" : "d-block"
                         }`}
                     >
-                        <Tabs className="round-tab" forceRenderTabPanel defaultIndex={0} onSelect={(k) => setSelectedData(k)}>
-                            
-                                {
-                                    data?.getAuctions?.map((item, idx) => 
-                                    {
-                                        if(item.status === 2 || item.status === 0 ) {
-                                            return <TabList>
-                                                <Tab>Round {item.number - 1}</Tab>
-                                                <Tab>Round {item.number}</Tab>
-                                                <Tab>Round {item.number + 1}</Tab> 
-                                            </TabList>
-                                        }   
-                                    })
-                                }
+                        <Tabs
+                            className="round-tab"
+                            selectedIndex={selectedData}
+                            onSelect={(index) => setSelectedData(index)}
+                        >
+                            <TabList>
+                                <Tab>Round {fnSelectedRoundData()?.number}</Tab>
+                                <Tab>Round {fnSelectedRoundData()?.number}</Tab>
+                                <Tab>Round {fnSelectedRoundData()?.number}</Tab>
+                            </TabList>
+
                             <TabPanel>
-                                Token Available <span className="fw-bold">{roundL?.getAuctionByNumber?.totalToken}</span>
+                                Token Available{" "}
+                                <span className="fw-bold">{fnSelectedRoundData()?.token}</span>
                             </TabPanel>
                             <TabPanel>
-                                Token Available <span className="fw-bold">{roundM?.getAuctionByNumber?.totalToken}</span>
+                                Token Available{" "}
+                                <span className="fw-bold">{fnSelectedRoundData()?.token}</span>
                             </TabPanel>
                             <TabPanel>
-                                Token Available <span className="fw-bold">{roundH?.getAuctionByNumber?.totalToken}</span>
+                                Token Available{" "}
+                                <span className="fw-bold">{fnSelectedRoundData()?.token}</span>
                             </TabPanel>
                         </Tabs>
                         <Tabs
@@ -327,14 +357,42 @@ const Auction = () => {
                             <div
                                 className="timeleft"
                                 style={{
-                                    width: (percentage > 0 && percentage < 101? percentage : 0) + "%",
+                                    width:
+                                        (percentage > 0 && percentage < 101 ? percentage : 0) + "%",
                                     background: "#464646",
                                 }}
                             >
                                 <div className="timeleft__value">
-                                    {numberWithLength(parseInt(getTimeDiffOverall(fnSelectedRoundData()?.startedAt, fnSelectedRoundData()?.endedAt) / (60 * 60), 2))}:
-                                    {numberWithLength(parseInt((getTimeDiffOverall(fnSelectedRoundData()?.startedAt, fnSelectedRoundData()?.endedAt) % (60 * 60)) / 60))}:
-                                    {numberWithLength(parseInt(getTimeDiffOverall(fnSelectedRoundData()?.startedAt, fnSelectedRoundData()?.endedAt) % 60))}
+                                    {numberWithLength(
+                                        parseInt(
+                                            getTimeDiffOverall(
+                                                fnSelectedRoundData()?.startedAt,
+                                                fnSelectedRoundData()?.endedAt
+                                            ) /
+                                                (60 * 60),
+                                            2
+                                        )
+                                    )}
+                                    :
+                                    {numberWithLength(
+                                        parseInt(
+                                            (getTimeDiffOverall(
+                                                fnSelectedRoundData()?.startedAt,
+                                                fnSelectedRoundData()?.endedAt
+                                            ) %
+                                                (60 * 60)) /
+                                                60
+                                        )
+                                    )}
+                                    :
+                                    {numberWithLength(
+                                        parseInt(
+                                            getTimeDiffOverall(
+                                                fnSelectedRoundData()?.startedAt,
+                                                fnSelectedRoundData()?.endedAt
+                                            ) % 60
+                                        )
+                                    )}
                                 </div>
                             </div>
                         </div>
@@ -345,12 +403,36 @@ const Auction = () => {
                             </div>
                             <div>
                                 <p className="caption">Available Until</p>
-                                {getTimeDiffOverall(fnSelectedRoundData()?.startedAt, fnSelectedRoundData()?.endedAt)<0 ? <p className="value"> No Data</p> : 
-                                <p className="value">
-                                    {numberWithLength(parseInt(new Date(fnSelectedRoundData()?.endedAt).getHours()))}:
-                                    {numberWithLength(parseInt(new Date(fnSelectedRoundData()?.endedAt).getMinutes()))}:
-                                    {numberWithLength(parseInt(new Date(fnSelectedRoundData()?.endedAt).getSeconds()))}
-                                </p>}
+                                {getTimeDiffOverall(
+                                    fnSelectedRoundData()?.startedAt,
+                                    fnSelectedRoundData()?.endedAt
+                                ) < 0 ? (
+                                    <p className="value"> No Data</p>
+                                ) : (
+                                    <p className="value">
+                                        {numberWithLength(
+                                            parseInt(
+                                                new Date(fnSelectedRoundData()?.endedAt).getHours()
+                                            )
+                                        )}
+                                        :
+                                        {numberWithLength(
+                                            parseInt(
+                                                new Date(
+                                                    fnSelectedRoundData()?.endedAt
+                                                ).getMinutes()
+                                            )
+                                        )}
+                                        :
+                                        {numberWithLength(
+                                            parseInt(
+                                                new Date(
+                                                    fnSelectedRoundData()?.endedAt
+                                                ).getSeconds()
+                                            )
+                                        )}
+                                    </p>
+                                )}
                             </div>
                         </div>
                         {place_bid && (
@@ -411,8 +493,6 @@ const Auction = () => {
                             <button
                                 className="btn-primary text-uppercase w-100"
                                 onClick={() => {
-                                    
-
                                     // setState({ place_bid: true })
                                     // navigate("/payment")
                                     PlaceBid({

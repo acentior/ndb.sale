@@ -1,25 +1,27 @@
-import { Link } from "gatsby"
-import validator from "validator"
-import Select from "react-select"
-import AuthLayout from "../common/AuthLayout"
-import CustomSpinner from "../common/custom-spinner"
-import { FormInput } from "../common/FormControl"
-import { useSignupMutation } from "../../apollo/model/auth"
 import React, { useState } from "react"
-import { countries, passwordValidatorOptions, social_links } from "../../utilities/staticData"
-import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons"
+import { Link } from "gatsby"
+import Select from "react-select"
+import validator from "validator"
+import AuthLayout from "../common/AuthLayout"
+import { FormInput } from "../common/FormControl"
+import CustomSpinner from "../common/custom-spinner"
+import { useSignupMutation } from "../../apollo/model/auth"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons"
+import { countries, passwordValidatorOptions, social_links } from "../../utilities/staticData"
+import termsAndConditionsFile from "../../assets/files/NDB Coin Auction - Terms and Conditions.pdf"
 
 const SingupPage = () => {
     const [email, setEmail] = useState("")
     const [pwd, setPwd] = useState("")
     const [pwdConfirm, setPwdConfirm] = useState("")
-    const [remember, setRemember] = useState("")
+    const [agree, setAgree] = useState("")
     const [country, setCountry] = useState(countries[0])
 
     const [emailError, setEmailError] = useState("")
     const [pwdError, setPwdError] = useState("")
     const [pwdConfirmError, setPwdConfirmError] = useState("")
+    const [agreeError, setAgreeError] = useState("")
 
     const [signupMutation, signupMutationResults] = useSignupMutation()
 
@@ -28,6 +30,7 @@ const SingupPage = () => {
         setEmailError("")
         setPwdError("")
         setPwdConfirmError("")
+        setAgreeError("")
         let error = false
         if (!email || !validator.isEmail(email)) {
             setEmailError("Invalid email address")
@@ -37,6 +40,10 @@ const SingupPage = () => {
             setPwdError(
                 "Password must contain at least 8 characters, including UPPER/lowercase and numbers!"
             )
+            error = true
+        }
+        if (!agree) {
+            setAgreeError("Please agree to terms and conditions")
             error = true
         }
         if (!pwdConfirm || pwd !== pwdConfirm)
@@ -112,40 +119,50 @@ const SingupPage = () => {
                     <label className="d-flex align-items-center gap-2">
                         <input
                             type="checkbox"
-                            name="remember"
-                            value={remember}
+                            value={agree}
                             className="form-check-input"
-                            onChange={() => setRemember(!remember)}
+                            onChange={() => setAgree(!agree)}
                         />
                         <div className="keep-me-signed-in-text">
                             Agree to{" "}
-                            <Link to="/" className="text-info terms-link">
+                            <a
+                                target="_blank"
+                                href={termsAndConditionsFile}
+                                className="text-info terms-link"
+                            >
                                 Terms & Conditions
-                            </Link>
+                            </a>
                         </div>
                     </label>
                 </div>
-                {webserviceError && (
-                    <span className="errorsapn">
-                        <FontAwesomeIcon icon={faExclamationCircle} />{" "}
-                        {"Your email and password do not match!"}
-                    </span>
-                )}
-                <button
-                    type="submit"
-                    className="btn-primary w-100 text-uppercase d-flex align-items-center justify-content-center py-2 mt-3"
-                    disabled={pending}
-                >
-                    <div className={`${pending ? "opacity-1" : "opacity-0"}`}>
-                        <CustomSpinner />
-                    </div>
-                    <div className={`${pending ? "ms-3" : "pe-4"}`}>sign up with email</div>
-                </button>
+                <div className="mt-3">
+                    {webserviceError && (
+                        <span className="errorsapn">
+                            <FontAwesomeIcon icon={faExclamationCircle} />{" "}
+                            {"Your email and password do not match!"}
+                        </span>
+                    )}
+                    {agreeError && (
+                        <span className="errorsapn">
+                            <FontAwesomeIcon icon={faExclamationCircle} /> {agreeError}
+                        </span>
+                    )}
+                    <button
+                        type="submit"
+                        className="btn-primary w-100 text-uppercase d-flex align-items-center justify-content-center py-2"
+                        disabled={pending}
+                    >
+                        <div className={`${pending ? "opacity-1" : "opacity-0"}`}>
+                            <CustomSpinner />
+                        </div>
+                        <div className={`${pending ? "ms-3" : "pe-4"}`}>sign up with email</div>
+                    </button>
+                </div>
             </form>
             <ul className="social-links">
                 {social_links.map((item, idx) => (
                     <li key={idx}>
-                        <a href={`${item.to}/signup`}>
+                        <a href={item.to}>
                             <img src={item.icon} alt="icon" />
                         </a>
                     </li>

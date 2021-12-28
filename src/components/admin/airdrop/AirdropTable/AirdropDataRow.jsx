@@ -4,7 +4,7 @@ import { Icon } from '@iconify/react';
 import { device } from '../../../../utilities/device';
 import { width } from './columnWidth';
 
-const AirdropDataRow = ({datum}) => {
+const AirdropDataRow = ({datum, index}) => {
     const [show, setShow] = useState(false);
     return (
         <>
@@ -40,7 +40,7 @@ const AirdropDataRow = ({datum}) => {
                 </div>
             </DataRow>
             <DataRowForMobile>
-                <div onClick={() => setShow(!show)} onKeyDown={() => setShow(!show)} aria-hidden="true">
+                <div>
                     <UnitRowForMobile>
                         <div className='left'>
                             <p className='text-white' style={{fontSize: 16, fontWeight: '700'}}>{datum.name}</p>
@@ -57,12 +57,12 @@ const AirdropDataRow = ({datum}) => {
                         </div>
                         <div className='right'>
                             <p style={{fontSize: 16}}>
-                                {show? <span><Icon icon="ant-design:caret-up-filled" /></span>: <span><Icon icon="ant-design:caret-down-filled" /></span>}
+                                <span><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} data-bs-toggle="collapse" data-bs-target={`#id${index}`} onClick={() => setShow(!show)} /></span>
                             </p>
                         </div>
                     </UnitRowForMobile>
                 </div>
-                <ToggleForMobile show={show}>
+                <div id={`id${index}`} className='collapse'>
                     <UnitRowForMobile>
                         <div className='left'>
                             <p style={{color: 'dimgrey'}}>Airdrop_Name</p>
@@ -71,7 +71,7 @@ const AirdropDataRow = ({datum}) => {
                             <p>1234567</p>
                         </div>
                     </UnitRowForMobile>
-                </ToggleForMobile>
+                </div>
             </DataRowForMobile>            
         </>
     )
@@ -140,12 +140,6 @@ const DataRowForMobile = styled.div`
         display: flex;
         flex-direction: column;
     } 
-`;
-
-const ToggleForMobile = styled.div`
-    display: ${props => {
-        return props.show? 'block': 'none';
-    }};
 `;
 
 const UnitRowForMobile = styled.div`

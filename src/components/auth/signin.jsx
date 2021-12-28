@@ -9,8 +9,9 @@ import { useAuth } from "../../hooks/useAuth"
 import CustomSpinner from "../common/custom-spinner"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons"
+import { ROUTES } from "../../utilities/routes"
 
-const Signin = () => {
+const Signin = (props) => {
     // Auth Check
     const auth = useAuth()
     if (auth?.isLoggedIn()) navigate("/app/profile")
@@ -87,7 +88,7 @@ const Signin = () => {
                             Keep me signed in in this device
                         </div>
                     </label>
-                    <Link className="txt-green forget-pwd" to="/app/password-reset">
+                    <Link className="txt-green forget-pwd" to={ROUTES.forgotPassword}>
                         Forgot password?
                     </Link>
                 </div>
@@ -95,6 +96,16 @@ const Signin = () => {
                     <span className="errorsapn">
                         <FontAwesomeIcon icon={faExclamationCircle} />{" "}
                         {signinMutationResults?.data?.signin.token}
+                    </span>
+                )}
+                {props.error && props.error.split(".")[0] === "InvalidProvider" && (
+                    <span className="errorsapn">
+                        <FontAwesomeIcon icon={faExclamationCircle} /> Your are already signed up
+                        with{" "}
+                        <span className="text-uppercase errorsapn">
+                            {props.error.split(".")[1]}
+                        </span>
+                        . Please use it.
                     </span>
                 )}
                 <button
@@ -112,7 +123,7 @@ const Signin = () => {
             <ul className="social-links">
                 {social_links.map((item, idx) => (
                     <li key={idx}>
-                        <a href={`${item.to}/signin`}>
+                        <a href={item.to}>
                             <img src={item.icon} alt="icon" />
                         </a>
                     </li>

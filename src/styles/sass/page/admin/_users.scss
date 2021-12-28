@@ -24,6 +24,12 @@ main.admin-users-page {
                     color: #ffffff;                
                 }
                 div.tabs_container {
+                    overflow-y: auto;
+                    max-height: 80vh;
+                    overflow-x: hidden;
+                    @include mq('phone', max) {
+                        max-height: unset;
+                    }
                     .react-tabs {
                         .react-tabs__tab-list {
                             width: 85%;
@@ -60,7 +66,6 @@ main.admin-users-page {
                     font-size: 16px;
                     font-weight: 400;
                     color: lightgrey;
-                    padding: 3px 0;
                     overflow: hidden;
                     text-overflow: ellipsis;
                     &:hover {

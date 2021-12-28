@@ -55,7 +55,7 @@ const AuctionRound = () => {
             <DataRowForMobile>
                 <div>
                     <UnitRowForMobile>
-                        <div className='left' onClick={() => setShow(!show)} onKeyDown={() => setShow(!show)} aria-hidden="true">
+                        <div className='left'>
                             <p>Auction Round</p>
                         </div>
                         <div className='right'>
@@ -65,12 +65,12 @@ const AuctionRound = () => {
                         </div>
                         <div className='right'>
                             <p style={{fontSize: 16}}>
-                                <span><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} onClick={() => setShow(!show)} /></span>
+                                <span><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} data-bs-toggle="collapse" data-bs-target='#auction_round' onClick={() => setShow(!show)} /></span>
                             </p>
                         </div>
                     </UnitRowForMobile>
                 </div>
-                <ToggleForMobile show={show}>
+                <div id='auction_round' className='collapse'>
                     <UnitRowForMobile>
                         <div className='left'>
                             <p style={{color: 'dimgrey'}}>Points per round</p>
@@ -79,7 +79,7 @@ const AuctionRound = () => {
                             <p>10</p>
                         </div>
                     </UnitRowForMobile>
-                </ToggleForMobile>
+                </div>
             </DataRowForMobile>
             <Modal
                 isOpen={modalIsOpen}
@@ -182,12 +182,6 @@ const DataRowForMobile = styled.div`
         display: flex;
         flex-direction: column;
     } 
-`;
-
-const ToggleForMobile = styled.div`
-    display: ${props => {
-        return props.show? 'block': 'none';
-    }};
 `;
 
 const UnitRowForMobile = styled.div`

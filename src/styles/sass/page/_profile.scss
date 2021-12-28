@@ -472,6 +472,14 @@
 .dressup-modal {
     max-width: 950px;
     padding: 0px;
+    border: unset;
+
+    .expression-icons {
+        z-index: 0;
+    }
+    .facial-style-icons {
+        z-index: 1;
+    }
 
     &__header {
         display: flex;

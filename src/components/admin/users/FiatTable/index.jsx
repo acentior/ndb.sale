@@ -18,7 +18,7 @@ const FiatTable = ({data}) => {
             </TableHeadForMobile>
             <TableBody>
                 {data.map((datum, index) => {
-                    return <FiatDataRow key={index} datum={datum} />
+                    return <FiatDataRow key={index} datum={datum} index={index} />
                 })}
             </TableBody>
         </>

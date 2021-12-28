@@ -1,7 +1,8 @@
 import * as GraphQL from "../graghqls/mutations/Auth"
-import { useMutation } from "@apollo/client"
+import { useMutation, useQuery } from "@apollo/client"
 import { navigate } from "gatsby"
 import { setAuthToken, getUser, setUser } from "../../utilities/auth"
+import { ROUTES } from "../../utilities/routes"
 
 // Sign In
 
@@ -9,7 +10,6 @@ export const useSigninMutation = () => {
     const [mutation, mutationResults] = useMutation(GraphQL.SIGNIN, {
         retry: 1,
         onCompleted: (data) => {
-            console.log("signin data", data)
             if (data.signin.status === "Failed") {
                 // do something
                 return
@@ -44,7 +44,6 @@ export const useSigninMutation = () => {
 export const useSignupMutation = () => {
     const [mutation, mutationResults] = useMutation(GraphQL.SIGNUP, {
         onCompleted: (data) => {
-            console.log("signup data", data)
             navigate("/app/verify-email")
         },
     })
@@ -66,21 +65,16 @@ export const useSignupMutation = () => {
 }
 
 // Signin with 2FA
-
 export const useSignIn2FA = () => {
     const [mutation, mutationResults] = useMutation(GraphQL.SIGNIN_2FA, {
         onCompleted: (data) => {
-            console.log("2fa result", data)
             if (data.confirm2FA.status === "Failed") {
                 // do something
                 return
             } else if (data.confirm2FA.status === "Success") {
                 setAuthToken(data.confirm2FA.token)
-                setUser({
-                    ...getUser(),
-                    tempToken: null,
-                })
-                navigate("/app/profile")
+                localStorage.removeItem("USER_DATA")
+                navigate(ROUTES.selectFigure)
             }
         },
     })
@@ -101,24 +95,16 @@ export const useSignIn2FA = () => {
 
 export const useForgotPassword = () => {
     const [mutation, mutationResults] = useMutation(GraphQL.FORGOT_PASSWORD, {
+        errorPolicy: "ignore",
         onCompleted: (data) => {
-            console.log("Forgot Password result", data)
-            // if (data.forgotPassword.status === "Failed") {
-            //   // do something
-            //   return
-            // }
-            // else if (data.confirm2FA.status === "Success") {
-            //   setAuthToken(data.confirm2FA.token)
-            //   setUser({
-            //     ...user,
-            //     tempToken: null
-            //   })
-            //   navigate("/app/profile")
-            // }
+            if (data?.forgotPassword === "Success") {
+                navigate(ROUTES.changePassword)
+            }
         },
     })
 
     const forgotPassword = (email) => {
+        localStorage.setItem("FORGOT_PASSWORD_EMAIL", email)
         return mutation({
             variables: {
                 email,
@@ -139,4 +125,17 @@ export const useChangePassword = () => {
         })
     }
     return [changePassword, mutationResults]
+}
+
+export const useResetPassword = () => {
+    const [mutation, mutationResults] = useMutation(GraphQL.RESET_PASSWORD)
+
+    const resetPassword = (email, code, newPassword) => {
+        return mutation({
+            variables: {
+                email, code, newPassword
+            },
+        })
+    }
+    return [resetPassword, mutationResults]
 }

@@ -10,14 +10,14 @@ const StepperContainer = ({currentStep = 1, texts = []}) => {
                 <div>
                     {currentStep === 1? <Running />: <Success><Icon icon="ci:check-bold" /></Success>}
                     <StepText step={currentStep + 1}>{texts[0]}</StepText>  
-                </div>                                                                    
+                </div>
             </div>
             <div className="step">
                 <StepLine step={currentStep}/>
                 <div>
                     {currentStep === 1? <StandBy />: (currentStep === 2? <Running />: <Success><Icon icon="ci:check-bold" /></Success>)}
                     <StepText step={currentStep}>{texts[1]}</StepText>
-                </div>                                    
+                </div>
             </div>
             <div className="step">
                 <StepLine step={currentStep - 1}/>

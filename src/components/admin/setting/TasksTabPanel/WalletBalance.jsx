@@ -52,13 +52,13 @@ const WalletBalance = () => {
             <DataRow>
                 <Main>
                     <UnitRow>
-                        <div className='task' onClick={() => setShow(!show)} onKeyDown={() => setShow(!show)} aria-hidden="true">
+                        <div className='task' data-bs-toggle="collapse" data-bs-target='#wallet_balance' onClick={() => setShow(!show)} onKeyDown={() => setShow(!show)} aria-hidden="true">
                             <p>Wallet Balance <span style={{marginLeft: 15}}><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} /></span></p>
                         </div>
-                        <div className='threshold' onClick={() => setShow(!show)} onKeyDown={() => setShow(!show)} aria-hidden="true">
+                        <div className='threshold'>
                             <p>{BalancesData[0].threshold}</p>
                         </div>
-                        <div className='points' onClick={() => setShow(!show)} onKeyDown={() => setShow(!show)} aria-hidden="true">
+                        <div className='points'>
                             <p>{BalancesData[0].points}</p>
                         </div>
                         <div className='edit'>
@@ -66,29 +66,31 @@ const WalletBalance = () => {
                         </div>
                     </UnitRow>                    
                 </Main>
-                <Toggle show={show}>
-                    {BalancesData.map((value, index) => {
-                        if(index === 0) return null;
-                        return (
-                            <UnitRow>
-                                <div className='task'></div>
-                                <div className='threshold'>
-                                    <p key={index}>{value.threshold}</p>
-                                </div>
-                                <div className='points'>
-                                    <p key={index}>{value.points}</p>
-                                </div>
-                                <div className='edit'></div>
-                            </UnitRow>
-                        )
-                    })}
-                </Toggle>                
+                <div id='wallet_balance' className='collapse'>
+                    <Toggle>
+                        {BalancesData.map((value, index) => {
+                            if(index === 0) return null;
+                            return (
+                                <UnitRow key={index}>
+                                    <div className='task'></div>
+                                    <div className='threshold'>
+                                        <p key={index}>{value.threshold}</p>
+                                    </div>
+                                    <div className='points'>
+                                        <p key={index}>{value.points}</p>
+                                    </div>
+                                    <div className='edit'></div>
+                                </UnitRow>
+                            )
+                        })}
+                    </Toggle>
+                </div>               
             </DataRow>
 
             <DataRowForMobile>
                 <div>
                     <UnitRowForMobile>
-                        <div className='left' onClick={() => setShow(!show)} onKeyDown={() => setShow(!show)} aria-hidden="true">
+                        <div className='left'>
                             <p>Ballance Wallet</p>
                         </div>
                         <div className='right'>
@@ -98,12 +100,12 @@ const WalletBalance = () => {
                         </div>
                         <div className='right' onClick={() => setShow(!show)} onKeyDown={() => setShow(!show)} aria-hidden="true">
                             <p style={{fontSize: 16}}>
-                                <span><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} onClick={() => setShow(!show)} /></span>
+                                <span><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} data-bs-toggle="collapse" data-bs-target='#wallet_balance' onClick={() => setShow(!show)} /></span>
                             </p>
                         </div>
                     </UnitRowForMobile>
                 </div>
-                <ToggleForMobile show={show}>
+                <div id='wallet_balance' className='collapse'>
                     <UnitRowForMobile>
                         <div className='left'>
                             <p style={{color: 'dimgrey'}}>Threshold</p>
@@ -124,7 +126,7 @@ const WalletBalance = () => {
                             </UnitRowForMobile>
                         );
                     })}
-                </ToggleForMobile>
+                </div>
             </DataRowForMobile>
             <Modal
                 isOpen={modalIsOpen}
@@ -226,16 +228,11 @@ const Main = styled.div`
     height: 60px;
     display: flex;
     justify-content: center;
-    p {
-        padding: 10px 0!important;
-    }
 `;
 
 const Toggle = styled.div`
     min-height: 60px;
-    display: ${props => {
-        return props.show? 'flex': 'none';
-    }};
+    display: flex;
     transition: 0.3s;
     flex-direction: column;
     justify-content: center;
@@ -276,12 +273,6 @@ const DataRowForMobile = styled.div`
         display: flex;
         flex-direction: column;
     } 
-`;
-
-const ToggleForMobile = styled.div`
-    display: ${props => {
-        return props.show? 'block': 'none';
-    }};
 `;
 
 const UnitRowForMobile = styled.div`

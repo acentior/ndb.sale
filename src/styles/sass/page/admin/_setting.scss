@@ -103,12 +103,16 @@ main.admin-setting-page {
                         font-size: 18px;
                         font-weight: 700;
                         color: white;
+                        padding-right: 5px;
                         text-transform: uppercase;
                         @include mq("laptop-wide", max) {
                             font-size: 14px;
                         }
                         @include mq("tablet", max) {
                             font-size: 12px;
+                        }
+                        @include mq('phone', max) {
+                            font-size: 10px;
                         }
                     }
                 }

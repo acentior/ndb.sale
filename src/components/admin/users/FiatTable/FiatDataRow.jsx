@@ -4,7 +4,7 @@ import { Icon } from '@iconify/react';
 import { device } from '../../../../utilities/device';
 import { width } from './columnWidth';
 
-const FiatDataRow = ({datum}) => {
+const FiatDataRow = ({datum, index}) => {
     const [show, setShow] = useState(false);
     return (
         <>
@@ -41,7 +41,7 @@ const FiatDataRow = ({datum}) => {
                 </div>
             </DataRow>
             <DataRowForMobile>
-                <div onClick={() => setShow(!show)} onKeyDown={() => setShow(!show)} aria-hidden="true">
+                <div>
                     <UnitRowForMobile>
                         <div className='left'>
                             <p className='text-white' style={{fontSize: 16, fontWeight: '700'}}>{datum.name}</p>
@@ -58,12 +58,12 @@ const FiatDataRow = ({datum}) => {
                         </div>
                         <div className='right'>
                             <p style={{fontSize: 16}}>
-                                {show? <span><Icon icon="ant-design:caret-up-filled" /></span>: <span><Icon icon="ant-design:caret-down-filled" /></span>}
+                                <span><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} data-bs-toggle="collapse" data-bs-target={`#id${index}`} onClick={() => setShow(!show)} /></span>
                             </p>
                         </div>
                     </UnitRowForMobile>
                 </div>
-                <ToggleForMobile show={show}>
+                <div id={`id${index}`} className='collapse'>
                     <UnitRowForMobile>
                         <div className='left'>
                             <p style={{color: 'dimgrey'}}>Payment ID</p>
@@ -72,7 +72,7 @@ const FiatDataRow = ({datum}) => {
                             <p>1234567</p>
                         </div>
                     </UnitRowForMobile>
-                </ToggleForMobile>
+                </div>
             </DataRowForMobile>            
         </>
     )
@@ -130,7 +130,7 @@ const Main = styled.div`
 
 // For Mobile
 const DataRowForMobile = styled.div`
-    min-height: 80px;
+    min-height: 70px;
     border-bottom: 1px solid #464646;
     padding: 16px;
     display: none;    
@@ -141,12 +141,6 @@ const DataRowForMobile = styled.div`
         display: flex;
         flex-direction: column;
     } 
-`;
-
-const ToggleForMobile = styled.div`
-    display: ${props => {
-        return props.show? 'block': 'none';
-    }};
 `;
 
 const UnitRowForMobile = styled.div`

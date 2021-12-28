@@ -12,7 +12,6 @@ let inMemoryUserDefault = {
   name: null,
   email: null,
   tempToken: null,
-  isVerify: null,
 }
 
 let inMemoryUser = inMemoryUserDefault
@@ -27,8 +26,8 @@ export const isBrowser = typeof window !== `undefined`
 
 // TODO: Check if these work as expected
 export const isTokenExpired = authToken => {
-  return authToken ? (Date.now() - decode(authToken).exp * 1000  > 0) : true
-} 
+  return authToken ? (Date.now() - decode(authToken).exp * 1000 > 0) : true
+}
 
 export const isLoggedOut = () => {
   const loggedOutTime = getLoggedOutTime()
@@ -54,11 +53,10 @@ export const logout = (callback) => {
 export const setAuthToken = (authToken) => {
   if (!isBrowser) return
   if (!authToken) {
-    console.log("[setAuthToken]", `Auth Token or Auth Expiration shouldn't be ${authToken}.`)
     return
   }
   localStorage.setItem(ACCESS_TOKEN, authToken)
-  inMemoryAuthToken = {authToken, authExpiration: decode(authToken).exp}
+  inMemoryAuthToken = { authToken, authExpiration: decode(authToken).exp }
 }
 
 export const setUser = (user) => {
@@ -72,10 +70,10 @@ export const setLoggedOutTime = () => {
 }
 
 const checkInMemoryAuthToken = () => {
-  if(inMemoryAuthToken === inMemoryAuthTokenDefault) {
+  if (inMemoryAuthToken === inMemoryAuthTokenDefault) {
     const authToken = localStorage.getItem(ACCESS_TOKEN)
-    if(!authToken) return
-    inMemoryAuthToken = {authToken, authExpiration: decode(authToken).exp}
+    if (!authToken) return
+    inMemoryAuthToken = { authToken, authExpiration: decode(authToken).exp }
   }
 }
 
@@ -90,14 +88,13 @@ export const getInMemoryAuthToken = () => {
 }
 
 export const getUser = () => {
-  console.log("isBrowser", isBrowser)
   if (!isBrowser) return inMemoryUserDefault
   try {
     inMemoryUser = JSON.parse(localStorage.getItem(USER_DATA))
-  } catch(e) {
+  } catch (e) {
     inMemoryUser = inMemoryUserDefault
   }
-  if(!inMemoryUser) inMemoryUser = inMemoryUserDefault
+  if (!inMemoryUser) inMemoryUser = inMemoryUserDefault
   return inMemoryUser;
 }
 
@@ -111,7 +108,3 @@ export const getLoggedOutTime = () => {
   if (!isBrowser) return null
   return JSON.parse(localStorage.getItem(LOGGED_OUT_KEY))
 }
-
-
-
-

@@ -41,6 +41,8 @@ import copy from "../images/copy.png"
 import copy2 from "../images/copy2.png"
 import airdrop from "../images/airdrop.png"
 
+import notFound from "../images/notFound.svg";
+
 //Wallets
 import metamask from "../images/wallets/metamask.svg"
 import walletConnect from "../images/wallets/wallet-connect.svg"
@@ -211,6 +213,8 @@ export const Unpass2 = unpass2
 export const NewDoc = newDoc
 export const PhotoIcon = photoIcon
 export const SelfieImg = selfieImg
+
+export const NotFound = notFound;
 
 //DressUP
 export const HairStyle1 = hairStyle1

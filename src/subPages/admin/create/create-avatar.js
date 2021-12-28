@@ -8,10 +8,13 @@ import LayoutForCreate from "../../../components/admin/LayoutForCreate"
 
 import { Alert, Rating } from "@mui/material"
 import Select from "react-select"
+import { capitalizeFirstLetter } from "../../../utilities/string"
+import DressupModal from "../../../components/dressup/dressup-modal"
 
 const CreateAvatar = () => {
     const [currentStep, setCurrentStep] = useState(1)
     const [showError, setShowError] = useState(false)
+    const [isDressUpModalOpen, setIsDressUpModalOpen] = useState(false)
 
     //------- Avatar Data and Validation
     const avatarItemList = [
@@ -23,12 +26,11 @@ const CreateAvatar = () => {
     ]
 
     const [avatarItems, setAvatarItems] = useState({ item1: {}, item2: {}, item3: {} })
-    const [avatarName, setAvatarName] = useState("")
+    const [avatarName, setAvatarName] = useState({firstname: '', lastname: ''})
 
     //-------- Stats Data and Validation
     // Stats Data
     const [stats, setStats] = useState([
-        { title: "", stars: 0 },
         { title: "", stars: 0 },
         { title: "", stars: 0 },
         { title: "", stars: 0 },
@@ -112,11 +114,17 @@ const CreateAvatar = () => {
                                         <p>Preview</p>
                                     </div>
                                     <div className="name_div">
-                                        <p>Name</p>
+                                        <p>Firstname</p>
                                         <input
                                             className="black_input"
-                                            value={avatarName}
-                                            onChange={(e) => setAvatarName(e.target.value)}
+                                            value={avatarName.firstname}
+                                            onChange={(e) => setAvatarName({...avatarName, firstname :e.target.value})}
+                                        />
+                                        <p style={{marginTop: 12}}>Lastname</p>
+                                        <input
+                                            className="black_input"
+                                            value={avatarName.lastname}
+                                            onChange={(e) => setAvatarName({...avatarName, lastname :e.target.value})}
                                         />
                                     </div>
                                     <div className="items_div">
@@ -135,7 +143,7 @@ const CreateAvatar = () => {
                                                         options={avatarItemList}
                                                         styles={customSelectStyles}
                                                     />
-                                                    <Icon icon="lucide:upload" />
+                                                    <Icon icon="lucide:upload" onClick={() => setIsDressUpModalOpen(true)}/>
                                                 </div>
                                             )
                                         })}
@@ -154,6 +162,7 @@ const CreateAvatar = () => {
                                     Next
                                 </button>
                             </div>
+                            <DressupModal isModalOpen={isDressUpModalOpen} setIsModalOpen={setIsDressUpModalOpen} />
                         </>
                     )}
                     {currentStep === 2 && (
@@ -316,7 +325,10 @@ const CreateAvatar = () => {
                             <div className="input_div">
                                 <div className="preview_div">
                                     <p className="name">
-                                        {avatarName ? avatarName : "Gioacchino Failla"}
+                                        {avatarName.firstname && avatarName.lastname ? 
+                                            `${capitalizeFirstLetter(avatarName.firstname)} ${capitalizeFirstLetter(avatarName.lastname)}`:
+                                            "Gioacchino Failla"
+                                        }
                                     </p>
                                     <div className="row avatarStats">
                                         <div className="col-sm-4">

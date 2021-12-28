@@ -20,7 +20,7 @@ const WalletTable = ({data}) => {
             </TableHeadForMobile>
             <TableBody>
                 {data.map((datum, index) => {
-                    return <WalletDataRow key={index} datum={datum} />
+                    return <WalletDataRow key={index} datum={datum} index={index} />
                 })}
             </TableBody>
         </>
