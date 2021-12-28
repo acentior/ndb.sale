@@ -184,7 +184,12 @@ const Auction = () => {
     const [PlaceBid] = useMutation(PLACE_BID, {
         onCompleted: (data) => {
             console.log("received Mutation data", data)
+            setState({ place_bid: true })
         },
+        onError: (err) => {
+            console.log("received Mutation data", err)
+            setState({ place_bid: true })
+        }
     })
 
     useEffect(() => setState(
@@ -406,17 +411,19 @@ const Auction = () => {
                             <button
                                 className="btn-primary text-uppercase w-100"
                                 onClick={() => {
-                                    setState({ place_bid: true })
+                                    
+
+                                    // setState({ place_bid: true })
                                     // navigate("/payment")
-                                    // PlaceBid({
-                                    //     variables: {
-                                    //         roundId: "0e0b42a4-e433-49b6-ae5b-d5e0a8e07204",
-                                    //         tokenAmount: 1,
-                                    //         tokenPrice: 1,
-                                    //         payment: 1,
-                                    //         cryptoType: "String",
-                                    //     },
-                                    // })
+                                    PlaceBid({
+                                        variables: {
+                                            roundId: fnSelectedRoundData()?.number,
+                                            tokenAmount: amount,
+                                            tokenPrice: price,
+                                            payment: 1,
+                                            cryptoType: "String",
+                                        },
+                                    })
                                 }}
                             >
                                 {!place_bid ? "Place Bid" : "Increase Bid"}
