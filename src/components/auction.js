@@ -121,8 +121,7 @@ const Auction = () => {
                     data: [330, 252, 200, 334, 390, 330, 220],
                 },
             ],
-        },
-        round,
+        }
     })
 
     const {
@@ -135,7 +134,6 @@ const Auction = () => {
         show_chart,
         selectLabel,
         bidChartData,
-        round,
     } = state
     const [selectedData, setSelectedData] = useState(1)
 
@@ -158,25 +156,19 @@ const Auction = () => {
 
     // get history bids
     const {
-        data: historyBidListM,
-        loading: loadingHistoryBidListM,
-        error: errorHistoryBidListM,
+        data: historyBidListM
     } = useQuery(GET_BIDLIST_BY_ROUND, {
         variables: { round: roundData ? roundData[0].number : -1 },
     })
 
     const {
-        data: historyBidListH,
-        loading: loadingHistoryBidListH,
-        error: errorHistoryBidListH,
+        data: historyBidListH
     } = useQuery(GET_BIDLIST_BY_ROUND, {
         variables: { round: roundData ? roundData[0]?.number + 1 : -1 },
     })
 
     const {
-        data: historyBidListL,
-        loading: loadingHistoryBidListL,
-        error: errorHistoryBidListL,
+        data: historyBidListL
     } = useQuery(GET_BIDLIST_BY_ROUND, {
         variables: { round: roundData ? roundData[0]?.number - 1 : -1 },
     })
@@ -187,6 +179,13 @@ const Auction = () => {
             : selectedData === 1
             ? roundM?.getAuctionByNumber
             : roundH?.getAuctionByNumber
+
+    const fnSelectedBidhistoryData = () =>
+    selectedData === 0
+        ? historyBidListL?.getBidListByRound
+        : selectedData === 1
+        ? historyBidListM?.getBidListByRound
+        : historyBidListH?.getBidListByRound
 
     console.log(fnSelectedRoundData()?.minPrice)
     // console.log(new Date(fnSelectedRoundData()?.startedAt))
@@ -214,32 +213,12 @@ const Auction = () => {
     })
 
     useEffect(() => {
-        // console.log(new Date(fnSelectedRoundData()?.endedAt))
-        // console.log(new Date(fnSelectedRoundData()?.startedAt))
         const id = setInterval(() => {
             setState({
                 curTime: {
-                    hours: parseInt(
-                        getTimeDiffOverall(
-                            fnSelectedRoundData()?.startedAt,
-                            fnSelectedRoundData()?.endedAt
-                        ) /
-                            (60 * 60)
-                    ),
-                    minutes: parseInt(
-                        (getTimeDiffOverall(
-                            fnSelectedRoundData()?.startedAt,
-                            fnSelectedRoundData()?.endedAt
-                        ) %
-                            (60 * 60)) /
-                            60
-                    ),
-                    seconds: parseInt(
-                        getTimeDiffOverall(
-                            fnSelectedRoundData()?.startedAt,
-                            fnSelectedRoundData()?.endedAt
-                        ) % 60
-                    ),
+                    hours: 0,
+                    minutes: 0,
+                    seconds: 0,
                 },
             })
         }, 1000)
@@ -338,16 +317,16 @@ const Auction = () => {
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>Placement</th>
-                                            <th>Highest bid per token</th>
+                                            <th>Id</th>
+                                            <th>Bid per token</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {statistics.map((item, idx) => (
+                                        {fnSelectedBidhistoryData()?.map((item, idx) => (
                                             <tr key={idx}>
-                                                <td>{item.rank + ". " + item.placement}</td>
+                                                <td>{idx+1}</td>
                                                 <td>
-                                                    {item.bid}
+                                                    {item.totalPrice}
                                                     <span className="txt-green"> $</span>
                                                 </td>
                                             </tr>
