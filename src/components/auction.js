@@ -188,7 +188,23 @@ const Auction = () => {
         ? historyBidListM?.getBidListByRound
         : historyBidListH?.getBidListByRound
 
-    console.log(fnSelectedRoundData()?.minPrice)
+    const fnAverateMinBid = () => {
+        let hData = fnSelectedBidhistoryData()
+
+        if (hData === undefined){
+            return 0
+        }
+
+        if (hData.length === 0) {
+            return 0
+        } else {
+            let totalValue = 0
+            hData.map( item => totalValue =+ item.totalPrice)
+            return totalValue
+        }
+     }
+
+    // console.log(fnSelectedRoundData()?.minPrice)
     // console.log(new Date(fnSelectedRoundData()?.startedAt))
     // console.log(new Date(fnSelectedRoundData()?.endedAt))
 
@@ -257,15 +273,17 @@ const Auction = () => {
                             className="round-tab"
                             selectedIndex={selectedData}
                             onSelect={(index) => {
-                                setState({ price: 0, amount: 0})
-                                setSelectedData(index)
+                                if(index !== selectedData) {
+                                    setState({ price: 0, amount: 0})
+                                    setSelectedData(index)
+                                }
                             } }
                         >
-                            <TabList>
+                            {roundM?.getAuctionByNumber && <TabList>
                                 <Tab>Round {roundL?.getAuctionByNumber?.number}</Tab>
                                 <Tab>Round {roundM?.getAuctionByNumber?.number}</Tab>
                                 <Tab>Round {roundH?.getAuctionByNumber?.number}</Tab>
-                            </TabList>
+                            </TabList>}
 
                             <TabPanel>
                                 Token Available{" "}
@@ -381,18 +399,19 @@ const Auction = () => {
                             </div>
                         </div>
                         <div className="d-flex justify-content-between mt-4">
-                            <div>
+                            { fnAverateMinBid() !== 0 ? <div>
                                 <p className="caption">Minimum bid</p>
-                                <p className="value">15 ETH</p>
-                            </div>
+                                <p className="value">{fnAverateMinBid()}</p>
+                            </div> : <div>
+                            </div>}
                             <div>
                                 <p className="caption">Available Until</p>
-                                {getTimeDiffOverall(
+                                {/* {getTimeDiffOverall(
                                     fnSelectedRoundData()?.startedAt,
                                     fnSelectedRoundData()?.endedAt
                                 ) < 0 ? (
                                     <p className="value"> No Data</p>
-                                ) : (
+                                ) : ( */}
                                     <p className="value">
                                         {numberWithLength(
                                             parseInt(
@@ -416,7 +435,7 @@ const Auction = () => {
                                             )
                                         )}
                                     </p>
-                                )}
+                                {/* )} */}
                             </div>
                         </div>
                         {place_bid && (
