@@ -18,6 +18,25 @@ export const getTimeDiffOverall = (start, end) => {
     }
 }
 
+export const getTimeDiffOverallDate = (start, end) => {
+    if (end !== undefined){
+        let diff = new Date(end) - new Date()
+        return new Date(diff)
+    }else{
+        return 0
+    }
+}
+
+
+export const isInbetween = (start, end) => {
+    if (end === undefined || start === undefined)
+        return false
+    else
+        if (new Date(start) <= new Date() && new Date(end) >= new Date())
+            return true
+        return false
+}
+
 export const getFormatedDate = (date) => {
     var dateObj = new Date(date)
     return dateObj.getDate()+"/"+(dateObj.getMonth() + 1)+"/"+dateObj.getFullYear()
