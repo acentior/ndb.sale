@@ -279,22 +279,22 @@ const Auction = () => {
                             onSelect={(index) => setSelectedData(index)}
                         >
                             <TabList>
-                                <Tab>Round {fnSelectedRoundData()?.number}</Tab>
-                                <Tab>Round {fnSelectedRoundData()?.number}</Tab>
-                                <Tab>Round {fnSelectedRoundData()?.number}</Tab>
+                                <Tab>Round {roundL?.getAuctionByNumber?.number}</Tab>
+                                <Tab>Round {roundM?.getAuctionByNumber?.number}</Tab>
+                                <Tab>Round {roundH?.getAuctionByNumber?.number}</Tab>
                             </TabList>
 
                             <TabPanel>
                                 Token Available{" "}
-                                <span className="fw-bold">{fnSelectedRoundData()?.token}</span>
+                                <span className="fw-bold">{roundL?.getAuctionByNumber?.token}</span>
                             </TabPanel>
                             <TabPanel>
                                 Token Available{" "}
-                                <span className="fw-bold">{fnSelectedRoundData()?.token}</span>
+                                <span className="fw-bold">{roundM?.getAuctionByNumber?.token}</span>
                             </TabPanel>
                             <TabPanel>
                                 Token Available{" "}
-                                <span className="fw-bold">{fnSelectedRoundData()?.token}</span>
+                                <span className="fw-bold">{roundH?.getAuctionByNumber?.token}</span>
                             </TabPanel>
                         </Tabs>
                         <Tabs
