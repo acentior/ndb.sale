@@ -14,6 +14,7 @@ import {
     getTimeDiffOverall,
     getDiffOverall,
     getFormatedDate,
+    isInbetween
 } from "../utilities/number"
 import { ChartIcon, Qmark, CloseIcon } from "../utilities/imgImport"
 import { useWindowSize } from "../utilities/customHook"
@@ -217,6 +218,9 @@ const Auction = () => {
         },
     })
 
+    // console.log(new Date(fnSelectedRoundData()?.startedAt))
+    // console.log(new Date(fnSelectedRoundData()?.endedAt)) 
+
     useEffect(() => {
         const id = setInterval(() => {
             setState({
@@ -257,7 +261,7 @@ const Auction = () => {
                             show_chart ? "d-none" : "d-block"
                         }`}
                     >
-                        <Tabs
+                       {roundM?.getAuctionByNumber && <Tabs
                             className="round-tab"
                             selectedIndex={selectedData}
                             onSelect={(index) => {
@@ -267,13 +271,13 @@ const Auction = () => {
                                 }
                             }}
                         >
-                            {roundM?.getAuctionByNumber && (
+                            (
                                 <TabList>
                                     <Tab>Round {roundL?.getAuctionByNumber?.number}</Tab>
                                     <Tab>Round {roundM?.getAuctionByNumber?.number}</Tab>
                                     <Tab>Round {roundH?.getAuctionByNumber?.number}</Tab>
                                 </TabList>
-                            )}
+                            )
 
                             <TabPanel>
                                 Token Available{" "}
@@ -287,7 +291,7 @@ const Auction = () => {
                                 Token Available{" "}
                                 <span className="fw-bold">{fnSelectedRoundData()?.token}</span>
                             </TabPanel>
-                        </Tabs>
+                        </Tabs>}
                         <Tabs
                             className="statistics-tab"
                             selectedIndex={tabIndex}
@@ -344,7 +348,8 @@ const Auction = () => {
                                 </table>
                             </TabPanel>
                         </Tabs>
-                        <div className="timeframe-bar">
+                        { isInbetween(fnSelectedRoundData()?.startedAt,
+                                                fnSelectedRoundData()?.endedAt) && <div className="timeframe-bar">
                             <div
                                 className="timeleft"
                                 style={{
@@ -359,9 +364,7 @@ const Auction = () => {
                                             getTimeDiffOverall(
                                                 fnSelectedRoundData()?.startedAt,
                                                 fnSelectedRoundData()?.endedAt
-                                            ) /
-                                                (60 * 60),
-                                            2
+                                            )/(60 * 60)
                                         )
                                     )}
                                     :
@@ -386,7 +389,7 @@ const Auction = () => {
                                     )}
                                 </div>
                             </div>
-                        </div>
+                        </div>}
                         <div className="d-flex justify-content-between mt-4">
                             {fnAverateMinBid() !== 0 ? (
                                 <div>
