@@ -122,7 +122,7 @@ const Auction = () => {
                     data: [330, 252, 200, 334, 390, 330, 220],
                 },
             ],
-        }
+        },
     })
 
     const {
@@ -146,32 +146,24 @@ const Auction = () => {
 
     // get round based data
     const { data: roundM } = useQuery(GET_AUCTION_BY_NUMBER, {
-        variables: { round: roundData ? roundData[0].number : -1 },
+        variables: { round: roundData && roundData[0].number },
     })
     const { data: roundH } = useQuery(GET_AUCTION_BY_NUMBER, {
-        variables: { round: roundData ? roundData[0]?.number + 1 : -1 },
+        variables: { round: roundData && roundData[0]?.number + 1 },
     })
     const { data: roundL } = useQuery(GET_AUCTION_BY_NUMBER, {
-        variables: { round: roundData ? roundData[0]?.number - 1 : -1 },
+        variables: { round: roundData && roundData[0]?.number - 1 },
     })
 
     // get history bids
-    const {
-        data: historyBidListM
-    } = useQuery(GET_BIDLIST_BY_ROUND, {
-        variables: { round: roundData ? roundData[0].number : -1 },
+    const { data: historyBidListM } = useQuery(GET_BIDLIST_BY_ROUND, {
+        variables: { round: roundData && roundData[0].number },
     })
-
-    const {
-        data: historyBidListH
-    } = useQuery(GET_BIDLIST_BY_ROUND, {
-        variables: { round: roundData ? roundData[0]?.number + 1 : -1 },
+    const { data: historyBidListH } = useQuery(GET_BIDLIST_BY_ROUND, {
+        variables: { round: roundData && roundData[0]?.number + 1 },
     })
-
-    const {
-        data: historyBidListL
-    } = useQuery(GET_BIDLIST_BY_ROUND, {
-        variables: { round: roundData ? roundData[0]?.number - 1 : -1 },
+    const { data: historyBidListL } = useQuery(GET_BIDLIST_BY_ROUND, {
+        variables: { round: roundData && roundData[0]?.number - 1 },
     })
 
     const fnSelectedRoundData = () =>
@@ -182,16 +174,16 @@ const Auction = () => {
             : roundH?.getAuctionByNumber
 
     const fnSelectedBidhistoryData = () =>
-    selectedData === 0
-        ? historyBidListL?.getBidListByRound
-        : selectedData === 1
-        ? historyBidListM?.getBidListByRound
-        : historyBidListH?.getBidListByRound
+        selectedData === 0
+            ? historyBidListL?.getBidListByRound
+            : selectedData === 1
+            ? historyBidListM?.getBidListByRound
+            : historyBidListH?.getBidListByRound
 
     const fnAverateMinBid = () => {
         let hData = fnSelectedBidhistoryData()
 
-        if (hData === undefined){
+        if (hData === undefined) {
             return 0
         }
 
@@ -199,14 +191,10 @@ const Auction = () => {
             return 0
         } else {
             let totalValue = 0
-            hData.map( item => totalValue =+ item.totalPrice)
+            hData.map((item) => (totalValue = +item.totalPrice))
             return totalValue
         }
-     }
-
-    // console.log(fnSelectedRoundData()?.minPrice)
-    // console.log(new Date(fnSelectedRoundData()?.startedAt))
-    // console.log(new Date(fnSelectedRoundData()?.endedAt))
+    }
 
     const distanceToDate = getTimeDiffOverall(
         fnSelectedRoundData()?.startedAt,
@@ -248,12 +236,12 @@ const Auction = () => {
             <Header />
             <section className="section-auction container">
                 <div className="current-round">
-                    {/* <div>
-                        <h4>Round {data?.getAuctions[selectedData]?.number}</h4>
+                    <div>
+                        <h4>Round {roundData && roundData[0]?.number}</h4>
                         <p>
-                            Token Available <span>{data?.getAuctions[selectedData].token}</span>
+                            Token Available <span>{roundData && roundData[0]?.token}</span>
                         </p>
-                    </div> */}
+                    </div>
                     <img
                         src={ChartIcon}
                         alt="chart"
@@ -273,17 +261,19 @@ const Auction = () => {
                             className="round-tab"
                             selectedIndex={selectedData}
                             onSelect={(index) => {
-                                if(index !== selectedData) {
-                                    setState({ price: 0, amount: 0})
+                                if (index !== selectedData) {
+                                    setState({ price: 0, amount: 0 })
                                     setSelectedData(index)
                                 }
-                            } }
+                            }}
                         >
-                            {roundM?.getAuctionByNumber && <TabList>
-                                <Tab>Round {roundL?.getAuctionByNumber?.number}</Tab>
-                                <Tab>Round {roundM?.getAuctionByNumber?.number}</Tab>
-                                <Tab>Round {roundH?.getAuctionByNumber?.number}</Tab>
-                            </TabList>}
+                            {roundM?.getAuctionByNumber && (
+                                <TabList>
+                                    <Tab>Round {roundL?.getAuctionByNumber?.number}</Tab>
+                                    <Tab>Round {roundM?.getAuctionByNumber?.number}</Tab>
+                                    <Tab>Round {roundH?.getAuctionByNumber?.number}</Tab>
+                                </TabList>
+                            )}
 
                             <TabPanel>
                                 Token Available{" "}
@@ -320,7 +310,7 @@ const Auction = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    {fnSelectedBidhistoryData()?.map((item, idx) => (
+                                        {fnSelectedBidhistoryData()?.map((item, idx) => (
                                             <tr key={idx}>
                                                 <td>{getFormatedDate(item.placedAt)}</td>
                                                 <td>
@@ -341,16 +331,15 @@ const Auction = () => {
                                         </tr>
                                     </thead>
                                     <tbody>
-                                    {fnSelectedBidhistoryData()?.map((item, idx) => (
+                                        {fnSelectedBidhistoryData()?.map((item, idx) => (
                                             <tr key={idx}>
-                                                <td>{(idx+1)}</td>
+                                                <td>{idx + 1}</td>
                                                 <td>
                                                     {item.totalPrice}
                                                     <span className="txt-green"> $</span>
                                                 </td>
                                             </tr>
                                         ))}
-                                        
                                     </tbody>
                                 </table>
                             </TabPanel>
@@ -399,11 +388,17 @@ const Auction = () => {
                             </div>
                         </div>
                         <div className="d-flex justify-content-between mt-4">
-                            { fnAverateMinBid() !== 0 ? <div>
-                                <p className="caption">Minimum bid</p>
-                                <p className="value">{fnAverateMinBid()}<span className="txt-green"> $</span> </p>
-                            </div> : <div>
-                            </div>}
+                            {fnAverateMinBid() !== 0 ? (
+                                <div>
+                                    <p className="caption">Minimum bid</p>
+                                    <p className="value">
+                                        {fnAverateMinBid()}
+                                        <span className="txt-green"> $</span>{" "}
+                                    </p>
+                                </div>
+                            ) : (
+                                <div></div>
+                            )}
                             <div>
                                 <p className="caption">Available Until</p>
                                 {/* {getTimeDiffOverall(
@@ -412,29 +407,25 @@ const Auction = () => {
                                 ) < 0 ? (
                                     <p className="value"> No Data</p>
                                 ) : ( */}
-                                    <p className="value">
-                                        {numberWithLength(
-                                            parseInt(
-                                                new Date(fnSelectedRoundData()?.endedAt).getHours()
-                                            )
-                                        )}
-                                        :
-                                        {numberWithLength(
-                                            parseInt(
-                                                new Date(
-                                                    fnSelectedRoundData()?.endedAt
-                                                ).getMinutes()
-                                            )
-                                        )}
-                                        :
-                                        {numberWithLength(
-                                            parseInt(
-                                                new Date(
-                                                    fnSelectedRoundData()?.endedAt
-                                                ).getSeconds()
-                                            )
-                                        )}
-                                    </p>
+                                <p className="value">
+                                    {numberWithLength(
+                                        parseInt(
+                                            new Date(fnSelectedRoundData()?.endedAt).getHours()
+                                        )
+                                    )}
+                                    :
+                                    {numberWithLength(
+                                        parseInt(
+                                            new Date(fnSelectedRoundData()?.endedAt).getMinutes()
+                                        )
+                                    )}
+                                    :
+                                    {numberWithLength(
+                                        parseInt(
+                                            new Date(fnSelectedRoundData()?.endedAt).getSeconds()
+                                        )
+                                    )}
+                                </p>
                                 {/* )} */}
                             </div>
                         </div>
