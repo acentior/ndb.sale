@@ -8,7 +8,6 @@ import ReactECharts from "echarts-for-react"
 import Header from "../components/common/header"
 import { useQuery, useMutation } from "@apollo/client"
 import {
-    // getSecTomorrow,
     numberWithCommas,
     numberWithLength,
     getTimeDiffOverall,
@@ -24,45 +23,11 @@ import {
     GET_BIDLIST_BY_ROUND,
 } from "../apollo/graghqls/querys/Auction"
 
-// import { AuctionService } from "../apollo/model/AuctionService"
-// import * as GraphQL from "../apollo/graghqls/querys/Auction"
-
 const ndb_token = `Since the beginning of NDB’s project the vision is to provide clean green technologies to the world. The NDB token is not a security token nor does it represent any shares of NDB SA.
 
 By using NDB token you will be able to contribute to the development of our technologies and our vision. We plan to expand our ecosystem to multiple areas including deep space exploration, sustainable fashion, quantum computing, and more. 
 `
-// const statistics = [
-//     {
-//         rank: 1,
-//         placement: "TeslaFirst",
-//         bid: "1300",
-//     },
-//     {
-//         rank: 2,
-//         placement: "Volta Pancake",
-//         bid: "850",
-//     },
-//     {
-//         rank: 3,
-//         placement: "Meitner Cat",
-//         bid: "400",
-//     },
-//     {
-//         rank: 4,
-//         placement: "Curie Mobile",
-//         bid: "305",
-//     },
-//     {
-//         rank: 5,
-//         placement: "Tesla.12",
-//         bid: "100",
-//     },
-//     {
-//         rank: 99,
-//         placement: "You",
-//         bid: "5",
-//     },
-// ]
+
 const options = [
     { value: "bid_performance", label: "Bid performance" },
     { value: "round_performance", label: "Round performance" },
@@ -401,12 +366,7 @@ const Auction = () => {
                             )}
                             <div>
                                 <p className="caption">Available Until</p>
-                                {/* {getTimeDiffOverall(
-                                    fnSelectedRoundData()?.startedAt,
-                                    fnSelectedRoundData()?.endedAt
-                                ) < 0 ? (
-                                    <p className="value"> No Data</p>
-                                ) : ( */}
+
                                 <p className="value">
                                     {numberWithLength(
                                         parseInt(
@@ -426,7 +386,6 @@ const Auction = () => {
                                         )
                                     )}
                                 </p>
-                                {/* )} */}
                             </div>
                         </div>
                         {place_bid && (
