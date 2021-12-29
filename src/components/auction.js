@@ -276,7 +276,10 @@ const Auction = () => {
                         <Tabs
                             className="round-tab"
                             selectedIndex={selectedData}
-                            onSelect={(index) => setSelectedData(index)}
+                            onSelect={(index) => {
+                                setState({ price: 0, amount: 0})
+                                setSelectedData(index)
+                            } }
                         >
                             <TabList>
                                 <Tab>Round {roundL?.getAuctionByNumber?.number}</Tab>
