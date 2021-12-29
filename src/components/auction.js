@@ -401,7 +401,7 @@ const Auction = () => {
                         <div className="d-flex justify-content-between mt-4">
                             { fnAverateMinBid() !== 0 ? <div>
                                 <p className="caption">Minimum bid</p>
-                                <p className="value">{fnAverateMinBid()}</p>
+                                <p className="value">{fnAverateMinBid()}<span className="txt-green"> $</span> </p>
                             </div> : <div>
                             </div>}
                             <div>
