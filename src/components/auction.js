@@ -13,6 +13,7 @@ import {
     numberWithLength,
     getTimeDiffOverall,
     getDiffOverall,
+    getFormatedDate,
 } from "../utilities/number"
 import { ChartIcon, Qmark, CloseIcon } from "../utilities/imgImport"
 import { useWindowSize } from "../utilities/customHook"
@@ -30,38 +31,38 @@ const ndb_token = `Since the beginning of NDB’s project the vision is to provi
 
 By using NDB token you will be able to contribute to the development of our technologies and our vision. We plan to expand our ecosystem to multiple areas including deep space exploration, sustainable fashion, quantum computing, and more. 
 `
-const statistics = [
-    {
-        rank: 1,
-        placement: "TeslaFirst",
-        bid: "1300",
-    },
-    {
-        rank: 2,
-        placement: "Volta Pancake",
-        bid: "850",
-    },
-    {
-        rank: 3,
-        placement: "Meitner Cat",
-        bid: "400",
-    },
-    {
-        rank: 4,
-        placement: "Curie Mobile",
-        bid: "305",
-    },
-    {
-        rank: 5,
-        placement: "Tesla.12",
-        bid: "100",
-    },
-    {
-        rank: 99,
-        placement: "You",
-        bid: "5",
-    },
-]
+// const statistics = [
+//     {
+//         rank: 1,
+//         placement: "TeslaFirst",
+//         bid: "1300",
+//     },
+//     {
+//         rank: 2,
+//         placement: "Volta Pancake",
+//         bid: "850",
+//     },
+//     {
+//         rank: 3,
+//         placement: "Meitner Cat",
+//         bid: "400",
+//     },
+//     {
+//         rank: 4,
+//         placement: "Curie Mobile",
+//         bid: "305",
+//     },
+//     {
+//         rank: 5,
+//         placement: "Tesla.12",
+//         bid: "100",
+//     },
+//     {
+//         rank: 99,
+//         placement: "You",
+//         bid: "5",
+//     },
+// ]
 const options = [
     { value: "bid_performance", label: "Bid performance" },
     { value: "round_performance", label: "Round performance" },
@@ -296,16 +297,16 @@ const Auction = () => {
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>Placement</th>
-                                            <th>Highest bid per token</th>
+                                            <th>Date</th>
+                                            <th>Highest Bid Per Token</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {statistics.map((item, idx) => (
+                                    {fnSelectedBidhistoryData()?.map((item, idx) => (
                                             <tr key={idx}>
-                                                <td>{item.rank + ". " + item.placement}</td>
+                                                <td>{getFormatedDate(item.placedAt)}</td>
                                                 <td>
-                                                    {item.bid}
+                                                    {item.totalPrice}
                                                     <span className="txt-green"> $</span>
                                                 </td>
                                             </tr>
@@ -317,20 +318,21 @@ const Auction = () => {
                                 <table>
                                     <thead>
                                         <tr>
-                                            <th>Id</th>
-                                            <th>Bid per token</th>
+                                            <th>Placement</th>
+                                            <th>Highest Bid Per Token</th>
                                         </tr>
                                     </thead>
                                     <tbody>
-                                        {fnSelectedBidhistoryData()?.map((item, idx) => (
+                                    {fnSelectedBidhistoryData()?.map((item, idx) => (
                                             <tr key={idx}>
-                                                <td>{idx+1}</td>
+                                                <td>{(idx+1)}</td>
                                                 <td>
                                                     {item.totalPrice}
                                                     <span className="txt-green"> $</span>
                                                 </td>
                                             </tr>
                                         ))}
+                                        
                                     </tbody>
                                 </table>
                             </TabPanel>
