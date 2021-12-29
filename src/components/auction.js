@@ -286,15 +286,15 @@ const Auction = () => {
 
                             <TabPanel>
                                 Token Available{" "}
-                                <span className="fw-bold">{roundL?.getAuctionByNumber?.token}</span>
+                                <span className="fw-bold">{fnSelectedRoundData()?.token}</span>
                             </TabPanel>
                             <TabPanel>
                                 Token Available{" "}
-                                <span className="fw-bold">{roundM?.getAuctionByNumber?.token}</span>
+                                <span className="fw-bold">{fnSelectedRoundData()?.token}</span>
                             </TabPanel>
                             <TabPanel>
                                 Token Available{" "}
-                                <span className="fw-bold">{roundH?.getAuctionByNumber?.token}</span>
+                                <span className="fw-bold">{fnSelectedRoundData()?.token}</span>
                             </TabPanel>
                         </Tabs>
                         <Tabs
