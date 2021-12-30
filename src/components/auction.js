@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useState } from "react"
+import React, { useReducer, useEffect, useState, Suspense } from "react"
 // import { navigate } from "gatsby"
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
 import Slider from "rc-slider"
@@ -6,6 +6,7 @@ import Select from "react-select"
 import Modal from "react-modal"
 import ReactECharts from "echarts-for-react"
 import Header from "../components/common/header"
+// import AcutionRoundTab from "./auctionsRoundTab"
 import { useQuery, useMutation } from "@apollo/client"
 import {
     // getSecTomorrow,
@@ -32,38 +33,6 @@ const ndb_token = `Since the beginning of NDB’s project the vision is to provi
 
 By using NDB token you will be able to contribute to the development of our technologies and our vision. We plan to expand our ecosystem to multiple areas including deep space exploration, sustainable fashion, quantum computing, and more. 
 `
-// const statistics = [
-//     {
-//         rank: 1,
-//         placement: "TeslaFirst",
-//         bid: "1300",
-//     },
-//     {
-//         rank: 2,
-//         placement: "Volta Pancake",
-//         bid: "850",
-//     },
-//     {
-//         rank: 3,
-//         placement: "Meitner Cat",
-//         bid: "400",
-//     },
-//     {
-//         rank: 4,
-//         placement: "Curie Mobile",
-//         bid: "305",
-//     },
-//     {
-//         rank: 5,
-//         placement: "Tesla.12",
-//         bid: "100",
-//     },
-//     {
-//         rank: 99,
-//         placement: "You",
-//         bid: "5",
-//     },
-// ]
 const options = [
     { value: "bid_performance", label: "Bid performance" },
     { value: "round_performance", label: "Round performance" },
@@ -218,6 +187,8 @@ const Auction = () => {
         },
     })
 
+    const AcutionRoundTab = React.lazy(() => import('./auctionsRoundTab'));
+
     // console.log(new Date(fnSelectedRoundData()?.startedAt))
     // console.log(new Date(fnSelectedRoundData()?.endedAt)) 
 
@@ -260,38 +231,27 @@ const Auction = () => {
                         className={`auction-left col-lg-4 col-md-5 ${
                             show_chart ? "d-none" : "d-block"
                         }`}
-                    >
-                       {roundM?.getAuctionByNumber && <Tabs
-                            className="round-tab"
-                            selectedIndex={selectedData}
-                            onSelect={(index) => {
-                                if (index !== selectedData) {
-                                    setState({ price: 0, amount: 0 })
-                                    setSelectedData(index)
-                                }
-                            }}
-                        >
-                            (
+                    >   
+                        <Suspense fallback={
+                            <Tabs className="round-tab">
                                 <TabList>
-                                    <Tab>Round {roundL?.getAuctionByNumber?.number}</Tab>
-                                    <Tab>Round {roundM?.getAuctionByNumber?.number}</Tab>
-                                    <Tab>Round {roundH?.getAuctionByNumber?.number}</Tab>
+                                    <Tab>Loading...</Tab>
+                                    <Tab>Loading...</Tab>
+                                    <Tab>Loading...</Tab>
                                 </TabList>
-                            )
-
-                            <TabPanel>
-                                Token Available{" "}
-                                <span className="fw-bold">{fnSelectedRoundData()?.token}</span>
-                            </TabPanel>
-                            <TabPanel>
-                                Token Available{" "}
-                                <span className="fw-bold">{fnSelectedRoundData()?.token}</span>
-                            </TabPanel>
-                            <TabPanel>
-                                Token Available{" "}
-                                <span className="fw-bold">{fnSelectedRoundData()?.token}</span>
-                            </TabPanel>
-                        </Tabs>}
+                            </Tabs>
+                        }>
+                            <AcutionRoundTab 
+                                roundL={roundL}
+                                roundM={roundM}
+                                roundH={roundH}
+                                setState={setState}
+                                setSelectedData={setSelectedData}
+                                selectedData={selectedData}
+                                fnSelectedRoundData={fnSelectedRoundData}
+                            ></AcutionRoundTab>
+                        </Suspense>
+                       
                         <Tabs
                             className="statistics-tab"
                             selectedIndex={tabIndex}
