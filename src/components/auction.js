@@ -1,4 +1,4 @@
-import React, { useReducer, useEffect, useState } from "react"
+import React, { useReducer, useEffect, useState, Suspense } from "react"
 // import { navigate } from "gatsby"
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
 import Slider from "rc-slider"
@@ -6,14 +6,16 @@ import Select from "react-select"
 import Modal from "react-modal"
 import ReactECharts from "echarts-for-react"
 import Header from "../components/common/header"
+// import AcutionRoundTab from "./auctionsRoundTab"
 import { useQuery, useMutation } from "@apollo/client"
 import {
+    // getSecTomorrow,
     numberWithCommas,
     numberWithLength,
     getTimeDiffOverall,
     getDiffOverall,
     getFormatedDate,
-    isInbetween
+    isInbetween,
 } from "../utilities/number"
 import { ChartIcon, Qmark, CloseIcon } from "../utilities/imgImport"
 import { useWindowSize } from "../utilities/customHook"
@@ -24,11 +26,13 @@ import {
     GET_BIDLIST_BY_ROUND,
 } from "../apollo/graghqls/querys/Auction"
 
+// import { AuctionService } from "../apollo/model/AuctionService"
+// import * as GraphQL from "../apollo/graghqls/querys/Auction"
+
 const ndb_token = `Since the beginning of NDB’s project the vision is to provide clean green technologies to the world. The NDB token is not a security token nor does it represent any shares of NDB SA.
 
 By using NDB token you will be able to contribute to the development of our technologies and our vision. We plan to expand our ecosystem to multiple areas including deep space exploration, sustainable fashion, quantum computing, and more. 
 `
-
 const options = [
     { value: "bid_performance", label: "Bid performance" },
     { value: "round_performance", label: "Round performance" },
@@ -183,8 +187,10 @@ const Auction = () => {
         },
     })
 
+    const AcutionRoundTab = React.lazy(() => import("./auctionsRoundTab"))
+
     // console.log(new Date(fnSelectedRoundData()?.startedAt))
-    // console.log(new Date(fnSelectedRoundData()?.endedAt)) 
+    // console.log(new Date(fnSelectedRoundData()?.endedAt))
 
     useEffect(() => {
         const id = setInterval(() => {
@@ -226,37 +232,28 @@ const Auction = () => {
                             show_chart ? "d-none" : "d-block"
                         }`}
                     >
-                       {roundM?.getAuctionByNumber && <Tabs
-                            className="round-tab"
-                            selectedIndex={selectedData}
-                            onSelect={(index) => {
-                                if (index !== selectedData) {
-                                    setState({ price: 0, amount: 0 })
-                                    setSelectedData(index)
-                                }
-                            }}
+                        <Suspense
+                            fallback={
+                                <Tabs className="round-tab">
+                                    <TabList>
+                                        <Tab>Loading...</Tab>
+                                        <Tab>Loading...</Tab>
+                                        <Tab>Loading...</Tab>
+                                    </TabList>
+                                </Tabs>
+                            }
                         >
-                            (
-                                <TabList>
-                                    <Tab>Round {roundL?.getAuctionByNumber?.number}</Tab>
-                                    <Tab>Round {roundM?.getAuctionByNumber?.number}</Tab>
-                                    <Tab>Round {roundH?.getAuctionByNumber?.number}</Tab>
-                                </TabList>
-                            )
+                            <AcutionRoundTab
+                                roundL={roundL}
+                                roundM={roundM}
+                                roundH={roundH}
+                                setState={setState}
+                                setSelectedData={setSelectedData}
+                                selectedData={selectedData}
+                                fnSelectedRoundData={fnSelectedRoundData}
+                            ></AcutionRoundTab>
+                        </Suspense>
 
-                            <TabPanel>
-                                Token Available{" "}
-                                <span className="fw-bold">{fnSelectedRoundData()?.token}</span>
-                            </TabPanel>
-                            <TabPanel>
-                                Token Available{" "}
-                                <span className="fw-bold">{fnSelectedRoundData()?.token}</span>
-                            </TabPanel>
-                            <TabPanel>
-                                Token Available{" "}
-                                <span className="fw-bold">{fnSelectedRoundData()?.token}</span>
-                            </TabPanel>
-                        </Tabs>}
                         <Tabs
                             className="statistics-tab"
                             selectedIndex={tabIndex}
@@ -313,48 +310,54 @@ const Auction = () => {
                                 </table>
                             </TabPanel>
                         </Tabs>
-                        { isInbetween(fnSelectedRoundData()?.startedAt,
-                                                fnSelectedRoundData()?.endedAt) && <div className="timeframe-bar">
-                            <div
-                                className="timeleft"
-                                style={{
-                                    width:
-                                        (percentage > 0 && percentage < 101 ? percentage : 0) + "%",
-                                    background: "#464646",
-                                }}
-                            >
-                                <div className="timeleft__value">
-                                    {numberWithLength(
-                                        parseInt(
-                                            getTimeDiffOverall(
-                                                fnSelectedRoundData()?.startedAt,
-                                                fnSelectedRoundData()?.endedAt
-                                            )/(60 * 60)
-                                        )
-                                    )}
-                                    :
-                                    {numberWithLength(
-                                        parseInt(
-                                            (getTimeDiffOverall(
-                                                fnSelectedRoundData()?.startedAt,
-                                                fnSelectedRoundData()?.endedAt
-                                            ) %
-                                                (60 * 60)) /
-                                                60
-                                        )
-                                    )}
-                                    :
-                                    {numberWithLength(
-                                        parseInt(
-                                            getTimeDiffOverall(
-                                                fnSelectedRoundData()?.startedAt,
-                                                fnSelectedRoundData()?.endedAt
-                                            ) % 60
-                                        )
-                                    )}
+                        {isInbetween(
+                            fnSelectedRoundData()?.startedAt,
+                            fnSelectedRoundData()?.endedAt
+                        ) && (
+                            <div className="timeframe-bar">
+                                <div
+                                    className="timeleft"
+                                    style={{
+                                        width:
+                                            (percentage > 0 && percentage < 101 ? percentage : 0) +
+                                            "%",
+                                        background: "#464646",
+                                    }}
+                                >
+                                    <div className="timeleft__value">
+                                        {numberWithLength(
+                                            parseInt(
+                                                getTimeDiffOverall(
+                                                    fnSelectedRoundData()?.startedAt,
+                                                    fnSelectedRoundData()?.endedAt
+                                                ) /
+                                                    (60 * 60)
+                                            )
+                                        )}
+                                        :
+                                        {numberWithLength(
+                                            parseInt(
+                                                (getTimeDiffOverall(
+                                                    fnSelectedRoundData()?.startedAt,
+                                                    fnSelectedRoundData()?.endedAt
+                                                ) %
+                                                    (60 * 60)) /
+                                                    60
+                                            )
+                                        )}
+                                        :
+                                        {numberWithLength(
+                                            parseInt(
+                                                getTimeDiffOverall(
+                                                    fnSelectedRoundData()?.startedAt,
+                                                    fnSelectedRoundData()?.endedAt
+                                                ) % 60
+                                            )
+                                        )}
+                                    </div>
                                 </div>
                             </div>
-                        </div>}
+                        )}
                         <div className="d-flex justify-content-between mt-4">
                             {fnAverateMinBid() !== 0 ? (
                                 <div>
@@ -369,7 +372,12 @@ const Auction = () => {
                             )}
                             <div>
                                 <p className="caption">Available Until</p>
-
+                                {/* {getTimeDiffOverall(
+                                    fnSelectedRoundData()?.startedAt,
+                                    fnSelectedRoundData()?.endedAt
+                                ) < 0 ? (
+                                    <p className="value"> No Data</p>
+                                ) : ( */}
                                 <p className="value">
                                     {numberWithLength(
                                         parseInt(
@@ -389,6 +397,7 @@ const Auction = () => {
                                         )
                                     )}
                                 </p>
+                                {/* )} */}
                             </div>
                         </div>
                         {place_bid && (
