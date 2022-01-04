@@ -6,6 +6,7 @@ import Select from "react-select"
 import Modal from "react-modal"
 import ReactECharts from "echarts-for-react"
 import Header from "../components/common/header"
+import Loading from "../components/common/Loading"
 // import AcutionRoundTab from "./auctionsRoundTab"
 import { useQuery, useMutation } from "@apollo/client"
 import {
@@ -166,16 +167,6 @@ const Auction = () => {
         }
     }
 
-    const distanceToDate = getTimeDiffOverall(
-        fnSelectedRoundData()?.startedAt,
-        fnSelectedRoundData()?.endedAt
-    ) // 86400
-    const duration = getDiffOverall(
-        fnSelectedRoundData()?.startedAt,
-        fnSelectedRoundData()?.endedAt
-    ) //getSecTomorrow()
-    const percentage = (distanceToDate / duration) * 100
-
     const [PlaceBid] = useMutation(PLACE_BID, {
         onCompleted: (data) => {
             console.log("received Mutation data", data)
@@ -188,24 +179,8 @@ const Auction = () => {
     })
 
     const AcutionRoundTab = React.lazy(() => import("./auctionsRoundTab"))
+    const AcutionTimeSlot = React.lazy(() => import("./auctionsTimeSlot"))
 
-    // console.log(new Date(fnSelectedRoundData()?.startedAt))
-    // console.log(new Date(fnSelectedRoundData()?.endedAt))
-
-    useEffect(() => {
-        const id = setInterval(() => {
-            setState({
-                curTime: {
-                    hours: 0,
-                    minutes: 0,
-                    seconds: 0,
-                },
-            })
-        }, 1000)
-        return () => {
-            clearInterval(id)
-        }
-    }, [])
     return (
         <main className="auction-page">
             <Header />
@@ -232,17 +207,8 @@ const Auction = () => {
                             show_chart ? "d-none" : "d-block"
                         }`}
                     >
-                        <Suspense
-                            fallback={
-                                <Tabs className="round-tab">
-                                    <TabList>
-                                        <Tab>Loading...</Tab>
-                                        <Tab>Loading...</Tab>
-                                        <Tab>Loading...</Tab>
-                                    </TabList>
-                                </Tabs>
-                            }
-                        >
+                        {!roundM?.getAuctionByNumber && <Loading />}
+                        <Suspense fallback={<p></p>}>
                             <AcutionRoundTab
                                 roundL={roundL}
                                 roundM={roundM}
@@ -253,161 +219,127 @@ const Auction = () => {
                                 fnSelectedRoundData={fnSelectedRoundData}
                             ></AcutionRoundTab>
                         </Suspense>
-
-                        <Tabs
-                            className="statistics-tab"
-                            selectedIndex={tabIndex}
-                            onSelect={(index) => setState({ tabIndex: index })}
-                        >
-                            <TabList>
-                                <Tab>Ndb token</Tab>
-                                <Tab>StatiStics</Tab>
-                                <Tab>Bids history</Tab>
-                            </TabList>
-                            <TabPanel>
-                                <p className="text">{ndb_token}</p>
-                            </TabPanel>
-                            <TabPanel>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Date</th>
-                                            <th>Highest Bid Per Token</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {fnSelectedBidhistoryData()?.map((item, idx) => (
-                                            <tr key={idx}>
-                                                <td>{getFormatedDate(item.placedAt)}</td>
-                                                <td>
-                                                    {item.totalPrice}
-                                                    <span className="txt-green"> $</span>
-                                                </td>
+                        {roundM?.getAuctionByNumber && (
+                            <Tabs
+                                className="statistics-tab"
+                                selectedIndex={tabIndex}
+                                onSelect={(index) => setState({ tabIndex: index })}
+                            >
+                                <TabList>
+                                    <Tab>Ndb token</Tab>
+                                    <Tab>StatiStics</Tab>
+                                    <Tab>Bids history</Tab>
+                                </TabList>
+                                <TabPanel>
+                                    <p className="text">{ndb_token}</p>
+                                </TabPanel>
+                                <TabPanel>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Date</th>
+                                                <th>Highest Bid Per Token</th>
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </TabPanel>
-                            <TabPanel>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Placement</th>
-                                            <th>Highest Bid Per Token</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {fnSelectedBidhistoryData()?.map((item, idx) => (
-                                            <tr key={idx}>
-                                                <td>{idx + 1}</td>
-                                                <td>
-                                                    {item.totalPrice}
-                                                    <span className="txt-green"> $</span>
-                                                </td>
+                                        </thead>
+                                        <tbody>
+                                            {fnSelectedBidhistoryData()?.map((item, idx) => (
+                                                <tr key={idx}>
+                                                    <td>{getFormatedDate(item.placedAt)}</td>
+                                                    <td>
+                                                        {item.totalPrice}
+                                                        <span className="txt-green"> $</span>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </TabPanel>
+                                <TabPanel>
+                                    <table>
+                                        <thead>
+                                            <tr>
+                                                <th>Placement</th>
+                                                <th>Highest Bid Per Token</th>
                                             </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </TabPanel>
-                        </Tabs>
-                        {isInbetween(
-                            fnSelectedRoundData()?.startedAt,
-                            fnSelectedRoundData()?.endedAt
-                        ) && (
-                            <div className="timeframe-bar">
-                                <div
-                                    className="timeleft"
-                                    style={{
-                                        width:
-                                            (percentage > 0 && percentage < 101 ? percentage : 0) +
-                                            "%",
-                                        background: "#464646",
-                                    }}
-                                >
-                                    <div className="timeleft__value">
-                                        {numberWithLength(
-                                            parseInt(
-                                                getTimeDiffOverall(
-                                                    fnSelectedRoundData()?.startedAt,
-                                                    fnSelectedRoundData()?.endedAt
-                                                ) /
-                                                    (60 * 60)
-                                            )
-                                        )}
-                                        :
-                                        {numberWithLength(
-                                            parseInt(
-                                                (getTimeDiffOverall(
-                                                    fnSelectedRoundData()?.startedAt,
-                                                    fnSelectedRoundData()?.endedAt
-                                                ) %
-                                                    (60 * 60)) /
-                                                    60
-                                            )
-                                        )}
-                                        :
-                                        {numberWithLength(
-                                            parseInt(
-                                                getTimeDiffOverall(
-                                                    fnSelectedRoundData()?.startedAt,
-                                                    fnSelectedRoundData()?.endedAt
-                                                ) % 60
-                                            )
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
+                                        </thead>
+                                        <tbody>
+                                            {fnSelectedBidhistoryData()?.map((item, idx) => (
+                                                <tr key={idx}>
+                                                    <td>{idx + 1}</td>
+                                                    <td>
+                                                        {item.totalPrice}
+                                                        <span className="txt-green"> $</span>
+                                                    </td>
+                                                </tr>
+                                            ))}
+                                        </tbody>
+                                    </table>
+                                </TabPanel>
+                            </Tabs>
                         )}
-                        <div className="d-flex justify-content-between mt-4">
-                            {fnAverateMinBid() !== 0 ? (
-                                <div>
-                                    <p className="caption">Minimum bid</p>
-                                    <p className="value">
-                                        {fnAverateMinBid()}
-                                        <span className="txt-green"> $</span>{" "}
-                                    </p>
-                                </div>
-                            ) : (
-                                <div></div>
-                            )}
+                        {roundM?.getAuctionByNumber && (
                             <div>
-                                <p className="caption">Available Until</p>
-                                {/* {getTimeDiffOverall(
+                                <AcutionTimeSlot
+                                    fnSelectedRoundData={fnSelectedRoundData}
+                                ></AcutionTimeSlot>
+                                <div className="d-flex justify-content-between mt-4">
+                                    {fnAverateMinBid() !== 0 ? (
+                                        <div>
+                                            <p className="caption">Minimum bid</p>
+                                            <p className="value">
+                                                {fnAverateMinBid()}
+                                                <span className="txt-green"> $</span>{" "}
+                                            </p>
+                                        </div>
+                                    ) : (
+                                        <div></div>
+                                    )}
+                                    <div>
+                                        <p className="caption">Available Until</p>
+                                        {/* {getTimeDiffOverall(
                                     fnSelectedRoundData()?.startedAt,
                                     fnSelectedRoundData()?.endedAt
                                 ) < 0 ? (
                                     <p className="value"> No Data</p>
                                 ) : ( */}
-                                <p className="value">
-                                    {numberWithLength(
-                                        parseInt(
-                                            new Date(fnSelectedRoundData()?.endedAt).getHours()
-                                        )
-                                    )}
-                                    :
-                                    {numberWithLength(
-                                        parseInt(
-                                            new Date(fnSelectedRoundData()?.endedAt).getMinutes()
-                                        )
-                                    )}
-                                    :
-                                    {numberWithLength(
-                                        parseInt(
-                                            new Date(fnSelectedRoundData()?.endedAt).getSeconds()
-                                        )
-                                    )}
-                                </p>
-                                {/* )} */}
-                            </div>
-                        </div>
-                        {place_bid && (
-                            <div className="text-center my-5">
-                                <button
-                                    className="btn-primary btn-increase"
-                                    onClick={() => setState({ bidModal: true })}
-                                >
-                                    {!place_bid ? "Place Bid" : "Increase bid"}
-                                </button>
+                                        <p className="value">
+                                            {numberWithLength(
+                                                parseInt(
+                                                    new Date(
+                                                        fnSelectedRoundData()?.endedAt
+                                                    ).getHours()
+                                                )
+                                            )}
+                                            :
+                                            {numberWithLength(
+                                                parseInt(
+                                                    new Date(
+                                                        fnSelectedRoundData()?.endedAt
+                                                    ).getMinutes()
+                                                )
+                                            )}
+                                            :
+                                            {numberWithLength(
+                                                parseInt(
+                                                    new Date(
+                                                        fnSelectedRoundData()?.endedAt
+                                                    ).getSeconds()
+                                                )
+                                            )}
+                                        </p>
+                                        {/* )} */}
+                                    </div>
+                                </div>
+                                {place_bid && (
+                                    <div className="text-center my-5">
+                                        <button
+                                            className="btn-primary btn-increase"
+                                            onClick={() => setState({ bidModal: true })}
+                                        >
+                                            {!place_bid ? "Place Bid" : "Increase bid"}
+                                        </button>
+                                    </div>
+                                )}
                             </div>
                         )}
                     </div>
