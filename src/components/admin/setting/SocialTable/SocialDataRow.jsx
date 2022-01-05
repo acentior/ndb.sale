@@ -37,6 +37,9 @@ const SocailDataRow = ({datum, index}) => {
                             <p className='text-white' style={{fontSize: 16, fontWeight: '700'}}>{datum.social}</p>
                         </div>
                         <div className='right'>
+                            <p><span className='edit'><Icon icon="clarity:note-edit-line" /></span></p>
+                        </div>
+                        <div className='right'>
                             <p style={{fontSize: 16}}>
                                 <span><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} data-bs-toggle="collapse" data-bs-target={`#id${index}`} onClick={() => setShow(!show)} /></span>
                             </p>
@@ -58,12 +61,6 @@ const SocailDataRow = ({datum, index}) => {
                         </div>
                         <div className='right'>
                             <p>API Secret</p>
-                        </div>
-                    </UnitRowForMobile>
-                    <UnitRowForMobile>
-                        <div className='left'></div>
-                        <div className='right'>
-                            <p><span className='edit'><Icon icon="clarity:note-edit-line" /></span></p>
                         </div>
                     </UnitRowForMobile>
                 </div>

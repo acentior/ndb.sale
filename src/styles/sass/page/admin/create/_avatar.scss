@@ -13,9 +13,9 @@ main.create-avatar-page {
             height: 86vh;
             justify-content: center;
             align-items: center;
-            @include mq('laptop-md', max) {
-                height: 100vh;
-            }
+            // @include mq('laptop-md', max) {
+            //     height: 100vh;
+            // }
             @include mq('phone', max) {
                 height: auto;
             }

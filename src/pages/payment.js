@@ -7,6 +7,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faQuestionCircle } from "@fortawesome/fontawesome-free-regular"
 import { EditIcon, ETH, BTC, DOGE, LTC, BCH, DAI, USDC, QRCode, Copy } from "../utilities/imgImport"
 import { CopyToClipboard } from "react-copy-to-clipboard"
+import { wallets } from "../utilities/staticData"
 
 const { Option, SingleValue } = components
 
@@ -26,8 +27,9 @@ const balances = [
 ]
 const payment_types = [
     { value: "cryptocoin", label: "Cryptocoin", index: 0 },
-    { value: "creditcard", label: "Credit card", index: 1 },
+    { value: "creditcard", label: "Card Payment", index: 1 },
     { value: "wallet", label: "Ndb wallet", index: 2 },
+    { value: "externalwallets", label: "Wallets", index: 3 },
 ]
 
 const IconOption = (props) => (
@@ -80,8 +82,10 @@ const Payment = () => {
         bill: "",
         allow_fraction: false,
         amount: "",
+        walletId: 0,
+        getAddress: false
     })
-    const { firstname, lastname, card, expire, code, bill, allow_fraction, amount } = state
+    const { firstname, lastname, card, expire, code, bill, allow_fraction, amount, walletId, getAddress } = state
 
     const [coin, setCoin] = useState(coins[0])
     const [balance, setBalance] = useState(null)
@@ -141,7 +145,7 @@ const Payment = () => {
                                     <div className="d-flex flex-column justify-content-between col-lg-9">
                                         <div className="d-flex justify-content-between w-100">
                                             <Select
-                                                className="cryptocoin-select col-lg-3"
+                                                className="cryptocoin-select col-3"
                                                 options={coins}
                                                 value={coin}
                                                 onChange={(v) => setCoin(v)}
@@ -157,28 +161,38 @@ const Payment = () => {
                                                 onChange={handleInput}
                                             />
                                         </div>
-                                        <CopyToClipboard
-                                            onCopy={() => setCopied(true)}
-                                            text={copyText}
-                                            options={{ message: "copied" }}
-                                        >
-                                            <p
-                                                className="clipboard"
-                                                onClick={() => setCopied(true)}
-                                                onKeyDown={() => setCopied(true)}
-                                                role="presentation"
-                                            >
-                                                <code>{copyText}</code>
-                                                <img src={Copy} alt="copy" />
-                                            </p>
-                                        </CopyToClipboard>
-                                        {copied ? (
-                                            <span style={{ color: "white" }}>Copied.</span>
-                                        ) : null}
+                                        {
+                                            !getAddress ?
+                                                <button className="btn-primary" onClick={() => setState({ getAddress: true })}>Get deposit Adress</button>
+                                                :
+                                                <>
+                                                    <CopyToClipboard
+                                                        onCopy={() => setCopied(true)}
+                                                        text={copyText}
+                                                        options={{ message: "copied" }}
+                                                    >
+                                                        <p
+                                                            className="clipboard"
+                                                            onClick={() => setCopied(true)}
+                                                            onKeyDown={() => setCopied(true)}
+                                                            role="presentation"
+                                                        >
+                                                            <code>{copyText}</code>
+                                                            <img src={Copy} alt="copy" />
+                                                        </p>
+                                                    </CopyToClipboard>
+                                                    {copied ? (
+                                                        <span style={{ color: "white" }}>Copied.</span>
+                                                    ) : null}
+                                                </>
+                                        }
                                     </div>
-                                    <div className="qr-code col-lg-3">
-                                        <img src={QRCode} alt="qr code" />
-                                    </div>
+                                    {
+                                        getAddress &&
+                                        <div className="qr-code col-lg-3">
+                                            <img src={QRCode} alt="qr code" />
+                                        </div>
+                                    }
                                 </div>
                                 <div className="mt-3 d-flex">
                                     <p className="d-flex flex-row">
@@ -350,6 +364,24 @@ const Payment = () => {
                                     </p>
                                 </div>
                             </TabPanel>
+                            <TabPanel className="externalwallets-tab">
+                                <div className="row">
+                                    {wallets.map((item, idx) => (
+                                        <div
+                                            className="col-sm-6"
+                                            key={idx}
+                                            onClick={() => setState({ walletId: idx })}
+                                            onKeyDown={() => setState({ walletId: idx })}
+                                            role="presentation"
+                                        >
+                                            <div className={`wallet-item ${idx === walletId && "active"}`}>
+                                                <img src={item.icon} alt="wallet icon" />
+                                                <p>{item.desc}</p>
+                                            </div>
+                                        </div>
+                                    ))}
+                                </div>
+                            </TabPanel>
                         </Tabs>
                     </div>
                     <div className="col-md-4 order-summary">
@@ -402,7 +434,7 @@ const Payment = () => {
                     </div>
                 </div>
             </section>
-        </main>
+        </main >
     )
 }
 

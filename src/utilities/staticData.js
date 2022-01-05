@@ -15,6 +15,13 @@ import {
     Volta,
 } from "./imgImport"
 
+import {
+    Coinbase,
+    MetaMask,
+    TrustWallet,
+    WalletConnect,
+} from "./imgImport"
+
 export const countries = [
     {
         label: "Afghanistan",
@@ -1321,3 +1328,126 @@ export const passwordValidatorOptions = {
     pointsForContainingNumber: 10,
     pointsForContainingSymbol: 10,
 }
+
+export const COLOR_LOAD = "#ffffff"
+export const COLOR_ON = "#23c865"
+export const COLOR_OFF = "#626161"
+
+export const wallets = [
+    {
+        icon: MetaMask,
+        desc: "Connect to your MetaMask wallet",
+        href: "https://metamask.io/",
+    },
+    {
+        icon: WalletConnect,
+        desc: "Scan with WalletConnect to connect",
+        href: "https://walletconnect.com/",
+    },
+    {
+        icon: Coinbase,
+        desc: "Connect to your Coinbase Account",
+        href: "https://www.coinbase.com/",
+    },
+    {
+        icon: TrustWallet,
+        desc: "Connect to your Trust wallet",
+        href: "https://trustwallet.com/",
+    },
+]
+
+export const profile_tabs = [
+    {
+        value: "account details",
+        label: "account details",
+        index: 0,
+    },
+    {
+        value: "notifications",
+        label: "notifications",
+        index: 1,
+    },
+    {
+        value: "connect wallet",
+        label: "connect wallet",
+        index: 2,
+    },
+    {
+        value: "delete account",
+        label: "delete account",
+        index: 3,
+    },
+    {
+        value: "sign out",
+        label: "sign out",
+        index: 4,
+    },
+]
+
+export const recentNotifications = [
+    {
+        status: true,
+        act: "Failla.987 Placed a higher bid ",
+    },
+    {
+        status: false,
+        act: "Round 2 has just started",
+    },
+    {
+        status: false,
+        act: "round 1 ended",
+    },
+    {
+        status: false,
+        act: "Token has pumped in 23% since your last bid",
+    },
+    {
+        status: true,
+        act: "There are only 40 tokens left",
+    },
+]
+
+export const Currencies = [
+    {
+        id: 0,
+        label: "USD",
+        value: "USD",
+        symbol: "$"
+    },
+    {
+        id: 1,
+        label: "EUR",
+        value: "EUR",
+        symbol: "£"
+    },
+    {
+        id: 2,
+        label: "GBP",
+        value: "GBP",
+        symbol: "€"
+    },
+    {
+        id: 3,
+        label: "INR",
+        value: "INR",
+        symbol: "¥"
+    },
+    {
+        id: 4,
+        label: "SEK",
+        value: "SEK",
+        symbol: "KR"
+    },
+    {
+        id: 5,
+        label: "RUB",
+        value: "RUB",
+        symbol: "₽"
+    },
+    {
+        id: 6,
+        label: "CHF",
+        value: "CHF",
+        symbol: "CHF"
+    },
+]

@@ -13,12 +13,12 @@ const OAuth2RedirectHandler = (props) => {
     const dataType = props.dataType
     const data = props.data
 
-    if (type === "success" && dataType === "token") {
+    if (type === "success") {
        if (data) {
             setUser({
                 ...getUser(),
-                email: getEmailfromTempToken(data),
-                tempToken: data,
+                tempToken: dataType,
+                email: data,
             })
             navigate("/app/onetime-pwd")
         } else {

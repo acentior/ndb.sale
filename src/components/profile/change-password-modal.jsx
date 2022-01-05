@@ -8,6 +8,7 @@ import validator from "validator"
 import CustomSpinner from "../common/custom-spinner"
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import PasswordEyeIcon from "../common/password-eye-icon"
 
 export default function ProfileChangePasswordModal({
     isPasswordModalOpen,
@@ -22,6 +23,9 @@ export default function ProfileChangePasswordModal({
     const pending = changePasswordResults.loading
     const webserviceError = changePasswordResults?.data?.changePassword === "Failed"
     const successfullRequest = changePasswordResults?.data?.changePassword === "Success"
+
+    const [passwordVisible, setPasswordVisible] = useState(false)
+    const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false)
     // Methods
     const changeUserPassword = (e) => {
         e.preventDefault()
@@ -68,24 +72,40 @@ export default function ProfileChangePasswordModal({
                 </div>
             </div>
             <form className="form">
-                <FormInput
-                    name="password"
-                    type="password"
-                    label="New Password"
-                    value={password}
-                    placeholder="Enter password"
-                    onChange={(e) => setPassword(e.target.value)}
-                    error={passwordError}
-                />
-                <FormInput
-                    name="pwd_confirm"
-                    type="password"
-                    label="Confirm New Password"
-                    value={confirmPassword}
-                    placeholder="Re-enter password"
-                    onChange={(e) => setConfirmPassword(e.target.value)}
-                    error={confirmPasswordError}
-                />
+                <div className="form-group position-relative">
+                    <FormInput
+                        type={passwordVisible ? "text" : "password"}
+                        label="New Password"
+                        value={password}
+                        placeholder="Enter password"
+                        onChange={(e) => setPassword(e.target.value)}
+                        error={passwordError}
+                    />
+                    <PasswordEyeIcon
+                        styles={{
+                            top: "40px",
+                        }}
+                        passwordVisible={passwordVisible}
+                        setPasswordVisible={setPasswordVisible}
+                    />
+                </div>
+                <div className="form-group position-relative">
+                    <FormInput
+                        type={confirmPasswordVisible ? "text" : "password"}
+                        label="Confirm New Password"
+                        value={confirmPassword}
+                        placeholder="Re-enter password"
+                        onChange={(e) => setConfirmPassword(e.target.value)}
+                        error={confirmPasswordError}
+                    />
+                    <PasswordEyeIcon
+                        styles={{
+                            top: "40px",
+                        }}
+                        passwordVisible={confirmPasswordVisible}
+                        setPasswordVisible={setConfirmPasswordVisible}
+                    />
+                </div>
                 <div className="pwd-modal__footer mt-4">
                     {webserviceError && (
                         <span className="errorsapn">

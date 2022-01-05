@@ -10,11 +10,12 @@ import CustomSpinner from "../common/custom-spinner"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons"
 import { ROUTES } from "../../utilities/routes"
+import PasswordEyeIcon from "../common/password-eye-icon"
 
 const Signin = (props) => {
     // Auth Check
     const auth = useAuth()
-    if (auth?.isLoggedIn()) navigate("/app/profile")
+    if (auth?.isLoggedIn()) navigate(ROUTES.profile)
 
     // Containers
     const [email, setEmail] = useState("")
@@ -23,6 +24,8 @@ const Signin = (props) => {
 
     const [emailError, setEmailError] = useState("")
     const [pwdError, setPwdError] = useState("")
+
+    const [passwordVisible, setPasswordVisible] = useState(false)
 
     const [signinMutation, signinMutationResults] = useSigninMutation()
 
@@ -64,15 +67,18 @@ const Signin = (props) => {
                         error={emailError}
                     />
                 </div>
-                <div className="form-group ">
+                <div className="form-group position-relative">
                     <FormInput
-                        name="password"
-                        type="password"
+                        type={passwordVisible ? "text" : "password"}
                         label="Password"
                         value={pwd.value}
                         onChange={(e) => setPwd(e.target.value)}
                         placeholder="Enter password"
                         error={pwdError}
+                    />
+                    <PasswordEyeIcon
+                        passwordVisible={passwordVisible}
+                        setPasswordVisible={setPasswordVisible}
                     />
                 </div>
                 <div className="form-group d-flex justify-content-between align-items-center mb-5">

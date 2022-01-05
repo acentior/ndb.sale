@@ -318,11 +318,20 @@
         text-align: center;
     }
     .total-input {
-        width: 300px;
+        width: 250px;
         font-weight: bold;
         font-size: 30px;
         line-height: 37px;
-        margin-left: 48px;
+        margin-left: 18px;
+    }
+    .symbol-label {
+        color: $green;
+        font-weight: 600;
+        font-size: 30px;
+        line-height: 37px;
+        font-variant: small-caps;
+        margin-top: auto;
+        margin-bottom: auto;
     }
     .rc-slider {
         &-rail {

@@ -19,7 +19,7 @@ export default function DressupHorizontalList({
             <div className="mb-2 ps-0">{title}</div>
             <div
                 id={`items-list-view-${secondRow ? "2" : "1"}`}
-                className={`row me-4 dressup-modal-items-horizontal-list border-top border-bottom border-secondary border-1 ${
+                className={`row me-4 dress-up-modal-items-horizontal-list border-top border-bottom border-secondary border-1 ${
                     isScrollable ? "d-inline-block" : "d-auto"
                 }`}
             >
@@ -38,8 +38,10 @@ export default function DressupHorizontalList({
                                     : "border-transparent"
                             }`}
                         >
-                            <img src={item.icon} alt="Avatar" />
-                            <div>
+                            <div className="image_div">
+                                <img src={item.icon} alt="Avatar" />
+                            </div>
+                            <div className="price_div">
                                 {item.price}
                                 <span className="text-success">{item.unit}</span>
                             </div>

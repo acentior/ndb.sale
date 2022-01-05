@@ -9,6 +9,9 @@
     &.deactive {
         background-color: #333333;
     }
+    &.pending {
+        background-color: $white;
+    }
 }
 
 .pre-wrap {

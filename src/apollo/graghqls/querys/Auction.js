@@ -1,41 +1,40 @@
 import { gql } from "@apollo/client"
 
 export const GET_AUCTION = gql`
-query {
-    getAuctions {
-        auctionId,
-        number,
-        startedAt,
-        endedAt,
-        totalToken,
-        minPrice,
-        avatar {
-            groupId,
-            compId
-        },
-        token,
-        sold,
-        stats {
-            qty, 
-            win,
-            fail
+    query {
+        getAuctions {
+            auctionId
+            number
+            startedAt
+            endedAt
+            totalToken
+            minPrice
+            avatar {
+                groupId
+                compId
+            }
+            token
+            sold
+            stats {
+                qty
+                win
+                fail
+            }
+            status
         }
-        status
     }
-}
 `
-
 
 export const GET_BIDLIST_BY_ROUND = gql`
     query getBidListByRound($round: Int!) {
         getBidListByRound(round: $round) {
-            userId,
-            roundId,
-            tokenAmount,
-            tokenPrice,
-            totalPrice,
-            placedAt,
-            updatedAt,
+            userId
+            roundId
+            tokenAmount
+            tokenPrice
+            totalPrice
+            placedAt
+            updatedAt
             status
         }
     }
@@ -65,28 +64,6 @@ export const GET_AUCTION_BY_NUMBER = gql`
         }
     }
 `
-// export const POST_BID = gql`
-//     mutation {
-//         placeBid (
-//             $roundId: String,
-//             $tokenAmount: Int,
-//             $tokenPrice: Int,
-//             $payment: Int,
-//             $cryptoType: String
-//         ) {
-//             userId,
-//             roundId,
-//             tokenAmount,
-//             tokenPrice,
-//             totalPrice,
-//             placedAt,
-//             updatedAt,
-//             status
-//         }
-//     }
-// `
-
-
 export const GET_AUCTION_BY_STATUS = gql`
     query getAuctionByStatus($status: Int!) {
         getAuctionByStatus(status: $status) {

@@ -135,19 +135,6 @@ main.create-auction-page {
                         }
                     }
                 }
-                .MuiAlert-standardError {
-                    background: transparent!important;
-                    .MuiAlert-message {
-                        color: #e17070;
-                    }    
-                }
-                .MuiAlert-standardSuccess {
-                    background: transparent!important;
-                    .MuiAlert-message {
-                        color: #3bc545;
-                    }
-                }
-
 
                 div.image_div {
                     justify-content: center;
@@ -182,6 +169,7 @@ main.create-auction-page {
                         }
                     }
                 }
+                
                 div.item {
                     padding: 4px 0;
                     p {

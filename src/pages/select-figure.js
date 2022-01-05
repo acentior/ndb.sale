@@ -13,10 +13,12 @@ import { ROUTES } from "../utilities/routes"
 import { SET_AVATAR } from "../apollo/graghqls/mutations/Auth"
 import { useMutation, useQuery } from "@apollo/client"
 import { GET_USER } from "../apollo/graghqls/querys/Auth"
+import CustomSpinner from "../components/common/custom-spinner"
 
 const SelectFigure = () => {
     // Containers
-    const [pending, setPending] = useState(true)
+    const [loading, setLoading] = useState(true)
+    const [pending, setPending] = useState(false)
     const [selected, setSelect] = useState(false)
     const [selectedId, setSelectId] = useState(0)
     const [modalIsOpen, setIsOpen] = useState(false)
@@ -26,8 +28,10 @@ const SelectFigure = () => {
     // Queries and Mutations
     const { data: userData } = useQuery(GET_USER)
     const [setAvatar] = useMutation(SET_AVATAR, {
+        errorPolicy: "ignore",
         onCompleted: (data) => {
-            console.log(data)
+            setPending(false)
+            if (data?.setAvatar === "Success") navigate(ROUTES.profile)
         },
     })
 
@@ -43,25 +47,25 @@ const SelectFigure = () => {
     }
     const handleOnConfirmButtonClick = (e) => {
         e.preventDefault()
+        setPending(true)
         setAvatar({
             variables: {
-                prefix: "Tesla",
-                name: "Neo",
+                prefix: figures[selectedId].lastname,
+                name: randomName,
             },
         })
     }
     //Authentication
     useEffect(() => {
         const getUser = userData?.getUser
-        console.log(userData)
         if (getUser) {
-            if (getUser?.avatar === null) return setPending(false)
             setUser(getUser)
+            if (getUser?.avatar === null) return setLoading(false)
             return navigate(ROUTES.profile)
         }
     }, [userData])
 
-    if (pending) return <Loading />
+    if (loading) return <Loading />
     else
         return (
             <main className="profile-page">
@@ -185,7 +189,7 @@ const SelectFigure = () => {
                                                     <div className="d-flex align-items-end flex-column">
                                                         <div className="d-flex align-items-end justify-content-start">
                                                             <h3 className="random-display mb-0 fw-bold me-4">
-                                                                {randomName}.
+                                                                {figures[selectedId].lastname}.
                                                             </h3>
                                                             <div className="random-generate">
                                                                 <p className="form-label">
@@ -210,6 +214,12 @@ const SelectFigure = () => {
                                                                     names.random().substring(0, 7)
                                                                 )
                                                             }
+                                                            onKeyDown={() =>
+                                                                setRandomName(
+                                                                    names.random().substring(0, 7)
+                                                                )
+                                                            }
+                                                            role="presentation"
                                                         >
                                                             Random generate
                                                         </p>
@@ -221,10 +231,16 @@ const SelectFigure = () => {
                                 </div>
                                 {selected ? (
                                     <button
-                                        className="btn-primary text-uppercase w-100 mt-3"
+                                        className="btn-primary text-uppercase w-100 mt-3 d-flex align-items-center justify-content-center"
+                                        disabled={pending}
                                         onClick={handleOnConfirmButtonClick}
                                     >
-                                        confirm
+                                        <div className={`${pending ? "opacity-1" : "opacity-0"}`}>
+                                            <CustomSpinner />
+                                        </div>
+                                        <div className={`${pending ? "ms-3" : "pe-4"}`}>
+                                            confirm
+                                        </div>
                                     </button>
                                 ) : (
                                     <button
@@ -328,16 +344,6 @@ const SelectFigure = () => {
                             )}
                         </div>
                     </div>
-                    {/* {selected ? (
-                        <button className="btn-primary text-uppercase w-100 mt-3">confirm</button>
-                    ) : (
-                        <button
-                            className="btn-primary text-uppercase w-100 mt-3"
-                            onClick={() => setSelect(true)}
-                        >
-                            select
-                        </button>
-                    )} */}
                 </Modal>
             </main>
         )

@@ -30,13 +30,17 @@ const IndexPage = () => {
                             <Icon icon="ic:sharp-pin-drop" />
                             Airdrop
                         </Link>
-                        <Link className="select-item" to="/admin/avatar">
+                        <Link className="select-item" to="/admin/create/customize-avatar">
                             <Icon icon="clarity:avatar-outline-badged" />
                             Avatar customization
                         </Link>
                         <Link className="select-item" to="/admin/create/avatar">
                             <Icon icon="clarity:avatar-line" />
                             Avatar
+                        </Link>
+                        <Link className="select-item" to="/admin/create/email">
+                            <Icon icon="ant-design:mail-outlined" />
+                            Email
                         </Link>
                     </div> 
                 </LayoutWithMenu>

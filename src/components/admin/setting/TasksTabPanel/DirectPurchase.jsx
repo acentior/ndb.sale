@@ -197,7 +197,7 @@ const UnitRowForMobile = styled.div`
             span.edit {
                 font-size: 22px;
                 color: #23c865;
-            }    
+            }
         }
     }
 `;

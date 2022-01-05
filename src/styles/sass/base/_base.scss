@@ -68,3 +68,27 @@ input[type="number"]::-webkit-outer-spin-button {
 .bg-clip-unset {
     background-clip: unset !important;
 }
+
+.hover\:text-green {
+    transition: 500ms;
+    &:hover {
+        color: $green;
+    }
+}
+
+.password-eye-icon {
+    position: absolute;
+    color: rgb(179, 178, 178);
+    width: 20px;
+    height: 20px;
+    top: 38.5px;
+    right: 10px;
+    transition: 500ms;
+    cursor: pointer;
+    &:hover {
+        color: $black;
+    }
+}
+.gap-10 {
+    gap: 6rem !important;
+}

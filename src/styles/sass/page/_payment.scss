@@ -44,7 +44,7 @@
         }
         &-list {
             font-weight: 600;
-            font-size: 24px;
+            font-size: 18px;
             line-height: 29px;
             padding: 8px 30px;
             border: 1px solid white;
@@ -54,11 +54,11 @@
             text-transform: uppercase;
             cursor: pointer;
             @include mq("laptop-wide", max) {
-                font-size: 18px;
+                font-size: 14px;
                 padding: 8px 16px;
             }
             @include mq("laptop", max) {
-                font-size: 16px;
+                font-size: 14px;
             }
         }
         .form-check-input {
@@ -129,6 +129,10 @@
             }
         }
         .cryptocoin-tab {
+            button {
+                font-size: 18px;
+                width: 300px;
+            }
             .cryptocoin-select {
                 margin-bottom: 8px;
                 margin-right: 8px;
@@ -256,6 +260,39 @@
                 margin-right: 8px;
             }
         }
+        .externalwallets-tab {
+            text-align: center;
+            .col-sm-6 {
+                margin-bottom: 16px;
+            }
+            .wallet-item {
+                cursor: pointer;
+                width: 100%;
+                height: 100%;
+                padding-top: 20px;
+                padding-bottom: 20px;
+                border: 2px solid #525252;
+                img {
+                    margin-bottom: 16px;
+                    width: 42px;
+                    height: 42px;
+                    @include mq("phone", max) {
+                        width: 32px;
+                        height: 32px;
+                    }
+                }
+                p {
+                    font-weight: 500;
+                    font-size: 16px;
+                    line-height: 20px;
+                    color: #8f8f8f;
+                }
+                &.active {
+                    background-color: white;
+                    border-color: white;
+                }
+            }
+        }
         .payment-expire {
             display: block;
             padding-left: 30px !important;
@@ -348,6 +385,9 @@
         padding: 0px 60px;
         margin-top: 80px;
         margin-bottom: 80px;
+        @include mq("tablet", max) {
+            padding: 0 0;
+        }
         .current-value,
         .end-value {
             font-weight: bold;

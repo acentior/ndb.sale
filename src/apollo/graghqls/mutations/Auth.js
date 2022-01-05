@@ -71,3 +71,9 @@ export const RESET_PASSWORD = gql`
         resetPassword(email: $email, code: $code, newPassword: $newPassword)
     }
 `
+
+export const DELETE_ACCOUNT = gql`
+    mutation deleteAccount {
+        deleteAccount
+    }
+`

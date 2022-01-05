@@ -1,0 +1,51 @@
+.direct-purchase {
+    height: calc(100vh - 200px);
+    display: flex;
+    .btn-buy-now {
+        padding: 12px 72px;
+        font-size: 30px;
+        font-weight: bold;
+        font-variant: small-caps;
+        border-radius: 0;
+    }
+    .exclusive-label {
+        font-variant: small-caps;
+        font-size: 36px;
+        font-weight: bold;
+        line-height: 23px;
+        color: $green;
+    }
+    .ndb-tokens-label {
+        font-size: 48px;
+        font-weight: 800;
+        text-transform: uppercase;
+        font-style: italic;
+        color: white;
+        margin-left: 31px;
+        margin-bottom: 25px;
+    }
+    .miss-label {
+        font-size: 16px;
+        font-weight: 500;
+        line-height: 24px;
+        letter-spacing: -0.02em;
+        color: white;
+        margin-bottom: 23px;
+    }
+    .tokens-amount {
+        font-size: 100px;
+        line-height: 122px;
+        letter-spacing: -0.02em;
+        font-variant: small-caps;
+        font-weight: bold;
+        color: white;
+    }
+    .next-auction-label {
+        font-variant: small-caps;
+        font-size: 28px;
+        line-height: 28px;
+        color: white;
+        width: max-content;
+        font-weight: bold;
+    }
+}

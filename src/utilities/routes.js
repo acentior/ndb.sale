@@ -6,4 +6,9 @@ export const ROUTES = {
     profile: "/app/profile",
     changePassword: "/app/change-password",
     forgotPassword: "/app/forgot-password",
+    payment: "/payment",
+    auction: "/app/auction",
+    home: "/",
+    faq: "/faq",
+    wallet: "/history"
 }

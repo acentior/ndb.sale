@@ -1,0 +1,183 @@
+main.customize-avatar-page {
+    .container {
+        @include mq("laptop-wide", max) {
+            max-width: 95%;
+        }
+        @include mq("phone", max) {
+            max-width: 100%;
+        }
+    }       
+    section.home {
+        div.container {
+            display: flex;
+            height: 80vh;
+            justify-content: center;
+            align-items: center;
+            @include mq('phone', max) {
+                height: auto;
+                overflow: auto;
+            }
+        }
+        div.createDiv {
+            width: 80%;
+            border: 1px solid #ffffff;   
+            padding: 24px;
+            position: relative;
+            margin-bottom: 20px;
+            min-height: 400px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            a.close {
+                position: absolute;
+                font-size: 25px;
+                top: 20px;
+                right: 20px;
+            }
+            p.subtitle {
+                font-size: 20px;
+                font-weight: 500;
+                margin-bottom: 10px;
+            }
+            @include mq("tablet", max) {
+                width: 90%;
+            }  
+            @include mq("phone", max) {
+                width: 100%;
+                height: auto;
+                border: none;
+                display: block;
+                a.close {
+                    display: none;
+                }
+                p.subtitle {
+                    text-align: center;
+                }
+            }  
+            div.input_div {
+                width: 80%;
+                margin: auto;
+                div.upload {
+                    height: 38px;
+                    border: 1px solid #cccccc;
+                    display: flex;
+                    padding: 10px;
+                    align-items: center;
+                    justify-content: space-between;
+                    p {
+                        padding: 0;
+                    }
+                    p.file_name {
+                        width: 80%;
+                        font-size: 14px;
+                        font-weight: 400;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                    p.upload_btn {
+                        font-size: 24px;
+                        svg {cursor: pointer;}
+                    }
+                }
+                input.black_input {
+                    height: 38px;
+                    border: 1px solid #cccccc;
+                }
+                div.col-sm-4 {
+                    padding: 0 30px;
+                }
+                div#position {
+                    display: flex;
+                    flex-direction: column;
+                }
+                div.col-md-6 {
+                    display: flex;
+                    flex-direction: column;
+                    justify-content: center;
+                    margin-bottom: 20px;
+                    padding: 0 30px;
+                }
+                p {
+                    font-size: 12px;
+                    font-weight: 600;
+                    padding-bottom: 5px;
+                    span {
+                        font-weight: 400;
+                        margin-left: 20px;
+                    }
+                }
+                @include mq("laptop", max) {
+                    width: 100%;
+                    div.col-sm-4 {
+                        padding: 0 10px;
+                    }
+                }  
+                @include mq("phone", max) {
+                    div.col-sm-4 {
+                        padding: 0;
+                        margin-top: 50px;
+                    }
+                    div#position {
+                        flex-direction: row;
+                        div {
+                            width: 50%;
+                            padding: 0 10px;
+                        }
+                    }
+                }
+            }
+            div.button_div {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 30px;
+                .previous {
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: black;
+                    background-color: #ffffff;
+                    cursor: pointer;
+                    padding: 7px 15px;
+                    &:hover {
+                        border: 1px solid $green;
+                    }
+                }
+                .next {
+                    font-size: 14px;
+                    font-weight: 500;
+                    background-color: $green;
+                    color: white;
+                    cursor: pointer;
+                    padding: 7px 15px;
+                    &:hover {
+                        color: black;
+                    }
+                }
+            }
+        }        
+    } 
+}
+
+div.profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #cccccc;
+
+    width: 180px;
+    height: 240px;
+    @include mq('tablet', max) {
+        width: 150px;
+        height: 200px;
+    }
+    @include mq('phone', max) {
+        width: 180px;
+        height: 240px;
+    }
+    div.image_div {
+        position: relative;
+        div {
+            position: absolute;
+        }
+    }
+}

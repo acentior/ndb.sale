@@ -152,7 +152,7 @@ const IndexPage = () => {
                                                     setRoundData({...roundData, endTime: newValue});
                                                 }}
                                                 renderInput={(params) => <TextField {...params} />}
-                                            />                                        
+                                            />
                                         </div>
                                         <div>          
                                             <p>Total Time</p>                              

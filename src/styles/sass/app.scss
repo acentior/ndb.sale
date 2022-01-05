@@ -30,6 +30,7 @@
 @import "page/purchase/auction.scss";
 @import "page/purchase/home.scss";
 @import "page/purchase/homeWithSign.scss";
+@import "page/direct-purchase";
 
 // admin style
 @import "page/admin/common";
@@ -39,5 +40,7 @@
 @import "page/admin/create/auction";
 @import "page/admin/create/direct-purchase";
 @import "page/admin/create/avatar";
+@import "page/admin/create/email";
+@import "page/admin/create/customize-avatar";
 @import "page/admin/airdrop";
 @import "page/admin/setting";

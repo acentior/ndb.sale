@@ -12,13 +12,20 @@
         text-align: center;
         .left-part {
             padding-left: 8%;
+            .tokens-lower-part {
+                width: max-content;
+                .cta {
+                    margin-top: -20px;
+                }
+            }
         }
         .home-title {
             font-weight: bold;
             font-size: 48px;
             line-height: 59px;
-            text-transform: uppercase;
-            text-align: right;
+            font-variant: small-caps;
+            text-align: left;
+            width: max-content;
             @include mq("tablet", max) {
                 font-size: 38px;
                 line-height: 46px;
@@ -27,20 +34,22 @@
         .token {
             &-left {
                 font-weight: 900;
-                font-size: 34px;
+                font-size: 30px;
                 line-height: 44px;
                 text-align: left;
+                font-weight: bold;
+                font-variant: small-caps;
                 @include mq("tablet", max) {
                     font-size: 28px;
                     line-height: 35px;
                 }
             }
             &-value {
-                font-weight: 600;
+                font-weight: bold;
                 font-size: 100px;
                 line-height: 122px;
                 text-align: left;
-                letter-spacing: 0.03em;
+                font-variant: small-caps;
                 @include mq("tablet", max) {
                     font-size: 78px;
                     line-height: 96px;
@@ -61,15 +70,15 @@
 
 .countdown-wrapper {
     display: flex;
-    justify-content: center;
+    justify-content: flex-end;
     .time-section {
         text-align: center;
         .time {
-            font-weight: 600;
-            font-size: 48px;
+            font-weight: bold;
+            font-size: 40px;
             line-height: 59px;
             letter-spacing: 0.03em;
-            color: white;
+            font-variant: small-caps;
             @include mq("tablet", max) {
                 font-size: 37.8092px;
                 line-height: 46px;

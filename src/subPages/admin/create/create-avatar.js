@@ -9,7 +9,7 @@ import LayoutForCreate from "../../../components/admin/LayoutForCreate"
 import { Alert, Rating } from "@mui/material"
 import Select from "react-select"
 import { capitalizeFirstLetter } from "../../../utilities/string"
-import DressupModal from "../../../components/dressup/dressup-modal"
+import DressupModal from "../../../components/admin/dress-up/dressup-modal"
 
 const CreateAvatar = () => {
     const [currentStep, setCurrentStep] = useState(1)

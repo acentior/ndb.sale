@@ -10,6 +10,7 @@ import { useResetPassword } from "../../apollo/model/auth"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons"
 import { passwordValidatorOptions } from "../../utilities/staticData"
+import PasswordEyeIcon from "../common/password-eye-icon"
 
 const ForgetPassword = () => {
     // Containers
@@ -19,8 +20,9 @@ const ForgetPassword = () => {
     const [password, setPassword] = useState("")
     const [loading, setLoading] = useState(true)
     const [confirmPassword, setConfirmPassword] = useState("")
+    const [passwordVisible, setPasswordVisible] = useState(false)
+    const [confirmPasswordVisible, setConfirmPasswordVisible] = useState(false)
     const [resetPasswordMutation, resetPasswordResults] = useResetPassword()
-
     // Methods
     const changePasswordMethod = (e) => {
         e.preventDefault()
@@ -61,19 +63,31 @@ const ForgetPassword = () => {
                         placeholder="Activation Code"
                         label="Activation Code"
                     />
+                </div>
+                <div className="form-group position-relative">
                     <FormInput
-                        type="password"
+                        type={passwordVisible ? "text" : "password"}
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}
                         placeholder="Enter New Password"
                         label="Enter New Password"
                     />
+                    <PasswordEyeIcon
+                        passwordVisible={passwordVisible}
+                        setPasswordVisible={setPasswordVisible}
+                    />
+                </div>
+                <div className="form-group position-relative">
                     <FormInput
-                        type="password"
+                        type={confirmPasswordVisible ? "text" : "password"}
                         value={confirmPassword}
                         onChange={(e) => setConfirmPassword(e.target.value)}
                         placeholder="Confirm Password"
                         label="Confirm Password"
+                    />
+                    <PasswordEyeIcon
+                        passwordVisible={confirmPasswordVisible}
+                        setPasswordVisible={setConfirmPasswordVisible}
                     />
                 </div>
                 <div className="mb-3 mt-5">

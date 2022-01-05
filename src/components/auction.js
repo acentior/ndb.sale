@@ -1,16 +1,12 @@
-import React, { useReducer, useEffect, useState, Suspense } from "react"
-// import { navigate } from "gatsby"
+import React, { useReducer, useEffect, useState } from "react"
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
 import Slider from "rc-slider"
 import Select from "react-select"
 import Modal from "react-modal"
 import ReactECharts from "echarts-for-react"
 import Header from "../components/common/header"
-import Loading from "../components/common/Loading"
-// import AcutionRoundTab from "./auctionsRoundTab"
 import { useQuery, useMutation } from "@apollo/client"
 import {
-    // getSecTomorrow,
     numberWithCommas,
     numberWithLength,
     getTimeDiffOverall,
@@ -26,18 +22,18 @@ import {
     GET_AUCTION_BY_NUMBER,
     GET_BIDLIST_BY_ROUND,
 } from "../apollo/graghqls/querys/Auction"
+import { GET_ROUND_CHANCE, GET_ROUND_PERFORMANCE2 } from "../apollo/graghqls/querys/Statistics"
+import { Currencies } from "../utilities/staticData"
+import { User } from "../utilities/user-data"
 
-// import { AuctionService } from "../apollo/model/AuctionService"
-// import * as GraphQL from "../apollo/graghqls/querys/Auction"
-
-const ndb_token = `Since the beginning of NDB’s project the vision is to provide clean green technologies to the world. The NDB token is not a security token nor does it represent any shares of NDB SA.
+const ndb_token = `Since the beginning of NDB's project the vision is to provide clean green technologies to the world. The NDB token is not a security token nor does it represent any shares of NDB SA.
 
 By using NDB token you will be able to contribute to the development of our technologies and our vision. We plan to expand our ecosystem to multiple areas including deep space exploration, sustainable fashion, quantum computing, and more. 
 `
+
 const options = [
-    { value: "bid_performance", label: "Bid performance" },
-    { value: "round_performance", label: "Round performance" },
-    { value: "ndb_token", label: "NDB Token Value" },
+    { value: "round_performance2", label: "Round Performance2" },
+    { value: "round_change", label: "Round Chance" },
 ]
 
 const Auction = () => {
@@ -45,11 +41,6 @@ const Auction = () => {
 
     const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
         tabIndex: 0,
-        // curTime: {
-        //     hours: 0,
-        //     minutes: 0,
-        //     seconds: 0,
-        // },
         amount: 1,
         price: 1,
         total: "",
@@ -57,58 +48,10 @@ const Auction = () => {
         bidModal: false,
         show_chart: false,
         selectLabel: options[0],
-        bidChartData: {
-            tooltip: {
-                trigger: "axis",
-                axisPointer: {
-                    type: "shadow",
-                },
-            },
-            color: "#23C865",
-            grid: {
-                left: "3%",
-                right: "4%",
-                bottom: "3%",
-                containLabel: true,
-            },
-            xAxis: [
-                {
-                    type: "category",
-                    data: [0, 100, 200, 300, 400, 500],
-                    axisTick: {
-                        alignWithLabel: true,
-                    },
-                },
-            ],
-            yAxis: [
-                {
-                    type: "value",
-                },
-            ],
-            series: [
-                {
-                    name: "Bid",
-                    type: "bar",
-                    barWidth: "30%",
-                    data: [330, 252, 200, 334, 390, 330, 220],
-                },
-            ],
-        },
     })
 
-    const {
-        tabIndex,
-        // curTime,
-        amount,
-        price,
-        place_bid,
-        bidModal,
-        show_chart,
-        selectLabel,
-        bidChartData,
-    } = state
+    const { tabIndex, amount, price, place_bid, bidModal, show_chart, selectLabel } = state
     const [selectedData, setSelectedData] = useState(1)
-
     const { data } = useQuery(GET_AUCTION)
 
     const roundData = data?.getAuctions?.filter(
@@ -136,6 +79,22 @@ const Auction = () => {
     const { data: historyBidListL } = useQuery(GET_BIDLIST_BY_ROUND, {
         variables: { round: roundData && roundData[0]?.number - 1 },
     })
+
+    // get round performance 2
+    const { data: roundPerformance2 } = useQuery(GET_ROUND_PERFORMANCE2)
+    const { data: roundChance } = useQuery(GET_ROUND_CHANCE)
+    let round_perform2 = roundPerformance2?.getRoundPerform2.map((item) => {
+        let newArr = []
+        newArr.push("Round " + item.roundNumber, item.min, item.max, item.std)
+        return newArr
+    })
+    let round_chance = roundChance?.getRoundChance.map((item) => {
+        let newArr = []
+        newArr.push("Round " + item.roundNumber, item.winRate, item.failedRate)
+        return newArr
+    })
+    round_chance?.unshift(["Category", "Win Rate", "Failed Rate"])
+    round_perform2?.unshift(["Category", "Max", "Min", "Std"])
 
     const fnSelectedRoundData = () =>
         selectedData === 0
@@ -167,6 +126,16 @@ const Auction = () => {
         }
     }
 
+    const distanceToDate = getTimeDiffOverall(
+        fnSelectedRoundData()?.startedAt,
+        fnSelectedRoundData()?.endedAt
+    ) // 86400
+    const duration = getDiffOverall(
+        fnSelectedRoundData()?.startedAt,
+        fnSelectedRoundData()?.endedAt
+    ) //getSecTomorrow()
+    const percentage = (distanceToDate / duration) * 100
+
     const [PlaceBid] = useMutation(PLACE_BID, {
         onCompleted: (data) => {
             console.log("received Mutation data", data)
@@ -178,8 +147,20 @@ const Auction = () => {
         },
     })
 
-    const AcutionRoundTab = React.lazy(() => import("./auctionsRoundTab"))
-    const AcutionTimeSlot = React.lazy(() => import("./auctionsTimeSlot"))
+    useEffect(() => {
+        const id = setInterval(() => {
+            setState({
+                curTime: {
+                    hours: 0,
+                    minutes: 0,
+                    seconds: 0,
+                },
+            })
+        }, 1000)
+        return () => {
+            clearInterval(id)
+        }
+    }, [])
 
     return (
         <main className="auction-page">
@@ -207,146 +188,255 @@ const Auction = () => {
                             show_chart ? "d-none" : "d-block"
                         }`}
                     >
-                        {!roundM?.getAuctionByNumber && <Loading />}
-                        <Suspense fallback={<p></p>}>
-                            <AcutionRoundTab
-                                roundL={roundL}
-                                roundM={roundM}
-                                roundH={roundH}
-                                setState={setState}
-                                setSelectedData={setSelectedData}
-                                selectedData={selectedData}
-                                fnSelectedRoundData={fnSelectedRoundData}
-                            ></AcutionRoundTab>
-                        </Suspense>
                         {roundM?.getAuctionByNumber && (
                             <Tabs
-                                className="statistics-tab"
-                                selectedIndex={tabIndex}
-                                onSelect={(index) => setState({ tabIndex: index })}
+                                className="round-tab"
+                                selectedIndex={selectedData}
+                                onSelect={(index) => {
+                                    if (index !== selectedData) {
+                                        setState({ price: 0, amount: 0 })
+                                        setSelectedData(index)
+                                    }
+                                }}
                             >
+                                (
                                 <TabList>
-                                    <Tab>Ndb token</Tab>
-                                    <Tab>StatiStics</Tab>
-                                    <Tab>Bids history</Tab>
+                                    <Tab>Round {roundL?.getAuctionByNumber?.number}</Tab>
+                                    <Tab>Round {roundM?.getAuctionByNumber?.number}</Tab>
+                                    <Tab>Round {roundH?.getAuctionByNumber?.number}</Tab>
                                 </TabList>
+                                )
                                 <TabPanel>
-                                    <p className="text">{ndb_token}</p>
+                                    Token Available{" "}
+                                    <span className="fw-bold">{fnSelectedRoundData()?.token}</span>
                                 </TabPanel>
                                 <TabPanel>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Date</th>
-                                                <th>Highest Bid Per Token</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {fnSelectedBidhistoryData()?.map((item, idx) => (
-                                                <tr key={idx}>
-                                                    <td>{getFormatedDate(item.placedAt)}</td>
-                                                    <td>
-                                                        {item.totalPrice}
-                                                        <span className="txt-green"> $</span>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
+                                    Token Available{" "}
+                                    <span className="fw-bold">{fnSelectedRoundData()?.token}</span>
                                 </TabPanel>
                                 <TabPanel>
-                                    <table>
-                                        <thead>
-                                            <tr>
-                                                <th>Placement</th>
-                                                <th>Highest Bid Per Token</th>
-                                            </tr>
-                                        </thead>
-                                        <tbody>
-                                            {fnSelectedBidhistoryData()?.map((item, idx) => (
-                                                <tr key={idx}>
-                                                    <td>{idx + 1}</td>
-                                                    <td>
-                                                        {item.totalPrice}
-                                                        <span className="txt-green"> $</span>
-                                                    </td>
-                                                </tr>
-                                            ))}
-                                        </tbody>
-                                    </table>
+                                    Token Available{" "}
+                                    <span className="fw-bold">{fnSelectedRoundData()?.token}</span>
                                 </TabPanel>
                             </Tabs>
                         )}
-                        {roundM?.getAuctionByNumber && (
-                            <div>
-                                <AcutionTimeSlot
-                                    fnSelectedRoundData={fnSelectedRoundData}
-                                ></AcutionTimeSlot>
-                                <div className="d-flex justify-content-between mt-4">
-                                    {fnAverateMinBid() !== 0 ? (
-                                        <div>
-                                            <p className="caption">Minimum bid</p>
-                                            <p className="value">
-                                                {fnAverateMinBid()}
-                                                <span className="txt-green"> $</span>{" "}
-                                            </p>
-                                        </div>
-                                    ) : (
-                                        <div></div>
-                                    )}
-                                    <div>
-                                        <p className="caption">Available Until</p>
-                                        {/* {getTimeDiffOverall(
-                                    fnSelectedRoundData()?.startedAt,
-                                    fnSelectedRoundData()?.endedAt
-                                ) < 0 ? (
-                                    <p className="value"> No Data</p>
-                                ) : ( */}
-                                        <p className="value">
-                                            {numberWithLength(
-                                                parseInt(
-                                                    new Date(
-                                                        fnSelectedRoundData()?.endedAt
-                                                    ).getHours()
-                                                )
-                                            )}
-                                            :
-                                            {numberWithLength(
-                                                parseInt(
-                                                    new Date(
-                                                        fnSelectedRoundData()?.endedAt
-                                                    ).getMinutes()
-                                                )
-                                            )}
-                                            :
-                                            {numberWithLength(
-                                                parseInt(
-                                                    new Date(
-                                                        fnSelectedRoundData()?.endedAt
-                                                    ).getSeconds()
-                                                )
-                                            )}
-                                        </p>
-                                        {/* )} */}
+                        <Tabs
+                            className="statistics-tab"
+                            selectedIndex={tabIndex}
+                            onSelect={(index) => setState({ tabIndex: index })}
+                        >
+                            <TabList>
+                                {fnSelectedRoundData()?.status === 2 ? (
+                                    <>
+                                        <Tab>statistics</Tab>
+                                        <Tab>bids history</Tab>
+                                        <Tab>ndb token</Tab>
+                                    </>
+                                ) : (
+                                    <>
+                                        <Tab>ndb token</Tab>
+                                        <Tab>bids history</Tab>
+                                        <Tab>statistics</Tab>
+                                    </>
+                                )}
+                            </TabList>
+                            {fnSelectedRoundData()?.status === 2 ? (
+                                <>
+                                    <TabPanel>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Highest Bid Per Token</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {fnSelectedBidhistoryData()?.map((item, idx) => (
+                                                    <tr key={idx}>
+                                                        <td>{getFormatedDate(item.placedAt)}</td>
+                                                        <td>
+                                                            {item.totalPrice}
+                                                            <span className="txt-green"> $</span>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </TabPanel>
+                                    <TabPanel>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Placement</th>
+                                                    <th>Highest Bid Per Token</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {fnSelectedBidhistoryData()?.map((item, idx) => (
+                                                    <tr key={idx}>
+                                                        <td>{idx + 1}</td>
+                                                        <td>
+                                                            {item.totalPrice}
+                                                            <span className="txt-green"> $</span>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </TabPanel>
+                                    <TabPanel>
+                                        <p className="text">{ndb_token}</p>
+                                    </TabPanel>
+                                </>
+                            ) : (
+                                <>
+                                    <TabPanel>
+                                        <p className="text">{ndb_token}</p>
+                                    </TabPanel>
+                                    <TabPanel>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Placement</th>
+                                                    <th>Highest Bid Per Token</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {fnSelectedBidhistoryData()?.map((item, idx) => (
+                                                    <tr key={idx}>
+                                                        <td>{idx + 1}</td>
+                                                        <td>
+                                                            {item.totalPrice}
+                                                            <span className="txt-green"> $</span>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </TabPanel>
+                                    <TabPanel>
+                                        <table>
+                                            <thead>
+                                                <tr>
+                                                    <th>Date</th>
+                                                    <th>Highest Bid Per Token</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody>
+                                                {fnSelectedBidhistoryData()?.map((item, idx) => (
+                                                    <tr key={idx}>
+                                                        <td>{getFormatedDate(item.placedAt)}</td>
+                                                        <td>
+                                                            {item.totalPrice}
+                                                            <span className="txt-green"> $</span>
+                                                        </td>
+                                                    </tr>
+                                                ))}
+                                            </tbody>
+                                        </table>
+                                    </TabPanel>
+                                </>
+                            )}
+                        </Tabs>
+                        {isInbetween(
+                            fnSelectedRoundData()?.startedAt,
+                            fnSelectedRoundData()?.endedAt
+                        ) && (
+                            <div className="timeframe-bar">
+                                <div
+                                    className="timeleft"
+                                    style={{
+                                        width:
+                                            (percentage > 0 && percentage < 101 ? percentage : 0) +
+                                            "%",
+                                        background: "#464646",
+                                    }}
+                                >
+                                    <div className="timeleft__value">
+                                        {numberWithLength(
+                                            parseInt(
+                                                getTimeDiffOverall(
+                                                    fnSelectedRoundData()?.startedAt,
+                                                    fnSelectedRoundData()?.endedAt
+                                                ) /
+                                                    (60 * 60)
+                                            )
+                                        )}
+                                        :
+                                        {numberWithLength(
+                                            parseInt(
+                                                (getTimeDiffOverall(
+                                                    fnSelectedRoundData()?.startedAt,
+                                                    fnSelectedRoundData()?.endedAt
+                                                ) %
+                                                    (60 * 60)) /
+                                                    60
+                                            )
+                                        )}
+                                        :
+                                        {numberWithLength(
+                                            parseInt(
+                                                getTimeDiffOverall(
+                                                    fnSelectedRoundData()?.startedAt,
+                                                    fnSelectedRoundData()?.endedAt
+                                                ) % 60
+                                            )
+                                        )}
                                     </div>
                                 </div>
-                                {place_bid && (
-                                    <div className="text-center my-5">
-                                        <button
-                                            className="btn-primary btn-increase"
-                                            onClick={() => setState({ bidModal: true })}
-                                        >
-                                            {!place_bid ? "Place Bid" : "Increase bid"}
-                                        </button>
-                                    </div>
-                                )}
+                            </div>
+                        )}
+                        <div className="d-flex justify-content-between mt-4">
+                            {fnAverateMinBid() !== 0 ? (
+                                <div>
+                                    <p className="caption">Minimum bid</p>
+                                    <p className="value">
+                                        {fnAverateMinBid()}
+                                        <span className="txt-green"> $</span>{" "}
+                                    </p>
+                                </div>
+                            ) : (
+                                <div></div>
+                            )}
+                            <div>
+                                <p className="caption">Available Until</p>
+
+                                <p className="value">
+                                    {numberWithLength(
+                                        parseInt(
+                                            new Date(fnSelectedRoundData()?.endedAt).getHours()
+                                        )
+                                    )}
+                                    :
+                                    {numberWithLength(
+                                        parseInt(
+                                            new Date(fnSelectedRoundData()?.endedAt).getMinutes()
+                                        )
+                                    )}
+                                    :
+                                    {numberWithLength(
+                                        parseInt(
+                                            new Date(fnSelectedRoundData()?.endedAt).getSeconds()
+                                        )
+                                    )}
+                                </p>
+                            </div>
+                        </div>
+                        {place_bid && (
+                            <div className="text-center my-5">
+                                <button
+                                    className="btn-primary btn-increase"
+                                    onClick={() => setState({ bidModal: true })}
+                                >
+                                    {!place_bid ? "Place Bid" : "Increase bid"}
+                                </button>
                             </div>
                         )}
                     </div>
 
                     <div className="auction-right col-lg-8 col-md-7">
                         <div className={`place-bid ${place_bid && "d-none"}`}>
-                            <h3 className="range-label">amount of Token</h3>
+                            <h3 className="range-label">amount of token</h3>
                             <div className="d-flex align-items-center mb-4">
                                 <input
                                     type="number"
@@ -386,15 +476,16 @@ const Auction = () => {
                                     value={numberWithCommas(price * amount, " ")}
                                     readOnly
                                 />
+                                <h3 className="symbol-label">
+                                    {Currencies[User.selectedCurrencyId].symbol}
+                                </h3>
                             </div>
                             <button
                                 className="btn-primary text-uppercase w-100"
                                 onClick={() => {
-                                    // setState({ place_bid: true })
-                                    // navigate("/payment")
                                     PlaceBid({
                                         variables: {
-                                            roundId: fnSelectedRoundData()?.number,
+                                            roundId: fnSelectedRoundData()?.auctionId,
                                             tokenAmount: amount,
                                             tokenPrice: price,
                                             payment: 1,
@@ -425,11 +516,48 @@ const Auction = () => {
                                 <img src={Qmark} alt="question" className="ms-3" />
                             </div>
                             <p className="select-label">{selectLabel.label}</p>
-                            <ReactECharts
-                                option={bidChartData}
-                                style={{ height: "450px", width: "100%" }}
-                                className="echarts-for-echarts"
-                            />
+                            {selectLabel.value === "round_performance2" && round_perform2 && (
+                                <ReactECharts
+                                    option={{
+                                        tooltip: {
+                                            className: "echarts-tooltip",
+                                        },
+                                        color: ["#23C865", "#8F8F8F", "#FFFFFF"],
+                                        dataset: {
+                                            source: [
+                                                ["Category", "Max", "Min", "Std"],
+                                                ["Round 5", 1.79, 0, 0],
+                                                ["Round 4", 30, 45, 10.606601717798213],
+                                                ["Round 3", 30, 55, 10],
+                                                ["Round 2", 15, 55, 10],
+                                                ["Round 1", 15, 425, 0],
+                                                ["Round 6", 65, 65, 0],
+                                            ],
+                                        },
+                                        xAxis: { type: "category" },
+                                        yAxis: {},
+                                        series: [{ type: "bar" }, { type: "bar" }, { type: "bar" }],
+                                    }}
+                                    style={{ height: "450px", width: "100%" }}
+                                    className="echarts-for-echarts"
+                                />
+                            )}
+                            {selectLabel.value === "round_change" && round_chance && (
+                                <ReactECharts
+                                    option={{
+                                        tooltip: {},
+                                        color: ["#23C865", "#E8503A"],
+                                        dataset: {
+                                            source: round_chance,
+                                        },
+                                        xAxis: { type: "category" },
+                                        yAxis: {},
+                                        series: [{ type: "bar" }, { type: "bar" }],
+                                    }}
+                                    style={{ height: "450px", width: "100%" }}
+                                    className="echarts-for-echarts"
+                                />
+                            )}
                         </div>
                     </div>
                 </div>
@@ -528,7 +656,6 @@ const Auction = () => {
                             setState({ total: price * amount })
                             setState({ bidModal: false })
                             setState({ place_bid: true })
-                            // navigate("/payment")
                         }}
                     >
                         {!place_bid ? "Place Bid" : "Increase Bid"}

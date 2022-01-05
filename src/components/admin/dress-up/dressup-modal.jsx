@@ -1,7 +1,7 @@
 import React, { useState } from "react"
 import Modal from "react-modal"
-import { DressupData } from "../../utilities/dressup-data"
-import { CloseIcon, EmptyAvatar } from "../../utilities/imgImport"
+import { DressupData } from "../../../utilities/dressup-data"
+import { CloseIcon, EmptyAvatar } from "../../../utilities/imgImport"
 import DressupHorizontalList from "./dressup-horizontal-list"
 
 export default function DressupModal({ isModalOpen, setIsModalOpen }) {
@@ -12,7 +12,7 @@ export default function DressupModal({ isModalOpen, setIsModalOpen }) {
     const [selectedHat, setSelectedHat] = useState(0)
     const [selectedOther, setSelectedOther] = useState(0)
     const [selectedTab, setSelectedTab] = useState(0)
-
+    
     const selectedHairStyleItem = DressupData.hairStyles[selectedHairStyle]
     const selectedHairColorItem = DressupData.hairColors[selectedHairColor]
     const selectedFacialStyleItem = DressupData.facialStyles[selectedFacialStyle]
@@ -26,10 +26,10 @@ export default function DressupModal({ isModalOpen, setIsModalOpen }) {
                 setIsModalOpen(false)
             }}
             ariaHideApp={false}
-            className="dressup-modal"
-            overlayClassName="dressup-modal__overlay"
+            className="dress-up-modal"
+            overlayClassName="dress-up-modal__overlay"
         >
-            <div className="dressup-modal__header">
+            <div className="dress-up-modal__header">
                 <div
                     onClick={() => setIsModalOpen(false)}
                     onKeyDown={() => setIsModalOpen(false)}
@@ -48,7 +48,7 @@ export default function DressupModal({ isModalOpen, setIsModalOpen }) {
             <div className="row m-0 py-4 text-white">
                 <div className="col-md-4">
                     <div className="row">
-                        <div className="dressup-modal-avatar">
+                        <div className="dress-up-modal-avatar">
                             {selectedHairStyleItem.isolatedIcon && (
                                 <img
                                     src={
@@ -112,8 +112,8 @@ export default function DressupModal({ isModalOpen, setIsModalOpen }) {
                             <img src={EmptyAvatar} className="empty-avatar" alt="Avatar" />
                         </div>
 
-                        <span className="text-center dressup-modal-avatar-name mt-3">Tesla</span>
-                        <div className="dressup-modal-sections-list">
+                        <span className="text-center dress-up-modal-avatar-name mt-3">Tesla</span>
+                        <div className="dress-up-modal-sections-list">
                             {DressupData.tabs.map((item) => (
                                 <div
                                     onClick={() => setSelectedTab(item.index)}
@@ -125,13 +125,13 @@ export default function DressupModal({ isModalOpen, setIsModalOpen }) {
                                     {item.title}
                                 </div>
                             ))}
-                        </div>
+                          </div>
                         <div className="btn-save">save</div>
                     </div>
                 </div>
                 <div className="col-md-8 border-start px-5 py-3">
                     {selectedTab === 0 && (
-                        <div className="dressup-modal-hair-section">
+                        <div className="dress-up-modal-hair-section">
                             <DressupHorizontalList
                                 title={"hair style"}
                                 list={DressupData.hairStyles}
@@ -149,7 +149,7 @@ export default function DressupModal({ isModalOpen, setIsModalOpen }) {
                         </div>
                     )}
                     {selectedTab === 1 && (
-                        <div className="dressup-modal-hair-section">
+                        <div className="dress-up-modal-hair-section">
                             <DressupHorizontalList
                                 title={"facial style"}
                                 list={DressupData.facialStyles}
@@ -167,7 +167,7 @@ export default function DressupModal({ isModalOpen, setIsModalOpen }) {
                         </div>
                     )}
                     {selectedTab === 2 && (
-                        <div className="dressup-modal-hair-section">
+                        <div className="dress-up-modal-hair-section">
                             <DressupHorizontalList
                                 title={"hats"}
                                 list={DressupData.hats}
