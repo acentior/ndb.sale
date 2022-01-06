@@ -29,8 +29,8 @@ import Linechart from "./chart/Linechart"
 import Candlestick from "./chart/Candlestick"
 
 // for test
-import chart1 from '../../test_data/chart1.json'
-import chart2 from '../../test_data/chart2.json'
+// import chart1 from '../../test_data/chart1.json'
+// import chart2 from '../../test_data/chart2.json'
 
 const ndb_token = `Since the beginning of NDB's project the vision is to provide clean green technologies to the world. The NDB token is not a security token nor does it represent any shares of NDB SA.
 
@@ -43,6 +43,10 @@ const options = [
 ]
 
 const Auction = () => {
+
+    const chart1 = useQuery(GET_AUCTION)
+    const chart2 = useQuery(GET_ROUND_PERFORMANCE2)
+
     const size = useWindowSize()
 
     const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {

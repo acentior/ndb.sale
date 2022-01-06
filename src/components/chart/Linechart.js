@@ -37,7 +37,7 @@ const LineChart = ({data}) => {
     let tmp = rdata.sort((a, b) => {return a[0] - b[0]})
     tmp.unshift(["total token", "total price", "sold price"])
     setChartdata(tmp)
-    // console.log("rdata111", tmp)
+    console.log("rdata111", tmp)
   }, [])
 
   return (
