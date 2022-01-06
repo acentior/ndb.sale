@@ -1,4 +1,4 @@
-import React, { useState } from "react"
+import React, { useState, useReducer } from "react"
 import { Link, navigate } from "gatsby"
 import { Input } from "../common/FormControl"
 import AuthLayout from "../common/AuthLayout"
@@ -10,7 +10,11 @@ import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons"
 import { ROUTES } from "../../utilities/routes"
 
 const OnetimePassword = () => {
-    const [code, setCode] = useState("")
+    const [code, setCode] = useReducer((old, action) => ({ ...old, ...action }), {
+        app: "",
+        phone: "",
+        email: "",
+    })
     const [codeError, setCodeError] = useState("")
     const user = getUser()
 
@@ -27,7 +31,17 @@ const OnetimePassword = () => {
             setCodeError("Invalid Code.")
             error = true
         }
-        if (!error) signin2faMutation(user.email, user.tempToken, code)
+        if (!error)
+            signin2faMutation(
+                user.email,
+                user.tempToken,
+                user.twoStep.map((step) => {
+                    return {
+                        key: step.key,
+                        value: code[step.key],
+                    }
+                })
+            )
     }
 
     const pending = signin2faMutationResults.loading
@@ -35,28 +49,36 @@ const OnetimePassword = () => {
 
     return (
         <AuthLayout>
-            <h3 className="signup-head mb-5">One-Time Password</h3>
+            <h3 className="signup-head mb-5">Authenticate</h3>
             <form className="form">
-                <div className="form-group">
-                    <Input
-                        name="code"
-                        type="text"
-                        value={code}
-                        onChange={(e) => setCode(e.target.value)}
-                        placeholder="Enter code"
-                    />
-                    {codeError && (
-                        <span className="errorsapn">
-                            <FontAwesomeIcon icon={faExclamationCircle} /> {codeError}
-                        </span>
-                    )}
-                </div>
-                <div className="form-group text-white">
-                    Didn't receive your code?{" "}
-                    <Link className="signup-link" to="#">
-                        Send again
-                    </Link>
-                </div>
+                {user.twoStep.map(
+                    (step) =>
+                        step.value && (
+                            <div key={step.key}>
+                                <p className="text-uppercase">{step.key}</p>
+                                <div className="form-group">
+                                    <Input
+                                        name="code"
+                                        type="text"
+                                        value={code[step.key]}
+                                        onChange={(e) => setCode({ [step.key]: e.target.value })}
+                                        placeholder="Enter code"
+                                    />
+                                    {codeError && (
+                                        <span className="errorsapn">
+                                            <FontAwesomeIcon icon={faExclamationCircle} />{" "}
+                                            {codeError}
+                                        </span>
+                                    )}
+                                </div>
+                                <div className="form-group text-white resend-2fa">
+                                    <Link className="signup-link" to="#">
+                                        Resend
+                                    </Link>
+                                </div>
+                            </div>
+                        )
+                )}
                 <div className="mt-5 mb-2">
                     {webserviceError && (
                         <span className="errorsapn">

@@ -1,7 +1,7 @@
 import React, { useState, useMemo } from "react"
 import { Link } from "gatsby"
 import { Icon } from '@iconify/react';
-import { default as reactParser } from 'html-react-parser';
+import parse from 'html-react-parser';
 import NumberFormat from "react-number-format";
 import Seo from "../../../components/seo";
 import Stepper2 from "../../../components/admin/Stepper2";
@@ -57,7 +57,6 @@ const IndexPage = () => {
         return {};
     }, [avatarInfo]);
 
-    console.log(avatarInfo)
     const selectAvatarComponent = event => {
         event.preventDefault();
         const file = event.target.files[0];
@@ -77,6 +76,7 @@ const IndexPage = () => {
             reader.readAsText(file);
         }
     };
+    // console.log(svgFile.content);
 
     const setAvatarData = () => {
         if(Object.values(avatarError)[0]) {
@@ -184,7 +184,7 @@ const IndexPage = () => {
                                                 ): ''}
                                                 {svgFile.content? (
                                                     <div style={{top: svgFile.top, left: svgFile.left}}>
-                                                        {reactParser(svgFile.content)}
+                                                        {parse(svgFile.content)}
                                                     </div>
                                                 ): ''}
                                             </div>
@@ -203,7 +203,7 @@ const IndexPage = () => {
                             <div className="input_div">
                                 {showError? (Object.values(avatarInfoError)[0]? <Alert severity="error">{Object.values(avatarInfoError)[0]}</Alert>: <Alert severity="success">Success! Please click Next Button</Alert>): ''}
                                 <div className="row">
-                                    <div className="col-lg-4">
+                                    <div className="col-sm-4">
                                         <p>Price {Number(avatarInfo.price) === 0? '(Free)': ''}</p>
                                         <NumberFormat className={`black_input`}
                                             placeholder='Enter number'
@@ -213,7 +213,7 @@ const IndexPage = () => {
                                             onValueChange={values => setAvatarInfo({...avatarInfo, price: values.value})}
                                         />
                                     </div>
-                                    <div className="col-lg-4">
+                                    <div className="col-sm-4">
                                         <p>Limitation {Number(avatarInfo.limitation) === 0? '(Unlimited)': ''}</p>
                                         <NumberFormat className={`black_input`}
                                             placeholder='Enter number'
@@ -223,7 +223,7 @@ const IndexPage = () => {
                                             onValueChange={values => setAvatarInfo({...avatarInfo, limitation: values.value})}
                                         />
                                     </div>
-                                    <div className="col-lg-4">
+                                    <div className="col-sm-4">
                                         <p>User Tier</p>
                                         <Select
                                             className="black_input mb-3"
@@ -278,7 +278,7 @@ const IndexPage = () => {
                                                 ): ''}
                                                 {svgFile.content? (
                                                     <div style={{top: svgFile.top, left: svgFile.left}}>
-                                                        {reactParser(svgFile.content)}
+                                                        {parse(svgFile.content)}
                                                     </div>
                                                 ): ''}
                                             </div>

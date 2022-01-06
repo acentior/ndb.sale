@@ -1,12 +1,12 @@
 import React, { useReducer, useState } from "react"
-import Header from "../components/common/header"
+import Header from "../components/header"
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
 import { Link } from "gatsby"
 import Select from "react-select"
-import Modal from "react-modal"
-import { Tesla, CloseIcon, Bronze } from "../utilities/imgImport"
+import { Tesla, Bronze } from "../utilities/imgImport"
 import ProfileChangePasswordModal from "./profile/change-password-modal"
-import DeleteAccountTab from "./profile/delete-account-tab"
+import DeleteAccountModal from "./profile/delete-account-modal"
+import TwoFactorModal from "./profile/two-factor-modal"
 import SignOutTab from "./profile/sign-out-tab"
 import { profile_tabs, wallets } from "../utilities/staticData"
 import { GET_USER } from "../apollo/graghqls/querys/Auth"
@@ -21,19 +21,20 @@ const Profile = () => {
     const user = user_data?.getUser
 
     // Containers
-    const displayName = user?.avatarPrefix + ". " + user?.avatarName
+    const displayName = user?.avatarPrefix + "." + user?.avatarName
     const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
+    const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] = useState(false)
+    const [is2FAModalOpen, setIs2FAModalOpen] = useState(false)
     const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
         pwd: { value: "", error: "" },
         pwd_confirm: { value: "", error: "" },
         pwdModal: false,
-        tfaModal: false,
         tabIndex: 0,
         profile_tab: profile_tabs[0],
         walletId: 0,
     })
 
-    const { tfaModal, tabIndex, profile_tab, walletId } = state
+    const { tabIndex, profile_tab, walletId } = state
     // Methods
     const handleProfileTab = (value) => {
         setState({ profile_tab: value })
@@ -85,7 +86,6 @@ const Profile = () => {
                                 <TabPanel>1</TabPanel>
                                 <TabPanel>2</TabPanel>
                                 <TabPanel>3</TabPanel>
-                                <TabPanel>4</TabPanel>
                             </Tabs>
                         </div>
                         <div className="col-lg-9 profile-page__right border-start border-white">
@@ -147,20 +147,18 @@ const Profile = () => {
                                                                 }`}
                                                             ></div>
                                                             <div className="security-item">
-                                                                <p className="security-name">
-                                                                    Enable 2FA
-                                                                </p>
+                                                                <p className="security-name">2FA</p>
                                                                 <p
                                                                     className="txt-green security-link"
                                                                     onClick={() =>
-                                                                        setState({ tfaModal: true })
+                                                                        setIs2FAModalOpen(true)
                                                                     }
                                                                     onKeyDown={() =>
-                                                                        setState({ tfaModal: true })
+                                                                        setIs2FAModalOpen(true)
                                                                     }
                                                                     role="presentation"
                                                                 >
-                                                                    Enabled
+                                                                    setup
                                                                 </p>
                                                             </div>
                                                         </div>
@@ -175,8 +173,7 @@ const Profile = () => {
                                                             ></div>
                                                             <div className="security-item">
                                                                 <p className="security-name">
-                                                                    KYC Identity Verificatoin less
-                                                                    than 100k CHF withdraw
+                                                                    KYC/KYB Verificatoin
                                                                 </p>
                                                                 <p className="txt-green security-link">
                                                                     Verified
@@ -281,13 +278,23 @@ const Profile = () => {
                                             </div>
                                         </TabPanel>
                                     </Tabs>
-                                    <p className="mt-3 pb-5">
-                                        <Link to="/" className="get-verify">
-                                            Get verified
-                                        </Link>
-                                        &nbsp; to collect over 2,000 USD the account should be
-                                        verified.
-                                    </p>
+                                    <div className="verify-delete mt-3 pb-5">
+                                        <p>
+                                            <Link to="/" className="get-verify">
+                                                Get verified
+                                            </Link>
+                                            &nbsp; to collect over 2,000 USD the account should be
+                                            verified.
+                                        </p>
+                                        <p
+                                            className="delete-account-link"
+                                            onClick={() => setIsDeleteAccountModalOpen(true)}
+                                            onKeyDown={() => setIsDeleteAccountModalOpen(true)}
+                                            role="presentation"
+                                        >
+                                            Delete account
+                                        </p>
+                                    </div>
                                 </>
                             )}
                             {tabIndex === 1 && (
@@ -332,8 +339,7 @@ const Profile = () => {
                                     <button className="btn-primary">CONNECT</button>
                                 </div>
                             )}
-                            {tabIndex === 3 && <DeleteAccountTab />}
-                            {tabIndex === 4 && <SignOutTab />}
+                            {tabIndex === 3 && <SignOutTab />}
                         </div>
                     </div>
                 </section>
@@ -341,38 +347,14 @@ const Profile = () => {
                     isPasswordModalOpen={isPasswordModalOpen}
                     setIsPasswordModalOpen={setIsPasswordModalOpen}
                 />
-                <Modal
-                    isOpen={tfaModal}
-                    onRequestClose={() => setState({ tfaModal: false })}
-                    ariaHideApp={false}
-                    className="tfa-modal"
-                    overlayClassName="tfa-modal__overlay"
-                >
-                    <div className="tfa-modal__header">
-                        <div
-                            onClick={() => setState({ tfaModal: false })}
-                            onKeyDown={() => setState({ tfaModal: false })}
-                            role="button"
-                            tabIndex="0"
-                        >
-                            <img width="14px" height="14px" src={CloseIcon} alt="close" />
-                        </div>
-                    </div>
-                    <p className="tfa-modal__body my-5">
-                        Are you sure you want to disable 2-step verifacation to email?
-                    </p>
-                    <div className="pwd-modal__footer">
-                        <button type="submit" className="btn-primary">
-                            Yes
-                        </button>
-                        <button
-                            className="btn-cancel"
-                            onClick={() => setState({ tfaModal: false })}
-                        >
-                            Cancel
-                        </button>
-                    </div>
-                </Modal>
+                <DeleteAccountModal
+                    isDeleteAccountModalOpen={isDeleteAccountModalOpen}
+                    setIsDeleteAccountModalOpen={setIsDeleteAccountModalOpen}
+                />
+                <TwoFactorModal
+                    is2FAModalOpen={is2FAModalOpen}
+                    setIs2FAModalOpen={setIs2FAModalOpen}
+                />
             </main>
         )
 }

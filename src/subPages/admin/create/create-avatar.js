@@ -1,15 +1,18 @@
 import React, { useState, useMemo } from "react"
 import { Link } from "gatsby"
 import { Icon } from "@iconify/react"
+import parse from 'html-react-parser'
+import styled from "styled-components"
 
 import Seo from "../../../components/seo"
 import Stepper from "../../../components/admin/Stepper"
 import LayoutForCreate from "../../../components/admin/LayoutForCreate"
-
 import { Alert, Rating } from "@mui/material"
-import Select from "react-select"
 import { capitalizeFirstLetter } from "../../../utilities/string"
 import DressupModal from "../../../components/admin/dress-up/dressup-modal"
+import { EmptyAvatar } from "../../../utilities/imgImport"
+
+import { hairStyles, facialStyles, expressions, hats, others, hairColors } from './../../../components/admin/dress-up/dressup-data';
 
 const CreateAvatar = () => {
     const [currentStep, setCurrentStep] = useState(1)
@@ -17,16 +20,22 @@ const CreateAvatar = () => {
     const [isDressUpModalOpen, setIsDressUpModalOpen] = useState(false)
 
     //------- Avatar Data and Validation
-    const avatarItemList = [
-        { value: "hair", label: "Hair" },
-        { value: "facial", label: "Facial" },
-        { value: "expression", label: "Expression" },
-        { value: "hats", label: "Hats" },
-        { value: "accessories", label: "Accessories" },
-    ]
+    const [avatarItems, setAvatarItems] = useState({
+        hair: 0,
+        hairColor: 0,
+        facialStyle: 0,
+        expression: 0,
+        hat: 0,
+        other: 0
+    });
+    const [avatarName, setAvatarName] = useState('');
 
-    const [avatarItems, setAvatarItems] = useState({ item1: {}, item2: {}, item3: {} })
-    const [avatarName, setAvatarName] = useState({firstname: '', lastname: ''})
+    const avatarDataError = useMemo(() => {
+        if(!avatarName) return 'Avatar Name is required';
+        return '';
+    }, [avatarName]);
+
+    // console.log(avatarItems)
 
     //-------- Stats Data and Validation
     // Stats Data
@@ -68,8 +77,12 @@ const CreateAvatar = () => {
     }, [factsDetail])
 
     const setAvatarData = () => {
-        // if(Object.values(roundDataError)[0]) return;
+        if(avatarDataError) {
+            setShowError(true);
+            return;
+        }
         setCurrentStep(2)
+        setShowError(false)
     }
 
     const setStatsData = () => {
@@ -107,50 +120,73 @@ const CreateAvatar = () => {
                     {currentStep === 1 && (
                         <>
                             <div className="input_div">
-                                {/* {Object.values(roundDataError)[0]? <Alert severity="error">{Object.values(roundDataError)[0]}</Alert>: <Alert severity="success">Success! Please click Next Button</Alert>} */}
+                                {showError ? (
+                                    avatarDataError ? (
+                                        <Alert severity="error">{statsDataError.desc}</Alert>
+                                    ) : (
+                                        <Alert severity="success">
+                                            Success! Please click Next Button
+                                        </Alert>
+                                    )
+                                ) : (
+                                    ""
+                                )}
                                 <div className="avatar_div">
                                     <div className="preview_mobile">
-                                        <img src="/avatars/fermi.png" alt="fermi" />
-                                        <p>Preview</p>
+                                        <div className="profile">
+                                            <div className="image_div">
+                                                <img src={EmptyAvatar} alt="back" />
+                                                <Hair hairColor={hairColors[avatarItems.hairColor].content} style={{top: hairStyles[avatarItems.hair].top, left: hairStyles[avatarItems.hair].left}}>
+                                                    {parse(hairStyles[avatarItems.hair].content)}
+                                                </Hair>
+                                                <div style={{top: expressions[avatarItems.expression].top, left: expressions[avatarItems.expression].left}}>
+                                                    {parse(expressions[avatarItems.expression].content)}
+                                                </div>
+                                                <div style={{top: facialStyles[avatarItems.facialStyle].top, left: facialStyles[avatarItems.facialStyle].left}}>
+                                                    {parse(facialStyles[avatarItems.facialStyle].content)}
+                                                </div>
+                                                <div style={{top: hats[avatarItems.hat].top, left: hats[avatarItems.hat].left}}>
+                                                    {parse(hats[avatarItems.hat].content)}
+                                                </div>
+                                                <div style={{top: others[avatarItems.other].top, left: others[avatarItems.other].left}}>
+                                                    {parse(others[avatarItems.other].content)}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                     <div className="name_div">
-                                        <p>Firstname</p>
+                                        <p>Name</p>
                                         <input
                                             className="black_input"
-                                            value={avatarName.firstname}
-                                            onChange={(e) => setAvatarName({...avatarName, firstname :e.target.value})}
-                                        />
-                                        <p style={{marginTop: 12}}>Lastname</p>
-                                        <input
-                                            className="black_input"
-                                            value={avatarName.lastname}
-                                            onChange={(e) => setAvatarName({...avatarName, lastname :e.target.value})}
+                                            value={avatarName}
+                                            onChange={(e) => setAvatarName(e.target.value)}
                                         />
                                     </div>
                                     <div className="items_div">
                                         <p>Add Items</p>
-                                        {["item1", "item2", "item3"].map((item, index) => {
-                                            return (
-                                                <div key={index}>
-                                                    <Select
-                                                        value={avatarItems[item]}
-                                                        onChange={(selected) => {
-                                                            setAvatarItems({
-                                                                ...avatarItems,
-                                                                [item]: selected,
-                                                            })
-                                                        }}
-                                                        options={avatarItemList}
-                                                        styles={customSelectStyles}
-                                                    />
-                                                    <Icon icon="lucide:upload" onClick={() => setIsDressUpModalOpen(true)}/>
-                                                </div>
-                                            )
-                                        })}
+                                        <button className="btn previous" onClick={() => setIsDressUpModalOpen(true)}>Add Avatar Items</button>
                                     </div>
                                     <div className="preview">
-                                        <p>Preview</p>
-                                        <img src="/avatars/fermi.svg" alt="fermi" />
+                                        <div className="profile">
+                                            <div className="image_div">
+                                                <img src={EmptyAvatar} alt="back" />
+                                                <Hair hairColor={hairColors[avatarItems.hairColor].content} style={{top: hairStyles[avatarItems.hair].top, left: hairStyles[avatarItems.hair].left}}>
+                                                    {parse(hairStyles[avatarItems.hair].content)}
+                                                </Hair>
+                                                <div style={{top: expressions[avatarItems.expression].top, left: expressions[avatarItems.expression].left}}>
+                                                    {parse(expressions[avatarItems.expression].content)}
+                                                </div>
+                                                <div style={{top: facialStyles[avatarItems.facialStyle].top, left: facialStyles[avatarItems.facialStyle].left}}>
+                                                    {parse(facialStyles[avatarItems.facialStyle].content)}
+                                                </div>
+                                                <div style={{top: hats[avatarItems.hat].top, left: hats[avatarItems.hat].left}}>
+                                                    {parse(hats[avatarItems.hat].content)}
+                                                </div>
+                                                <div style={{top: others[avatarItems.other].top, left: others[avatarItems.other].left}}>
+                                                    {parse(others[avatarItems.other].content)}
+                                                </div>
+                                            </div>
+                                        </div>
                                     </div>
                                 </div>
                             </div>
@@ -162,7 +198,7 @@ const CreateAvatar = () => {
                                     Next
                                 </button>
                             </div>
-                            <DressupModal isModalOpen={isDressUpModalOpen} setIsModalOpen={setIsDressUpModalOpen} />
+                            <DressupModal isModalOpen={isDressUpModalOpen} setIsModalOpen={setIsDressUpModalOpen} setDressUpAvatarItems={setAvatarItems} />
                         </>
                     )}
                     {currentStep === 2 && (
@@ -325,16 +361,35 @@ const CreateAvatar = () => {
                             <div className="input_div">
                                 <div className="preview_div">
                                     <p className="name">
-                                        {avatarName.firstname && avatarName.lastname ? 
-                                            `${capitalizeFirstLetter(avatarName.firstname)} ${capitalizeFirstLetter(avatarName.lastname)}`:
-                                            "Gioacchino Failla"
+                                        {avatarName ? 
+                                            `${capitalizeFirstLetter(avatarName)}`:
+                                            "Failla"
                                         }
                                     </p>
                                     <div className="row avatarStats">
-                                        <div className="col-sm-4">
-                                            <img src="/avatars/failla.svg" alt="avatar" />
+                                        <div className="col-sm-5">
+                                            <div className="profile">
+                                                <div className="image_div">
+                                                    <img src={EmptyAvatar} alt="back" />
+                                                    <Hair hairColor={hairColors[avatarItems.hairColor].content} style={{top: hairStyles[avatarItems.hair].top, left: hairStyles[avatarItems.hair].left}}>
+                                                        {parse(hairStyles[avatarItems.hair].content)}
+                                                    </Hair>
+                                                    <div style={{top: expressions[avatarItems.expression].top, left: expressions[avatarItems.expression].left}}>
+                                                        {parse(expressions[avatarItems.expression].content)}
+                                                    </div>
+                                                    <div style={{top: facialStyles[avatarItems.facialStyle].top, left: facialStyles[avatarItems.facialStyle].left}}>
+                                                        {parse(facialStyles[avatarItems.facialStyle].content)}
+                                                    </div>
+                                                    <div style={{top: hats[avatarItems.hat].top, left: hats[avatarItems.hat].left}}>
+                                                        {parse(hats[avatarItems.hat].content)}
+                                                    </div>
+                                                    <div style={{top: others[avatarItems.other].top, left: others[avatarItems.other].left}}>
+                                                        {parse(others[avatarItems.other].content)}
+                                                    </div>
+                                                </div>
+                                            </div>
                                         </div>
-                                        <div className="col-sm-8">
+                                        <div className="col-sm-7">
                                             {stats.map((stat, index) => {
                                                 return (
                                                     <div key={index} className="row">
@@ -390,26 +445,12 @@ const CreateAvatar = () => {
     )
 }
 
-export default CreateAvatar
+export default CreateAvatar;
 
-const customSelectStyles = {
-    option: (provided, state) => ({
-        ...provided,
-        color: "white",
-        backgroundColor: state.isSelected ? "#23c865" : "#1e1e1e",
-    }),
-    control: (provided) => ({
-        ...provided,
-        backgroundColor: "#1e1e1e",
-        borderRadius: 0,
-    }),
-    menu: (provided) => ({
-        ...provided,
-        backgroundColor: "#1e1e1e",
-        border: "1px solid white",
-    }),
-    singleValue: (provided) => ({
-        ...provided,
-        color: "white",
-    }),
-}
+const Hair = styled.div`
+    svg>path {
+        fill: ${props => {
+            return props.hairColor? props.hairColor: '#626161';
+        }}
+    }
+`;

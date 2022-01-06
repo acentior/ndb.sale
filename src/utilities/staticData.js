@@ -1373,14 +1373,9 @@ export const profile_tabs = [
         index: 2,
     },
     {
-        value: "delete account",
-        label: "delete account",
-        index: 3,
-    },
-    {
         value: "sign out",
         label: "sign out",
-        index: 4,
+        index: 3,
     },
 ]
 

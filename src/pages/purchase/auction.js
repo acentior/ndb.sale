@@ -7,7 +7,7 @@ import { Link } from "gatsby"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faTimes, faArrowLeft } from "@fortawesome/free-solid-svg-icons"
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs"
-import Header from "../../components/common/header"
+import Header from "../../components/header"
 import { getSecTomorrow, numberWithLength } from "../../utilities/number"
 
 const modalDesc = {
@@ -91,8 +91,8 @@ const Auction = () => {
                         {amount >= 100000
                             ? modalDesc.sign[2]
                             : amount >= 2000
-                            ? modalDesc.sign[1]
-                            : modalDesc.sign[0]}
+                                ? modalDesc.sign[1]
+                                : modalDesc.sign[0]}
                     </p>
                     <div className="btnDiv">
                         <Link to="/signup">
@@ -111,8 +111,8 @@ const Auction = () => {
                         {amount >= 100000
                             ? modalDesc.verify[1]
                             : amount >= 2000
-                            ? modalDesc.verify[0]
-                            : ""}
+                                ? modalDesc.verify[0]
+                                : ""}
                     </p>
                     <div className="btnDiv">
                         <Link to="#">
@@ -126,13 +126,12 @@ const Auction = () => {
                             </p>
                         </Link>
                         <Link
-                            to={`${
-                                amount >= 100000
+                            to={`${amount >= 100000
                                     ? "/aml_verify"
                                     : amount >= 2000
-                                    ? "/kyc_verify"
-                                    : ""
-                            }`}
+                                        ? "/kyc_verify"
+                                        : ""
+                                }`}
                         >
                             <p className="greenbtn">Verify</p>
                         </Link>

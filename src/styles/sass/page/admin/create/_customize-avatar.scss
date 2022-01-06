@@ -53,7 +53,7 @@ main.customize-avatar-page {
                 p.subtitle {
                     text-align: center;
                 }
-            }  
+            }
             div.input_div {
                 width: 80%;
                 margin: auto;
@@ -111,12 +111,12 @@ main.customize-avatar-page {
                     width: 100%;
                     div.col-sm-4 {
                         padding: 0 10px;
+                        margin-bottom: 20px;
                     }
                 }  
                 @include mq("phone", max) {
                     div.col-sm-4 {
                         padding: 0;
-                        margin-top: 50px;
                     }
                     div#position {
                         flex-direction: row;

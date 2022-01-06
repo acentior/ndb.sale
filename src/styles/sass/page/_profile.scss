@@ -162,6 +162,15 @@
                 }
             }
         }
+        .verify-delete {
+            display: flex;
+            justify-content: space-between;
+            .delete-account-link {
+                color: red;
+                cursor: pointer;
+                text-decoration: underline;
+            }
+        }
         .account-details,
         .tier-details {
             h4 {
@@ -473,7 +482,61 @@
         }
     }
 }
-
+.delete-account-modal {
+    max-width: 950px;
+    height: 500px;
+    &__header {
+        display: flex;
+        justify-content: space-between;
+        font-weight: bold;
+        font-size: 18px;
+        line-height: 22px;
+        text-transform: uppercase;
+        color: white;
+    }
+    .delete-account {
+        height: 100%;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-evenly;
+        align-items: center;
+        padding-bottom: 50px;
+        .title {
+            font-size: 36px;
+        }
+        .content-text {
+            text-align: center;
+            font-size: 16px;
+        }
+        button {
+            width: 300px;
+            margin-top: 16px;
+        }
+        button:disabled,
+        button[disabled] {
+            border: 1px solid #999999;
+            background-color: #1d1d1d;
+            color: #666666;
+        }
+        .confirm-text {
+            width: 300px;
+            font-size: 16px;
+            line-height: 30px;
+            letter-spacing: 0.04em;
+            color: #ffffff;
+            border: 1px solid white;
+            background-color: $black;
+            padding: 10px;
+        }
+    }
+}
+.resend-2fa {
+    text-align: right;
+    a {
+        color: #23c865 !important;
+        font-size: 14px !important;
+    }
+}
 .dressup-modal {
     max-width: 950px;
     padding: 0px;
@@ -615,11 +678,9 @@
     padding: 0px;
     border: unset;
 
-    .expression-icons {
-        z-index: 0;
-    }
-    .facial-style-icons {
-        z-index: 1;
+    div.profile {
+        margin: auto;
+        border: none;
     }
 
     &__header {
@@ -700,9 +761,10 @@
             float: none;
             position: relative;
             & > div.image_div {
-                margin-top: 30%;
-                img {
-                    width: 100%;
+                margin-top: 50%;
+                position: relative;
+                div {
+                    position: absolute;
                 }
             }
             & > div.price_div {

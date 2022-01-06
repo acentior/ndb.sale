@@ -1,7 +1,7 @@
 import React from 'react';
 import Seo from '../../components/seo';
 
-import Header from '../../components/common/header';
+import Header from '../../components/header';
 
 const Home = () => {
     return (
@@ -18,7 +18,7 @@ const Home = () => {
                                 <p className="text">Don’t miss an opportunity to buy limited number of NDB Tokens at the fixed price before the next auction round started.</p>
                             </div>
                             <div className="col-sm-5 d-flex justify-content-center align-items-center imageDiv">
-                                <div className="hero-image" ></div>                            
+                                <div className="hero-image" ></div>
                             </div>
                         </div>
                         <div className="row">

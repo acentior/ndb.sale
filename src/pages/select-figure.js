@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import Header from "../components/common/header"
+import Header from "../components/header"
 import FigureItem from "../components/FigureItem"
 import { CloseIcon, Trees } from "../utilities/imgImport"
 import { figures } from "../utilities/staticData"

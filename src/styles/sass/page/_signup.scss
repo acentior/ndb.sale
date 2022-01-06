@@ -186,6 +186,16 @@
             }
         }
     }
+    .input_mobile {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        .form-control {
+            margin-top: 30px;
+            font-size: 18px;
+        }
+    }
     .get-code {
         margin: 0 auto;
         text-align: center;

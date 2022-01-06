@@ -12,6 +12,7 @@ let inMemoryUserDefault = {
   name: null,
   email: null,
   tempToken: null,
+  twoStep: null,
 }
 
 let inMemoryUser = inMemoryUserDefault

@@ -1,5 +1,5 @@
 import React, { useReducer, useCallback } from "react"
-import Header from "../components/common/header"
+import Header from "../components/header"
 import Select, { components } from "react-select"
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
 import { numberSign, numberWithCommas } from "../utilities/number"
@@ -23,7 +23,6 @@ import { CopyToClipboard } from "react-copy-to-clipboard"
 import { Input } from "../components/common/FormControl"
 import { useWindowSize } from "../utilities/customHook"
 import AirdropDetail from "../components/AirdropDetail"
-// import ReactECharts from "echarts-for-react"
 
 const transactions = [
     {
@@ -171,6 +170,48 @@ const market_data = [
     },
 ]
 const my_assets = [
+    {
+        icon: NDB,
+        abbr: "NDB",
+        name: "NDB Token",
+        amount: 12.0865,
+        price: 282004.43,
+    },
+    {
+        icon: ETH,
+        abbr: "ETH",
+        name: "Ethereum",
+        amount: 12.0865,
+        price: 282004.43,
+    },
+    {
+        icon: BTC,
+        abbr: "BTC",
+        name: "Bitcoin",
+        amount: 12.0865,
+        price: 282004.43,
+    },
+    {
+        icon: NDB,
+        abbr: "NDB",
+        name: "NDB Token",
+        amount: 12.0865,
+        price: 282004.43,
+    },
+    {
+        icon: ETH,
+        abbr: "ETH",
+        name: "Ethereum",
+        amount: 12.0865,
+        price: 282004.43,
+    },
+    {
+        icon: BTC,
+        abbr: "BTC",
+        name: "Bitcoin",
+        amount: 12.0865,
+        price: 282004.43,
+    },
     {
         icon: NDB,
         abbr: "NDB",
@@ -385,8 +426,10 @@ const History = () => {
                     <div className="section-history__left col-lg-4 col-md-5">
                         <Tabs>
                             <TabList>
-                                <Tab>Bid activity</Tab>
-                                <Tab className="react-tabs__tab ms-auto">WALLET</Tab>
+                                <Tab className="react-tabs__tab col-6 text-center">
+                                    Bid activity
+                                </Tab>
+                                <Tab className="react-tabs__tab col-6 text-center">WALLET</Tab>
                             </TabList>
                             <TabPanel>
                                 <ul className="bid-activity">
@@ -414,15 +457,27 @@ const History = () => {
                                     </Link>
                                 </div>
                                 <div className="profile-value">
-                                    <h5>Portfolio value </h5>
+                                    <h5>portfolio value </h5>
                                     <div className="value-box">
                                         <p className="value-label">Equity Value (BTC)</p>
-                                        <p className="value">6.00</p>
-                                        <p className="max-value">~ $282,004.43</p>
+                                        <p className="value">12.003.877</p>
+                                        <p className="max-value mt-3">~ $282,004.43</p>
+                                    </div>
+                                    <div className="btn-group d-flex justify-content-between mt-3 align-items-center">
+                                        <div className="col-sm-6 pe-2">
+                                            <button className="btn btn-outline-light rounded-0 col-12 text-uppercase fw-bold py-2 h4">
+                                                deposit
+                                            </button>
+                                        </div>
+                                        <div className="col-sm-6 ps-2">
+                                            <button className="btn btn-outline-light rounded-0 col-12 text-uppercase fw-bold py-2 h4">
+                                                withdraw
+                                            </button>
+                                        </div>
                                     </div>
                                 </div>
-                                <h5 className="my-4">Transactions history</h5>
-                                <div className="transaction-history">
+                                {/* <h5 className="my-4">Transactions history</h5> */}
+                                {/* <div className="transaction-history">
                                     {transactions.map((item, idx) => (
                                         <div className="transaction" key={idx}>
                                             <p className="transaction-date">{item.date}</p>
@@ -434,7 +489,35 @@ const History = () => {
                                             </div>
                                         </div>
                                     ))}
-                                </div>
+                                </div> */}
+                                <table className="mt-3">
+                                    <tbody>
+                                        {my_assets.map((item, idx) => (
+                                            <tr key={idx}>
+                                                <td className="d-flex align-items-center ps-2">
+                                                    <img
+                                                        src={item.icon}
+                                                        alt="coin icon"
+                                                        className="me-2"
+                                                    />
+                                                    <div>
+                                                        <p className="coin-abbr text-light">
+                                                            {item.name}
+                                                        </p>
+                                                    </div>
+                                                </td>
+                                                <td>
+                                                    <p className="coin-price fw-bold">
+                                                        {item.amount} {item.abbr}
+                                                    </p>
+                                                    <p className="coin-percent">
+                                                        {numberWithCommas(item.price)}$
+                                                    </p>
+                                                </td>
+                                            </tr>
+                                        ))}
+                                    </tbody>
+                                </table>
                             </TabPanel>
                         </Tabs>
                     </div>
@@ -450,66 +533,7 @@ const History = () => {
                                     Get verified
                                 </Link>
                             </div>
-                            <TabPanel>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Crypto Assets</th>
-                                            <th className="text-end">Amount</th>
-                                            <th className="text-end">Operations</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {my_assets.map((item, idx) => (
-                                            <tr key={idx}>
-                                                <td className="d-flex align-items-start ps-2">
-                                                    <img
-                                                        src={item.icon}
-                                                        alt="coin icon"
-                                                        className="me-2"
-                                                    />
-                                                    <div>
-                                                        <p className="coin-abbr">{item.abbr}</p>
-                                                        <p className="coin-name">{item.name}</p>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <p className="coin-price">{item.amount}</p>
-                                                    <p className="coin-percent">
-                                                        ${numberWithCommas(item.price)}
-                                                    </p>
-                                                </td>
-                                                <td className="coin-operations">
-                                                    <p
-                                                        onClick={() =>
-                                                            setState({ modalIsOpen: true })
-                                                        }
-                                                        onKeyDown={() =>
-                                                            setState({ modalIsOpen: true })
-                                                        }
-                                                        role="presentation"
-                                                        className="operation-link"
-                                                    >
-                                                        Deposit
-                                                    </p>
-                                                    <p
-                                                        onClick={() =>
-                                                            setState({ modalIsOpen: true })
-                                                        }
-                                                        onKeyDown={() =>
-                                                            setState({ modalIsOpen: true })
-                                                        }
-                                                        role="presentation"
-                                                        className="operation-link ms-5"
-                                                    >
-                                                        Withdraw
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </TabPanel>
+                            <TabPanel></TabPanel>
                             <TabPanel>
                                 <table>
                                     <thead>
@@ -559,11 +583,10 @@ const History = () => {
                             </TabPanel>
                             <TabPanel>
                                 <table
-                                    className={`${
-                                        detail_show &&
+                                    className={`${detail_show &&
                                         (size.width > 1024 || size.width <= 576) &&
                                         "d-none"
-                                    }`}
+                                        }`}
                                 >
                                     <thead>
                                         <tr>

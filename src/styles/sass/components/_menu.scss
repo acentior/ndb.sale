@@ -303,3 +303,16 @@
         }
     }
 }
+.header-sale-cta {
+    padding: 7px 50px;
+    color: white;
+    text-transform: uppercase;
+    border: 1px solid white;
+    font-weight: bold;
+    transition: 500ms;
+    margin-right: 15px;
+    &:hover {
+        color: white;
+        opacity: 0.65;
+    }
+}

@@ -71,27 +71,10 @@ main.create-avatar-page {
                     }
                     div.items_div {
                         width: 50%;
-                        &>div {
-                            margin-bottom: 5px;
-                            position: relative;
-                            .css-b62m3t-container {
-                                width: 52%;
-                            }
-                            &>svg {
-                                color: #ffffff;
-                                font-size: 25px;
-                                cursor: pointer;
-                                position: absolute;
-                                top: 5px;
-                                left: 55%;
-                            }
-                        }
                     }
                     div.preview {
                         width: 20%;
                         img {
-                            width: 100px;
-                            height: 100px;
                             display: block;
                             margin: auto;
                         }   
@@ -110,21 +93,14 @@ main.create-avatar-page {
                         div.name_div {
                             width: 100%;
                             margin-bottom: 30px;
-                            padding-left: 10%;
-                            padding-right: 22%;
+                            padding: 0 10%;
                         }
                         div.items_div {
                             width: 100%;
                             padding: 0 10%;
-                            &>div {
-                                margin-bottom: 5px;
-                                position: relative;
-                                .css-b62m3t-container {
-                                    width: 85%;
-                                }
-                                &>svg {
-                                    left: 90%;
-                                }
+                            button {
+                                display: block;
+                                width: 100%;
                             }
                         }
                         div.preview {
@@ -207,7 +183,12 @@ main.create-avatar-page {
                     width: 70%;
                     margin: auto;
                     border: 1px solid #ffffff;
-                    padding: 2vh;                    
+                    padding: 2vh;
+                    div.profile {
+                        border: none;
+                        height: 160px;
+                        width: unset;
+                    }
                     p.name {
                         font-size: 20px;
                         font-weight: 600;

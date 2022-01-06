@@ -27,40 +27,6 @@
             line-height: 24px;
         }
     }
-    &-small {
-        font-weight: bold;
-        font-size: 15px;
-        font-family: "Montserrat";
-        line-height: 25px;
-        color: white;
-        padding: 3px 7px;
-        background: $black;
-        border: 1px solid #ffffff;
-        text-transform: none;
-        &:hover {
-            background: $black;
-            border: 1px solid #ffffff;
-            opacity: 0.65;
-        }
-        &:active {
-            background-color: $black;
-            border-color: white;
-        }
-        &:focus {
-            background-color: $black;
-            border-color: white;
-            box-shadow: unset;
-        }
-        @include mq("phone", max) {
-            font-size: 20px;
-            line-height: 24px;
-        }
-    }
-
-    &-disabled {
-        opacity: 0.65;
-    }
-
     &-second {
         font-weight: 500;
         font-size: 18px;

@@ -1,11 +1,17 @@
 import React, { useEffect } from "react"
+import parse from 'html-react-parser'
+import styled from "styled-components"
+import { EmptyAvatar, BaseHair, BaseExpression } from "../../../utilities/imgImport"
+import { hairStyles } from "./dressup-data"
 
 export default function DressupHorizontalList({
-    list,
+    list = [],
+    topic,
     title,
     selectedItem,
     setSelectedItem,
     secondRow,
+    hairStyle
 }) {
     const isScrollable = list.length >= 3
 
@@ -23,32 +29,74 @@ export default function DressupHorizontalList({
                     isScrollable ? "d-inline-block" : "d-auto"
                 }`}
             >
-                {list.map((item, index) => {
+                {list.length > 0? list.map((item, index) => {
                     return (
                         <div
                             key={index}
                             style={{
                                 marginTop: "-1px",
                             }}
-                            onClick={() => setSelectedItem(item.index)}
+                            onClick={() => setSelectedItem(item.id)}
                             role="presentation"
-                            className={`border border-4 text-center cursor-pointer ${
-                                selectedItem === item.index
+                            className={`border border-4 cursor-pointer ${
+                                selectedItem === item.id
                                     ? "border-success"
                                     : "border-transparent"
                             }`}
                         >
                             <div className="image_div">
-                                <img src={item.icon} alt="Avatar" />
+                            {topic !== "hairColors" && (
+                                <>                                
+                                    {topic === 'hairStyles' || !topic? <img src={EmptyAvatar} alt="Background Avatar" />: ''}
+                                    {topic === 'expressions'? (
+                                        <>
+                                            <img src={EmptyAvatar} alt="Background Avatar" />
+                                            <div style={{top: -10, left: -5}}>
+                                                <img src={BaseHair} alt="base hair" />
+                                            </div>
+                                        </>
+                                    ): ''}
+                                    {topic === 'hats' || topic === 'others' || topic === 'facialStyles'? (
+                                        <>
+                                            <img src={EmptyAvatar} alt="Background Avatar" />
+                                            <div style={{top: -10, left: -5}}>
+                                                <img src={BaseHair} alt="base hair" />
+                                            </div>
+                                            <div style={{top: 23, left: 23}}>
+                                                <img src={BaseExpression} alt="base expression" />
+                                            </div>
+                                        </>
+                                    ): ''}
+                                    <div style={{top: list[index].top, left: list[index].left}}>
+                                        {parse(list[index].content)}
+                                    </div>
+                                </>
+                            )}
+                            {topic === 'hairColors' && (
+                                <>
+                                    <img src={EmptyAvatar} alt="Background Avatar" />
+                                    <Hair hairColor={item.content} style={{top: hairStyles[hairStyle].top, left: hairStyles[hairStyle].left}}>
+                                        {parse(hairStyles[hairStyle].content)}
+                                    </Hair>
+                                </>                                
+                            )}
                             </div>
-                            <div className="price_div">
+                            {/* <div className="price_div">
                                 {item.price}
                                 <span className="text-success">{item.unit}</span>
-                            </div>
+                            </div> */}
                         </div>
                     )
-                })}
+                }): ''}
             </div>
         </div>
     )
 }
+
+const Hair = styled.div`
+    svg>path {
+        fill: ${props => {
+            return props.hairColor? props.hairColor: '#626161';
+        }}
+    }
+`;

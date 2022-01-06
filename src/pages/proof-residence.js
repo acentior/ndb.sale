@@ -1,5 +1,5 @@
 import React, { useState, useRef } from "react"
-import Header from "../components/common/header"
+import Header from "../components/header"
 import useFileUpload from "react-use-file-upload"
 import { NewDoc, PhotoIcon, Trees, CloseIcon } from "../utilities/imgImport"
 import { formatBytes } from "../utilities/number"

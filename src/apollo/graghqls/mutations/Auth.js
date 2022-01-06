@@ -25,8 +25,8 @@ export const REQUEST_2FA = gql`
 `
 
 export const CONFIRM_REQUEST_2FA = gql`
-    mutation confirmRequest2FA($email: String!, $code: String!) {
-        confirmRequest2FA(email: $email, code: $code)
+    mutation confirmRequest2FA($email: String!, $method: String!, $code: String!) {
+        confirmRequest2FA(email: $email, method: $method, code: $code)
     }
 `
 
@@ -35,15 +35,23 @@ export const SIGNIN = gql`
         signin(email: $email, password: $password) {
             status
             token
+            userTwoStep{
+                key
+                value
+            }
         }
     }
 `
 
 export const SIGNIN_2FA = gql`
-    mutation confirm2FA($email: String!, $token: String!, $code: String!) {
+    mutation confirm2FA($email: String!, $token: String!, $code: [TwoFAEntry]) {
         confirm2FA(email: $email, token: $token, code: $code) {
             status
             token
+            userTwoStep{
+                key
+			    value
+            }
         }
     }
 `
@@ -75,5 +83,11 @@ export const RESET_PASSWORD = gql`
 export const DELETE_ACCOUNT = gql`
     mutation deleteAccount {
         deleteAccount
+    }
+`
+
+export const CONFIRM_DELETE_ACCOUNT = gql`
+    mutation confirmDeleteAccount($text: String!) {
+        confirmDeleteAccount(text: $text)
     }
 `

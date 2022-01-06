@@ -152,6 +152,19 @@ input.disabled {
     }
 }
 
+.custom_scrollbar {
+    &::-webkit-scrollbar  {
+        height: 0;
+        width: 6px;
+    }
+    &::-webkit-scrollbar-thumb  {
+        background-color: #ffffff;
+    }
+    &::-webkit-scrollbar-track  {
+        background-color: #464646;
+    }
+}
+
 .pwd-reset-modal {
     max-width: 800px;
     .pwd-modal__header {

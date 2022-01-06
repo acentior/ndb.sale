@@ -34,7 +34,7 @@ const IndexPage = () => {
             <Seo title="Admin Setting" />
             <main className="admin-setting-page">
                 <LayoutWithMenu>
-                    <div className="tabs_container">
+                    <div className="tabs_container custom_scrollbar">
                         <Tabs>
                             <TabList>
                                 <Tab>Social</Tab>

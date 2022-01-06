@@ -1,5 +1,5 @@
 import React, { useCallback, useReducer, useState } from "react"
-import Header from "../components/common/header"
+import Header from "../components/header"
 import Select, { components } from "react-select"
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
 import { Input, CheckBox } from "../components/common/FormControl"
@@ -29,7 +29,7 @@ const payment_types = [
     { value: "cryptocoin", label: "Cryptocoin", index: 0 },
     { value: "creditcard", label: "Card Payment", index: 1 },
     { value: "wallet", label: "Ndb wallet", index: 2 },
-    { value: "externalwallets", label: "Wallets", index: 3 },
+    { value: "externalwallets", label: "External Wallets", index: 3 },
 ]
 
 const IconOption = (props) => (
@@ -83,9 +83,20 @@ const Payment = () => {
         allow_fraction: false,
         amount: "",
         walletId: 0,
-        getAddress: false
+        getAddress: false,
     })
-    const { firstname, lastname, card, expire, code, bill, allow_fraction, amount, walletId, getAddress } = state
+    const {
+        firstname,
+        lastname,
+        card,
+        expire,
+        code,
+        bill,
+        allow_fraction,
+        amount,
+        walletId,
+        getAddress,
+    } = state
 
     const [coin, setCoin] = useState(coins[0])
     const [balance, setBalance] = useState(null)
@@ -141,30 +152,35 @@ const Payment = () => {
                                 className="payment-type__select"
                             />
                             <TabPanel className="cryptocoin-tab">
-                                <div className="row">
-                                    <div className="d-flex flex-column justify-content-between col-lg-9">
-                                        <div className="d-flex justify-content-between w-100">
-                                            <Select
-                                                className="cryptocoin-select col-3"
-                                                options={coins}
-                                                value={coin}
-                                                onChange={(v) => setCoin(v)}
-                                                components={{
-                                                    Option: IconOption,
-                                                    SingleValue: SelectedValue,
-                                                }}
-                                            />
-                                            <Input
-                                                type="number"
-                                                name="amount"
-                                                value={amount}
-                                                onChange={handleInput}
-                                            />
-                                        </div>
-                                        {
-                                            !getAddress ?
-                                                <button className="btn-primary" onClick={() => setState({ getAddress: true })}>Get deposit Adress</button>
-                                                :
+                                <div className="payment-content">
+                                    <div className="row">
+                                        <div className="d-flex flex-column justify-content-between col-lg-9">
+                                            <div className="d-flex justify-content-between w-100">
+                                                <Select
+                                                    className="cryptocoin-select col-3"
+                                                    options={coins}
+                                                    value={coin}
+                                                    onChange={(v) => setCoin(v)}
+                                                    components={{
+                                                        Option: IconOption,
+                                                        SingleValue: SelectedValue,
+                                                    }}
+                                                />
+                                                <Input
+                                                    type="number"
+                                                    name="amount"
+                                                    value={amount}
+                                                    onChange={handleInput}
+                                                />
+                                            </div>
+                                            {!getAddress ? (
+                                                <button
+                                                    className="btn-primary"
+                                                    onClick={() => setState({ getAddress: true })}
+                                                >
+                                                    Get deposit Address
+                                                </button>
+                                            ) : (
                                                 <>
                                                     <CopyToClipboard
                                                         onCopy={() => setCopied(true)}
@@ -182,209 +198,244 @@ const Payment = () => {
                                                         </p>
                                                     </CopyToClipboard>
                                                     {copied ? (
-                                                        <span style={{ color: "white" }}>Copied.</span>
+                                                        <span style={{ color: "white" }}>
+                                                            Copied.
+                                                        </span>
                                                     ) : null}
                                                 </>
-                                        }
+                                            )}
+                                        </div>
+                                        {getAddress && (
+                                            <div className="qr-code col-lg-3">
+                                                <img src={QRCode} alt="qr code" />
+                                            </div>
+                                        )}
                                     </div>
-                                    {
-                                        getAddress &&
-                                        <div className="qr-code col-lg-3">
-                                            <img src={QRCode} alt="qr code" />
-                                        </div>
-                                    }
-                                </div>
-                                <div className="mt-3 d-flex">
-                                    <p className="d-flex flex-row">
-                                        <CheckBox
-                                            type="checkbox"
-                                            name="allow_fraction"
-                                            value={allow_fraction}
-                                            onChange={handleAllowFraction}
-                                            className="text-uppercase"
-                                        ></CheckBox>
-                                        <div className="allow-text">
-                                            Do you allow fraction of order compleation?
-                                        </div>
-                                        <FontAwesomeIcon
-                                            icon={faQuestionCircle}
-                                            className="fa-2x ms-2"
-                                        />
-                                    </p>
-                                    <p className="payment-expire my-auto">
-                                        payment expires in{" "}
-                                        <span className="txt-green">10 minutes</span>
-                                    </p>
+                                    <div className="mt-3 d-flex">
+                                        <p className="d-flex flex-row">
+                                            <CheckBox
+                                                type="checkbox"
+                                                name="allow_fraction"
+                                                value={allow_fraction}
+                                                onChange={handleAllowFraction}
+                                                className="text-uppercase"
+                                            ></CheckBox>
+                                            <div className="allow-text">
+                                                Do you allow fraction of order compleation?
+                                            </div>
+                                            <FontAwesomeIcon
+                                                icon={faQuestionCircle}
+                                                className="fa-2x ms-2"
+                                            />
+                                        </p>
+                                        <p className="payment-expire my-auto">
+                                            payment expires in{" "}
+                                            <span className="txt-green">10 minutes</span>
+                                        </p>
+                                    </div>
                                 </div>
                             </TabPanel>
                             <TabPanel className="creditcard-tab">
-                                <div className="row">
-                                    <div className="form-group col-sm-6">
-                                        <Input
-                                            type="text"
-                                            name="firstname"
-                                            value={firstname}
-                                            onChange={handleInput}
-                                            placeholder="First name"
-                                        />
-                                    </div>
-                                    <div className="form-group col-sm-6">
-                                        <Input
-                                            type="text"
-                                            name="lastname"
-                                            value={lastname}
-                                            onChange={handleInput}
-                                            placeholder="Last name"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="form-group">
-                                    <Input
-                                        type="number"
-                                        name="card"
-                                        value={card}
-                                        onChange={handleInput}
-                                        placeholder="Card number"
-                                    />
-                                </div>
-                                <div className="row">
-                                    <div className="form-group col-sm-4">
-                                        <Input
-                                            type="number"
-                                            name="expire"
-                                            value={expire}
-                                            onChange={handleInput}
-                                            placeholder="Expiration date"
-                                        />
-                                    </div>
-                                    <div className="form-group col-sm-4">
-                                        <Input
-                                            type="number"
-                                            name="code"
-                                            value={code}
-                                            onChange={handleInput}
-                                            placeholder="CSS code"
-                                        />
-                                    </div>
-                                    <div className="form-group col-sm-4">
-                                        <Input
-                                            type="number"
-                                            name="bill"
-                                            value={bill}
-                                            onChange={handleInput}
-                                            placeholder="Billing zip"
-                                        />
-                                    </div>
-                                </div>
-                                <div className="mt-3 d-flex">
-                                    <p className="d-flex flex-row">
-                                        <CheckBox
-                                            type="checkbox"
-                                            name="allow_fraction"
-                                            value={allow_fraction}
-                                            onChange={handleAllowFraction}
-                                            className="text-uppercase"
-                                        ></CheckBox>
-                                        <div className="allow-text">
-                                            Do you allow fraction of order compleation?
+                                <div className="payment-content">
+                                    <div className="row">
+                                        <div className="form-group col-sm-6">
+                                            <Input
+                                                type="text"
+                                                name="firstname"
+                                                value={firstname}
+                                                onChange={handleInput}
+                                                placeholder="First name"
+                                            />
                                         </div>
-                                        <FontAwesomeIcon
-                                            icon={faQuestionCircle}
-                                            className="fa-2x ms-2"
-                                        />
-                                    </p>
-                                    <p className="payment-expire my-auto">
-                                        payment expires in{" "}
-                                        <span className="txt-green">10 minutes</span>
-                                    </p>
-                                </div>
-                                <div className="d-flex">
-                                    <p className="d-flex flex-row">
-                                        <CheckBox
-                                            type="checkbox"
-                                            name="allow_fraction"
-                                            value={allow_fraction}
-                                            onChange={handleAllowFraction}
-                                            className="text-uppercase"
-                                        ></CheckBox>
-                                        <div className="allow-text">
-                                            Save card details for future purchase
+                                        <div className="form-group col-sm-6">
+                                            <Input
+                                                type="text"
+                                                name="lastname"
+                                                value={lastname}
+                                                onChange={handleInput}
+                                                placeholder="Last name"
+                                            />
                                         </div>
-                                    </p>
+                                    </div>
+                                    <div className="form-group">
+                                        <Input
+                                            type="number"
+                                            name="card"
+                                            value={card}
+                                            onChange={handleInput}
+                                            placeholder="Card number"
+                                        />
+                                    </div>
+                                    <div className="row">
+                                        <div className="form-group col-sm-4">
+                                            <Input
+                                                type="number"
+                                                name="expire"
+                                                value={expire}
+                                                onChange={handleInput}
+                                                placeholder="Expiration date"
+                                            />
+                                        </div>
+                                        <div className="form-group col-sm-4">
+                                            <Input
+                                                type="number"
+                                                name="code"
+                                                value={code}
+                                                onChange={handleInput}
+                                                placeholder="CSS code"
+                                            />
+                                        </div>
+                                        <div className="form-group col-sm-4">
+                                            <Input
+                                                type="number"
+                                                name="bill"
+                                                value={bill}
+                                                onChange={handleInput}
+                                                placeholder="Billing zip"
+                                            />
+                                        </div>
+                                    </div>
+                                    <div className="mt-3 d-flex">
+                                        <p className="d-flex flex-row">
+                                            <CheckBox
+                                                type="checkbox"
+                                                name="allow_fraction"
+                                                value={allow_fraction}
+                                                onChange={handleAllowFraction}
+                                                className="text-uppercase"
+                                            ></CheckBox>
+                                            <div className="allow-text">
+                                                Do you allow fraction of order compleation?
+                                            </div>
+                                            <FontAwesomeIcon
+                                                icon={faQuestionCircle}
+                                                className="fa-2x ms-2"
+                                            />
+                                        </p>
+                                        <p className="payment-expire my-auto">
+                                            payment expires in{" "}
+                                            <span className="txt-green">10 minutes</span>
+                                        </p>
+                                    </div>
+                                    <div className="d-flex">
+                                        <p className="d-flex flex-row">
+                                            <CheckBox
+                                                type="checkbox"
+                                                name="allow_fraction"
+                                                value={allow_fraction}
+                                                onChange={handleAllowFraction}
+                                                className="text-uppercase"
+                                            ></CheckBox>
+                                            <div className="allow-text">
+                                                Save card details for future purchase
+                                            </div>
+                                        </p>
+                                    </div>
                                 </div>
                             </TabPanel>
                             <TabPanel className="wallet-tab">
-                                <div className="row">
-                                    <Select
-                                        className="balance-select col-lg-4"
-                                        options={balances}
-                                        value={balance}
-                                        placeholder="YOUR BALANCE"
-                                        onChange={(v) => setBalance(v)}
-                                        components={{
-                                            Option: CustomOption,
-                                            SingleValue: CustomSingleValue,
-                                        }}
-                                    />
-                                    <div className="col-lg-8 d-flex">
-                                        <div className="choosed-icon">
-                                            {balance?.icon && (
-                                                <img src={balance?.icon} alt="coin" />
-                                            )}
-                                        </div>
-                                        <input
-                                            className="form-control"
-                                            type="number"
-                                            name="amount"
-                                            value={amount}
-                                            onChange={handleInput}
+                                <div className="payment-content">
+                                    <div className="row">
+                                        <Select
+                                            className="balance-select col-lg-4"
+                                            options={balances}
+                                            value={balance}
+                                            placeholder="YOUR BALANCE"
+                                            onChange={(v) => setBalance(v)}
+                                            components={{
+                                                Option: CustomOption,
+                                                SingleValue: CustomSingleValue,
+                                            }}
                                         />
+                                        <div className="col-lg-8 d-flex">
+                                            <div className="choosed-icon">
+                                                {balance?.icon && (
+                                                    <img src={balance?.icon} alt="coin" />
+                                                )}
+                                            </div>
+                                            <input
+                                                className="form-control"
+                                                type="number"
+                                                name="amount"
+                                                value={amount}
+                                                onChange={handleInput}
+                                            />
+                                        </div>
                                     </div>
-                                </div>
-                                <div className="mt-3 d-flex">
-                                    <p className="d-flex flex-row">
-                                        <CheckBox
-                                            type="checkbox"
-                                            name="allow_fraction"
-                                            value={allow_fraction}
-                                            onChange={handleAllowFraction}
-                                            className="text-uppercase"
-                                        ></CheckBox>
-                                        <div className="allow-text">
-                                            Do you allow fraction of order compleation?
-                                        </div>
-                                        <FontAwesomeIcon
-                                            icon={faQuestionCircle}
-                                            className="fa-2x ms-2"
-                                        />
-                                    </p>
-                                    <p className="payment-expire my-auto">
-                                        payment expires in{" "}
-                                        <span className="txt-green">10 minutes</span>
-                                    </p>
+                                    <div className="mt-3 d-flex">
+                                        <p className="d-flex flex-row">
+                                            <CheckBox
+                                                type="checkbox"
+                                                name="allow_fraction"
+                                                value={allow_fraction}
+                                                onChange={handleAllowFraction}
+                                                className="text-uppercase"
+                                            ></CheckBox>
+                                            <div className="allow-text">
+                                                Do you allow fraction of order compleation?
+                                            </div>
+                                            <FontAwesomeIcon
+                                                icon={faQuestionCircle}
+                                                className="fa-2x ms-2"
+                                            />
+                                        </p>
+                                        <p className="payment-expire my-auto">
+                                            payment expires in{" "}
+                                            <span className="txt-green">10 minutes</span>
+                                        </p>
+                                    </div>
                                 </div>
                             </TabPanel>
                             <TabPanel className="externalwallets-tab">
-                                <div className="row">
-                                    {wallets.map((item, idx) => (
-                                        <div
-                                            className="col-sm-6"
-                                            key={idx}
-                                            onClick={() => setState({ walletId: idx })}
-                                            onKeyDown={() => setState({ walletId: idx })}
-                                            role="presentation"
-                                        >
-                                            <div className={`wallet-item ${idx === walletId && "active"}`}>
-                                                <img src={item.icon} alt="wallet icon" />
-                                                <p>{item.desc}</p>
+                                <div className="payment-content">
+                                    <div className="row">
+                                        {wallets.map((item, idx) => (
+                                            <div
+                                                className={`col-sm-6 ${idx % 2 === 0 ? "pe-1" : "ps-1"
+                                                    }`}
+                                                key={idx}
+                                                onClick={() => setState({ walletId: idx })}
+                                                onKeyDown={() => setState({ walletId: idx })}
+                                                role="presentation"
+                                            >
+                                                <div
+                                                    className={`wallet-item ${idx === walletId && "active"
+                                                        }`}
+                                                >
+                                                    <img src={item.icon} alt="wallet icon" />
+                                                    <p>{item.desc}</p>
+                                                </div>
                                             </div>
-                                        </div>
-                                    ))}
+                                        ))}
+                                    </div>
+
+                                    <div className="mt-1 d-flex">
+                                        <p className="d-flex flex-row">
+                                            <CheckBox
+                                                type="checkbox"
+                                                name="allow_fraction"
+                                                value={allow_fraction}
+                                                onChange={handleAllowFraction}
+                                                className="text-uppercase"
+                                            ></CheckBox>
+                                            <div className="allow-text">
+                                                Do you allow fraction of order compleation?
+                                            </div>
+                                            <FontAwesomeIcon
+                                                icon={faQuestionCircle}
+                                                className="fa-2x ms-2"
+                                            />
+                                        </p>
+                                        <p className="payment-expire my-auto">
+                                            payment expires in{" "}
+                                            <span className="txt-green">10 minutes</span>
+                                        </p>
+                                    </div>
                                 </div>
                             </TabPanel>
                         </Tabs>
                     </div>
-                    <div className="col-md-4 order-summary">
+                    <div className="col-md-4 order-summary d-flex flex-column justify-content-between">
                         <h3>Order Summary</h3>
                         <p>
                             The token will be paid to your wallet at ndb Will be hold based on the
@@ -403,7 +454,9 @@ const Payment = () => {
                             payment expires in
                             <span className="txt-green">10 minutes</span>
                         </p>
-                        <button className="btn-primary text-uppercase">Confirm Payment</button>
+                        <button className="btn-primary text-uppercase width-max-content">
+                            Confirm Payment
+                        </button>
                     </div>
                 </div>
                 <div className="remain-token__value col-md-12 mx-auto">
@@ -434,7 +487,7 @@ const Payment = () => {
                     </div>
                 </div>
             </section>
-        </main >
+        </main>
     )
 }
 

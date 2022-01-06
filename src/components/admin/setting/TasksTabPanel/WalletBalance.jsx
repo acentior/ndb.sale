@@ -272,7 +272,7 @@ const DataRowForMobile = styled.div`
     @media screen and (max-width: ${device['phone']}){
         display: flex;
         flex-direction: column;
-    } 
+    }
 `;
 
 const UnitRowForMobile = styled.div`

@@ -1,5 +1,5 @@
 import React from "react"
-import Header from "../components/common/header"
+import Header from "../components/header"
 import Accordion from "../components/common/Accordion"
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
 

@@ -4,7 +4,7 @@ import Slider from "rc-slider"
 import Select from "react-select"
 import Modal from "react-modal"
 import ReactECharts from "echarts-for-react"
-import Header from "../components/common/header"
+import Header from "./header"
 import { useQuery, useMutation } from "@apollo/client"
 import {
     numberWithCommas,
@@ -25,12 +25,6 @@ import {
 import { GET_ROUND_CHANCE, GET_ROUND_PERFORMANCE2 } from "../apollo/graghqls/querys/Statistics"
 import { Currencies } from "../utilities/staticData"
 import { User } from "../utilities/user-data"
-import Linechart from "./chart/Linechart"
-import Candlestick from "./chart/Candlestick"
-
-// for test
-import chart1 from '../../test_data/chart1.json'
-import chart2 from '../../test_data/chart2.json'
 
 const ndb_token = `Since the beginning of NDB's project the vision is to provide clean green technologies to the world. The NDB token is not a security token nor does it represent any shares of NDB SA.
 
@@ -38,8 +32,8 @@ By using NDB token you will be able to contribute to the development of our tech
 `
 
 const options = [
-    { value: "round_performance2", label: "Round performance" },
-    { value: "round_change", label: "Round Change" },
+    { value: "round_performance2", label: "Round Performance2" },
+    { value: "round_change", label: "Round Chance" },
 ]
 
 const Auction = () => {
@@ -55,11 +49,6 @@ const Auction = () => {
         show_chart: false,
         selectLabel: options[0],
     })
-
-    // set chart type
-    const [reser_price, setReserPrice] = useState(true)
-    const [sold_price, setSoldPrice] = useState(true)
-    const [performance, setPerformance] = useState(false)
 
     const { tabIndex, amount, price, place_bid, bidModal, show_chart, selectLabel } = state
     const [selectedData, setSelectedData] = useState(1)
@@ -91,8 +80,6 @@ const Auction = () => {
         variables: { round: roundData && roundData[0]?.number - 1 },
     })
 
-
-
     // get round performance 2
     const { data: roundPerformance2 } = useQuery(GET_ROUND_PERFORMANCE2)
     const { data: roundChance } = useQuery(GET_ROUND_CHANCE)
@@ -113,15 +100,15 @@ const Auction = () => {
         selectedData === 0
             ? roundL?.getAuctionByNumber
             : selectedData === 1
-            ? roundM?.getAuctionByNumber
-            : roundH?.getAuctionByNumber
+                ? roundM?.getAuctionByNumber
+                : roundH?.getAuctionByNumber
 
     const fnSelectedBidhistoryData = () =>
         selectedData === 0
             ? historyBidListL?.getBidListByRound
             : selectedData === 1
-            ? historyBidListM?.getBidListByRound
-            : historyBidListH?.getBidListByRound
+                ? historyBidListM?.getBidListByRound
+                : historyBidListH?.getBidListByRound
 
     const fnAverateMinBid = () => {
         let hData = fnSelectedBidhistoryData()
@@ -197,9 +184,8 @@ const Auction = () => {
                 </div>
                 <div className="row h-100">
                     <div
-                        className={`auction-left col-lg-4 col-md-5 ${
-                            show_chart ? "d-none" : "d-block"
-                        }`}
+                        className={`auction-left col-lg-4 col-md-5 ${show_chart ? "d-none" : "d-block"
+                            }`}
                     >
                         {roundM?.getAuctionByNumber && (
                             <Tabs
@@ -355,50 +341,50 @@ const Auction = () => {
                             fnSelectedRoundData()?.startedAt,
                             fnSelectedRoundData()?.endedAt
                         ) && (
-                            <div className="timeframe-bar">
-                                <div
-                                    className="timeleft"
-                                    style={{
-                                        width:
-                                            (percentage > 0 && percentage < 101 ? percentage : 0) +
-                                            "%",
-                                        background: "#464646",
-                                    }}
-                                >
-                                    <div className="timeleft__value">
-                                        {numberWithLength(
-                                            parseInt(
-                                                getTimeDiffOverall(
-                                                    fnSelectedRoundData()?.startedAt,
-                                                    fnSelectedRoundData()?.endedAt
-                                                ) /
+                                <div className="timeframe-bar">
+                                    <div
+                                        className="timeleft"
+                                        style={{
+                                            width:
+                                                (percentage > 0 && percentage < 101 ? percentage : 0) +
+                                                "%",
+                                            background: "#464646",
+                                        }}
+                                    >
+                                        <div className="timeleft__value">
+                                            {numberWithLength(
+                                                parseInt(
+                                                    getTimeDiffOverall(
+                                                        fnSelectedRoundData()?.startedAt,
+                                                        fnSelectedRoundData()?.endedAt
+                                                    ) /
                                                     (60 * 60)
-                                            )
-                                        )}
-                                        :
-                                        {numberWithLength(
-                                            parseInt(
-                                                (getTimeDiffOverall(
-                                                    fnSelectedRoundData()?.startedAt,
-                                                    fnSelectedRoundData()?.endedAt
-                                                ) %
-                                                    (60 * 60)) /
+                                                )
+                                            )}
+                                            :
+                                            {numberWithLength(
+                                                parseInt(
+                                                    (getTimeDiffOverall(
+                                                        fnSelectedRoundData()?.startedAt,
+                                                        fnSelectedRoundData()?.endedAt
+                                                    ) %
+                                                        (60 * 60)) /
                                                     60
-                                            )
-                                        )}
-                                        :
-                                        {numberWithLength(
-                                            parseInt(
-                                                getTimeDiffOverall(
-                                                    fnSelectedRoundData()?.startedAt,
-                                                    fnSelectedRoundData()?.endedAt
-                                                ) % 60
-                                            )
-                                        )}
+                                                )
+                                            )}
+                                            :
+                                            {numberWithLength(
+                                                parseInt(
+                                                    getTimeDiffOverall(
+                                                        fnSelectedRoundData()?.startedAt,
+                                                        fnSelectedRoundData()?.endedAt
+                                                    ) % 60
+                                                )
+                                            )}
+                                        </div>
                                     </div>
                                 </div>
-                            </div>
-                        )}
+                            )}
                         <div className="d-flex justify-content-between mt-4">
                             {fnAverateMinBid() !== 0 ? (
                                 <div>
@@ -511,123 +497,50 @@ const Auction = () => {
                             </button>
                         </div>
                         <div
-                            className={`chart-area ${
-                                size.width <= 768
-                                    ? show_chart
-                                        ? "d-block"
-                                        : "d-none"
-                                    : (size.width <= 1024 && size.width > 768 && "d-block") ||
-                                      (place_bid && "d-block")
-                            }`}
+                            className={`chart-area ${size.width <= 768
+                                ? show_chart
+                                    ? "d-block"
+                                    : "d-none"
+                                : (size.width <= 1024 && size.width > 768 && "d-block") ||
+                                (place_bid && "d-block")
+                                }`}
                         >
-                            <div className="">
-                                <div className="d-flex align-items-center ">
-                                    <div style={{width: "430px"}}>
-                                        <Select
-                                            className=""
-                                            options={options}
-                                            value={selectLabel}
-                                            onChange={(v) => setState({ selectLabel: v })}
-                                        />
-
-                                    </div>
-                                    <img src={Qmark} alt="question" className="ms-3"/>
-                                </div>
-                                <div className="d-flex align-items-center" 
-                                style={{ 
-                                    justifyContent: "space-between",
-                                    paddingTop: "10px",
-                                    width: "430px"
-                                }}>
-                                    <button
-                                        className={`btn-small ${
-                                            reser_price ? "btn-disabled" : ""
-                                        }`}
-                                        onClick={() => {
-                                            if(!reser_price) {
-                                                setReserPrice(true)
-                                                setSoldPrice(true)
-                                                setPerformance(false)
-                                            }
-                                        }}
-                                        style={{
-                                            width: "140px"
-                                        }}
-                                        
-                                    >
-                                        Reserved Price
-                                    </button>
-                                    <button
-                                        className={`btn-small ${
-                                            sold_price ? "btn-disabled" : ""
-                                        }`}
-                                        onClick={() => {
-                                            if(!sold_price) {
-                                                setReserPrice(true)
-                                                setSoldPrice(true)
-                                                setPerformance(false)
-                                            }
-                                        }}
-                                        style={{
-                                            width: "140px"
-                                        }}
-                                        
-                                    >
-                                        Price Sold
-                                    </button>
-                                    <button
-                                        className={`btn-small ${
-                                            performance ? "btn-disabled" : ""
-                                        }`}
-                                        onClick={() => {
-                                            if(!performance) {
-                                                setReserPrice(false)
-                                                setSoldPrice(false)
-                                                setPerformance(true)
-                                            }
-                                        }}
-                                        style={{
-                                            width: "140px"
-                                        }}
-                                        
-                                    >
-                                        Performance
-                                    </button>
-                                </div>
+                            <div className="d-flex align-items-center">
+                                <Select
+                                    options={options}
+                                    value={selectLabel}
+                                    onChange={(v) => setState({ selectLabel: v })}
+                                />
+                                <img src={Qmark} alt="question" className="ms-3" />
                             </div>
-                            {/* <p className="select-label">{selectLabel.label}</p> */}
-                            {selectLabel.value === "round_performance2" && round_perform2 && reser_price && sold_price && (
-                                <Linechart data={chart1}/>
-                                // <ReactECharts
-                                //     option={{
-                                //         tooltip: {
-                                //             className: "echarts-tooltip",
-                                //         },
-                                //         color: ["#23C865", "#8F8F8F", "#FFFFFF"],
-                                //         dataset: {
-                                //             source: [
-                                //                 ["Category", "Max", "Min", "Std"],
-                                //                 ["Round 5", 1.79, 0, 0],
-                                //                 ["Round 4", 30, 45, 10.606601717798213],
-                                //                 ["Round 3", 30, 55, 10],
-                                //                 ["Round 2", 15, 55, 10],
-                                //                 ["Round 1", 15, 425, 0],
-                                //                 ["Round 6", 65, 65, 0],
-                                //             ],
-                                //         },
-                                //         xAxis: { type: "category" },
-                                //         yAxis: {},
-                                //         series: [{ type: "bar" }, { type: "bar" }, { type: "bar" }],
-                                //     }}
-                                //     style={{ height: "450px", width: "100%" }}
-                                //     className="echarts-for-echarts"
-                                // />
-                            )}
-                            {selectLabel.value === "round_performance2" && round_perform2 && performance && (
-                                <Candlestick data={chart2}/>
+                            <p className="select-label">{selectLabel.label}</p>
+                            {selectLabel.value === "round_performance2" && round_perform2 && (
+                                <ReactECharts
+                                    option={{
+                                        tooltip: {
+                                            className: "echarts-tooltip",
+                                        },
+                                        color: ["#23C865", "#8F8F8F", "#FFFFFF"],
+                                        dataset: {
+                                            source: [
+                                                ["Category", "Max", "Min", "Std"],
+                                                ["Round 5", 1.79, 0, 0],
+                                                ["Round 4", 30, 45, 10.606601717798213],
+                                                ["Round 3", 30, 55, 10],
+                                                ["Round 2", 15, 55, 10],
+                                                ["Round 1", 15, 425, 0],
+                                                ["Round 6", 65, 65, 0],
+                                            ],
+                                        },
+                                        xAxis: { type: "category" },
+                                        yAxis: {},
+                                        series: [{ type: "bar" }, { type: "bar" }, { type: "bar" }],
+                                    }}
+                                    style={{ height: "450px", width: "100%" }}
+                                    className="echarts-for-echarts"
+                                />
                             )}
                             {selectLabel.value === "round_change" && round_chance && (
-                                // <Candlestick data={chart2}/>
                                 <ReactECharts
                                     option={{
                                         tooltip: {},

@@ -1,7 +1,7 @@
 import React from "react"
 // import styled from 'styled-components';
 import Seo from "../../components/seo"
-import Header from "../../components/common/header"
+import Header from "../../components/header"
 import CountDown from "../../components/common/countdown"
 
 const HomeWithSign = () => {

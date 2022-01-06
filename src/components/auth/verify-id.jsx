@@ -4,7 +4,7 @@ import Select from "react-select"
 import useFileUpload from "react-use-file-upload"
 import Modal from "react-modal"
 import Webcam from "react-webcam"
-import Header from "../common/header"
+import Header from "../header"
 import { CheckBox } from "../common/FormControl"
 import { formatBytes } from "../../utilities/number"
 import { countries } from "../../utilities/staticData"
@@ -133,8 +133,9 @@ const VerificationPage = () => {
                                     style={{ width: step * 50 + "%" }}
                                 ></div>
                                 <div
-                                    className={`right-circle ${step === 2 ? "bg-green" : "bg-white"
-                                        }`}
+                                    className={`right-circle ${
+                                        step === 2 ? "bg-green" : "bg-white"
+                                    }`}
                                 ></div>
                             </div>
                         </div>
@@ -194,8 +195,9 @@ const VerificationPage = () => {
                                 <div className="upload-doc me-lg-5">
                                     <div className="mb-3">
                                         <div
-                                            className={`file-upload ${files.length > 0 && "uploaded"
-                                                }`}
+                                            className={`file-upload ${
+                                                files.length > 0 && "uploaded"
+                                            }`}
                                             onDragEnter={handleDragDropEvent}
                                             onDragOver={handleDragDropEvent}
                                             onDrop={(e) => {
