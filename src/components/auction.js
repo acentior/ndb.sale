@@ -38,8 +38,8 @@ By using NDB token you will be able to contribute to the development of our tech
 `
 
 const options = [
-    { value: "round_performance2", label: "Round Performance2" },
-    { value: "round_change", label: "Round Chance" },
+    { value: "round_performance2", label: "Round performance" },
+    { value: "round_change", label: "Round Change" },
 ]
 
 const Auction = () => {
@@ -61,6 +61,11 @@ const Auction = () => {
         show_chart: false,
         selectLabel: options[0],
     })
+
+    // set chart type
+    const [reser_price, setReserPrice] = useState(true)
+    const [sold_price, setSoldPrice] = useState(true)
+    const [performance, setPerformance] = useState(false)
 
     const { tabIndex, amount, price, place_bid, bidModal, show_chart, selectLabel } = state
     const [selectedData, setSelectedData] = useState(1)
@@ -519,13 +524,72 @@ const Auction = () => {
                                       (place_bid && "d-block")
                             }`}
                         >
-                            <div className="d-flex align-items-center">
-                                <Select
-                                    options={options}
-                                    value={selectLabel}
-                                    onChange={(v) => setState({ selectLabel: v })}
-                                />
-                                <img src={Qmark} alt="question" className="ms-3" />
+                            <div className="">
+                                <div className="d-flex align-items-center ">
+                                    <div style={{ width: "430px" }}>
+                                        <Select
+                                            className=""
+                                            options={options}
+                                            value={selectLabel}
+                                            onChange={(v) => setState({ selectLabel: v })}
+                                        />
+                                    </div>
+                                    <img src={Qmark} alt="question" className="ms-3" />
+                                </div>
+                                <div
+                                    className="d-flex align-items-center"
+                                    style={{
+                                        justifyContent: "space-between",
+                                        paddingTop: "10px",
+                                        width: "430px",
+                                    }}
+                                >
+                                    <button
+                                        className={`btn-small ${reser_price ? "btn-disabled" : ""}`}
+                                        onClick={() => {
+                                            if (!reser_price) {
+                                                setReserPrice(true)
+                                                setSoldPrice(true)
+                                                setPerformance(false)
+                                            }
+                                        }}
+                                        style={{
+                                            width: "140px",
+                                        }}
+                                    >
+                                        Reserved Price
+                                    </button>
+                                    <button
+                                        className={`btn-small ${sold_price ? "btn-disabled" : ""}`}
+                                        onClick={() => {
+                                            if (!sold_price) {
+                                                setReserPrice(true)
+                                                setSoldPrice(true)
+                                                setPerformance(false)
+                                            }
+                                        }}
+                                        style={{
+                                            width: "140px",
+                                        }}
+                                    >
+                                        Price Sold
+                                    </button>
+                                    <button
+                                        className={`btn-small ${performance ? "btn-disabled" : ""}`}
+                                        onClick={() => {
+                                            if (!performance) {
+                                                setReserPrice(false)
+                                                setSoldPrice(false)
+                                                setPerformance(true)
+                                            }
+                                        }}
+                                        style={{
+                                            width: "140px",
+                                        }}
+                                    >
+                                        Performance
+                                    </button>
+                                </div>
                             </div>
                             {/* <p className="select-label">{selectLabel.label}</p> */}
                             {selectLabel.value === "round_performance2" &&
@@ -566,6 +630,7 @@ const Auction = () => {
                                 !chart2.loading &&
                                 !chart2.error && <Candlestick data={chart2.data} />}
                             {selectLabel.value === "round_change" && round_chance && (
+                                // <Candlestick data={chart2}/>
                                 <ReactECharts
                                     option={{
                                         tooltip: {},
