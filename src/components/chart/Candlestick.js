@@ -13,10 +13,6 @@ import { SilverCoin } from "../../utilities/imgImport";
 
 // console.log(data)
 
-const isRising=  (min, max, std) => {
-
-}
-
 const Candlestick = ({data}) => {
   const options = {
     legend: "none",
@@ -44,7 +40,7 @@ const Candlestick = ({data}) => {
   const [chartdata, setChartdata] = useState([])
   useEffect(() => {
     let rdata = []
-    data.data.getRoundPerform2.forEach( (ele) => {
+    data.getRoundPerform2.forEach( (ele) => {
         rdata.push([ele.roundNumber, ele.min, ele.min+ele.std, ele.max-ele.std, ele.max, ele.min + ele.std > ele.max - ele.std ? "#23C865" : "#E8503A"])
       }
     )

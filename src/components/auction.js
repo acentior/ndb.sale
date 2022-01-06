@@ -47,6 +47,9 @@ const Auction = () => {
     const chart1 = useQuery(GET_AUCTION)
     const chart2 = useQuery(GET_ROUND_PERFORMANCE2)
 
+    // if (chart1.loading || chart2.loading) return <div>loading...</div>
+    // if (chart1.error || chart2.error) return <div>Error...</div>
+
     const size = useWindowSize()
 
     const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
@@ -600,8 +603,8 @@ const Auction = () => {
                                 </div>
                             </div>
                             {/* <p className="select-label">{selectLabel.label}</p> */}
-                            {selectLabel.value === "round_performance2" && round_perform2 && reser_price && sold_price && (
-                                <Linechart data={chart1}/>
+                            {selectLabel.value === "round_performance2" && round_perform2 && reser_price && sold_price && !chart1.loading && !chart1.error && (
+                                <Linechart data={chart1.data}/>
                                 // <ReactECharts
                                 //     option={{
                                 //         tooltip: {
@@ -627,8 +630,8 @@ const Auction = () => {
                                 //     className="echarts-for-echarts"
                                 // />
                             )}
-                            {selectLabel.value === "round_performance2" && round_perform2 && performance && (
-                                <Candlestick data={chart2}/>
+                            {selectLabel.value === "round_performance2" && round_perform2 && performance && !chart2.loading && !chart2.error && (
+                                <Candlestick data={chart2.data}/>
                             )}
                             {selectLabel.value === "round_change" && round_chance && (
                                 // <Candlestick data={chart2}/>

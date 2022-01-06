@@ -30,7 +30,8 @@ const LineChart = ({data}) => {
   const [chartdata, setChartdata] = useState([])
   useEffect(() => {
     let rdata = []
-    data.data.getAuctions.forEach( (ele) => {
+    console.log("data", data)
+    data.getAuctions.forEach( (ele) => {
         rdata.push([ele.totalToken, ele.minPrice * ele.totalToken, ele.minPrice * ele.sold])
       }
     )
