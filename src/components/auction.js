@@ -25,6 +25,12 @@ import {
 import { GET_ROUND_CHANCE, GET_ROUND_PERFORMANCE2 } from "../apollo/graghqls/querys/Statistics"
 import { Currencies } from "../utilities/staticData"
 import { User } from "../utilities/user-data"
+import Linechart from "./chart/Linechart"
+import Candlestick from "./chart/Candlestick"
+
+// for test
+// import chart1 from '../../test_data/chart1.json'
+// import chart2 from '../../test_data/chart2.json'
 
 const ndb_token = `Since the beginning of NDB's project the vision is to provide clean green technologies to the world. The NDB token is not a security token nor does it represent any shares of NDB SA.
 
@@ -37,6 +43,9 @@ const options = [
 ]
 
 const Auction = () => {
+    const chart1 = useQuery(GET_AUCTION)
+    const chart2 = useQuery(GET_ROUND_PERFORMANCE2)
+
     const size = useWindowSize()
 
     const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
@@ -100,15 +109,15 @@ const Auction = () => {
         selectedData === 0
             ? roundL?.getAuctionByNumber
             : selectedData === 1
-                ? roundM?.getAuctionByNumber
-                : roundH?.getAuctionByNumber
+            ? roundM?.getAuctionByNumber
+            : roundH?.getAuctionByNumber
 
     const fnSelectedBidhistoryData = () =>
         selectedData === 0
             ? historyBidListL?.getBidListByRound
             : selectedData === 1
-                ? historyBidListM?.getBidListByRound
-                : historyBidListH?.getBidListByRound
+            ? historyBidListM?.getBidListByRound
+            : historyBidListH?.getBidListByRound
 
     const fnAverateMinBid = () => {
         let hData = fnSelectedBidhistoryData()
@@ -184,8 +193,9 @@ const Auction = () => {
                 </div>
                 <div className="row h-100">
                     <div
-                        className={`auction-left col-lg-4 col-md-5 ${show_chart ? "d-none" : "d-block"
-                            }`}
+                        className={`auction-left col-lg-4 col-md-5 ${
+                            show_chart ? "d-none" : "d-block"
+                        }`}
                     >
                         {roundM?.getAuctionByNumber && (
                             <Tabs
@@ -341,50 +351,50 @@ const Auction = () => {
                             fnSelectedRoundData()?.startedAt,
                             fnSelectedRoundData()?.endedAt
                         ) && (
-                                <div className="timeframe-bar">
-                                    <div
-                                        className="timeleft"
-                                        style={{
-                                            width:
-                                                (percentage > 0 && percentage < 101 ? percentage : 0) +
-                                                "%",
-                                            background: "#464646",
-                                        }}
-                                    >
-                                        <div className="timeleft__value">
-                                            {numberWithLength(
-                                                parseInt(
-                                                    getTimeDiffOverall(
-                                                        fnSelectedRoundData()?.startedAt,
-                                                        fnSelectedRoundData()?.endedAt
-                                                    ) /
+                            <div className="timeframe-bar">
+                                <div
+                                    className="timeleft"
+                                    style={{
+                                        width:
+                                            (percentage > 0 && percentage < 101 ? percentage : 0) +
+                                            "%",
+                                        background: "#464646",
+                                    }}
+                                >
+                                    <div className="timeleft__value">
+                                        {numberWithLength(
+                                            parseInt(
+                                                getTimeDiffOverall(
+                                                    fnSelectedRoundData()?.startedAt,
+                                                    fnSelectedRoundData()?.endedAt
+                                                ) /
                                                     (60 * 60)
-                                                )
-                                            )}
-                                            :
-                                            {numberWithLength(
-                                                parseInt(
-                                                    (getTimeDiffOverall(
-                                                        fnSelectedRoundData()?.startedAt,
-                                                        fnSelectedRoundData()?.endedAt
-                                                    ) %
-                                                        (60 * 60)) /
+                                            )
+                                        )}
+                                        :
+                                        {numberWithLength(
+                                            parseInt(
+                                                (getTimeDiffOverall(
+                                                    fnSelectedRoundData()?.startedAt,
+                                                    fnSelectedRoundData()?.endedAt
+                                                ) %
+                                                    (60 * 60)) /
                                                     60
-                                                )
-                                            )}
-                                            :
-                                            {numberWithLength(
-                                                parseInt(
-                                                    getTimeDiffOverall(
-                                                        fnSelectedRoundData()?.startedAt,
-                                                        fnSelectedRoundData()?.endedAt
-                                                    ) % 60
-                                                )
-                                            )}
-                                        </div>
+                                            )
+                                        )}
+                                        :
+                                        {numberWithLength(
+                                            parseInt(
+                                                getTimeDiffOverall(
+                                                    fnSelectedRoundData()?.startedAt,
+                                                    fnSelectedRoundData()?.endedAt
+                                                ) % 60
+                                            )
+                                        )}
                                     </div>
                                 </div>
-                            )}
+                            </div>
+                        )}
                         <div className="d-flex justify-content-between mt-4">
                             {fnAverateMinBid() !== 0 ? (
                                 <div>
@@ -497,13 +507,14 @@ const Auction = () => {
                             </button>
                         </div>
                         <div
-                            className={`chart-area ${size.width <= 768
-                                ? show_chart
-                                    ? "d-block"
-                                    : "d-none"
-                                : (size.width <= 1024 && size.width > 768 && "d-block") ||
-                                (place_bid && "d-block")
-                                }`}
+                            className={`chart-area ${
+                                size.width <= 768
+                                    ? show_chart
+                                        ? "d-block"
+                                        : "d-none"
+                                    : (size.width <= 1024 && size.width > 768 && "d-block") ||
+                                      (place_bid && "d-block")
+                            }`}
                         >
                             <div className="d-flex align-items-center">
                                 <Select
