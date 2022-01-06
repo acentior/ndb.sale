@@ -48,9 +48,12 @@
     "react-copy-to-clipboard": "^5.0.4",
     "react-dom": "^17.0.1",
     "react-fontawesome": "^1.7.1",
+    "react-google-charts": "^3.0.15",
     "react-helmet": "^6.1.0",
+    "react-hook-form": "^7.22.5",
     "react-modal": "^3.14.4",
     "react-number-format": "^4.9.0",
+    "react-phone-number-input": "^3.1.44",
     "react-redux": "^7.2.6",
     "react-select": "^5.2.1",
     "react-star-ratings": "^2.3.0",
@@ -64,6 +67,7 @@
     "sass": "^1.43.4",
     "styled-components": "^5.3.3",
     "subscriptions-transport-ws": "^0.11.0",
+    "svg-to-dataurl": "^1.0.0",
     "validator": "^13.7.0"
   },
   "devDependencies": {

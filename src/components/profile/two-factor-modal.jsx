@@ -7,23 +7,39 @@ import { useMutation } from "@apollo/client"
 import { REQUEST_2FA, CONFIRM_REQUEST_2FA } from "../../apollo/graghqls/mutations/Auth"
 import { getUser, setUser } from "../../utilities/auth"
 import { ROUTES } from "../../utilities/routes"
+import { getCountries, getCountryCallingCode } from "react-phone-number-input/input"
+import en from "react-phone-number-input/locale/en.json"
+import "react-phone-number-input/style.css"
+
+const CountrySelect = ({ value, onChange, labels, ...rest }) => (
+    <select {...rest} value={value} onChange={(event) => onChange(event.target.value || undefined)}>
+        <option value="">{labels.ZZ}</option>
+        {getCountries().map((country) => (
+            <option key={country} value={country}>
+                {labels[country]}
+            </option>
+        ))}
+    </select>
+)
 
 const two_factors = [
     { label: "Authenticator App", method: "app" },
     { label: "SMS", method: "phone" },
     { label: "Email", method: "email" },
 ]
+const initial = {
+    result_code: "",
+    choose_type: 0,
+    set_type: -1,
+    input_mobile: false,
+    mobile: "",
+}
 
 export default function TwoFactorModal({ is2FAModalOpen, setIs2FAModalOpen }) {
     const user = getUser()
     const [qrcode, setQRCode] = useState("")
-    const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
-        result_code: "",
-        choose_type: 0,
-        set_type: -1,
-        input_mobile: false,
-        mobile: "",
-    })
+    const [country, setCountry] = useState("")
+    const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), initial)
 
     const { result_code, choose_type, set_type, input_mobile, mobile } = state
 
@@ -60,18 +76,22 @@ export default function TwoFactorModal({ is2FAModalOpen, setIs2FAModalOpen }) {
             },
         })
     }
+    const closeModal = () => {
+        setIs2FAModalOpen(false)
+        setState(initial)
+    }
     return (
         <Modal
             isOpen={is2FAModalOpen}
-            onRequestClose={() => setIs2FAModalOpen(false)}
+            onRequestClose={() => closeModal()}
             ariaHideApp={false}
             className="twoFA-modal"
             overlayClassName="2fa-modal__overlay"
         >
             <div className="tfa-modal__header">
                 <div
-                    onClick={() => setIs2FAModalOpen(false)}
-                    onKeyDown={() => setIs2FAModalOpen(false)}
+                    onClick={() => closeModal()}
+                    onKeyDown={() => closeModal()}
                     role="button"
                     tabIndex="0"
                 >
@@ -85,17 +105,36 @@ export default function TwoFactorModal({ is2FAModalOpen, setIs2FAModalOpen }) {
                             <h3>Connect Mobile</h3>
                             <p className="mt-3 pb-3">You will recive a sms code to the number</p>
                             <div className="form-group">
-                                <Input
-                                    type="text"
-                                    value={mobile}
-                                    onChange={(e) => setState({ mobile: e.target.value })}
-                                    placeholder="Enter Mobile Number"
-                                />
+                                <div className="mobile-input-field">
+                                    <CountrySelect
+                                        className="form-control"
+                                        labels={en}
+                                        name="countrySelect"
+                                        onChange={(c) => {
+                                            const code = `+${getCountryCallingCode(c)} `
+                                            setCountry(code)
+                                            setState({
+                                                mobile: code,
+                                            })
+                                        }}
+                                    />
+                                    <Input
+                                        type="text"
+                                        value={mobile}
+                                        onChange={(e) => {
+                                            const input = e.target.value
+                                            setState({
+                                                mobile: country + input.substr(country.length),
+                                            })
+                                        }}
+                                    />
+                                </div>
+                                <p>You will receive a sms code to the number above</p>
                                 <button
                                     className="btn-primary next-step mt-4"
                                     onClick={() => sendRequest2FA()}
                                 >
-                                    Confirm
+                                    Confirm Number
                                 </button>
                             </div>
                         </div>

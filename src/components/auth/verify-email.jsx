@@ -17,7 +17,7 @@ const VerifyEmail = (props) => {
 
     const [code, setCode] = useState("")
 
-    const [is2FAModalOpen, setIs2FAModalOpen] = useState(false)
+    const [is2FAModalOpen, setIs2FAModalOpen] = useState(props.verified)
 
     const [verifyAccount] = useMutation(VERIFY_ACCOUNT, {
         onCompleted: (data) => {

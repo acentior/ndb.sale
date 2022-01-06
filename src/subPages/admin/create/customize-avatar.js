@@ -1,8 +1,10 @@
 import React, { useState, useMemo } from "react"
 import { Link } from "gatsby"
 import { Icon } from '@iconify/react';
-import parse from 'html-react-parser';
+
 import NumberFormat from "react-number-format";
+import parse from 'html-react-parser';
+
 import Seo from "../../../components/seo";
 import Stepper2 from "../../../components/admin/Stepper2";
 import LayoutForCreate from "../../../components/admin/LayoutForCreate";
@@ -10,22 +12,15 @@ import LayoutForCreate from "../../../components/admin/LayoutForCreate";
 import Alert from '@mui/material/Alert';
 import Select from 'react-select';
 import { EmptyAvatar, BaseExpression, BaseHair } from "../../../utilities/imgImport";
+import { useGetUserTierQuery } from "../../../apollo/model/userTier";
 
 const categories = [
     { value: 'hairStyle', label: 'Hair Style' },
     // { value: 'hairColor', label: 'Hair Color' },
     { value: 'facialStyle', label: 'Facial Style' },
-    { value: 'expressions', label: 'Expressions' },
-    { value: 'hats', label: 'Hats' },
+    { value: 'expression', label: 'Expression' },
+    { value: 'hat', label: 'Hat' },
     { value: 'other', label: 'Other' },
-];
-
-const tiers = [
-    { value: 'bronze', label: 'Bronze' },
-    { value: 'silver', label: 'Silver' },
-    { value: 'gold', label: 'Gold' },
-    { value: 'platinum', label: 'Platinum' },
-    { value: 'diamond', label: 'Diamond' },
 ];
 
 const IndexPage = () => {
@@ -36,7 +31,7 @@ const IndexPage = () => {
     //------- Avatar and Validation
     // Avatar
     const [category, setCategory] = useState({ value: 'hairStyle', label: 'Hair Style' });
-    const initialAvatarData = { filename: '', content: '', top: 0, left: 0, class: ''};
+    const initialAvatarData = { filename: '', svg: '', top: 0, left: 0, width: 100, groupId: ''};
     const [svgFile, setSvgFile] = useState(initialAvatarData);
 
     // Avatar Data Validation
@@ -57,16 +52,24 @@ const IndexPage = () => {
         return {};
     }, [avatarInfo]);
 
+    let tiers = [];
+    const userTiersResults = useGetUserTierQuery();
+    if(userTiersResults.data) {
+        tiers = userTiersResults.data.getUserTiers.map(item => {
+            return { value: item.level, label: item.level };
+        });
+    }
+
     const selectAvatarComponent = event => {
         event.preventDefault();
         const file = event.target.files[0];
-        
+
         if(file) {
             const reader = new FileReader();
             reader.onload = function(e) {
-                const content = e.target.result;
+                const svg = e.target.result;
                 if (file.type.indexOf('svg') > 0) {
-                    setSvgFile({ ...svgFile, content, filename: file.name, class: category.value });
+                    setSvgFile({ ...svgFile, svg, filename: file.name, groupId: category.value });
                     setError('');
                 } else {
                     setError('Only SVG file can be uploaded');
@@ -76,7 +79,7 @@ const IndexPage = () => {
             reader.readAsText(file);
         }
     };
-    // console.log(svgFile.content);
+    // console.log(svgFile.svg);
 
     const setAvatarData = () => {
         if(Object.values(avatarError)[0]) {
@@ -97,12 +100,7 @@ const IndexPage = () => {
     };
 
     const handleSubmit = () => {
-        if(Object.values(avatarInfoError)[0]) {
-            setShowError(true);
-            return;
-        }
-        setShowError(false);
-        alert('Avatar component saved Successfully')
+        console.log(svgFile)
     };
 
     return (
@@ -126,6 +124,7 @@ const IndexPage = () => {
                                             value={category}
                                             onChange={(selected) => {
                                                 setCategory(selected);
+                                                setSvgFile({...initialAvatarData, groupId: selected.value});
                                             }}
                                             options={categories}
                                             styles={customSelectStyles}
@@ -145,17 +144,24 @@ const IndexPage = () => {
                                     </div>
                                     <div id='position' className="col-sm-4">
                                         <div className="mb-3">
-                                            <p>Top (px)</p>
+                                            <p>Top (%)</p>
                                             <input className="black_input" type="number" max={100} min={-100}
                                                 value={svgFile.top}
                                                 onChange={e => setSvgFile({...svgFile, top: Number(e.target.value)})}
                                             />
                                         </div>
-                                        <div>
-                                            <p>Left (px)</p>
+                                        <div className="mb-3">
+                                            <p>Left (%)</p>
                                             <input className="black_input" type="number" max={100} min={-100}
                                                 value={svgFile.left}
                                                 onChange={e => setSvgFile({...svgFile, left: Number(e.target.value)})}
+                                            />
+                                        </div>
+                                        <div>
+                                            <p>Width (%)</p>
+                                            <input className="black_input" type="number" max={200} min={0}
+                                                value={svgFile.width}
+                                                onChange={e => setSvgFile({...svgFile, width: Number(e.target.value)})}
                                             />
                                         </div>
                                     </div>
@@ -163,28 +169,28 @@ const IndexPage = () => {
                                         <div className="profile m-auto">
                                             <div className="image_div">
                                                 {category.value === 'hairStyle' || !category.value? <img src={EmptyAvatar} alt="Background Avatar" />: ''}
-                                                {category.value === 'expressions'? (
+                                                {category.value === 'expression'? (
                                                     <>
                                                         <img src={EmptyAvatar} alt="Background Avatar" />
-                                                        <div style={{top: -10, left: -5}}>
+                                                        <div style={{top: '-9%', left: '-3%', width: '108%'}}>
                                                             <img src={BaseHair} alt="base hair" />
                                                         </div>
                                                     </>
                                                 ): ''}
-                                                {category.value === 'hats' || category.value === 'other' || category.value === 'facialStyle'? (
+                                                {category.value === 'hat' || category.value === 'other' || category.value === 'facialStyle'? (
                                                     <>
                                                         <img src={EmptyAvatar} alt="Background Avatar" />
-                                                        <div style={{top: -10, left: -5}}>
+                                                        <div style={{top: '-9%', left: '-3%', width: '108%'}}>
                                                             <img src={BaseHair} alt="base hair" />
                                                         </div>
-                                                        <div style={{top: 23, left: 23}}>
+                                                        <div style={{top: '31%', left: '25%', width: '53%'}}>
                                                             <img src={BaseExpression} alt="base expression" />
                                                         </div>
                                                     </>
                                                 ): ''}
-                                                {svgFile.content? (
-                                                    <div style={{top: svgFile.top, left: svgFile.left}}>
-                                                        {parse(svgFile.content)}
+                                                {svgFile.svg? (
+                                                    <div style={{top: `${svgFile.top}%`, left: `${svgFile.left}%`, width: `${svgFile.width}%`}}>
+                                                        {parse(svgFile.svg)}
                                                     </div>
                                                 ): ''}
                                             </div>
@@ -224,7 +230,7 @@ const IndexPage = () => {
                                         />
                                     </div>
                                     <div className="col-sm-4">
-                                        <p>User Tier</p>
+                                        <p>Tier</p>
                                         <Select
                                             className="black_input mb-3"
                                             value={avatarInfo.tier}
@@ -251,34 +257,34 @@ const IndexPage = () => {
                                     <div className="col-md-6">
                                         <p>Price: <span>{Number(avatarInfo.price) === 0? '0 = Free': avatarInfo.price}</span></p>
                                         <p>Limitation: <span>{Number(avatarInfo.limitation) === 0? '0 = Unlimited': avatarInfo.limitation}</span></p>
-                                        <p>User Tier: <span>{avatarInfo.tier.label}</span></p>
+                                        <p>Tier: <span>{avatarInfo.tier.label}</span></p>
                                     </div>
                                     <div className="col-md-6">
                                         <div className="profile m-auto">
                                             <div className="image_div">
                                                 {category.value === 'hairStyle' || !category.value? <img src={EmptyAvatar} alt="Background Avatar" />: ''}
-                                                {category.value === 'expressions'? (
+                                                {category.value === 'expression'? (
                                                     <>
                                                         <img src={EmptyAvatar} alt="Background Avatar" />
-                                                        <div style={{top: -10, left: -5}}>
+                                                        <div style={{top: '-9%', left: '-3%', width: '108%'}}>
                                                             <img src={BaseHair} alt="base hair" />
                                                         </div>
                                                     </>
                                                 ): ''}
-                                                {category.value === 'hats' || category.value === 'other' || category.value === 'facialStyle'? (
+                                                {category.value === 'hat' || category.value === 'other' || category.value === 'facialStyle'? (
                                                     <>
                                                         <img src={EmptyAvatar} alt="Background Avatar" />
-                                                        <div style={{top: -10, left: -5}}>
+                                                        <div style={{top: '-9%', left: '-3%', width: '108%'}}>
                                                             <img src={BaseHair} alt="base hair" />
                                                         </div>
-                                                        <div style={{top: 23, left: 23}}>
+                                                        <div style={{top: '31%', left: '25%', width: '53%'}}>
                                                             <img src={BaseExpression} alt="base expression" />
                                                         </div>
                                                     </>
                                                 ): ''}
-                                                {svgFile.content? (
-                                                    <div style={{top: svgFile.top, left: svgFile.left}}>
-                                                        {parse(svgFile.content)}
+                                                {svgFile.svg? (
+                                                    <div style={{top: `${svgFile.top}%`, left: `${svgFile.left}%`, width: `${svgFile.width}%`}}>
+                                                        {parse(svgFile.svg)}
                                                     </div>
                                                 ): ''}
                                             </div>

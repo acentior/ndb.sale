@@ -28,6 +28,7 @@ export default function DressupModal({ isModalOpen, setIsModalOpen, setDressUpAv
         });
         setIsModalOpen(false);
     }
+    // console.log(EmptyAvatar)
     
     return (
         <Modal

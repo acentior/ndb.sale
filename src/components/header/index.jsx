@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-
+import { useSelector } from "react-redux";
 // Libraries
 import { Link } from "gatsby"
 
@@ -15,6 +15,8 @@ import SaleCTA from "./sale-cta"
 
 const Menu = () => {
     const auth = useAuth()
+    const { user } = useSelector(state => state.auth);
+
     // State
     const [isDressUPModalOpen, setIsDressUPModalOpen] = useState(false)
 
@@ -102,6 +104,14 @@ const Menu = () => {
                                 >
                                     faq
                                 </Link>
+                                {user.role && user.role.includes('ROLE_ADMIN') && (<Link
+                                    to={ROUTES.admin}
+                                    className={`${
+                                        window.location.pathname === ROUTES.admin && "txt-green"
+                                    }`}
+                                >
+                                    admin
+                                </Link>)}
                             </>
                         )}
                 </div>

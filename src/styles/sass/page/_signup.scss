@@ -191,9 +191,27 @@
         align-items: center;
         justify-content: center;
         flex-direction: column;
-        .form-control {
+        .mobile-input-field {
+            select {
+                margin-bottom: 0.5rem;
+                width: 120px;
+                margin-right: 10px;
+                -webkit-appearance: auto;
+                /*webkit browsers */
+                -moz-appearance: auto;
+                /*Firefox */
+                appearance: auto;
+            }
             margin-top: 30px;
-            font-size: 18px;
+            font-size: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        button {
+            margin-top: 30px;
+            width: 400px;
+            font-size: 20px;
         }
     }
     .get-code {

@@ -226,6 +226,17 @@
                         .value-label {
                             font-size: 17px;
                             color: #5e5e5e;
+                            .value-label-eye-icon {
+                                width: 22px;
+                                height: 22px;
+                                color: #666666;
+                                margin-left: 10px;
+                                cursor: pointer;
+                                transition: 500ms;
+                                &:hover {
+                                    color: #5e5e5e;
+                                }
+                            }
                         }
                         .value {
                             font-size: 40px;
@@ -358,6 +369,129 @@
                         font-size: 18px;
                         line-height: 22px;
                         padding: 13px 23px;
+                    }
+                }
+            }
+            table {
+                width: 100%;
+                thead,
+                tbody tr {
+                    display: table;
+                    width: 100%;
+                    table-layout: fixed;
+                }
+                thead {
+                    border-bottom: 2px solid #464646;
+                    width: calc(100% - 26px);
+                    th {
+                        padding: 16px 0px;
+                    }
+                }
+                th {
+                    font-size: 16px;
+                    line-height: 20px;
+                    letter-spacing: 0.04em;
+                    color: #8f8f8f;
+                    font-weight: normal;
+                }
+                td {
+                    font-size: 18px;
+                    line-height: 22px;
+                    color: white;
+                }
+                tbody {
+                    @include custom-scroll(250px);
+                    @include mq("tablet", max) {
+                        max-height: 350px;
+                    }
+                    display: block;
+                    tr {
+                        margin-bottom: 23px;
+                        border-bottom: 2px solid #464646;
+                        td {
+                            padding: 16px 0;
+                        }
+                        &:hover {
+                            background-color: #242424;
+                        }
+                    }
+                }
+                .mobile-not {
+                    @include mq("phone", max) {
+                        display: none;
+                    }
+                }
+                .laptop-not {
+                    @include mq("laptop", max) {
+                        display: none;
+                    }
+                }
+            }
+            .coin {
+                &-abbr {
+                    font-weight: 500;
+                    font-size: 18px;
+                    line-height: 22px;
+                    letter-spacing: 0.04em;
+                    color: white;
+                }
+                &-name {
+                    font-weight: 500;
+                    font-size: 15px;
+                    line-height: 18px;
+                    letter-spacing: 0.04em;
+                    color: #959595;
+                }
+                &-price {
+                    font-size: 18px;
+                    line-height: 22px;
+                    color: #ffffff;
+                    text-align: right;
+                }
+                &-percent {
+                    font-size: 13px;
+                    line-height: 18px;
+                    text-align: right;
+                    color: #959595;
+                    margin-top: 3px;
+                }
+                &-status {
+                    position: relative;
+                    text-indent: 16px;
+                    &::before {
+                        content: "";
+                        position: absolute;
+                        width: 9px;
+                        height: 9px;
+                        border-radius: 50%;
+                        top: 50%;
+                        left: 0;
+                        transform: translateY(-50%);
+                    }
+                    &.active {
+                        &::before {
+                            background-color: $green;
+                        }
+                    }
+                    &.deactive {
+                        &::before {
+                            background-color: $red;
+                        }
+                    }
+                }
+                &-reward {
+                    font-weight: 600;
+                    font-size: 16px;
+                    line-height: 20px;
+                    letter-spacing: 0.04em;
+                    color: $green;
+                }
+                &-operations {
+                    display: flex;
+                    justify-content: flex-end;
+                    @include mq("laptop", max) {
+                        flex-direction: column;
+                        align-items: flex-end;
                     }
                 }
             }
@@ -696,5 +830,18 @@
             line-height: 18px;
             padding: 12px 40px;
         }
+    }
+}
+
+.deposit-widthdraw-modal {
+    max-width: 600px;
+    background-color: $black;
+    border: none;
+    .duplicate-icon {
+        width: 24px;
+        height: 24px;
+    }
+    .border-1-white {
+        border: 1px solid white;
     }
 }

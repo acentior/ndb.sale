@@ -70,7 +70,7 @@ main.create-avatar-page {
                         }
                     }
                     div.items_div {
-                        width: 50%;
+                        width: 40%;
                     }
                     div.preview {
                         width: 20%;
@@ -81,8 +81,6 @@ main.create-avatar-page {
                         &_mobile {
                             display: none;
                             img {
-                                width: 100px;
-                                height: 100px;
                                 display: block;
                                 margin: auto;
                             } 
