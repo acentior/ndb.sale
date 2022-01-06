@@ -46,6 +46,9 @@ const Auction = () => {
     const chart1 = useQuery(GET_AUCTION)
     const chart2 = useQuery(GET_ROUND_PERFORMANCE2)
 
+    // if (chart1.loading || chart2.loading) return <div>loading...</div>
+    // if (chart1.error || chart2.error) return <div>Error...</div>
+
     const size = useWindowSize()
 
     const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
@@ -524,33 +527,44 @@ const Auction = () => {
                                 />
                                 <img src={Qmark} alt="question" className="ms-3" />
                             </div>
-                            <p className="select-label">{selectLabel.label}</p>
-                            {selectLabel.value === "round_performance2" && round_perform2 && (
-                                <ReactECharts
-                                    option={{
-                                        tooltip: {
-                                            className: "echarts-tooltip",
-                                        },
-                                        color: ["#23C865", "#8F8F8F", "#FFFFFF"],
-                                        dataset: {
-                                            source: [
-                                                ["Category", "Max", "Min", "Std"],
-                                                ["Round 5", 1.79, 0, 0],
-                                                ["Round 4", 30, 45, 10.606601717798213],
-                                                ["Round 3", 30, 55, 10],
-                                                ["Round 2", 15, 55, 10],
-                                                ["Round 1", 15, 425, 0],
-                                                ["Round 6", 65, 65, 0],
-                                            ],
-                                        },
-                                        xAxis: { type: "category" },
-                                        yAxis: {},
-                                        series: [{ type: "bar" }, { type: "bar" }, { type: "bar" }],
-                                    }}
-                                    style={{ height: "450px", width: "100%" }}
-                                    className="echarts-for-echarts"
-                                />
-                            )}
+                            {/* <p className="select-label">{selectLabel.label}</p> */}
+                            {selectLabel.value === "round_performance2" &&
+                                round_perform2 &&
+                                reser_price &&
+                                sold_price &&
+                                !chart1.loading &&
+                                !chart1.error && (
+                                    <Linechart data={chart1.data} />
+                                    // <ReactECharts
+                                    //     option={{
+                                    //         tooltip: {
+                                    //             className: "echarts-tooltip",
+                                    //         },
+                                    //         color: ["#23C865", "#8F8F8F", "#FFFFFF"],
+                                    //         dataset: {
+                                    //             source: [
+                                    //                 ["Category", "Max", "Min", "Std"],
+                                    //                 ["Round 5", 1.79, 0, 0],
+                                    //                 ["Round 4", 30, 45, 10.606601717798213],
+                                    //                 ["Round 3", 30, 55, 10],
+                                    //                 ["Round 2", 15, 55, 10],
+                                    //                 ["Round 1", 15, 425, 0],
+                                    //                 ["Round 6", 65, 65, 0],
+                                    //             ],
+                                    //         },
+                                    //         xAxis: { type: "category" },
+                                    //         yAxis: {},
+                                    //         series: [{ type: "bar" }, { type: "bar" }, { type: "bar" }],
+                                    //     }}
+                                    //     style={{ height: "450px", width: "100%" }}
+                                    //     className="echarts-for-echarts"
+                                    // />
+                                )}
+                            {selectLabel.value === "round_performance2" &&
+                                round_perform2 &&
+                                performance &&
+                                !chart2.loading &&
+                                !chart2.error && <Candlestick data={chart2.data} />}
                             {selectLabel.value === "round_change" && round_chance && (
                                 <ReactECharts
                                     option={{
