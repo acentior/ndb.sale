@@ -19,11 +19,11 @@ export const FormInput = (props) => {
 }
 
 export const Input = (props) => {
-    const { label, ...others } = props
+    const { label, innerRef, ...others } = props
     return (
         <div className="mb-2 w-100">
             {label && <label className="form-label">{label}</label>}
-            <input className="form-control" {...others} />
+            <input className="form-control" {...others} ref={innerRef} />
         </div>
     )
 }

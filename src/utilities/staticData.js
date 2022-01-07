@@ -1446,3 +1446,9 @@ export const Currencies = [
         symbol: "CHF"
     },
 ]
+
+
+export const TRANSACTION_TYPES = {
+    deposit: "DEPOSIT",
+    withdraw: "WITHDRAW",
+}

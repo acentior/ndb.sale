@@ -10,5 +10,6 @@ export const ROUTES = {
     auction: "/app/auction/",
     home: "/",
     faq: "/faq/",
-    wallet: "/history/"
+    wallet: "/history/",
+    admin: "/admin/"
 }

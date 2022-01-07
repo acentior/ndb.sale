@@ -10,7 +10,6 @@ export const useSigninMutation = () => {
     const [mutation, mutationResults] = useMutation(GraphQL.SIGNIN, {
         retry: 1,
         onCompleted: (data) => {
-            console.log("signin result", data)
             if (data.signin.status === "Failed") {
                 // do something
                 return
@@ -75,7 +74,7 @@ export const useSignIn2FA = () => {
                 return
             } else if (data.confirm2FA.status === "Success") {
                 setAuthToken(data.confirm2FA.token)
-                localStorage.removeItem("USER_DATA")
+                // localStorage.removeItem("USER_DATA")
                 navigate(ROUTES.selectFigure)
             }
         },

@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from "react"
+import { useDispatch } from "react-redux";
 import Header from "../components/header"
 import FigureItem from "../components/FigureItem"
 import { CloseIcon, Trees } from "../utilities/imgImport"
@@ -14,8 +15,10 @@ import { SET_AVATAR } from "../apollo/graghqls/mutations/Auth"
 import { useMutation, useQuery } from "@apollo/client"
 import { GET_USER } from "../apollo/graghqls/querys/Auth"
 import CustomSpinner from "../components/common/custom-spinner"
+import { setCurrentAuthInfo } from "../redux/actions/authAction";
 
 const SelectFigure = () => {
+    const dispatch = useDispatch();
     // Containers
     const [loading, setLoading] = useState(true)
     const [pending, setPending] = useState(false)
@@ -58,12 +61,15 @@ const SelectFigure = () => {
     //Authentication
     useEffect(() => {
         const getUser = userData?.getUser
+        
         if (getUser) {
             setUser(getUser)
+            dispatch(setCurrentAuthInfo(getUser));
+
             if (getUser?.avatar === null) return setLoading(false)
             return navigate(ROUTES.profile)
         }
-    }, [userData])
+    }, [userData, dispatch])
 
     if (loading) return <Loading />
     else

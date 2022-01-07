@@ -176,8 +176,16 @@ div.profile {
     }
     div.image_div {
         position: relative;
+        width: 110px;
         div {
             position: absolute;
+            svg {
+                width: 100%;
+                height: auto;
+            }
+        }
+        img {
+            width: 100%;
         }
     }
 }
