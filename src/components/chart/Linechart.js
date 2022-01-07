@@ -1,55 +1,86 @@
-import React, { useEffect, useState } from "react";
-import { Chart } from "react-google-charts";
+import React, {useState, useEffect} from "react";
+import ReactEcharts from "echarts-for-react"; 
 
-const LineChart = ({data}) => {
-  const options = {
-    // title: "Company Performance",
-    curveType: "function",
-    'width': "100%",
-    'height': "100%",
-    'chartArea': {'width': '85%', 'height': '80%'},
-    // legend: { position: "bottom" },
-    backgroundColor: "none",
-    colors: ["#23C865", "#FFB800"],
-    hAxis: {
-      gridlines: {
-          color: 'transparent'
-      },
-      format: 'short',
-      
-    },
-    vAxis: {
-      format: 'short',
-      gridlines: {
-        color: "#666666",
-      },
-    },
-    legend: "none"
-  };
+const  Linechart = ({data}) => {
+    console.log("data1", data.getAuctions)  
 
-  const [chartdata, setChartdata] = useState([])
-  useEffect(() => {
-    let rdata = []
-    console.log("data", data)
-    data.getAuctions.forEach( (ele) => {
-        rdata.push([ele.totalToken, ele.minPrice * ele.totalToken, ele.minPrice * ele.sold])
-      }
-    )
-    let tmp = rdata.sort((a, b) => {return a[0] - b[0]})
-    tmp.unshift(["total token", "total price", "sold price"])
-    setChartdata(tmp)
-    console.log("rdata111", tmp)
-  }, [])
+    const [total, setTotal] = useState([])
+    const [sold, setSold] = useState([])
+    const [min, setMin] = useState(0)
+    useEffect(() => {
+        let ttotal = []
+        let tsold = []
+        let tmin = data.getAuctions.at(0).totalToken
+        console.log("data", data)
+        data.getAuctions.forEach( (ele) => {
+            if (ele.totalToken < tmin) tmin = ele.totalToken
+            ttotal.push([ele.totalToken, ele.minPrice * ele.totalToken])
+            tsold.push([ele.totalToken, ele.minPrice * ele.sold])
+          }
+        )
+        setTotal(ttotal.sort((a, b) => {return a[0]-b[0]}))
+        setSold(tsold.sort((a, b) => {return a[0]-b[0]}))
+        setMin(tmin)
+        // var tmp = [[],[],[]]
+        // rdata.sort((a, b) => {return a[0] - b[0]}).forEach((ele) => {
+        //     tmp[0].push(ele[0])
+        //     tmp[1].push(ele[1])
+        //     tmp[2].push(ele[2])
+        // })
+        
+        // setChartdata(tmp.slice())
+        // console.log("rdata111", tmp[0])
+    }, [])
 
-  return (
-    <Chart
-      chartType="LineChart"
-      width="100%"
-      height="400px"
-      data={chartdata}
-      options={options}
-    />
-  );
-}
-
-export default LineChart;
+    return <ReactEcharts option={{
+        tooltip: {
+            trigger: 'item',
+            axisPointer: {
+              axis: 'x',
+              type: 'cross',
+              // label: {
+              //   backgroundColor: "#23C865" 
+              // }
+            },
+            triggerTooltip: true,
+          },
+          xAxis: {
+            splitLine : {
+              show: false
+            },
+            min: min
+          },
+          yAxis: 
+          {
+            axisPointer: {
+              label: {
+                backgroundColor: "#23C865" 
+              }
+            },
+          },
+          series: [
+            {
+              type: "line",
+              smooth: true,
+              data: total,
+              color: "#23C865",
+              name: "total",
+              tooltip: {
+                label: {
+                  backgroundColor: "#23C865" 
+                }
+              }
+            },
+            {
+              type: "line",
+              smooth: "true",
+              data: sold,
+              color: "#FFB800",
+              name: "sold"
+            }
+          ]
+    }}
+    width="100%"
+    height="600px" />;
+} 
+export default Linechart;

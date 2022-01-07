@@ -1,64 +1,47 @@
 import React, { useEffect, useState } from "react";
-import { Chart } from "react-google-charts";
-import { SilverCoin } from "../../utilities/imgImport";
-
-
-
-
-// const data = [["day", "a", "b", "c", "d"]]
-
-// jsonData2.data.getRoundPerform2.forEach( ele => {
-//   data.push([ele.roundNumber, ele.min, ele.min+ele.std, ele.max-ele.std,ele.max])
-// })
-
-// console.log(data)
-
-const Candlestick = ({data}) => {
-  const options = {
-    legend: "none",
-    backgroundColor: "none",
-    hAxis: {
-      gridlines: {
-          color: 'transparent',
-      },
-      format: 'short',
-    },
-    vAxis: {
-      format: 'short',
-      
-      gridlines: {
-        color: "#666666",
-      },
-    },
-    'chartArea': {'width': '85%', 'height': '80%'},
-    candlestick: {
-      fallingColor: { strokeWidth: 1, fill: '#E8503A', stroke: '#E8503A' }, // red
-      risingColor: { strokeWidth: 1, fill: '#23C865', stroke:  '#23C865'}   // green
-    },
-  };
-
-  const [chartdata, setChartdata] = useState([])
+import ReactEcharts from "echarts-for-react"; 
+const Candlestick = ({data}) => {  
+  const [chart, setChart] = useState([])
+  const [rnd, setRnd] = useState([])
   useEffect(() => {
-    let rdata = []
-    data.getRoundPerform2.forEach( (ele) => {
-        rdata.push([ele.roundNumber, ele.min, ele.min+ele.std, ele.max-ele.std, ele.max, ele.min + ele.std > ele.max - ele.std ? "#23C865" : "#E8503A"])
+    let trnd = []
+    let rdata = [[], [], [], []]
+    let tmpdata = data.getRoundPerform2.slice()
+    tmpdata.sort((a, b)=> {return a.roundNumber - b.roundNumber}).forEach( (ele) => {
+      if(ele.max > 0) {
+        trnd.push(ele.roundNumber)
+        rdata[0].push(ele.min)
+        rdata[1].push(ele.min+ele.std)
+        rdata[2].push(ele.max-ele.std)
+        rdata[3].push(ele.max)
+      }
       }
     )
-    let tmp = rdata.sort((a, b) => {return a[0] - b[0]})
-    tmp.unshift(["round number", "min", "min+std", "max-std", "max", {role: 'style', type: 'string'}])
-    setChartdata(tmp)
-    // console.log("Candlestick: ", tmp)
+    console.log("chart2", rdata)
+
+    setRnd(trnd)
+    setChart(rdata)
   }, [])
-
-  return (
-    <Chart
-      chartType="CandlestickChart"
-      width="100%"
-      height="400px"
-      data={chartdata}
-      options={options}
-    />
-  );
-}
-
+  const option = {
+    tooltip: {
+      trigger: 'axis',
+      axisPointer: {
+        type: 'line'
+      }
+    },
+    xAxis: {
+      data: rnd
+    },
+    yAxis: {},
+    series: [
+      {
+        type: 'candlestick',
+        data: chart
+      }
+    ]
+  };
+  return (<ReactEcharts option={option} 
+    width="100%"
+    height="600px"/>)
+}; 
 export default Candlestick;
