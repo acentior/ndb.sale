@@ -38,8 +38,9 @@ By using NDB token you will be able to contribute to the development of our tech
 `
 
 const options = [
-    { value: "round_performance2", label: "Round performance" },
+    { value: "round_performance2", label: "Round performance2" },
     { value: "round_change", label: "Round Change" },
+    { value: "round_performance", label: "Round performance" },
 ]
 
 const Auction = () => {
@@ -525,6 +526,7 @@ const Auction = () => {
                                       (place_bid && "d-block")
                             }`}
                         >
+
                             <div className="">
                                 <div className="d-flex ">
                                     <div style={{ width: "430px" }}>
@@ -537,78 +539,117 @@ const Auction = () => {
                                     </div>
                                     <img src={Qmark} alt="question" className="ms-3" />
                                 </div>
-                                <div
-                                    className="d-flex align-items-center"
-                                    style={{
-                                        justifyContent: "space-between",
-                                        paddingTop: "10px",
-                                        width: "430px",
-                                    }}
-                                >
-                                    <button
-                                        className={`btn-small ${reser_price ? "btn-disabled" : ""}`}
-                                        onClick={() => {
-                                            if (!reser_price) {
-                                                setReserPrice(true)
-                                                setSoldPrice(true)
-                                                setPerformance(false)
-                                            }
-                                        }}
+                                {selectLabel.value === "round_performance" && (
+                                    <div
+                                        className="d-flex align-items-center"
                                         style={{
-                                            width: "140px",
+                                            justifyContent: "space-between",
+                                            paddingTop: "10px",
+                                            width: "430px",
                                         }}
                                     >
-                                        Reserved Price
-                                    </button>
-                                    <button
-                                        className={`btn-small ${sold_price ? "btn-disabled" : ""}`}
-                                        onClick={() => {
-                                            if (!sold_price) {
-                                                setReserPrice(true)
-                                                setSoldPrice(true)
-                                                setPerformance(false)
-                                            }
-                                        }}
-                                        style={{
-                                            width: "140px",
-                                        }}
-                                    >
-                                        Price Sold
-                                    </button>
-                                    <button
-                                        className={`btn-small ${performance ? "btn-disabled" : ""}`}
-                                        onClick={() => {
-                                            if (!performance) {
-                                                setReserPrice(false)
-                                                setSoldPrice(false)
-                                                setPerformance(true)
-                                            }
-                                        }}
-                                        style={{
-                                            width: "140px",
-                                        }}
-                                    >
-                                        Performance
-                                    </button>
-                                </div>
+                                        <button
+                                            className={`btn-small ${reser_price ? "btn-disabled" : ""}`}
+                                            onClick={() => {
+                                                if (!reser_price) {
+                                                    setReserPrice(true)
+                                                    setSoldPrice(true)
+                                                    setPerformance(false)
+                                                }
+                                            }}
+                                            style={{
+                                                width: "140px",
+                                            }}
+                                        >
+                                            Reserved Price
+                                        </button>
+                                        <button
+                                            className={`btn-small ${sold_price ? "btn-disabled" : ""}`}
+                                            onClick={() => {
+                                                if (!sold_price) {
+                                                    setReserPrice(true)
+                                                    setSoldPrice(true)
+                                                    setPerformance(false)
+                                                }
+                                            }}
+                                            style={{
+                                                width: "140px",
+                                            }}
+                                        >
+                                            Price Sold
+                                        </button>
+                                        <button
+                                            className={`btn-small ${performance ? "btn-disabled" : ""}`}
+                                            onClick={() => {
+                                                if (!performance) {
+                                                    setReserPrice(false)
+                                                    setSoldPrice(false)
+                                                    setPerformance(true)
+                                                }
+                                            }}
+                                            style={{
+                                                width: "140px",
+                                            }}
+                                        >
+                                            Round Histogram
+                                        </button>
+        
+                                    </div>
+                                )} 
                             </div>
                             {/* <p className="select-label">{selectLabel.label}</p> */}
-                            {selectLabel.value === "round_performance2" &&
-                                round_perform2 &&
+                            {selectLabel.value === "round_performance" &&
                                 reser_price &&
                                 sold_price &&
                                 !chart1.loading &&
                                 !chart1.error && (
-                                    <Linechart data={chart1.data} height="600px"/>
+                                    <Linechart style={{height: "500px"}} height="600px" data={chart1.data} />
                                 )}
-                            {selectLabel.value === "round_performance2" &&
-                                round_perform2 &&
+                            {selectLabel.value === "round_performance" &&
                                 performance &&
                                 !chart2.loading &&
                                 !chart2.error && <Candlestick data={chart2.data} />}
+                            {selectLabel.value === "round_performance2" && round_perform2 && (
+                                <ReactECharts
+                                    option={{
+                                        tooltip: {
+                                            className: "echarts-tooltip",
+                                        },
+                                        color: ["#23C865", "#8F8F8F", "#FFFFFF"],
+                                        dataset: {
+                                            source: [
+                                                ["Category", "Max", "Min", "Std"],
+                                                ["Round 5", 1.79, 0, 0],
+                                                ["Round 4", 30, 45, 10.606601717798213],
+                                                ["Round 3", 30, 55, 10],
+                                                ["Round 2", 15, 55, 10],
+                                                ["Round 1", 15, 425, 0],
+                                                ["Round 6", 65, 65, 0],
+                                            ],
+                                        },
+                                        xAxis: { type: "category" },
+                                        yAxis: {},
+                                        series: [{ type: "bar" }, { type: "bar" }, { type: "bar" }],
+                                    }}
+                                    style={{ height: "450px", width: "100%" }}
+                                    className="echarts-for-echarts"
+                                />
+                            )}
                             {selectLabel.value === "round_change" && round_chance && (
-                                <Candlestick data={chart2.data} height="600px"/>
-
+                                <ReactECharts
+                                    option={{
+                                        tooltip: {},
+                                        color: ["#23C865", "#E8503A"],
+                                        dataset: {
+                                            source: round_chance,
+                                        },
+                                        xAxis: { type: "category" },
+                                        yAxis: {},
+                                        series: [{ type: "bar" }, { type: "bar" }],
+                                    }}
+                                    style={{ height: "450px", width: "100%" }}
+                                    className="echarts-for-echarts"
+                                />
                             )}
                         </div>
                     </div>

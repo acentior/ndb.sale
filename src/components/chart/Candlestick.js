@@ -9,6 +9,7 @@ const Candlestick = ({data}) => {
     let tmpdata = data.getRoundPerform2.slice()
     tmpdata.sort((a, b)=> {return a.roundNumber - b.roundNumber}).forEach( (ele) => {
       if(ele.max > 0) {
+
         trnd.push(ele.roundNumber)
         rdata[0].push(ele.min)
         rdata[1].push(ele.min+ele.std)
@@ -26,8 +27,9 @@ const Candlestick = ({data}) => {
     tooltip: {
       trigger: 'axis',
       axisPointer: {
-        type: 'line'
-      }
+        type: 'line',
+        axis: 'x'
+      },
     },
     xAxis: {
       data: rnd
@@ -40,8 +42,19 @@ const Candlestick = ({data}) => {
       }
     ]
   };
-  return (<ReactEcharts option={option} 
-    width="100%"
-    height="600px"/>)
+  return (
+    <>
+      <div>
+        <li>MIN: </li>
+        <li>MAX: </li>
+        <li>STD: </li>
+        <li>RND: </li>
+      </div>
+      <ReactEcharts option={option}
+        width="100%"
+        height="600px"
+      />
+    </>
+  )
 }; 
 export default Candlestick;

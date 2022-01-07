@@ -34,7 +34,7 @@ const  Linechart = ({data}) => {
 
     return <ReactEcharts option={{
         tooltip: {
-            trigger: 'item',
+            trigger: 'axis',
             axisPointer: {
               axis: 'x',
               type: 'cross',
@@ -65,6 +65,7 @@ const  Linechart = ({data}) => {
               data: total,
               color: "#23C865",
               name: "total",
+              showSymbol: false,
               tooltip: {
                 label: {
                   backgroundColor: "#23C865" 
@@ -76,7 +77,8 @@ const  Linechart = ({data}) => {
               smooth: "true",
               data: sold,
               color: "#FFB800",
-              name: "sold"
+              name: "sold",
+              showSymbol: false,
             }
           ]
     }}
