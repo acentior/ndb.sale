@@ -1,10 +1,16 @@
-import { combineReducers } from 'redux';
-import { authReducer } from './authReducer';
-import { paginationReducer } from './pageReducer';
-import { errorsReducer } from './errorReducer';
-import { searchReducer, sessionsReducer, joinedSessionIdReducer, joinedSessionReducer } from './dataReducer';
-import { countReducer } from './countReducer';
-import { avatarComponentsReducer } from './avatarReducer';
+import { combineReducers } from "redux"
+import { authReducer } from "./authReducer"
+import { paginationReducer } from "./pageReducer"
+import { errorsReducer } from "./errorReducer"
+import {
+    searchReducer,
+    sessionsReducer,
+    joinedSessionIdReducer,
+    joinedSessionReducer,
+} from "./dataReducer"
+import { countReducer } from "./countReducer"
+import { avatarComponentsReducer } from "./avatarReducer"
+import { bidReducer } from "./bidReducer"
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -15,7 +21,8 @@ const rootReducer = combineReducers({
     sessions: sessionsReducer,
     sessionId: joinedSessionIdReducer,
     session: joinedSessionReducer,
-    count: countReducer
-});
+    count: countReducer,
+    placeBid: bidReducer,
+})
 
-export default rootReducer;
+export default rootReducer

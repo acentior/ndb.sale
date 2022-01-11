@@ -1479,3 +1479,9 @@ export const FOO_COINS = [
 
 export const PAYMENT_FRACTION_TOOLTIP_CONTENT =
     "If your bid is the last one to be accepted and there are not enough tokens to fulfil your order, by checking this box you allow us to complete your order with the remaining tokens only."
+
+export const AUCTION_TOOLTIP_CONTENT1 =
+    "You can easily move between rounds to have a more clear understanding about auction statistics."
+
+export const AUCTION_TOOLTIP_CONTENT2 =
+    "Access charts to see more detailed information about NDB token performance"

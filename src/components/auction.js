@@ -1,19 +1,22 @@
 import React, { useReducer, useEffect, useState } from "react"
+import { useDispatch } from "react-redux"
 import { navigate } from "gatsby"
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
 import Slider from "rc-slider"
 import Select from "react-select"
 import Modal from "react-modal"
+import ReactTooltip from "react-tooltip"
 import Header from "./header"
+import BidsChart1 from "./chart/BidsChart1"
+import RoundsChart1 from "./chart/RoundsChart1"
+import RoundsChart2 from "./chart/RoundsChart2"
+import TimeframeBar from "./auction/TimeframeBar"
+import { ROUTES } from "../utilities/routes"
+import BidsChart2 from "./chart/BidsChart2"
+import ChanceChart from "./chart/ChanceChart"
 import { useQuery, useMutation } from "@apollo/client"
-import {
-    numberWithCommas,
-    numberWithLength,
-    getTimeDiffOverall,
-    getDiffOverall,
-    getFormatedDate,
-    isInbetween,
-} from "../utilities/number"
+import { setBidInfo } from "../redux/actions/bidAction"
+
 import { ChartIcon, Qmark, CloseIcon } from "../utilities/imgImport"
 import { useWindowSize } from "../utilities/customHook"
 import { PLACE_BID } from "../apollo/graghqls/mutations/Bid"
@@ -24,18 +27,21 @@ import {
     GET_BID_LIST,
 } from "../apollo/graghqls/querys/Auction"
 import { GET_ROUND_CHANCE, GET_ROUND_PERFORMANCE2 } from "../apollo/graghqls/querys/Statistics"
-import { Currencies } from "../utilities/staticData"
+import {
+    AUCTION_TOOLTIP_CONTENT1,
+    AUCTION_TOOLTIP_CONTENT2,
+    Currencies,
+} from "../utilities/staticData"
+import {
+    numberWithCommas,
+    numberWithLength,
+    getTimeDiffOverall,
+    getDiffOverall,
+    isInbetween,
+} from "../utilities/number"
 import { User } from "../utilities/user-data"
-import BidsChart1 from "./chart/BidsChart1"
-import RoundsChart1 from "./chart/RoundsChart1"
-import RoundsChart2 from "./chart/RoundsChart2"
 
-import TimeframeBar from "./auction/TimeframeBar"
-import { ROUTES } from "../utilities/routes"
-import BidsChart2 from "./chart/BidsChart2"
-import ChanceChart from "./chart/ChanceChart"
-
-const ndb_token = `Since the beginning of NDB's project the vision is to provide clean green technologies to the world. The NDB token is not a security token nor does it represent any shares of NDB SA.
+const ndb_token = `Since the beginning of NDB’s project the vision is to provide clean green technologies to the world. The NDB token is not a security token nor does it represent any shares of NDB SA.
 
 By using NDB token you will be able to contribute to the development of our technologies and our vision. We plan to expand our ecosystem to multiple areas including deep space exploration, sustainable fashion, quantum computing, and more. 
 `
@@ -47,14 +53,14 @@ const options = [
 ]
 
 const Auction = () => {
+    const dispatch = useDispatch()
     const size = useWindowSize()
 
     const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
         tabIndex: 0,
         amount: 1,
         price: 1,
-        total: "",
-        place_bid: true,
+        isBid: false,
         bidModal: false,
         show_chart: false,
         selectLabel: options[0],
@@ -69,7 +75,7 @@ const Auction = () => {
     const [sold_price, setSoldPrice] = useState(true)
     const [performance, setPerformance] = useState(false)
 
-    const { tabIndex, amount, price, place_bid, bidModal, show_chart, selectLabel } = state
+    const { tabIndex, amount, price, isBid, bidModal, show_chart, selectLabel } = state
     const [selectedData, setSelectedData] = useState(1)
     const { data } = useQuery(GET_AUCTION)
 
@@ -148,11 +154,11 @@ const Auction = () => {
     const [PlaceBid] = useMutation(PLACE_BID, {
         onCompleted: (data) => {
             console.log("received Mutation data", data)
-            setState({ place_bid: true })
+            setState({ isBid: true })
         },
         onError: (err) => {
             console.log("received Mutation data", err)
-            setState({ place_bid: true })
+            setState({ isBid: true })
         },
     })
 
@@ -197,81 +203,69 @@ const Auction = () => {
                             show_chart ? "d-none" : "d-block"
                         }`}
                     >
-                        {roundM?.getAuctionByNumber && (
-                            <Tabs
-                                className="round-tab"
-                                selectedIndex={selectedData}
-                                onSelect={(index) => {
-                                    if (index !== selectedData) {
-                                        setState({ price: 0, amount: 0 })
-                                        setSelectedData(index)
-                                    }
-                                }}
-                            >
-                                (
-                                <TabList>
-                                    <Tab>Round {roundL?.getAuctionByNumber?.number}</Tab>
-                                    <Tab>Round {roundM?.getAuctionByNumber?.number}</Tab>
-                                    <Tab>Round {roundH?.getAuctionByNumber?.number}</Tab>
-                                </TabList>
-                                )
-                                <TabPanel>
-                                    Token Available{" "}
-                                    <span className="fw-bold">{fnSelectedRoundData()?.token}</span>
-                                </TabPanel>
-                                <TabPanel>
-                                    Token Available{" "}
-                                    <span className="fw-bold">{fnSelectedRoundData()?.token}</span>
-                                </TabPanel>
-                                <TabPanel>
-                                    Token Available{" "}
-                                    <span className="fw-bold">{fnSelectedRoundData()?.token}</span>
-                                </TabPanel>
-                            </Tabs>
-                        )}
-                        <Tabs
-                            className="statistics-tab"
-                            selectedIndex={tabIndex}
-                            onSelect={(index) => setState({ tabIndex: index })}
-                        >
-                            <TabList>
-                                {fnSelectedRoundData()?.status === 2 ? (
-                                    <>
-                                        <Tab>statistics</Tab>
-                                        <Tab>bids history</Tab>
-                                        <Tab>ndb token</Tab>
-                                    </>
-                                ) : (
-                                    <>
-                                        <Tab>ndb token</Tab>
-                                        <Tab>bids history</Tab>
-                                        <Tab>statistics</Tab>
-                                    </>
+                        <div className="d-flex">
+                            <div className="w-100">
+                                {roundM?.getAuctionByNumber && (
+                                    <Tabs
+                                        className="round-tab"
+                                        selectedIndex={selectedData}
+                                        onSelect={(index) => {
+                                            if (index !== selectedData) {
+                                                setState({ price: 0, amount: 0 })
+                                                setSelectedData(index)
+                                            }
+                                        }}
+                                    >
+                                        <TabList>
+                                            <Tab>Round {roundL?.getAuctionByNumber?.number}</Tab>
+                                            <Tab>Round {roundM?.getAuctionByNumber?.number}</Tab>
+                                            <Tab>Round {roundH?.getAuctionByNumber?.number}</Tab>
+                                        </TabList>
+
+                                        <TabPanel>
+                                            Token Available{" "}
+                                            <span className="fw-bold">
+                                                {fnSelectedRoundData()?.token}
+                                            </span>
+                                        </TabPanel>
+                                        <TabPanel>
+                                            Token Available{" "}
+                                            <span className="fw-bold">
+                                                {fnSelectedRoundData()?.token}
+                                            </span>
+                                        </TabPanel>
+                                        <TabPanel>
+                                            Token Available{" "}
+                                            <span className="fw-bold">
+                                                {fnSelectedRoundData()?.token}
+                                            </span>
+                                        </TabPanel>
+                                    </Tabs>
                                 )}
-                            </TabList>
-                            {fnSelectedRoundData()?.status === 2 ? (
-                                <>
-                                    <TabPanel>
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <th>Date</th>
-                                                    <th>Highest Bid Per Token</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {fnSelectedBidhistoryData()?.map((item, idx) => (
-                                                    <tr key={idx}>
-                                                        <td>{getFormatedDate(item.placedAt)}</td>
-                                                        <td>
-                                                            {item.totalPrice}
-                                                            <span className="txt-green"> $</span>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </TabPanel>
+                                <Tabs
+                                    className="statistics-tab"
+                                    selectedIndex={tabIndex}
+                                    onSelect={(index) => setState({ tabIndex: index })}
+                                >
+                                    <TabList>
+                                        <Tab>bids</Tab>
+                                        <Tab data-for="tooltip2">statistics</Tab>
+                                        <ReactTooltip
+                                            place="right"
+                                            type="light"
+                                            effect="solid"
+                                            id="tooltip2"
+                                        >
+                                            <div
+                                                style={{
+                                                    width: "300px",
+                                                    color: "#000000",
+                                                }}
+                                            >
+                                                {AUCTION_TOOLTIP_CONTENT2}
+                                            </div>
+                                        </ReactTooltip>
+                                    </TabList>
                                     <TabPanel>
                                         <table>
                                             <thead>
@@ -296,110 +290,101 @@ const Auction = () => {
                                     <TabPanel>
                                         <p className="text">{ndb_token}</p>
                                     </TabPanel>
-                                </>
-                            ) : (
-                                <>
-                                    <TabPanel>
-                                        <p className="text">{ndb_token}</p>
-                                    </TabPanel>
-                                    <TabPanel>
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <th>Placement</th>
-                                                    <th>Highest Bid Per Token</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {fnSelectedBidhistoryData()?.map((item, idx) => (
-                                                    <tr key={idx}>
-                                                        <td>{idx + 1}</td>
-                                                        <td>
-                                                            {item.totalPrice}
-                                                            <span className="txt-green"> $</span>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </TabPanel>
-                                    <TabPanel>
-                                        <table>
-                                            <thead>
-                                                <tr>
-                                                    <th>Date</th>
-                                                    <th>Highest Bid Per Token</th>
-                                                </tr>
-                                            </thead>
-                                            <tbody>
-                                                {fnSelectedBidhistoryData()?.map((item, idx) => (
-                                                    <tr key={idx}>
-                                                        <td>{getFormatedDate(item.placedAt)}</td>
-                                                        <td>
-                                                            {item.totalPrice}
-                                                            <span className="txt-green"> $</span>
-                                                        </td>
-                                                    </tr>
-                                                ))}
-                                            </tbody>
-                                        </table>
-                                    </TabPanel>
-                                </>
-                            )}
-                        </Tabs>
-                        {isInbetween(
-                            fnSelectedRoundData()?.startedAt,
-                            fnSelectedRoundData()?.endedAt
-                        ) && <TimeframeBar percentage={percentage} round={fnSelectedRoundData()} />}
-                        <div className="d-flex justify-content-between mt-4">
-                            {fnAverateMinBid() !== 0 ? (
-                                <div>
-                                    <p className="caption">Minimum bid</p>
-                                    <p className="value">
-                                        {fnAverateMinBid()}
-                                        <span className="txt-green"> $</span>{" "}
-                                    </p>
+                                </Tabs>
+                                {isInbetween(
+                                    fnSelectedRoundData()?.startedAt,
+                                    fnSelectedRoundData()?.endedAt
+                                ) && (
+                                    <TimeframeBar
+                                        percentage={percentage}
+                                        round={fnSelectedRoundData()}
+                                    />
+                                )}
+                                <div className="d-flex justify-content-between mt-4">
+                                    {fnAverateMinBid() !== 0 ? (
+                                        <div>
+                                            <p className="caption">Minimum bid</p>
+                                            <p className="value">
+                                                {fnAverateMinBid()}
+                                                <span className="txt-green"> $</span>{" "}
+                                            </p>
+                                        </div>
+                                    ) : (
+                                        <div></div>
+                                    )}
+                                    <div>
+                                        <p className="caption">Available Until</p>
+                                        <p className="value">
+                                            {numberWithLength(
+                                                parseInt(
+                                                    new Date(
+                                                        fnSelectedRoundData()?.endedAt
+                                                    ).getHours()
+                                                )
+                                            )}
+                                            :
+                                            {numberWithLength(
+                                                parseInt(
+                                                    new Date(
+                                                        fnSelectedRoundData()?.endedAt
+                                                    ).getMinutes()
+                                                )
+                                            )}
+                                            :
+                                            {numberWithLength(
+                                                parseInt(
+                                                    new Date(
+                                                        fnSelectedRoundData()?.endedAt
+                                                    ).getSeconds()
+                                                )
+                                            )}
+                                        </p>
+                                    </div>
                                 </div>
-                            ) : (
-                                <div></div>
-                            )}
-                            <div>
-                                <p className="caption">Available Until</p>
-                                <p className="value">
-                                    {numberWithLength(
-                                        parseInt(
-                                            new Date(fnSelectedRoundData()?.endedAt).getHours()
-                                        )
-                                    )}
-                                    :
-                                    {numberWithLength(
-                                        parseInt(
-                                            new Date(fnSelectedRoundData()?.endedAt).getMinutes()
-                                        )
-                                    )}
-                                    :
-                                    {numberWithLength(
-                                        parseInt(
-                                            new Date(fnSelectedRoundData()?.endedAt).getSeconds()
-                                        )
-                                    )}
-                                </p>
+                                {size.width <= 1024 && (
+                                    <div className="text-center my-5">
+                                        <button
+                                            className="btn-primary btn-increase"
+                                            onClick={() => {
+                                                setState({ bidModal: true })
+                                            }}
+                                        >
+                                            {!isBid ? "Place Bid" : "Increase bid"}
+                                        </button>
+                                    </div>
+                                )}
+                            </div>
+                            <div className="d-none d-md-block mt-5">
+                                <ReactTooltip
+                                    place="right"
+                                    type="light"
+                                    effect="solid"
+                                    id="tooltip3"
+                                >
+                                    <div
+                                        style={{
+                                            width: "300px",
+                                            color: "#000000",
+                                        }}
+                                    >
+                                        {AUCTION_TOOLTIP_CONTENT1}
+                                    </div>
+                                </ReactTooltip>
+
+                                <img
+                                    src={Qmark}
+                                    alt="question"
+                                    className="ms-3 d-none d-sm-block"
+                                    data-for="tooltip3"
+                                    data-tip="tooltip3"
+                                    style={{ cursor: "pointer" }}
+                                />
                             </div>
                         </div>
-                        {size.width <= 1024 && (
-                            <div className="text-center my-5">
-                                <button
-                                    className="btn-primary btn-increase"
-                                    onClick={() => setState({ bidModal: true })}
-                                >
-                                    {!place_bid ? "Place Bid" : "Increase bid"}
-                                </button>
-                            </div>
-                        )}
                     </div>
 
                     <div className="auction-right col-lg-8 col-md-7">
-                        <div className={`place-bid ${place_bid && "d-none"}`}>
+                        <div className={`place-bid ${isBid && "d-none"}`}>
                             <h3 className="range-label">amount of token</h3>
                             <div className="d-flex align-items-center mb-4">
                                 <input
@@ -456,10 +441,11 @@ const Auction = () => {
                                     //         cryptoType: "String",
                                     //     },
                                     // })
+                                    dispatch(setBidInfo(price * amount))
                                     navigate(ROUTES.payment)
                                 }}
                             >
-                                {!place_bid ? "Place Bid" : "Increase Bid"}
+                                {!isBid ? "Place Bid" : "Increase Bid"}
                             </button>
                         </div>
                         <div
@@ -469,120 +455,138 @@ const Auction = () => {
                                         ? "d-block"
                                         : "d-none"
                                     : (size.width <= 1024 && size.width > 768 && "d-block") ||
-                                      (place_bid && "d-block")
+                                      (isBid && "d-block")
                             }`}
                         >
-                            <div className="">
-                                <div className="d-flex ">
-                                    <div className="w-100">
+                            <div className="d-flex ">
+                                <div className="w-100">
+                                    <div className="d-flex">
                                         <Select
                                             className="select-chart-type"
                                             options={options}
                                             value={selectLabel}
                                             onChange={(v) => setState({ selectLabel: v })}
                                         />
-                                        {selectLabel.value === "bid_performance" && (
-                                            <div className="d-flex align-items-center pt-3 w-100 ">
-                                                <button
-                                                    className={`btn-small ${
-                                                        pricce ? "btn-disabled" : ""
-                                                    }`}
-                                                    onClick={() => {
-                                                        if (!pricce) {
-                                                            setPrice(true)
-                                                            setVolume(true)
-                                                            setPriceVolume(false)
-                                                        }
-                                                    }}
-                                                >
-                                                    Price
-                                                </button>
-                                                <button
-                                                    className={`btn-small ${
-                                                        volume ? "btn-disabled" : ""
-                                                    }`}
-                                                    onClick={() => {
-                                                        if (!volume) {
-                                                            setPrice(true)
-                                                            setVolume(true)
-                                                            setPriceVolume(false)
-                                                        }
-                                                    }}
-                                                >
-                                                    Volume
-                                                </button>
-                                                <button
-                                                    className={`btn-small ${
-                                                        price_volume ? "btn-disabled" : ""
-                                                    }`}
-                                                    onClick={() => {
-                                                        if (!price_volume) {
-                                                            setPrice(false)
-                                                            setVolume(false)
-                                                            setPriceVolume(true)
-                                                        }
-                                                    }}
-                                                >
-                                                    Price Volume
-                                                </button>
+                                        <ReactTooltip
+                                            place="right"
+                                            type="light"
+                                            effect="solid"
+                                            id="tooltip1"
+                                        >
+                                            <div
+                                                style={{
+                                                    width: "300px",
+                                                    color: "#000000",
+                                                }}
+                                            >
+                                                {AUCTION_TOOLTIP_CONTENT1}
                                             </div>
-                                        )}
-                                        {selectLabel.value === "round_performance" && (
-                                            <div className="d-flex align-items-center pt-3 w-100 ">
-                                                <button
-                                                    className={`btn-small ${
-                                                        reser_price ? "btn-disabled" : ""
-                                                    }`}
-                                                    onClick={() => {
-                                                        if (!reser_price) {
-                                                            setReserPrice(true)
-                                                            setSoldPrice(true)
-                                                            setPerformance(false)
-                                                        }
-                                                    }}
-                                                >
-                                                    Reserved Price
-                                                </button>
-                                                <button
-                                                    className={`btn-small ${
-                                                        sold_price ? "btn-disabled" : ""
-                                                    }`}
-                                                    onClick={() => {
-                                                        if (!sold_price) {
-                                                            setReserPrice(true)
-                                                            setSoldPrice(true)
-                                                            setPerformance(false)
-                                                        }
-                                                    }}
-                                                >
-                                                    Price Sold
-                                                </button>
-                                                <button
-                                                    className={`btn-small ${
-                                                        performance ? "btn-disabled" : ""
-                                                    }`}
-                                                    onClick={() => {
-                                                        if (!performance) {
-                                                            setReserPrice(false)
-                                                            setSoldPrice(false)
-                                                            setPerformance(true)
-                                                        }
-                                                    }}
-                                                >
-                                                    Performance
-                                                </button>
-                                            </div>
-                                        )}
+                                        </ReactTooltip>
+
+                                        <img
+                                            src={Qmark}
+                                            alt="question"
+                                            className="ms-3 d-none d-sm-block"
+                                            data-for="tooltip1"
+                                            data-tip="tooltip1"
+                                            style={{ cursor: "pointer" }}
+                                        />
                                     </div>
 
-                                    <img
-                                        src={Qmark}
-                                        alt="question"
-                                        className="ms-3 d-none d-sm-block"
-                                    />
+                                    {selectLabel.value === "bid_performance" && (
+                                        <div className="d-flex align-items-center pt-3 w-100 ">
+                                            <button
+                                                className={`btn-small ${
+                                                    pricce ? "btn-disabled" : ""
+                                                }`}
+                                                onClick={() => {
+                                                    if (!pricce) {
+                                                        setPrice(true)
+                                                        setVolume(true)
+                                                        setPriceVolume(false)
+                                                    }
+                                                }}
+                                            >
+                                                Price
+                                            </button>
+                                            <button
+                                                className={`btn-small ${
+                                                    volume ? "btn-disabled" : ""
+                                                }`}
+                                                onClick={() => {
+                                                    if (!volume) {
+                                                        setPrice(true)
+                                                        setVolume(true)
+                                                        setPriceVolume(false)
+                                                    }
+                                                }}
+                                            >
+                                                Volume
+                                            </button>
+                                            <button
+                                                className={`btn-small ${
+                                                    price_volume ? "btn-disabled" : ""
+                                                }`}
+                                                onClick={() => {
+                                                    if (!price_volume) {
+                                                        setPrice(false)
+                                                        setVolume(false)
+                                                        setPriceVolume(true)
+                                                    }
+                                                }}
+                                            >
+                                                Price Volume
+                                            </button>
+                                        </div>
+                                    )}
+                                    {selectLabel.value === "round_performance" && (
+                                        <div className="d-flex align-items-center pt-3 w-100 ">
+                                            <button
+                                                className={`btn-small ${
+                                                    reser_price ? "btn-disabled" : ""
+                                                }`}
+                                                onClick={() => {
+                                                    if (!reser_price) {
+                                                        setReserPrice(true)
+                                                        setSoldPrice(true)
+                                                        setPerformance(false)
+                                                    }
+                                                }}
+                                            >
+                                                Reserved Price
+                                            </button>
+                                            <button
+                                                className={`btn-small ${
+                                                    sold_price ? "btn-disabled" : ""
+                                                }`}
+                                                onClick={() => {
+                                                    if (!sold_price) {
+                                                        setReserPrice(true)
+                                                        setSoldPrice(true)
+                                                        setPerformance(false)
+                                                    }
+                                                }}
+                                            >
+                                                Price Sold
+                                            </button>
+                                            <button
+                                                className={`btn-small ${
+                                                    performance ? "btn-disabled" : ""
+                                                }`}
+                                                onClick={() => {
+                                                    if (!performance) {
+                                                        setReserPrice(false)
+                                                        setSoldPrice(false)
+                                                        setPerformance(true)
+                                                    }
+                                                }}
+                                            >
+                                                Performance
+                                            </button>
+                                        </div>
+                                    )}
                                 </div>
                             </div>
-                            {/* <p className="select-label">{selectLabel.label}</p> */}
 
                             {selectLabel.value === "bid_performance" &&
                                 pricce &&
@@ -676,12 +680,13 @@ const Auction = () => {
                     <button
                         className="btn-primary text-uppercase w-100"
                         onClick={() => {
-                            setState({ place_bid: true })
+                            dispatch(setBidInfo(price * amount))
+                            setState({ isBid: true })
                             setState({ bidModal: false })
                             navigate(ROUTES.payment)
                         }}
                     >
-                        {!place_bid ? "Place Bid" : "Increase Bid"}
+                        {!isBid ? "Place Bid" : "Increase Bid"}
                     </button>
                 </div>
                 <div className="tablet-view">
@@ -706,13 +711,13 @@ const Auction = () => {
                     <button
                         className="btn-primary text-uppercase"
                         onClick={() => {
-                            setState({ total: price * amount })
+                            dispatch(setBidInfo(price * amount))
                             setState({ bidModal: false })
-                            setState({ place_bid: true })
+                            setState({ isBid: true })
                             navigate(ROUTES.payment)
                         }}
                     >
-                        {!place_bid ? "Place Bid" : "Increase Bid"}
+                        {!isBid ? "Place Bid" : "Increase Bid"}
                     </button>
                 </div>
             </Modal>

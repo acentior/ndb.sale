@@ -1,7 +1,9 @@
 import React, { useCallback, useReducer, useState } from "react"
-import Header from "../components/header"
+import { useDispatch, useSelector } from "react-redux"
+import ReactTooltip from "react-tooltip"
 import Select, { components } from "react-select"
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
+import Header from "../components/header"
 import { Input, CheckBox } from "../components/common/FormControl"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faQuestionCircle } from "@fortawesome/fontawesome-free-regular"
@@ -9,7 +11,7 @@ import { EditIcon, ETH, BTC, DOGE, QRCode, Copy, CloseIcon } from "../utilities/
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import ConnectWalletTab from "../components/profile/connect-wallet-tab"
 import { FOO_COINS, PAYMENT_FRACTION_TOOLTIP_CONTENT } from "../utilities/staticData"
-import ReactTooltip from "react-tooltip"
+import { setBidInfo } from "../redux/actions/bidAction"
 
 const { Option, SingleValue } = components
 
@@ -65,7 +67,9 @@ const CustomSingleValue = (props) => {
 }
 
 const Payment = () => {
-    const [payAmount, setPayAmount] = useState(50.234)
+    const dispatch = useDispatch()
+    const bidAmount = useSelector((state) => state?.placeBid)
+
     const [fooPayAmount, setFooPayAmount] = useState("")
     const [showEditPayAmountBox, setShowEditPayAmountBox] = useState(false)
     const [currentCoinAddress, setCurrentCoinAddress] = useState(FOO_COINS[0].address)
@@ -134,7 +138,9 @@ const Payment = () => {
                             <TabList>
                                 {payment_types.map((item, index) => (
                                     <Tab
-                                        className={`payment-type__tab-list text-center ${index === 3 && "px-0"}`}
+                                        className={`payment-type__tab-list text-center ${
+                                            index === 3 && "px-0"
+                                        }`}
                                         key={index}
                                     >
                                         {item.label}
@@ -165,7 +171,11 @@ const Payment = () => {
                                                         SingleValue: SelectedValue,
                                                     }}
                                                 />
-                                                <Input type="number" value={payAmount} disabled />
+                                                <Input
+                                                    type="number"
+                                                    value={bidAmount.place_bid}
+                                                    disabled
+                                                />
                                             </div>
                                             {!getAddress ? (
                                                 <button
@@ -367,7 +377,7 @@ const Payment = () => {
                                             <input
                                                 type="number"
                                                 className="form-control"
-                                                value={payAmount}
+                                                value={bidAmount.place_bid}
                                                 disabled
                                             />
                                         </div>
@@ -464,9 +474,11 @@ const Payment = () => {
                                     alt="edit"
                                     className="ms-3 cursor-pointer"
                                     onClick={() => setShowEditPayAmountBox(!showEditPayAmountBox)}
+                                    onKeyDown={() => setShowEditPayAmountBox(!showEditPayAmountBox)}
+                                    role="presentation"
                                 />
                             </div>
-                            <p className="amount">
+                            <div className="amount">
                                 {showEditPayAmountBox && (
                                     <div className="my-2">
                                         <input
@@ -476,19 +488,24 @@ const Payment = () => {
                                             value={fooPayAmount}
                                         />
                                         <div
-                                            class="btn text-decoration-underline text-uppercase rounded-0 py-2 px-4 ms-2 fw-bold text-light"
+                                            className="btn text-decoration-underline text-uppercase rounded-0 py-2 px-4 ms-2 fw-bold text-light"
                                             onClick={() => {
-                                                setPayAmount(fooPayAmount)
+                                                dispatch(setBidInfo(fooPayAmount))
                                                 setShowEditPayAmountBox(!showEditPayAmountBox)
                                             }}
+                                            onKeyDown={() => {
+                                                dispatch(setBidInfo(fooPayAmount))
+                                                setShowEditPayAmountBox(!showEditPayAmountBox)
+                                            }}
+                                            role="presentation"
                                         >
                                             save
                                         </div>
                                     </div>
                                 )}
-                                {payAmount}
-                                <span>ETH</span>
-                            </p>
+                                {bidAmount.place_bid}
+                                <span> ETH</span>
+                            </div>
                         </div>
                         <p className="payment-expire">
                             payment expires in

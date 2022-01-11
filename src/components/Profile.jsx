@@ -50,7 +50,9 @@ const Profile = () => {
                 if (user_data.getUser)
                     if (user_data.getUser.avatarPrefix && user_data.getUser.avatarName)
                         return setLoadingPage(false)
-                    else return navigate(ROUTES.selectFigure)
+                    //DO NOT REMOVE THIS COMMENT.
+                    // else return navigate(ROUTES.selectFigure)
+                    else return setLoadingPage(false)
     }, [user_data])
     if (loadingPage) return <Loading />
     else
