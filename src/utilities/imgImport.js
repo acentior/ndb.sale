@@ -162,6 +162,7 @@ import baseHair from "./../images/dressup/customizeAvatar/hair.svg"
 
 import ndbToken from "../images/ndb-token.svg"
 import walletQRCode from "../images/wallet-qr-code.svg"
+import destinationWallet from "../images/destination-wallet.svg"
 
 export const Logo = logo
 export const Bell = bell
@@ -324,3 +325,4 @@ export const BaseHair = baseHair
 
 export const NdbToken = ndbToken
 export const WalletQRCode = walletQRCode
+export const DestinationWallet = destinationWallet

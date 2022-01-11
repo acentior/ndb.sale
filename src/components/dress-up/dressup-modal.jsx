@@ -1,13 +1,25 @@
-import React, { useState } from "react"
+import React, { useState } from "react";
+import { useSelector } from "react-redux";
 import Modal from "react-modal"
+import svgToDataURL from 'svg-to-dataurl';
 import parse from 'html-react-parser'
 import styled from "styled-components"
-import { DressupData } from "../../../utilities/dressup-data"
-import { CloseIcon, EmptyAvatar } from "../../../utilities/imgImport"
+import { DressupData } from "../../utilities/dressup-data"
+import { CloseIcon, EmptyAvatar } from "../../utilities/imgImport"
 import DressupHorizontalList from "./dressup-horizontal-list"
-import { hairStyles, facialStyles, expressions, hats, others, hairColors } from './dressup-data';
+import { hairColors } from './dressup-data';
 
-export default function DressupModal({ isModalOpen, setIsModalOpen, setDressUpAvatarItems }) {
+
+export default function DressupModal({ isModalOpen, setIsModalOpen, setDressUpAvatarItems}) {
+    const avatarComponents = useSelector(state => state.avatarComponents);
+    let { loaded, hairStyles, facialStyles, expressions, hats, others } = avatarComponents;
+    // Convert the mapKey Object to the array.
+    hairStyles = Object.values(hairStyles);
+    facialStyles = Object.values(facialStyles);
+    expressions = Object.values(expressions);
+    hats = Object.values(hats);
+    others = Object.values(others);
+
     const [selectedHairStyle, setSelectedHairStyle] = useState(0)
     const [selectedHairColor, setSelectedHairColor] = useState(0)
     const [selectedFacialStyle, setSelectedFacialStyle] = useState(0)
@@ -19,16 +31,15 @@ export default function DressupModal({ isModalOpen, setIsModalOpen, setDressUpAv
 
     const saveAvatarItems = () => {
         setDressUpAvatarItems({
-            hair: selectedHairStyle,
-            hairColor: selectedHairColor,
-            facialStyle: selectedFacialStyle,
-            expression: selectedExpression,
-            hat: selectedHat,
-            other: selectedOther
+            hairStyle: hairStyles[selectedHairStyle].compId,
+            facialStyle: facialStyles[selectedFacialStyle].compId,
+            expression: expressions[selectedExpression].compId,
+            hat: hats[selectedHat].compId,
+            other: others[selectedOther].compId,
+            hairColor: hairColors[selectedHairColor]
         });
         setIsModalOpen(false);
     }
-    // console.log(EmptyAvatar)
     
     return (
         <Modal
@@ -56,31 +67,34 @@ export default function DressupModal({ isModalOpen, setIsModalOpen, setDressUpAv
                     />
                 </div>
             </div>
+            
             <div className="row m-0 py-4 text-white">
-                <div className="col-4">
+                <div className="col-sm-4">
                     <div className="row">
                         <div className="profile">
                             <div className="image_div">
                                 <img src={EmptyAvatar} alt="back" />
-                                <Hair hairColor={hairColors[selectedHairColor].content} style={{top: hairStyles[selectedHairStyle].top, left: hairStyles[selectedHairStyle].left}}>
-                                    {parse(hairStyles[selectedHairStyle].content)}
-                                </Hair>
-                                <div style={{top: expressions[selectedExpression].top, left: expressions[selectedExpression].left}}>
-                                    {parse(expressions[selectedExpression].content)}
-                                </div>
-                                <div style={{top: facialStyles[selectedFacialStyle].top, left: facialStyles[selectedFacialStyle].left}}>
-                                    {parse(facialStyles[selectedFacialStyle].content)}
-                                </div>
-                                <div style={{top: hats[selectedHat].top, left: hats[selectedHat].left}}>
-                                    {parse(hats[selectedHat].content)}
-                                </div>
-                                <div style={{top: others[selectedOther].top, left: others[selectedOther].left}}>
-                                    {parse(others[selectedOther].content)}
-                                </div>
+                                {loaded && (<>
+                                    <Hair hairColor={hairColors[selectedHairColor]} style={{top: `${hairStyles[selectedHairStyle].top}%`, left: `${hairStyles[selectedHairStyle].left}%`, width: `${hairStyles[selectedHairStyle].width}%`}}>
+                                        {parse(hairStyles[selectedHairStyle].svg)}
+                                    </Hair>
+                                    <div style={{top: `${expressions[selectedExpression].top}%`, left: `${expressions[selectedExpression].left}%`, width: `${expressions[selectedExpression].width}%`}}>
+                                        {parse(expressions[selectedExpression].svg)}
+                                    </div>
+                                    <div style={{top: `${facialStyles[selectedFacialStyle].top}%`, left: `${facialStyles[selectedFacialStyle].left}%`, width: `${facialStyles[selectedFacialStyle].width}%`}}>
+                                        {parse(facialStyles[selectedFacialStyle].svg)}
+                                    </div>
+                                    <div style={{top: `${hats[selectedHat].top}%`, left: `${hats[selectedHat].left}%`, width: `${hats[selectedHat].width}%`}}>
+                                        {parse(hats[selectedHat].svg)}
+                                    </div>
+                                    <div style={{top: `${others[selectedOther].top}%`, left: `${others[selectedOther].left}%`, width: `${others[selectedOther].width}%`}}>
+                                        {parse(others[selectedOther].svg)}
+                                    </div>
+                                </>)}
                             </div>
                         </div>
 
-                        <span className="text-center dress-up-modal-avatar-name mt-3">Tesla</span>
+                        {/* <span className="text-center dress-up-modal-avatar-name mt-3">Tesla</span> */}
                         <div className="dress-up-modal-sections-list">
                             {DressupData.tabs.map((item) => (
                                 <div
@@ -97,8 +111,8 @@ export default function DressupModal({ isModalOpen, setIsModalOpen, setDressUpAv
                         <div className="btn-save" onClick={saveAvatarItems}>save</div>
                     </div>
                 </div>
-                <div className="col-8 border-start px-5 py-3">
-                    {selectedTab === 0 && (
+                <div className="col-sm-8 components">
+                    {loaded && selectedTab === 0 && (
                         <div className="dress-up-modal-hair-section">
                             <DressupHorizontalList
                                 topic="hairStyles"
@@ -112,6 +126,7 @@ export default function DressupModal({ isModalOpen, setIsModalOpen, setDressUpAv
                                 topic="hairColors"
                                 title={"hair color"}
                                 hairStyle={selectedHairStyle}
+                                hairStyles={hairStyles}
                                 list={hairColors}
                                 selectedItem={selectedHairColor}
                                 setSelectedItem={setSelectedHairColor}
@@ -119,7 +134,7 @@ export default function DressupModal({ isModalOpen, setIsModalOpen, setDressUpAv
                             />
                         </div>
                     )}
-                    {selectedTab === 1 && (
+                    {loaded && selectedTab === 1 && (
                         <div className="dress-up-modal-hair-section">
                             <DressupHorizontalList
                                 topic="facialStyles"
@@ -139,7 +154,7 @@ export default function DressupModal({ isModalOpen, setIsModalOpen, setDressUpAv
                             />
                         </div>
                     )}
-                    {selectedTab === 2 && (
+                    {loaded && selectedTab === 2 && (
                         <div className="dress-up-modal-hair-section">
                             <DressupHorizontalList
                                 topic="hats"

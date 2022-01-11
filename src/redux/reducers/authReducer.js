@@ -1,3 +1,5 @@
+import { LOGIN_SUCCESS } from "../actionTypes";
+
 const initailState = {
   isAuthenticated: false,
   user: {}
@@ -5,7 +7,7 @@ const initailState = {
 
 export const authReducer = (state = initailState, action) => {
   switch(action.type) {
-    case 'LOGIN_SUCCESS':
+    case LOGIN_SUCCESS:
       return { ...state, ...action.payload};
     case 'LOGOUT_USER':
       return { ...state, ...initailState };

@@ -127,6 +127,7 @@ const SingupPage = () => {
                             Agree to{" "}
                             <a
                                 target="_blank"
+                                rel="noreferrer"
                                 href={termsAndConditionsFile}
                                 className="text-info terms-link"
                             >

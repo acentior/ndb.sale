@@ -1,9 +1,9 @@
 import React, { useReducer, useEffect, useState } from "react"
+import { navigate } from "gatsby"
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
 import Slider from "rc-slider"
 import Select from "react-select"
 import Modal from "react-modal"
-import ReactECharts from "echarts-for-react"
 import Header from "./header"
 import { useQuery, useMutation } from "@apollo/client"
 import {
@@ -21,16 +21,19 @@ import {
     GET_AUCTION,
     GET_AUCTION_BY_NUMBER,
     GET_BIDLIST_BY_ROUND,
+    GET_BID_LIST,
 } from "../apollo/graghqls/querys/Auction"
 import { GET_ROUND_CHANCE, GET_ROUND_PERFORMANCE2 } from "../apollo/graghqls/querys/Statistics"
 import { Currencies } from "../utilities/staticData"
 import { User } from "../utilities/user-data"
-import Linechart from "./chart/Linechart"
-import Candlestick from "./chart/Candlestick"
+import BidsChart1 from "./chart/BidsChart1"
+import RoundsChart1 from "./chart/RoundsChart1"
+import RoundsChart2 from "./chart/RoundsChart2"
 
-// for test
-// import chart1 from '../../test_data/chart1.json'
-// import chart2 from '../../test_data/chart2.json'
+import TimeframeBar from "./auction/TimeframeBar"
+import { ROUTES } from "../utilities/routes"
+import BidsChart2 from "./chart/BidsChart2"
+import ChanceChart from "./chart/ChanceChart"
 
 const ndb_token = `Since the beginning of NDB's project the vision is to provide clean green technologies to the world. The NDB token is not a security token nor does it represent any shares of NDB SA.
 
@@ -38,19 +41,12 @@ By using NDB token you will be able to contribute to the development of our tech
 `
 
 const options = [
-    { value: "round_performance2", label: "Round performance2" },
-    { value: "round_change", label: "Round Change" },
-    { value: "round_performance", label: "Round performance" },
+    { value: "bid_performance", label: "BIDS PERFORMANCE" },
+    { value: "round_performance", label: "ROUNDS PERFORMANCE" },
+    { value: "round_chance", label: "CHANCE" },
 ]
 
 const Auction = () => {
-    const chart1 = useQuery(GET_AUCTION)
-    const chart2 = useQuery(GET_ROUND_PERFORMANCE2)
-
-    console.log("chart1", chart1.data)
-    // if (chart1.loading || chart2.loading) return <div>loading...</div>
-    // if (chart1.error || chart2.error) return <div>Error...</div>
-
     const size = useWindowSize()
 
     const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
@@ -58,13 +54,17 @@ const Auction = () => {
         amount: 1,
         price: 1,
         total: "",
-        place_bid: false,
+        place_bid: true,
         bidModal: false,
         show_chart: false,
         selectLabel: options[0],
     })
 
     // set chart type
+    const [pricce, setPrice] = useState(true)
+    const [volume, setVolume] = useState(true)
+    const [price_volume, setPriceVolume] = useState(false)
+
     const [reser_price, setReserPrice] = useState(true)
     const [sold_price, setSoldPrice] = useState(true)
     const [performance, setPerformance] = useState(false)
@@ -99,21 +99,11 @@ const Auction = () => {
         variables: { round: roundData && roundData[0]?.number - 1 },
     })
 
-    // get round performance 2
-    const { data: roundPerformance2 } = useQuery(GET_ROUND_PERFORMANCE2)
-    const { data: roundChance } = useQuery(GET_ROUND_CHANCE)
-    let round_perform2 = roundPerformance2?.getRoundPerform2.map((item) => {
-        let newArr = []
-        newArr.push("Round " + item.roundNumber, item.min, item.max, item.std)
-        return newArr
-    })
-    let round_chance = roundChance?.getRoundChance.map((item) => {
-        let newArr = []
-        newArr.push("Round " + item.roundNumber, item.winRate, item.failedRate)
-        return newArr
-    })
-    round_chance?.unshift(["Category", "Win Rate", "Failed Rate"])
-    round_perform2?.unshift(["Category", "Max", "Min", "Std"])
+    // get chart data
+    const round_chance = useQuery(GET_ROUND_CHANCE)
+    const round_perform1 = useQuery(GET_AUCTION)
+    const round_perform2 = useQuery(GET_ROUND_PERFORMANCE2)
+    const bid_perform = useQuery(GET_BID_LIST)
 
     const fnSelectedRoundData = () =>
         selectedData === 0
@@ -360,51 +350,7 @@ const Auction = () => {
                         {isInbetween(
                             fnSelectedRoundData()?.startedAt,
                             fnSelectedRoundData()?.endedAt
-                        ) && (
-                            <div className="timeframe-bar">
-                                <div
-                                    className="timeleft"
-                                    style={{
-                                        width:
-                                            (percentage > 0 && percentage < 101 ? percentage : 0) +
-                                            "%",
-                                        background: "#464646",
-                                    }}
-                                >
-                                    <div className="timeleft__value">
-                                        {numberWithLength(
-                                            parseInt(
-                                                getTimeDiffOverall(
-                                                    fnSelectedRoundData()?.startedAt,
-                                                    fnSelectedRoundData()?.endedAt
-                                                ) /
-                                                    (60 * 60)
-                                            )
-                                        )}
-                                        :
-                                        {numberWithLength(
-                                            parseInt(
-                                                (getTimeDiffOverall(
-                                                    fnSelectedRoundData()?.startedAt,
-                                                    fnSelectedRoundData()?.endedAt
-                                                ) %
-                                                    (60 * 60)) /
-                                                    60
-                                            )
-                                        )}
-                                        :
-                                        {numberWithLength(
-                                            parseInt(
-                                                getTimeDiffOverall(
-                                                    fnSelectedRoundData()?.startedAt,
-                                                    fnSelectedRoundData()?.endedAt
-                                                ) % 60
-                                            )
-                                        )}
-                                    </div>
-                                </div>
-                            </div>
-                        )}
+                        ) && <TimeframeBar percentage={percentage} round={fnSelectedRoundData()} />}
                         <div className="d-flex justify-content-between mt-4">
                             {fnAverateMinBid() !== 0 ? (
                                 <div>
@@ -419,7 +365,6 @@ const Auction = () => {
                             )}
                             <div>
                                 <p className="caption">Available Until</p>
-
                                 <p className="value">
                                     {numberWithLength(
                                         parseInt(
@@ -441,7 +386,7 @@ const Auction = () => {
                                 </p>
                             </div>
                         </div>
-                        {place_bid && (
+                        {size.width <= 1024 && (
                             <div className="text-center my-5">
                                 <button
                                     className="btn-primary btn-increase"
@@ -467,7 +412,7 @@ const Auction = () => {
                                     value={amount}
                                     onChange={(value) => setState({ amount: value })}
                                     min={1}
-                                    max={fnSelectedRoundData()?.totalToken}
+                                    max={fnSelectedRoundData()?.token}
                                     step={1}
                                 />
                             </div>
@@ -502,15 +447,16 @@ const Auction = () => {
                             <button
                                 className="btn-primary text-uppercase w-100"
                                 onClick={() => {
-                                    PlaceBid({
-                                        variables: {
-                                            roundId: fnSelectedRoundData()?.auctionId,
-                                            tokenAmount: amount,
-                                            tokenPrice: price,
-                                            payment: 1,
-                                            cryptoType: "String",
-                                        },
-                                    })
+                                    // PlaceBid({
+                                    //     variables: {
+                                    //         roundId: fnSelectedRoundData()?.auctionId,
+                                    //         tokenAmount: amount,
+                                    //         tokenPrice: price,
+                                    //         payment: 1,
+                                    //         cryptoType: "String",
+                                    //     },
+                                    // })
+                                    navigate(ROUTES.payment)
                                 }}
                             >
                                 {!place_bid ? "Place Bid" : "Increase Bid"}
@@ -526,131 +472,144 @@ const Auction = () => {
                                       (place_bid && "d-block")
                             }`}
                         >
-
                             <div className="">
                                 <div className="d-flex ">
-                                    <div style={{ width: "430px" }}>
+                                    <div className="w-100">
                                         <Select
-                                            className=""
+                                            className="select-chart-type"
                                             options={options}
                                             value={selectLabel}
                                             onChange={(v) => setState({ selectLabel: v })}
                                         />
+                                        {selectLabel.value === "bid_performance" && (
+                                            <div className="d-flex align-items-center pt-3 w-100 ">
+                                                <button
+                                                    className={`btn-small ${
+                                                        pricce ? "btn-disabled" : ""
+                                                    }`}
+                                                    onClick={() => {
+                                                        if (!pricce) {
+                                                            setPrice(true)
+                                                            setVolume(true)
+                                                            setPriceVolume(false)
+                                                        }
+                                                    }}
+                                                >
+                                                    Price
+                                                </button>
+                                                <button
+                                                    className={`btn-small ${
+                                                        volume ? "btn-disabled" : ""
+                                                    }`}
+                                                    onClick={() => {
+                                                        if (!volume) {
+                                                            setPrice(true)
+                                                            setVolume(true)
+                                                            setPriceVolume(false)
+                                                        }
+                                                    }}
+                                                >
+                                                    Volume
+                                                </button>
+                                                <button
+                                                    className={`btn-small ${
+                                                        price_volume ? "btn-disabled" : ""
+                                                    }`}
+                                                    onClick={() => {
+                                                        if (!price_volume) {
+                                                            setPrice(false)
+                                                            setVolume(false)
+                                                            setPriceVolume(true)
+                                                        }
+                                                    }}
+                                                >
+                                                    Price Volume
+                                                </button>
+                                            </div>
+                                        )}
+                                        {selectLabel.value === "round_performance" && (
+                                            <div className="d-flex align-items-center pt-3 w-100 ">
+                                                <button
+                                                    className={`btn-small ${
+                                                        reser_price ? "btn-disabled" : ""
+                                                    }`}
+                                                    onClick={() => {
+                                                        if (!reser_price) {
+                                                            setReserPrice(true)
+                                                            setSoldPrice(true)
+                                                            setPerformance(false)
+                                                        }
+                                                    }}
+                                                >
+                                                    Reserved Price
+                                                </button>
+                                                <button
+                                                    className={`btn-small ${
+                                                        sold_price ? "btn-disabled" : ""
+                                                    }`}
+                                                    onClick={() => {
+                                                        if (!sold_price) {
+                                                            setReserPrice(true)
+                                                            setSoldPrice(true)
+                                                            setPerformance(false)
+                                                        }
+                                                    }}
+                                                >
+                                                    Price Sold
+                                                </button>
+                                                <button
+                                                    className={`btn-small ${
+                                                        performance ? "btn-disabled" : ""
+                                                    }`}
+                                                    onClick={() => {
+                                                        if (!performance) {
+                                                            setReserPrice(false)
+                                                            setSoldPrice(false)
+                                                            setPerformance(true)
+                                                        }
+                                                    }}
+                                                >
+                                                    Performance
+                                                </button>
+                                            </div>
+                                        )}
                                     </div>
-                                    <img src={Qmark} alt="question" className="ms-3" />
+
+                                    <img
+                                        src={Qmark}
+                                        alt="question"
+                                        className="ms-3 d-none d-sm-block"
+                                    />
                                 </div>
-                                {selectLabel.value === "round_performance" && (
-                                    <div
-                                        className="d-flex align-items-center"
-                                        style={{
-                                            justifyContent: "space-between",
-                                            paddingTop: "10px",
-                                            width: "430px",
-                                        }}
-                                    >
-                                        <button
-                                            className={`btn-small ${reser_price ? "btn-disabled" : ""}`}
-                                            onClick={() => {
-                                                if (!reser_price) {
-                                                    setReserPrice(true)
-                                                    setSoldPrice(true)
-                                                    setPerformance(false)
-                                                }
-                                            }}
-                                            style={{
-                                                width: "140px",
-                                            }}
-                                        >
-                                            Reserved Price
-                                        </button>
-                                        <button
-                                            className={`btn-small ${sold_price ? "btn-disabled" : ""}`}
-                                            onClick={() => {
-                                                if (!sold_price) {
-                                                    setReserPrice(true)
-                                                    setSoldPrice(true)
-                                                    setPerformance(false)
-                                                }
-                                            }}
-                                            style={{
-                                                width: "140px",
-                                            }}
-                                        >
-                                            Price Sold
-                                        </button>
-                                        <button
-                                            className={`btn-small ${performance ? "btn-disabled" : ""}`}
-                                            onClick={() => {
-                                                if (!performance) {
-                                                    setReserPrice(false)
-                                                    setSoldPrice(false)
-                                                    setPerformance(true)
-                                                }
-                                            }}
-                                            style={{
-                                                width: "140px",
-                                            }}
-                                        >
-                                            Round Histogram
-                                        </button>
-        
-                                    </div>
-                                )} 
                             </div>
                             {/* <p className="select-label">{selectLabel.label}</p> */}
+
+                            {selectLabel.value === "bid_performance" &&
+                                pricce &&
+                                volume &&
+                                !bid_perform.loading &&
+                                !bid_perform.error && <BidsChart1 data={bid_perform?.data} />}
+                            {selectLabel.value === "bid_performance" &&
+                                price_volume &&
+                                !bid_perform.loading &&
+                                !bid_perform.error && <BidsChart2 data={bid_perform?.data} />}
+
                             {selectLabel.value === "round_performance" &&
                                 reser_price &&
                                 sold_price &&
-                                !chart1.loading &&
-                                !chart1.error && (
-                                    <Linechart style={{height: "500px"}} height="600px" data={chart1.data} />
+                                !round_perform1.loading &&
+                                !round_perform1.error && (
+                                    <RoundsChart1 data={round_perform1?.data} />
                                 )}
                             {selectLabel.value === "round_performance" &&
                                 performance &&
-                                !chart2.loading &&
-                                !chart2.error && <Candlestick data={chart2.data} />}
-                            {selectLabel.value === "round_performance2" && round_perform2 && (
-                                <ReactECharts
-                                    option={{
-                                        tooltip: {
-                                            className: "echarts-tooltip",
-                                        },
-                                        color: ["#23C865", "#8F8F8F", "#FFFFFF"],
-                                        dataset: {
-                                            source: [
-                                                ["Category", "Max", "Min", "Std"],
-                                                ["Round 5", 1.79, 0, 0],
-                                                ["Round 4", 30, 45, 10.606601717798213],
-                                                ["Round 3", 30, 55, 10],
-                                                ["Round 2", 15, 55, 10],
-                                                ["Round 1", 15, 425, 0],
-                                                ["Round 6", 65, 65, 0],
-                                            ],
-                                        },
-                                        xAxis: { type: "category" },
-                                        yAxis: {},
-                                        series: [{ type: "bar" }, { type: "bar" }, { type: "bar" }],
-                                    }}
-                                    style={{ height: "450px", width: "100%" }}
-                                    className="echarts-for-echarts"
-                                />
-                            )}
-                            {selectLabel.value === "round_change" && round_chance && (
-                                <ReactECharts
-                                    option={{
-                                        tooltip: {},
-                                        color: ["#23C865", "#E8503A"],
-                                        dataset: {
-                                            source: round_chance,
-                                        },
-                                        xAxis: { type: "category" },
-                                        yAxis: {},
-                                        series: [{ type: "bar" }, { type: "bar" }],
-                                    }}
-                                    style={{ height: "450px", width: "100%" }}
-                                    className="echarts-for-echarts"
-                                />
-                            )}
+                                !round_perform2.loading &&
+                                !round_perform2.error && (
+                                    <RoundsChart2 data={round_perform2?.data} />
+                                )}
+                            {selectLabel.value === "round_chance" &&
+                                !round_chance.loading &&
+                                !round_chance.error && <ChanceChart data={round_chance?.data} />}
                         </div>
                     </div>
                 </div>
@@ -684,9 +643,9 @@ const Auction = () => {
                         <Slider
                             value={amount}
                             onChange={(value) => setState({ amount: value })}
-                            min={0}
-                            max={10000}
-                            step={100}
+                            min={1}
+                            max={fnSelectedRoundData()?.token}
+                            step={1}
                         />
                     </div>
                     <h3 className="range-label">Per token price</h3>
@@ -700,7 +659,7 @@ const Auction = () => {
                         <Slider
                             value={price}
                             onChange={(value) => setState({ price: value })}
-                            min={0}
+                            min={fnSelectedRoundData()?.minPrice}
                             max={10000}
                             step={100}
                         />
@@ -719,6 +678,7 @@ const Auction = () => {
                         onClick={() => {
                             setState({ place_bid: true })
                             setState({ bidModal: false })
+                            navigate(ROUTES.payment)
                         }}
                     >
                         {!place_bid ? "Place Bid" : "Increase Bid"}
@@ -749,6 +709,7 @@ const Auction = () => {
                             setState({ total: price * amount })
                             setState({ bidModal: false })
                             setState({ place_bid: true })
+                            navigate(ROUTES.payment)
                         }}
                     >
                         {!place_bid ? "Place Bid" : "Increase Bid"}

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react"
-import { useSelector } from "react-redux";
+import { useSelector, useDispatch } from "react-redux"
 // Libraries
 import { Link } from "gatsby"
 
@@ -12,10 +12,17 @@ import DressupModal from "../dressup/dressup-modal"
 import { ROUTES } from "../../utilities/routes"
 import CurrencyChoice from "./currency-choice"
 import SaleCTA from "./sale-cta"
+import { fetch_Avatar_Components } from './../../redux/actions/avatarAction';
 
 const Menu = () => {
+    const dispatch = useDispatch();
+    // Fetch avatarComponents Data from backend    
+    useEffect(() => {
+        dispatch(fetch_Avatar_Components());
+    }, [dispatch]);
+
     const auth = useAuth()
-    const { user } = useSelector(state => state.auth);
+    const { user } = useSelector((state) => state.auth)
 
     // State
     const [isDressUPModalOpen, setIsDressUPModalOpen] = useState(false)
@@ -104,14 +111,16 @@ const Menu = () => {
                                 >
                                     faq
                                 </Link>
-                                {user.role && user.role.includes('ROLE_ADMIN') && (<Link
-                                    to={ROUTES.admin}
-                                    className={`${
-                                        window.location.pathname === ROUTES.admin && "txt-green"
-                                    }`}
-                                >
-                                    admin
-                                </Link>)}
+                                {user.role && user.role.includes("ROLE_ADMIN") && (
+                                    <Link
+                                        to={ROUTES.admin}
+                                        className={`${
+                                            window.location.pathname === ROUTES.admin && "txt-green"
+                                        }`}
+                                    >
+                                        admin
+                                    </Link>
+                                )}
                             </>
                         )}
                 </div>
@@ -126,11 +135,11 @@ const Menu = () => {
                                 Sign In
                             </Link>
                         ) : (
-                            <ul className="d-flex">
-                                <li className="d-flex">
+                            <ul className="d-flex align-items-center">
+                                <li className="">
                                     <img src={Bell} alt="Bell Icon" />
                                 </li>
-                                <li className="px-4">
+                                <li className="px-3">
                                     <Link to={ROUTES.profile}>
                                         <img
                                             src={User.avatar}

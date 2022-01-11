@@ -21,17 +21,20 @@ exports.onCreatePage = async ({ page, actions }) => {
     }
 };
 
-exports.onCreateWebpackConfig = ({ stage, loaders, actions }) => {
+exports.onCreateWebpackConfig = ({ stage, loaders, actions, plugins }) => {
     if (stage === "build-html" || stage === "develop-html") {
         actions.setWebpackConfig({
             module: {
-            rules: [
-                {
-                test: /bad-module/,
-                use: loaders.null(),
-                },
-            ],
+                rules: [
+                    {
+                        test: /bad-module/,
+                        use: loaders.null(),
+                    },
+                ],
             },
         })
     }
+    actions.setWebpackConfig({
+        plugins: [plugins.provide({ Buffer: ['buffer/', 'Buffer'] })]
+    })
 };

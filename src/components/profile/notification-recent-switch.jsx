@@ -18,6 +18,8 @@ export default function NotificationRecent() {
         },
     })
 
+    console.log("list", ntf_list, loading)
+
     const tempList = ntf_list?.getNotifications
 
     useEffect(() => {
@@ -31,13 +33,11 @@ export default function NotificationRecent() {
 
     const [setNotificationReadFlag] = useMutation(SET_NOTIFICATION_READ_FLAG, {
         onCompleted: (data) => {
-            console.log("Receive data", data.setNotificationReadFlag)
             let ids = [...NTList]
             let index = ids.findIndex(
                 (el) => el.timeStamp === data.setNotificationReadFlag.timeStamp
             )
             ids[index] = { ...ids[index], pending: false, read: true }
-            console.log("LIST", index, ids)
             setNTList(ids)
         },
         onError: (error) => {},
@@ -48,7 +48,6 @@ export default function NotificationRecent() {
         let ids = [...NTList]
         let index = ids.findIndex((el) => el.timeStamp === item.timeStamp)
         ids[index] = { ...ids[index], pending: true }
-        console.log("REEED", index)
         setNTList(ids)
         setNotificationReadFlag({
             variables: {

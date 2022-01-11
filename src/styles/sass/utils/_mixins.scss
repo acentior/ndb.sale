@@ -14,7 +14,6 @@
 
 @mixin custom-scroll($height) {
     max-height: calc(100vh - $height);
-    padding-right: 20px;
     overflow-y: auto;
     &::-webkit-scrollbar {
         width: 6px;

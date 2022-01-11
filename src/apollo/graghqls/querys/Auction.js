@@ -73,3 +73,13 @@ export const GET_AUCTION_BY_STATUS = gql`
         }
     }
 `
+
+export const GET_BID_LIST = gql`
+    query GetBidList {
+        getBidList {
+            tokenAmount
+            totalPrice
+            placedAt
+        }
+    }
+`

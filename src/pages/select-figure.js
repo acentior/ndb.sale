@@ -18,18 +18,18 @@ import CustomSpinner from "../components/common/custom-spinner"
 import { setCurrentAuthInfo } from "../redux/actions/authAction";
 
 const SelectFigure = () => {
-    const dispatch = useDispatch();
+    const { data: user_data } = useQuery(GET_USER)
     // Containers
-    const [loading, setLoading] = useState(true)
+    const [loadingPage, setLoadingPage] = useState(true)
     const [pending, setPending] = useState(false)
     const [selected, setSelect] = useState(false)
     const [selectedId, setSelectId] = useState(0)
     const [modalIsOpen, setIsOpen] = useState(false)
     const [searchValue, setSearchValue] = useState("")
     const [randomName, setRandomName] = useState(figures[selectedId].lastname)
+    const dispatch = useDispatch();
 
     // Queries and Mutations
-    const { data: userData } = useQuery(GET_USER)
     const [setAvatar] = useMutation(SET_AVATAR, {
         errorPolicy: "ignore",
         onCompleted: (data) => {
@@ -60,18 +60,15 @@ const SelectFigure = () => {
     }
     //Authentication
     useEffect(() => {
-        const getUser = userData?.getUser
-        
-        if (getUser) {
-            setUser(getUser)
-            dispatch(setCurrentAuthInfo(getUser));
-
-            if (getUser?.avatar === null) return setLoading(false)
-            return navigate(ROUTES.profile)
-        }
-    }, [userData, dispatch])
-
-    if (loading) return <Loading />
+        if (user_data)
+            if ("getUser" in user_data)
+                if (user_data.getUser)
+                    if (user_data.getUser.avatarPrefix && user_data.getUser.avatarName)
+                        return navigate(ROUTES.profile)
+                    else
+                        return setLoadingPage(false)
+    }, [user_data])
+    if (loadingPage) return <Loading />
     else
         return (
             <main className="profile-page">

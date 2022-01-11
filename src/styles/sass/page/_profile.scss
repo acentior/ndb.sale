@@ -351,6 +351,16 @@
         }
         .connect-wallet {
             text-align: center;
+            color: white;
+            button: {
+                max-width: 400px;
+            }
+            button:disabled,
+            button[disabled] {
+                border: 1px solid #999999;
+                background-color: #1d1d1d;
+                color: #666666;
+            }
             h4 {
                 padding-bottom: 16px;
                 border-bottom: 2px solid #464646;
@@ -681,6 +691,12 @@
     div.profile {
         margin: auto;
         border: none;
+        @include mq('phone', max) {
+            height: 100px;
+            div.image_div {
+                width: 80px;
+            }
+        }
     }
 
     &__header {
@@ -713,6 +729,12 @@
                 color: white;
             }
         }
+        @include mq('phone', max) {
+            margin-top: 5px;
+            margin-bottom: 5px;
+            font-size: 20px;
+            line-height: 24px;
+        }
     }
     .btn-save {
         color: white;
@@ -732,6 +754,10 @@
             background-color: white;
             color: $black;
         }
+        @include mq('phone', max) {
+            margin-bottom: 5px;
+            font-size: 20px;
+        }
     }
     &-hair-section {
         color: white;
@@ -741,7 +767,14 @@
         line-height: 22px;
         letter-spacing: 0.04em;
     }
-
+    div.components {
+        border-left: 1px solid white;
+        padding: 20px;
+        @include mq('phone', max) {
+            border-left: none;
+            border-top: 1px solid white;
+        }
+    }
     &-items-horizontal-list {
         scroll-behavior: smooth;
         float: none;
@@ -753,6 +786,7 @@
         justify-content: start;
         align-items: center;
         margin: 0px;
+        height: 200px;
         & > div {
             height: 200px;
             width: 149px;
@@ -761,16 +795,48 @@
             float: none;
             position: relative;
             & > div.image_div {
+                width: 100px;
                 margin-top: 50%;
+                margin-bottom: 10%;
                 position: relative;
                 div {
                     position: absolute;
+                    svg {
+                        width: 100%;
+                        height: auto;
+                        position: absolute;
+                    }
+                }
+                img {
+                    width: 100%;
                 }
             }
             & > div.price_div {
                 width: 100%;
-                position: absolute;
-                bottom: 10%;
+                text-align: center;
+            }
+        }
+        @include mq('tablet', max) {
+            height: 170px;
+            & > div {
+                height: 170px;
+                width: 130px;
+                & > div.image_div {
+                    width: 80px;
+                }
+            }
+        }
+        @include mq('phone', max) {
+            height: 100px;
+            & > div {
+                height: 100px;
+                width: 80px;
+                & > div.image_div {
+                    width: 45px;
+                }
+                & > div.price_div {
+                    font-size: 12px;
+                }
             }
         }
         &::-webkit-scrollbar {
@@ -781,24 +847,6 @@
         }
         &::-webkit-scrollbar-thumb {
             background: #ffffff !important;
-        }
-    }
-    &-avatar {
-        width: 107.69px;
-        height: 82.28px;
-        position: relative;
-        text-align: center;
-        margin: auto;
-        padding: 0px;
-        margin-top: 75px;
-        .empty-avatar {
-            width: max-content;
-            height: auto;
-        }
-        .isolated-icons {
-            width: max-content;
-            height: auto;
-            position: absolute;
         }
     }
 }

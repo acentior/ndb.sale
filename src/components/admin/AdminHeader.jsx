@@ -1,14 +1,25 @@
-import React, { useState } from "react"
+import React, { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "gatsby"
 import { Logo } from "../../utilities/imgImport"
 
+import { fetch_Avatar_Components } from "../../redux/actions/avatarAction";
+
 const AdminHeader = () => {
-    const [show, setShow] = useState(false)
+    const dispatch = useDispatch();
+    // Fetch avatarComponents Data from backend    
+    useEffect(() => {
+        dispatch(fetch_Avatar_Components());
+    }, [dispatch]);
+    
+    const [show, setShow] = useState(false);
 
     let navMenuClsName = "menu "
     if (show) {
         navMenuClsName += "active"
-    }
+    };
+
+
     return (
         <nav className={navMenuClsName}>
             <div className="container d-flex align-items-center justify-content-between">

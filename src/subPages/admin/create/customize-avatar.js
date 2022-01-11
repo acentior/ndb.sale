@@ -1,7 +1,8 @@
 import React, { useState, useMemo } from "react"
+import { useDispatch } from "react-redux";
 import { Link } from "gatsby"
 import { Icon } from '@iconify/react';
-
+import _ from 'lodash';
 import NumberFormat from "react-number-format";
 import parse from 'html-react-parser';
 
@@ -13,10 +14,10 @@ import Alert from '@mui/material/Alert';
 import Select from 'react-select';
 import { EmptyAvatar, BaseExpression, BaseHair } from "../../../utilities/imgImport";
 import { useGetUserTierQuery } from "../../../apollo/model/userTier";
+import { create_Avatar_Component } from "../../../redux/actions/avatarAction";
 
 const categories = [
     { value: 'hairStyle', label: 'Hair Style' },
-    // { value: 'hairColor', label: 'Hair Color' },
     { value: 'facialStyle', label: 'Facial Style' },
     { value: 'expression', label: 'Expression' },
     { value: 'hat', label: 'Hat' },
@@ -24,9 +25,11 @@ const categories = [
 ];
 
 const IndexPage = () => {
+    const dispatch = useDispatch();
     const [currentStep, setCurrentStep] = useState(1);
     const [showError, setShowError] = useState(false);
     const [error, setError] = useState('');
+    const [pending, setPending] = useState(false);
 
     //------- Avatar and Validation
     // Avatar
@@ -52,12 +55,14 @@ const IndexPage = () => {
         return {};
     }, [avatarInfo]);
 
+    // tiers from the backend
     let tiers = [];
     const userTiersResults = useGetUserTierQuery();
     if(userTiersResults.data) {
         tiers = userTiersResults.data.getUserTiers.map(item => {
-            return { value: item.level, label: item.level };
+            return { value: item.level, label: item.name };
         });
+        tiers = _.orderBy(tiers, ['value'], ['asc']);
     }
 
     const selectAvatarComponent = event => {
@@ -99,8 +104,19 @@ const IndexPage = () => {
         setShowError(false);
     };
 
-    const handleSubmit = () => {
-        console.log(svgFile)
+    const handleSubmit = async () => {
+        setPending(true);
+        await dispatch(create_Avatar_Component({
+            groupId: svgFile.groupId,
+            tierLevel: avatarInfo.tier.value,
+            price: avatarInfo.price,
+            limited: avatarInfo.limitation,
+            svg: svgFile.svg,
+            width: svgFile.width,
+            top: svgFile.top,
+            left: svgFile.left
+        }));
+        setPending(false);
     };
 
     return (
@@ -294,7 +310,7 @@ const IndexPage = () => {
                             </div>
                             <div className="button_div">
                                 <button className="btn previous" onClick={() => setCurrentStep(2)}>Previous</button>
-                                <button className="btn next" onClick={handleSubmit}>Save</button>
+                                <button className="btn next" disabled={pending} onClick={handleSubmit}>{pending? 'Saving...': 'Save'}</button>
                             </div>
                         </>
                     )}

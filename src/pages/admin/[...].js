@@ -1,4 +1,5 @@
 import React, { Suspense, lazy } from "react";
+import { useSelector } from "react-redux";
 import { Router } from "@reach/router";
 import Loading from "../../components/common/Loading";
 
@@ -16,6 +17,7 @@ const NotFound = lazy(() => import("./../404"));
 
 const App = () => {
     const isSSR = typeof window === "undefined";
+    
     return (
         <>
             {!isSSR && (

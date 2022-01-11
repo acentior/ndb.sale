@@ -344,3 +344,36 @@ input.disabled {
         align-items: center;
     }
 }
+
+div.profile {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 1px solid #cccccc;
+
+    width: 180px;
+    height: 240px;
+    @include mq('tablet', max) {
+        width: 150px;
+        height: 200px;
+    }
+    @include mq('phone', max) {
+        width: 180px;
+        height: 240px;
+    }
+    div.image_div {
+        position: relative;
+        width: 110px;
+        div {
+            position: absolute;
+            svg {
+                width: 100%;
+                height: auto;
+                position: absolute;
+            }
+        }
+        img {
+            width: 100%;
+        }
+    }
+}

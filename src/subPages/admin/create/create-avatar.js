@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from "react"
+import React, { useState, useMemo } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "gatsby"
 import { Icon } from "@iconify/react"
 import parse from 'html-react-parser'
@@ -9,29 +10,33 @@ import Stepper from "../../../components/admin/Stepper"
 import LayoutForCreate from "../../../components/admin/LayoutForCreate"
 import { Alert, Rating } from "@mui/material"
 import { capitalizeFirstLetter } from "../../../utilities/string"
-import DressupModal from "../../../components/admin/dress-up/dressup-modal"
-import { EmptyAvatar } from "../../../utilities/imgImport"
-
-import { hairStyles, facialStyles, expressions, hats, others, hairColors } from './../../../components/admin/dress-up/dressup-data';
+import DressupModal from "../../../components/dress-up/dressup-modal"
+import { EmptyAvatar } from "../../../utilities/imgImport";
+import { create_New_Avatar } from './../../../redux/actions/avatarAction';
 
 const CreateAvatar = () => {
+    const dispatch = useDispatch();
+    const avatarComponents = useSelector(state => state.avatarComponents);
+    const { hairStyles, facialStyles, expressions, hats, others } = avatarComponents;
+
     const [currentStep, setCurrentStep] = useState(1)
     const [showError, setShowError] = useState(false)
     const [isDressUpModalOpen, setIsDressUpModalOpen] = useState(false)
 
     //------- Avatar Data and Validation
     const [avatarItems, setAvatarItems] = useState({
-        hair: 0,
-        hairColor: 0,
-        facialStyle: 0,
-        expression: 0,
-        hat: 0,
-        other: 0
+        hair: '',
+        hairColor: '',
+        facialStyle: '',
+        expression: '',
+        hat: '',
+        other: ''
     });
-    const [avatarName, setAvatarName] = useState('');
+    const [avatarName, setAvatarName] = useState({name: '', surname: ''});
 
     const avatarDataError = useMemo(() => {
-        if(!avatarName) return 'Avatar Name is required';
+        if(!avatarName.name) return 'Name is required';
+        if(!avatarName.surname) return 'Surname is required';
         return '';
     }, [avatarName]);
 
@@ -104,7 +109,24 @@ const CreateAvatar = () => {
     }
 
     const handleSubmit = () => {
-        alert("Created Avatar Successfully")
+        const skillSet = stats.map(item => {
+            return { skill: item.title, skillRate: item.stars };
+        });
+        const avatarSet = Object.keys(avatarItems).map(item => {
+            if(item === 'hairColor') return;
+            return {groupId: item, compId: avatarItems[item]};
+        });
+        const factsSet = factsDetail.facts;
+        dispatch(create_New_Avatar({
+            name: avatarName.name,
+            surname: avatarName.surname,
+            shortName: avatarName.name + ' ' + avatarName.surname,
+            skillSet,
+            avatarSet,
+            factsSet,
+            details: factsDetail.details,
+            hairColor: avatarItems.hairColor
+        }));
     }
 
     return (
@@ -122,7 +144,7 @@ const CreateAvatar = () => {
                             <div className="input_div">
                                 {showError ? (
                                     avatarDataError ? (
-                                        <Alert severity="error">{statsDataError.desc}</Alert>
+                                        <Alert severity="error">{avatarDataError}</Alert>
                                     ) : (
                                         <Alert severity="success">
                                             Success! Please click Next Button
@@ -132,25 +154,27 @@ const CreateAvatar = () => {
                                     ""
                                 )}
                                 <div className="avatar_div">
-                                    <div className="preview_mobile">
+                                    <div className="preview_mobile mb-3">
                                         <div className="profile">
                                             <div className="image_div">
                                                 <img src={EmptyAvatar} alt="back" />
-                                                <Hair hairColor={hairColors[avatarItems.hairColor].content} style={{top: hairStyles[avatarItems.hair].top, left: hairStyles[avatarItems.hair].left}}>
-                                                    {parse(hairStyles[avatarItems.hair].content)}
-                                                </Hair>
-                                                <div style={{top: expressions[avatarItems.expression].top, left: expressions[avatarItems.expression].left}}>
-                                                    {parse(expressions[avatarItems.expression].content)}
-                                                </div>
-                                                <div style={{top: facialStyles[avatarItems.facialStyle].top, left: facialStyles[avatarItems.facialStyle].left}}>
-                                                    {parse(facialStyles[avatarItems.facialStyle].content)}
-                                                </div>
-                                                <div style={{top: hats[avatarItems.hat].top, left: hats[avatarItems.hat].left}}>
-                                                    {parse(hats[avatarItems.hat].content)}
-                                                </div>
-                                                <div style={{top: others[avatarItems.other].top, left: others[avatarItems.other].left}}>
-                                                    {parse(others[avatarItems.other].content)}
-                                                </div>
+                                                {avatarItems.hairColor && (<>
+                                                    <Hair hairColor={avatarItems.hairColor} style={{top: `${hairStyles[avatarItems.hairStyle].top}%`, left: `${hairStyles[avatarItems.hairStyle].left}%`, width: `${hairStyles[avatarItems.hairStyle].width}%`}}>
+                                                        {parse(hairStyles[avatarItems.hairStyle].svg)}
+                                                    </Hair>
+                                                    <div style={{top: `${expressions[avatarItems.expression].top}%`, left: `${expressions[avatarItems.expression].left}%`, width: `${expressions[avatarItems.expression].width}%`}}>
+                                                        {parse(expressions[avatarItems.expression].svg)}
+                                                    </div>
+                                                    <div style={{top: `${facialStyles[avatarItems.facialStyle].top}%`, left: `${facialStyles[avatarItems.facialStyle].left}%`, width: `${facialStyles[avatarItems.facialStyle].width}%`}}>
+                                                        {parse(facialStyles[avatarItems.facialStyle].svg)}
+                                                    </div>
+                                                    <div style={{top: `${hats[avatarItems.hat].top}%`, left: `${hats[avatarItems.hat].left}%`, width: `${hats[avatarItems.hat].width}%`}}>
+                                                        {parse(hats[avatarItems.hat].svg)}
+                                                    </div>
+                                                    <div style={{top: `${others[avatarItems.other].top}%`, left: `${others[avatarItems.other].left}%`, width: `${others[avatarItems.other].width}%`}}>
+                                                        {parse(others[avatarItems.other].svg)}
+                                                    </div>
+                                                </>)}
                                             </div>
                                         </div>
                                     </div>
@@ -158,8 +182,14 @@ const CreateAvatar = () => {
                                         <p>Name</p>
                                         <input
                                             className="black_input"
-                                            value={avatarName}
-                                            onChange={(e) => setAvatarName(e.target.value)}
+                                            value={avatarName.name}
+                                            onChange={(e) => setAvatarName({...avatarName, name: e.target.value})}
+                                        />
+                                        <p className="mt-3">Surname</p>
+                                        <input
+                                            className="black_input"
+                                            value={avatarName.surname}
+                                            onChange={(e) => setAvatarName({...avatarName, surname: e.target.value})}
                                         />
                                     </div>
                                     <div className="items_div">
@@ -170,21 +200,23 @@ const CreateAvatar = () => {
                                         <div className="profile">
                                             <div className="image_div">
                                                 <img src={EmptyAvatar} alt="back" />
-                                                <Hair hairColor={hairColors[avatarItems.hairColor].content} style={{top: hairStyles[avatarItems.hair].top, left: hairStyles[avatarItems.hair].left}}>
-                                                    {parse(hairStyles[avatarItems.hair].content)}
-                                                </Hair>
-                                                <div style={{top: expressions[avatarItems.expression].top, left: expressions[avatarItems.expression].left}}>
-                                                    {parse(expressions[avatarItems.expression].content)}
-                                                </div>
-                                                <div style={{top: facialStyles[avatarItems.facialStyle].top, left: facialStyles[avatarItems.facialStyle].left}}>
-                                                    {parse(facialStyles[avatarItems.facialStyle].content)}
-                                                </div>
-                                                <div style={{top: hats[avatarItems.hat].top, left: hats[avatarItems.hat].left}}>
-                                                    {parse(hats[avatarItems.hat].content)}
-                                                </div>
-                                                <div style={{top: others[avatarItems.other].top, left: others[avatarItems.other].left}}>
-                                                    {parse(others[avatarItems.other].content)}
-                                                </div>
+                                                {avatarItems.hairColor && (<>
+                                                    <Hair hairColor={avatarItems.hairColor} style={{top: `${hairStyles[avatarItems.hairStyle].top}%`, left: `${hairStyles[avatarItems.hairStyle].left}%`, width: `${hairStyles[avatarItems.hairStyle].width}%`}}>
+                                                        {parse(hairStyles[avatarItems.hairStyle].svg)}
+                                                    </Hair>
+                                                    <div style={{top: `${expressions[avatarItems.expression].top}%`, left: `${expressions[avatarItems.expression].left}%`, width: `${expressions[avatarItems.expression].width}%`}}>
+                                                        {parse(expressions[avatarItems.expression].svg)}
+                                                    </div>
+                                                    <div style={{top: `${facialStyles[avatarItems.facialStyle].top}%`, left: `${facialStyles[avatarItems.facialStyle].left}%`, width: `${facialStyles[avatarItems.facialStyle].width}%`}}>
+                                                        {parse(facialStyles[avatarItems.facialStyle].svg)}
+                                                    </div>
+                                                    <div style={{top: `${hats[avatarItems.hat].top}%`, left: `${hats[avatarItems.hat].left}%`, width: `${hats[avatarItems.hat].width}%`}}>
+                                                        {parse(hats[avatarItems.hat].svg)}
+                                                    </div>
+                                                    <div style={{top: `${others[avatarItems.other].top}%`, left: `${others[avatarItems.other].left}%`, width: `${others[avatarItems.other].width}%`}}>
+                                                        {parse(others[avatarItems.other].svg)}
+                                                    </div>
+                                                </>)}
                                             </div>
                                         </div>
                                     </div>
@@ -362,8 +394,8 @@ const CreateAvatar = () => {
                                 <div className="preview_div">
                                     <p className="name">
                                         {avatarName ? 
-                                            `${capitalizeFirstLetter(avatarName)}`:
-                                            "Failla"
+                                            `${capitalizeFirstLetter(avatarName.name)} ${capitalizeFirstLetter(avatarName.surname)}`:
+                                            "Nicolla Tesla"
                                         }
                                     </p>
                                     <div className="row avatarStats">
@@ -371,21 +403,23 @@ const CreateAvatar = () => {
                                             <div className="profile">
                                                 <div className="image_div">
                                                     <img src={EmptyAvatar} alt="back" />
-                                                    <Hair hairColor={hairColors[avatarItems.hairColor].content} style={{top: hairStyles[avatarItems.hair].top, left: hairStyles[avatarItems.hair].left}}>
-                                                        {parse(hairStyles[avatarItems.hair].content)}
-                                                    </Hair>
-                                                    <div style={{top: expressions[avatarItems.expression].top, left: expressions[avatarItems.expression].left}}>
-                                                        {parse(expressions[avatarItems.expression].content)}
-                                                    </div>
-                                                    <div style={{top: facialStyles[avatarItems.facialStyle].top, left: facialStyles[avatarItems.facialStyle].left}}>
-                                                        {parse(facialStyles[avatarItems.facialStyle].content)}
-                                                    </div>
-                                                    <div style={{top: hats[avatarItems.hat].top, left: hats[avatarItems.hat].left}}>
-                                                        {parse(hats[avatarItems.hat].content)}
-                                                    </div>
-                                                    <div style={{top: others[avatarItems.other].top, left: others[avatarItems.other].left}}>
-                                                        {parse(others[avatarItems.other].content)}
-                                                    </div>
+                                                    {avatarItems.hairColor && (<>
+                                                        <Hair hairColor={avatarItems.hairColor} style={{top: `${hairStyles[avatarItems.hairStyle].top}%`, left: `${hairStyles[avatarItems.hairStyle].left}%`, width: `${hairStyles[avatarItems.hairStyle].width}%`}}>
+                                                            {parse(hairStyles[avatarItems.hairStyle].svg)}
+                                                        </Hair>
+                                                        <div style={{top: `${expressions[avatarItems.expression].top}%`, left: `${expressions[avatarItems.expression].left}%`, width: `${expressions[avatarItems.expression].width}%`}}>
+                                                            {parse(expressions[avatarItems.expression].svg)}
+                                                        </div>
+                                                        <div style={{top: `${facialStyles[avatarItems.facialStyle].top}%`, left: `${facialStyles[avatarItems.facialStyle].left}%`, width: `${facialStyles[avatarItems.facialStyle].width}%`}}>
+                                                            {parse(facialStyles[avatarItems.facialStyle].svg)}
+                                                        </div>
+                                                        <div style={{top: `${hats[avatarItems.hat].top}%`, left: `${hats[avatarItems.hat].left}%`, width: `${hats[avatarItems.hat].width}%`}}>
+                                                            {parse(hats[avatarItems.hat].svg)}
+                                                        </div>
+                                                        <div style={{top: `${others[avatarItems.other].top}%`, left: `${others[avatarItems.other].left}%`, width: `${others[avatarItems.other].width}%`}}>
+                                                            {parse(others[avatarItems.other].svg)}
+                                                        </div>
+                                                    </>)}
                                                 </div>
                                             </div>
                                         </div>

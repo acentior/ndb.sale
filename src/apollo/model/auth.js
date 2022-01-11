@@ -1,5 +1,5 @@
 import * as GraphQL from "../graghqls/mutations/Auth"
-import { useMutation, useQuery } from "@apollo/client"
+import { useMutation } from "@apollo/client"
 import { navigate } from "gatsby"
 import { setAuthToken, getUser, setUser } from "../../utilities/auth"
 import { ROUTES } from "../../utilities/routes"
@@ -17,7 +17,7 @@ export const useSigninMutation = () => {
                 setUser({
                     ...getUser(),
                     tempToken: data.signin.token,
-                    twoStep: data.signin.userTwoStep
+                    twoStep: data.signin.userTwoStep,
                 })
                 navigate("/app/onetime-pwd")
             }
@@ -70,12 +70,10 @@ export const useSignIn2FA = () => {
     const [mutation, mutationResults] = useMutation(GraphQL.SIGNIN_2FA, {
         onCompleted: (data) => {
             if (data.confirm2FA.status === "Failed") {
-                // do something
                 return
             } else if (data.confirm2FA.status === "Success") {
                 setAuthToken(data.confirm2FA.token)
-                // localStorage.removeItem("USER_DATA")
-                navigate(ROUTES.selectFigure)
+                navigate(ROUTES.profile)
             }
         },
     })
@@ -134,7 +132,9 @@ export const useResetPassword = () => {
     const resetPassword = (email, code, newPassword) => {
         return mutation({
             variables: {
-                email, code, newPassword
+                email,
+                code,
+                newPassword,
             },
         })
     }

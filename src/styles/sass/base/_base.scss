@@ -97,10 +97,45 @@ input[type="number"]::-webkit-outer-spin-button {
     width: max-content !important;
 }
 
-.fs-12px {
-    font-size: 12px;
-}
-
 .mt-16px {
     margin-top: 16px;
 }
+
+.placeholder\:text-light {
+    &::placeholder {
+        color: lightgrey !important;
+    }
+}
+.py-12px {
+    padding-top: 12px;
+    padding-bottom: 12px;
+}
+.py-10px {
+    padding-top: 10px;
+    padding-bottom: 10px;
+}
+.pl-8px {
+    padding-left: 8px;
+}
+
+.hover\:bg-dark {
+    transition: 500ms;
+    &:hover {
+        background-color: #151515 !important;
+    }
+}
+
+.text-justify {
+    text-align: justify !important;
+}
+
+.w-316px {
+    width: 316px !important;
+}
+// Begin: New Font Sizes
+@for $size from 12 to 24 {
+    .fs-#{$size}px {
+        font-size: #{$size}px !important;
+    }
+}
+// End: New Font Sizes

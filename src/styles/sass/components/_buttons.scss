@@ -29,14 +29,15 @@
     }
     &-small {
         font-weight: bold;
-        font-size: 15px;
-        font-family: "Montserrat";
-        line-height: 25px;
+        font-size: 12px;
+        line-height: 12px;
         color: white;
-        padding: 3px 7px;
+        padding: 7px 13px;
         background: $black;
         border: 1px solid #ffffff;
         text-transform: none;
+        margin-right: 5px;
+        width: auto;
         &:hover {
             background: $black;
             border: 1px solid #ffffff;
@@ -51,9 +52,8 @@
             border-color: white;
             box-shadow: unset;
         }
-        @include mq("phone", max) {
-            font-size: 20px;
-            line-height: 24px;
+        @include mq("tablet", max) {
+            width: 33.33%;
         }
     }
 

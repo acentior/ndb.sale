@@ -259,12 +259,22 @@
                     padding-left: 0;
                     padding-right: 0;
                 }
+                .select-chart-type {
+                    width: 371px;
+                    padding-right: 5px;
+                    @include mq("laptop", max) {
+                        width: 100%;
+                    }
+                }
                 .css-1s2u09g-control,
                 .css-1pahdxg-control {
                     background: #1e1e1e;
                     border: 1px solid #ffffff;
                     border-radius: unset;
                     box-shadow: unset;
+                    .css-319lph-ValueContainer {
+                        justify-content: start;
+                    }
                     .css-6j8wv5-Input,
                     .css-qc6sy-singleValue {
                         font-family: "Montserrat";
@@ -272,7 +282,10 @@
                         font-weight: bold;
                         font-size: 24px;
                         line-height: 29px;
+                        text-align: left;
                         color: white;
+                        @include mq("phone", max) {
+                        }
                     }
                     .css-1okebmr-indicatorSeparator {
                         display: none;

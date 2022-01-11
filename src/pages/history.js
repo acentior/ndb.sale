@@ -2,15 +2,11 @@ import React, { useReducer, useCallback, useState } from "react"
 import Header from "../components/header"
 import Select, { components } from "react-select"
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
-import { numberSign, numberWithCommas } from "../utilities/number"
+import { numberWithCommas } from "../utilities/number"
 import {
     BTC,
-    BCH,
-    DAI,
     DOGE,
     ETH,
-    LTC,
-    USDC,
     NDB,
     Airdrop,
     Address,
@@ -24,7 +20,10 @@ import { Input } from "../components/common/FormControl"
 import { useWindowSize } from "../utilities/customHook"
 import AirdropDetail from "../components/AirdropDetail"
 import DepositWithdrawModal from "../components/wallet/deposit-withdraw-modal"
+import MarketTab from "../components/wallet/market-tab"
 import { TRANSACTION_TYPES } from "../utilities/staticData"
+import Transactions from "../components/wallet/transactions-tab"
+import ReferralTab from "../components/wallet/referral-tab"
 
 const transactions = [
     {
@@ -88,89 +87,7 @@ const transactions = [
         price: 3500,
     },
 ]
-const market_data = [
-    {
-        icon: ETH,
-        abbr: "ETH",
-        name: "Ethereum",
-        price: 282004.43,
-        percent: 1.9,
-        chart: "",
-        volume: "$28,6B",
-    },
-    {
-        icon: BTC,
-        abbr: "BTC",
-        name: "Bitcoin",
-        price: 282004.43,
-        percent: -2.2,
-        chart: "",
-        volume: "$28,6B",
-    },
-    {
-        icon: BCH,
-        abbr: "BCH",
-        name: "Bitcoin Cash",
-        price: 282004.43,
-        percent: 1.9,
-        chart: "",
-        volume: "$28,6B",
-    },
-    {
-        icon: DAI,
-        abbr: "DAI",
-        name: "Dai",
-        price: 282004.43,
-        percent: 1.9,
-        chart: "",
-        volume: "$1,7B",
-    },
-    {
-        icon: DOGE,
-        abbr: "DOGE",
-        name: "Dogecoin",
-        price: 282004.43,
-        percent: -1.9,
-        chart: "",
-        volume: "$28,6B",
-    },
-    {
-        icon: USDC,
-        abbr: "USDC",
-        name: "USD Coin",
-        price: 282004.43,
-        percent: 1.9,
-        chart: "",
-        volume: "$28,6B",
-    },
-    {
-        icon: LTC,
-        abbr: "LTC",
-        name: "Litecoin",
-        price: 282004.43,
-        percent: 1.9,
-        chart: "",
-        volume: "$28,6B",
-    },
-    {
-        icon: USDC,
-        abbr: "USDC",
-        name: "USD Coin",
-        price: 282004.43,
-        percent: 1.9,
-        chart: "",
-        volume: "$28,6B",
-    },
-    {
-        icon: LTC,
-        abbr: "LTC",
-        name: "Litecoin",
-        price: 282004.43,
-        percent: 1.9,
-        chart: "",
-        volume: "$28,6B",
-    },
-]
+
 const my_assets = [
     {
         icon: NDB,
@@ -383,7 +300,7 @@ const SelectedValue = (props) => {
 const History = () => {
     const [hideValues, setHideValues] = useState(false)
     const [btcEquityValue, setBtcEquityValue] = useState("12.003.877")
-    const [dollarEquityValue, setDollarEquityValue] = useState("~ $282,004.43")
+    const [dollarEquityValue, setDollarEquityValue] = useState("282,004.43")
     const [transactionType, setTransactionType] = useState(TRANSACTION_TYPES.deposit)
     const [showDepositAndWidthdrawModal, setShowDepositAndWidthdrawModal] = useState(false)
     const obscureValueString = "****"
@@ -435,30 +352,12 @@ const History = () => {
                     <div className="section-history__left col-lg-4 col-md-5">
                         <Tabs>
                             <TabList>
+                                <Tab className="react-tabs__tab col-6 text-center">wallet</Tab>
                                 <Tab className="react-tabs__tab col-6 text-center">
                                     bid activity
                                 </Tab>
-                                <Tab className="react-tabs__tab col-6 text-center">wallet</Tab>
                             </TabList>
-                            <TabPanel>
-                                <ul className="bid-activity">
-                                    {bids.map((item, idx) => (
-                                        <li
-                                            className="d-flex align-items-center justify-content-between"
-                                            key={idx}
-                                        >
-                                            <div>
-                                                <p className="bid-name">{item.name}</p>
-                                                <p className="bid-date">{item.date}</p>
-                                            </div>
-                                            <p className="bid-price">
-                                                {numberWithCommas(item.bid)}
-                                                <span className="txt-green"> T</span>
-                                            </p>
-                                        </li>
-                                    ))}
-                                </ul>
-                            </TabPanel>
+
                             <TabPanel>
                                 <div className="d-flex justify-content-end">
                                     <Link to="/" className="verify-link">
@@ -498,15 +397,15 @@ const History = () => {
                                                         xmlns="http://www.w3.org/2000/svg"
                                                     >
                                                         <path
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round"
-                                                            stroke-width="2"
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth="2"
                                                             d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
                                                         ></path>
                                                         <path
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round"
-                                                            stroke-width="2"
+                                                            strokeLinecap="round"
+                                                            strokeLinejoin="round"
+                                                            strokeWidth="2"
                                                             d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
                                                         ></path>
                                                     </svg>
@@ -515,29 +414,32 @@ const History = () => {
 
                                             <div className="d-flex gap-2">
                                                 <div
+                                                    className={`cursor-pointer ${btcOrUsd === "BTC" && "fw-bold text-white"
+                                                        }`}
                                                     onClick={() => setBtcOrUsd("BTC")}
-                                                    className={`cursor-pointer ${
-                                                        btcOrUsd === "BTC" && "fw-bold text-white"
-                                                    }`}
+                                                    onKeydown={() => setBtcOrUsd("BTC")}
+                                                    role="presentation"
                                                 >
                                                     BTC
                                                 </div>
                                                 <div>|</div>
                                                 <div
+                                                    className={`cursor-pointer ${btcOrUsd === "USD" && "fw-bold text-white"
+                                                        }`}
                                                     onClick={() => setBtcOrUsd("USD")}
-                                                    className={`cursor-pointer ${
-                                                        btcOrUsd === "USD" && "fw-bold text-white"
-                                                    }`}
+                                                    onKeyDown={() => setBtcOrUsd("USD")}
+                                                    role="presentation"
                                                 >
                                                     USD
                                                 </div>
                                             </div>
                                         </p>
                                         <p className="value">
-                                            {hideValues ? obscureValueString : btcEquityValue}
+
+                                            {hideValues ? obscureValueString : (btcOrUsd === "USD" ? dollarEquityValue : btcEquityValue)}
                                         </p>
                                         <p className="max-value mt-3">
-                                            {hideValues ? obscureValueString : dollarEquityValue}
+                                            {hideValues ? obscureValueString : ("~ $ " + (btcOrUsd === "USD" ? btcEquityValue : dollarEquityValue))}
                                         </p>
                                     </div>
                                     <div className="btn-group d-flex justify-content-between mt-3 align-items-center">
@@ -572,20 +474,6 @@ const History = () => {
                                         )}
                                     </div>
                                 </div>
-                                {/* <h5 className="my-4">Transactions history</h5> */}
-                                {/* <div className="transaction-history">
-                                    {transactions.map((item, idx) => (
-                                        <div className="transaction" key={idx}>
-                                            <p className="transaction-date">{item.date}</p>
-                                            <div className="d-flex justify-content-between">
-                                                <p className="transaction-name">{item.name}</p>
-                                                <p className="transaction-price">
-                                                    {numberSign(item.price) + item.price}$
-                                                </p>
-                                            </div>
-                                        </div>
-                                    ))}
-                                </div> */}
                                 <table className="mt-3">
                                     <tbody>
                                         {my_assets.map((item, idx) => (
@@ -615,77 +503,55 @@ const History = () => {
                                     </tbody>
                                 </table>
                             </TabPanel>
+                            <TabPanel>
+                                <ul className="bid-activity">
+                                    {bids.map((item, idx) => (
+                                        <li
+                                            className="d-flex align-items-center justify-content-between"
+                                            key={idx}
+                                        >
+                                            <div>
+                                                <p className="bid-name">{item.name}</p>
+                                                <p className="bid-date">{item.date}</p>
+                                            </div>
+                                            <p className="bid-price">
+                                                {numberWithCommas(item.bid)}
+                                                <span className="txt-green"> T</span>
+                                            </p>
+                                        </li>
+                                    ))}
+                                </ul>
+                            </TabPanel>
                         </Tabs>
                     </div>
                     <div className="section-history__right col-lg-8 col-md-7">
                         <Tabs onSelect={() => setState({ detail_show: false })}>
                             <div className="tab-top">
                                 <TabList>
-                                    <Tab>transaction</Tab>
                                     <Tab>market</Tab>
                                     <Tab>stake</Tab>
                                     <Tab>referral</Tab>
                                     <Tab>airdrops</Tab>
+                                    <Tab>transaction</Tab>
                                 </TabList>
                                 <Link to="/" className="verify-link">
                                     Get verified
                                 </Link>
                             </div>
+                            <TabPanel>
+                                <MarketTab />
+                            </TabPanel>
+
                             <TabPanel></TabPanel>
                             <TabPanel>
-                                <table>
-                                    <thead>
-                                        <tr>
-                                            <th>Name</th>
-                                            <th className="text-end">Price</th>
-                                            <th className="laptop-not text-center">Price Chart</th>
-                                            <th className="mobile-not text-end">Volume (24h)</th>
-                                        </tr>
-                                    </thead>
-                                    <tbody>
-                                        {market_data.map((item, idx) => (
-                                            <tr key={idx}>
-                                                <td className="d-flex align-items-start ps-2">
-                                                    <img
-                                                        src={item.icon}
-                                                        alt="coin icon"
-                                                        className="me-2"
-                                                    />
-                                                    <div>
-                                                        <p className="coin-abbr">{item.abbr}</p>
-                                                        <p className="coin-name">{item.name}</p>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <p className="coin-price">
-                                                        ${numberWithCommas(item.price)}
-                                                    </p>
-                                                    <p
-                                                        className={
-                                                            numberSign(item.percent) === "+"
-                                                                ? "coin-percent txt-green"
-                                                                : "coin-percent txt-red"
-                                                        }
-                                                    >
-                                                        {numberSign(item.percent) + item.percent}%
-                                                    </p>
-                                                </td>
-                                                <td className="laptop-not price-chart"> </td>
-                                                <td className="mobile-not text-end">
-                                                    {item.volume}
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
+                                <ReferralTab />
                             </TabPanel>
                             <TabPanel>
                                 <table
-                                    className={`${
-                                        detail_show &&
+                                    className={`${detail_show &&
                                         (size.width > 1024 || size.width <= 576) &&
                                         "d-none"
-                                    }`}
+                                        }`}
                                 >
                                     <thead>
                                         <tr>
@@ -744,6 +610,9 @@ const History = () => {
                                     airdrop={airdrops[index]}
                                     onJoinClick={handleJoinAirdrop}
                                 />
+                            </TabPanel>
+                            <TabPanel>
+                                <Transactions />
                             </TabPanel>
                         </Tabs>
                         <div className="connect-external">
