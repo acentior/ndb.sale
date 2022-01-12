@@ -10,7 +10,7 @@ const ChanceChart = ({ data }) => {
         let wins_arr = []
         let fails_arr = []
         let trnd = []
-        let tmpdata = data.getRoundChance.slice()
+        let tmpdata = data?.getRoundChance.slice()
 
         tmpdata
             .sort((a, b) => {
@@ -38,7 +38,39 @@ const ChanceChart = ({ data }) => {
             },
         },
         legend: {
-            data: ["Win Rate", "Fail Rate"],
+            data: [
+                {
+                    name: "Win Rate",
+                    // compulsorily set icon as a circle
+                    icon: "none",
+                    // set up the text in red
+                    textStyle: {
+                        color: "wight",
+                    },
+                    itemStyle: {
+                        color: "#23C865",
+                    },
+                    backgroundColor: "#23C865",
+                    borderColor: "#23C865",
+                    borderWidth: "2px",
+                    brderType: "solid",
+                },
+                {
+                    name: "Fail Rate",
+                    // compulsorily set icon as a circle
+                    icon: "none",
+                    // set up the text in red
+                    textStyle: {
+                        color: "wight",
+                    },
+                    backgroundColor: "#E8503A",
+                    borderColor: "#23C865",
+                    borderWidth: "2px",
+                    brderType: "solid",
+                },
+            ],
+            // data: ["Win Rate", "Fail Rate"],
+            left: "0%",
         },
         grid: {
             left: "3%",

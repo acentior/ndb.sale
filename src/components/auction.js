@@ -60,7 +60,7 @@ const Auction = () => {
         tabIndex: 0,
         amount: 1,
         price: 1,
-        isBid: false,
+        isBid: true,
         bidModal: false,
         show_chart: false,
         selectLabel: options[0],
@@ -581,7 +581,7 @@ const Auction = () => {
                                                     }
                                                 }}
                                             >
-                                                Performance
+                                                Histogram
                                             </button>
                                         </div>
                                     )}

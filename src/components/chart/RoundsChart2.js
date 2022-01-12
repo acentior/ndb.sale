@@ -7,7 +7,7 @@ const RoundsChart2 = ({ data }) => {
     useEffect(() => {
         let trnd = []
         let rdata = []
-        let tmpdata = data.getRoundPerform2.slice()
+        let tmpdata = data?.getRoundPerform2.slice()
 
         tmpdata
             .sort((a, b) => {
@@ -27,8 +27,7 @@ const RoundsChart2 = ({ data }) => {
         tooltip: {
             trigger: "axis",
             axisPointer: {
-                type: "line",
-                axis: "x",
+                type: "cross",
             },
         },
         grid: {
