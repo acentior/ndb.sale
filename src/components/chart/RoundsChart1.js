@@ -2,13 +2,13 @@ import React, { useState, useEffect } from "react"
 import ReactEcharts from "echarts-for-react"
 import { numFormatter } from "../../utilities/number"
 
-const RoundsChart1 = ({ data }) => {
+const RoundsChart1 = ({ data }) => {    
     const [total, setTotal] = useState([])
     const [sold, setSold] = useState([])
     useEffect(() => {
         let ttotal = []
         let tsold = []
-        data.getAuctions.forEach((ele) => {
+        data?.getAuctions.forEach((ele) => {
             ttotal.push([ele.totalToken, ele.minPrice * ele.totalToken])
             tsold.push([ele.minPrice, ele.sold])
         })

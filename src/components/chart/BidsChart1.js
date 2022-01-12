@@ -1,9 +1,31 @@
-import React from "react"
+import React, { useState, useEffect } from "react"
 import ReactEcharts from "echarts-for-react"
+import { numFormatter } from "../../utilities/number"
 
 const colors = ["#C4C4C4", "#23C865"]
 
 const BidsChart1 = ({ data }) => {
+    const [total, setTotal] = useState([])
+    const [amount, setAmount] = useState([])
+    useEffect(() => {
+        let tTotal = []
+        let tAmount = []
+        let list = []
+        data?.getBidList.forEach(x => list.push(x))
+        list.sort((a, b) => {
+            return a.placedAt - b.placedAt
+        }).forEach((ele) => {
+            tTotal.push({value: [ele.placedAt, ele.totalPrice]})
+            tAmount.push({value: [ele.placedAt, ele.tokenAmount]})
+        })
+        setTotal(
+            tTotal
+        )
+        setAmount(
+            tAmount
+        )
+    }, [data])
+
     const option = {
         color: colors,
         tooltip: {
@@ -12,48 +34,92 @@ const BidsChart1 = ({ data }) => {
                 type: "cross",
             },
         },
-        grid: {
-            left: "3%",
-            right: "3%",
-            bottom: "3%",
-            containLabel: true,
+        grid: [
+          {
+            left: 80,
+            right: 10,
+            top: "5%",
+            height: "50%"
+          },
+          {
+            left: 80,
+            right: 10,
+            top: "65%",
+            height: "30%"
+          }
+        ],
+        axisPointer: {
+          link: [
+            {
+              xAxisIndex: 'all'
+            }
+          ]
         },
         xAxis: [
             {
-                type: "category",
-                // prettier-ignore
-                data: ['Jan', 'Feb', 'Mar', 'Apr', 'May', 'Jun', 'Jul', 'Aug', 'Sep', 'Oct', 'Nov', 'Dec'],
+                type: "time",
                 axisTick: {
                     alignWithLabel: true,
                 },
+                show: false
             },
+            {
+                type: "time",
+                axisTick: {
+                    alignWithLabel: true,
+                },
+                gridIndex: 1
+            }
         ],
         yAxis: [
             {
                 type: "value",
                 min: 0,
                 axisLabel: {
-                    formatter: "{value}",
+                    formatter: function (value) {
+                        return numFormatter(value, 0)
+                    }
+                },
+                axisPointer: {
+                    label: {
+                        backgroundColor: "#23C865",
+                        formatter: function (value) {
+                            return numFormatter(value, 0)
+                        },
+                    },
+                },
+            },
+            {
+                type: "value",
+                min: 0,
+                axisLabel: {
+                    formatter: function (value) {
+                        return numFormatter(value, 0)
+                    }
                 },
                 axisPointer: {
                     label: {
                         backgroundColor: "#23C865",
                     },
                 },
+                gridIndex: 1
             },
         ],
         series: [
             {
                 name: "Price",
                 type: "bar",
-                data: [12.6, 25.9, 19.0, 26.4, 28.7, 70.7, 75.6, 82.2, 48.7, 18.8, 46.0, 22.3],
+                data: amount,
+                xAxisIndex: 1,
+                yAxisIndex: 1,
+                barWidth: 30
             },
             {
                 name: "Volume",
                 type: "line",
                 smooth: "true",
                 showSymbol: false,
-                data: [120.0, 42.2, 113.3, 74.5, 86.3, 74.2, 120.3, 123.4, 93.0, 56.5, 112.0, 86.2],
+                data: total,
             },
         ],
     }

@@ -569,7 +569,7 @@ const Auction = () => {
                                                         }
                                                     }}
                                                 >
-                                                    Performance
+                                                    Histogram
                                                 </button>
                                             </div>
                                         )}
