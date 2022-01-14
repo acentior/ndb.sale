@@ -14,7 +14,7 @@ main.purchase-page {
                         font-size: 48px;
                         font-weight: 700;
                         text-transform: uppercase;
-                        margin-bottom: 1.5vw;               
+                        margin-bottom: 1.5vw;
                     }
                     h3.title2 {
                         margin-left: 5vw;
@@ -79,11 +79,16 @@ main.purchase-page {
                     div.hero-image {
                         width: 100%;
                         padding-top: 90%;
-                        background-image:
-                        linear-gradient(282.88deg, #1E1E1E 28.38%, rgba(30, 30, 30, 0.81) 44.4%, rgba(30, 30, 30, 0.35) 62.26%, rgba(30, 30, 30, 0) 78.81%),
+                        background-image: linear-gradient(
+                                282.88deg,
+                                #1e1e1e 28.38%,
+                                rgba(30, 30, 30, 0.81) 44.4%,
+                                rgba(30, 30, 30, 0.35) 62.26%,
+                                rgba(30, 30, 30, 0) 78.81%
+                            ),
                             url("/images/hero3.png");
-                            background-repeat: no-repeat;
-                            background-size: contain;
+                        background-repeat: no-repeat;
+                        background-size: contain;
                         img {
                             width: 100%;
                         }

@@ -1,4 +1,8 @@
 .home-page {
+    overflow-y: auto;
+    @include mq("phone", max) {
+        overflow-y: hidden;
+    }
     .menu {
         background-color: transparent;
     }
@@ -11,9 +15,15 @@
         align-items: center;
         text-align: center;
         .left-part {
-            padding-left: 8%;
+            padding-left: 0%;
+            @include mq("phone", min) {
+                padding-left: 8%;
+            }
             .tokens-lower-part {
                 width: max-content;
+                @include mq("phone", max) {
+                    width: 100%;
+                }
                 .cta {
                     margin-top: -20px;
                 }
@@ -31,6 +41,13 @@
                 line-height: 46px;
             }
         }
+        .home-title-mobile {
+            font-weight: bold;
+            font-size: 24px;
+            line-height: 29px;
+            font-variant: small-caps;
+            text-align: center;
+        }
         .token {
             &-left {
                 font-weight: 900;
@@ -43,6 +60,11 @@
                     font-size: 28px;
                     line-height: 35px;
                 }
+                @include mq("phone", max) {
+                    font-size: 20px;
+                    line-height: 25px;
+                    text-align: center;
+                }
             }
             &-value {
                 font-weight: bold;
@@ -53,6 +75,11 @@
                 @include mq("tablet", max) {
                     font-size: 78px;
                     line-height: 96px;
+                }
+                @include mq("phone", max) {
+                    font-size: 60px;
+                    line-height: 72px;
+                    text-align: center;
                 }
             }
         }
@@ -69,8 +96,6 @@
 }
 
 .countdown-wrapper {
-    display: flex;
-    justify-content: flex-end;
     .time-section {
         text-align: center;
         .time {
@@ -82,6 +107,10 @@
             @include mq("tablet", max) {
                 font-size: 37.8092px;
                 line-height: 46px;
+            }
+            @include mq("phone", max) {
+                font-size: 55px;
+                line-height: 60px;
             }
             &-text {
                 color: white;
