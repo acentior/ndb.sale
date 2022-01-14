@@ -3,16 +3,7 @@ import Header from "../components/header"
 import Select, { components } from "react-select"
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
 import { numberWithCommas } from "../utilities/number"
-import {
-    BTC,
-    DOGE,
-    ETH,
-    NDB,
-    Airdrop,
-    Address,
-    Copy2,
-    CloseIcon,
-} from "../utilities/imgImport"
+import { BTC, DOGE, ETH, NDB, Airdrop, Address, Copy2, CloseIcon } from "../utilities/imgImport"
 import { Link } from "gatsby"
 import Modal from "react-modal"
 import { CopyToClipboard } from "react-copy-to-clipboard"
@@ -24,6 +15,8 @@ import MarketTab from "../components/wallet/market-tab"
 import { TRANSACTION_TYPES } from "../utilities/staticData"
 import Transactions from "../components/wallet/transactions-tab"
 import ReferralTab from "../components/wallet/referral-tab"
+import StakeTab from "../components/wallet/stake-tab"
+import BidActivityTab from "../components/wallet/bid-activity-tab"
 
 const transactions = [
     {
@@ -185,73 +178,6 @@ const airdrops = [
         winners: 20,
     },
 ]
-const bids = [
-    {
-        name: "NDB Presale round 80",
-        date: "2021.05.02",
-        bid: 4500,
-    },
-    {
-        name: "NDB Presale round 80",
-        date: "2021.05.02",
-        bid: 4500,
-    },
-    {
-        name: "NDB Presale round 80",
-        date: "2021.05.02",
-        bid: 4500,
-    },
-    {
-        name: "NDB Presale round 80",
-        date: "2021.05.02",
-        bid: 4500,
-    },
-    {
-        name: "NDB Presale round 80",
-        date: "2021.05.02",
-        bid: 4500,
-    },
-    {
-        name: "NDB Presale round 80",
-        date: "2021.05.02",
-        bid: 4500,
-    },
-    {
-        name: "NDB Presale round 80",
-        date: "2021.05.02",
-        bid: 4500,
-    },
-    {
-        name: "NDB Presale round 80",
-        date: "2021.05.02",
-        bid: 4500,
-    },
-    {
-        name: "NDB Presale round 80",
-        date: "2021.05.02",
-        bid: 4500,
-    },
-    {
-        name: "NDB Presale round 55",
-        date: "2021.04.30",
-        bid: 360000,
-    },
-    {
-        name: "NDB Presale round 80",
-        date: "2021.05.02",
-        bid: 4500,
-    },
-    {
-        name: "NDB Presale round 55",
-        date: "2021.04.30",
-        bid: 360000,
-    },
-    {
-        name: "NDB Presale round 80",
-        date: "2021.05.02",
-        bid: 4500,
-    },
-]
 const coins = [
     { value: "eth", label: "Ethereum", icon: ETH },
     { value: "btc", label: "Bitcoin", icon: BTC },
@@ -350,179 +276,155 @@ const History = () => {
             <section className="container">
                 <div className="section-history row">
                     <div className="section-history__left col-lg-4 col-md-5">
-                        <Tabs>
-                            <TabList>
-                                <Tab className="react-tabs__tab col-6 text-center">wallet</Tab>
-                                <Tab className="react-tabs__tab col-6 text-center">
-                                    bid activity
-                                </Tab>
-                            </TabList>
-
-                            <TabPanel>
-                                <div className="d-flex justify-content-end">
-                                    <Link to="/" className="verify-link">
-                                        Get verified
-                                    </Link>
-                                </div>
-                                <div className="profile-value">
-                                    <h5>portfolio value </h5>
-                                    <div className="value-box">
-                                        <p className="value-label d-flex justify-content-between align-items-center">
-                                            <div className="d-flex align-items-center">
-                                                Equity Value (BTC)
-                                                {!hideValues && (
-                                                    <svg
-                                                        className="value-label-eye-icon"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        onClick={() => setHideValues(true)}
-                                                        viewBox="0 0 24 24"
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                    >
-                                                        <path
-                                                            stroke-linecap="round"
-                                                            stroke-linejoin="round"
-                                                            stroke-width="2"
-                                                            d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
-                                                        ></path>
-                                                    </svg>
-                                                )}
-                                                {hideValues && (
-                                                    <svg
-                                                        className="value-label-eye-icon"
-                                                        fill="none"
-                                                        stroke="currentColor"
-                                                        viewBox="0 0 24 24"
-                                                        onClick={() => setHideValues(false)}
-                                                        xmlns="http://www.w3.org/2000/svg"
-                                                    >
-                                                        <path
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            strokeWidth="2"
-                                                            d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
-                                                        ></path>
-                                                        <path
-                                                            strokeLinecap="round"
-                                                            strokeLinejoin="round"
-                                                            strokeWidth="2"
-                                                            d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
-                                                        ></path>
-                                                    </svg>
-                                                )}
-                                            </div>
-
-                                            <div className="d-flex gap-2">
-                                                <div
-                                                    className={`cursor-pointer ${btcOrUsd === "BTC" && "fw-bold text-white"
-                                                        }`}
-                                                    onClick={() => setBtcOrUsd("BTC")}
-                                                    onKeydown={() => setBtcOrUsd("BTC")}
-                                                    role="presentation"
+                        <div>
+                            <div className="profile-value">
+                                <div className="value-box">
+                                    <p className="value-label d-flex justify-content-between align-items-center">
+                                        <div className="d-flex align-items-center">
+                                            Equity Value (BTC)
+                                            {!hideValues && (
+                                                <svg
+                                                    className="value-label-eye-icon"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    onClick={() => setHideValues(true)}
+                                                    viewBox="0 0 24 24"
+                                                    xmlns="http://www.w3.org/2000/svg"
                                                 >
-                                                    BTC
-                                                </div>
-                                                <div>|</div>
-                                                <div
-                                                    className={`cursor-pointer ${btcOrUsd === "USD" && "fw-bold text-white"
-                                                        }`}
-                                                    onClick={() => setBtcOrUsd("USD")}
-                                                    onKeyDown={() => setBtcOrUsd("USD")}
-                                                    role="presentation"
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth="2"
+                                                        d="M13.875 18.825A10.05 10.05 0 0112 19c-4.478 0-8.268-2.943-9.543-7a9.97 9.97 0 011.563-3.029m5.858.908a3 3 0 114.243 4.243M9.878 9.878l4.242 4.242M9.88 9.88l-3.29-3.29m7.532 7.532l3.29 3.29M3 3l3.59 3.59m0 0A9.953 9.953 0 0112 5c4.478 0 8.268 2.943 9.543 7a10.025 10.025 0 01-4.132 5.411m0 0L21 21"
+                                                    ></path>
+                                                </svg>
+                                            )}
+                                            {hideValues && (
+                                                <svg
+                                                    className="value-label-eye-icon"
+                                                    fill="none"
+                                                    stroke="currentColor"
+                                                    viewBox="0 0 24 24"
+                                                    onClick={() => setHideValues(false)}
+                                                    xmlns="http://www.w3.org/2000/svg"
                                                 >
-                                                    USD
-                                                </div>
-                                            </div>
-                                        </p>
-                                        <p className="value">
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth="2"
+                                                        d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"
+                                                    ></path>
+                                                    <path
+                                                        strokeLinecap="round"
+                                                        strokeLinejoin="round"
+                                                        strokeWidth="2"
+                                                        d="M2.458 12C3.732 7.943 7.523 5 12 5c4.478 0 8.268 2.943 9.542 7-1.274 4.057-5.064 7-9.542 7-4.477 0-8.268-2.943-9.542-7z"
+                                                    ></path>
+                                                </svg>
+                                            )}
+                                        </div>
 
-                                            {hideValues ? obscureValueString : (btcOrUsd === "USD" ? dollarEquityValue : btcEquityValue)}
-                                        </p>
-                                        <p className="max-value mt-3">
-                                            {hideValues ? obscureValueString : ("~ $ " + (btcOrUsd === "USD" ? btcEquityValue : dollarEquityValue))}
-                                        </p>
-                                    </div>
-                                    <div className="btn-group d-flex justify-content-between mt-3 align-items-center">
-                                        <div className="col-sm-6 pe-2">
-                                            <button
-                                                className="btn btn-outline-light rounded-0 col-12 text-uppercase fw-bold py-2 h4"
-                                                onClick={() => {
-                                                    setTransactionType(TRANSACTION_TYPES.deposit)
-                                                    setShowDepositAndWidthdrawModal(true)
-                                                }}
+                                        <div className="d-flex gap-2">
+                                            <div
+                                                className={`cursor-pointer ${
+                                                    btcOrUsd === "BTC" && "fw-bold text-white"
+                                                }`}
+                                                onClick={() => setBtcOrUsd("BTC")}
+                                                onKeyDown={() => setBtcOrUsd("BTC")}
+                                                role="presentation"
                                             >
-                                                deposit
-                                            </button>
-                                        </div>
-                                        <div className="col-sm-6 ps-2">
-                                            <button
-                                                className="btn btn-outline-light rounded-0 col-12 text-uppercase fw-bold py-2 h4"
-                                                onClick={() => {
-                                                    setTransactionType(TRANSACTION_TYPES.withdraw)
-                                                    setShowDepositAndWidthdrawModal(true)
-                                                }}
+                                                BTC
+                                            </div>
+                                            <div>|</div>
+                                            <div
+                                                className={`cursor-pointer ${
+                                                    btcOrUsd === "USD" && "fw-bold text-white"
+                                                }`}
+                                                onClick={() => setBtcOrUsd("USD")}
+                                                onKeyDown={() => setBtcOrUsd("USD")}
+                                                role="presentation"
                                             >
-                                                withdraw
-                                            </button>
+                                                USD
+                                            </div>
                                         </div>
-                                        {showDepositAndWidthdrawModal && (
-                                            <DepositWithdrawModal
-                                                showModal={showDepositAndWidthdrawModal}
-                                                setShowModal={setShowDepositAndWidthdrawModal}
-                                                transactionType={transactionType}
-                                            />
-                                        )}
-                                    </div>
+                                    </p>
+                                    <p className="value">
+                                        {hideValues
+                                            ? obscureValueString
+                                            : btcOrUsd === "USD"
+                                            ? dollarEquityValue
+                                            : btcEquityValue}
+                                    </p>
+                                    <p className="max-value mt-3">
+                                        {hideValues
+                                            ? obscureValueString
+                                            : "~ $ " +
+                                              (btcOrUsd === "USD"
+                                                  ? btcEquityValue
+                                                  : dollarEquityValue)}
+                                    </p>
                                 </div>
-                                <table className="mt-3">
-                                    <tbody>
-                                        {my_assets.map((item, idx) => (
-                                            <tr key={idx}>
-                                                <td className="d-flex align-items-center ps-2">
-                                                    <img
-                                                        src={item.icon}
-                                                        alt="coin icon"
-                                                        className="me-2"
-                                                    />
-                                                    <div>
-                                                        <p className="coin-abbr text-light">
-                                                            {item.name}
-                                                        </p>
-                                                    </div>
-                                                </td>
-                                                <td>
-                                                    <p className="coin-price fw-bold">
-                                                        {item.amount} {item.abbr}
-                                                    </p>
-                                                    <p className="coin-percent">
-                                                        {numberWithCommas(item.price)}$
-                                                    </p>
-                                                </td>
-                                            </tr>
-                                        ))}
-                                    </tbody>
-                                </table>
-                            </TabPanel>
-                            <TabPanel>
-                                <ul className="bid-activity">
-                                    {bids.map((item, idx) => (
-                                        <li
-                                            className="d-flex align-items-center justify-content-between"
-                                            key={idx}
+                                <div className="btn-group d-flex justify-content-between mt-3 align-items-center">
+                                    <div className="col-sm-6 pe-2">
+                                        <button
+                                            className="btn btn-outline-light rounded-0 col-12 text-uppercase fw-bold py-2 h4"
+                                            onClick={() => {
+                                                setTransactionType(TRANSACTION_TYPES.deposit)
+                                                setShowDepositAndWidthdrawModal(true)
+                                            }}
                                         >
-                                            <div>
-                                                <p className="bid-name">{item.name}</p>
-                                                <p className="bid-date">{item.date}</p>
-                                            </div>
-                                            <p className="bid-price">
-                                                {numberWithCommas(item.bid)}
-                                                <span className="txt-green"> T</span>
-                                            </p>
-                                        </li>
+                                            deposit
+                                        </button>
+                                    </div>
+                                    <div className="col-sm-6 ps-2">
+                                        <button
+                                            className="btn btn-outline-light rounded-0 col-12 text-uppercase fw-bold py-2 h4"
+                                            onClick={() => {
+                                                setTransactionType(TRANSACTION_TYPES.withdraw)
+                                                setShowDepositAndWidthdrawModal(true)
+                                            }}
+                                        >
+                                            withdraw
+                                        </button>
+                                    </div>
+                                    {showDepositAndWidthdrawModal && (
+                                        <DepositWithdrawModal
+                                            showModal={showDepositAndWidthdrawModal}
+                                            setShowModal={setShowDepositAndWidthdrawModal}
+                                            transactionType={transactionType}
+                                        />
+                                    )}
+                                </div>
+                            </div>
+                            <table className="my-3">
+                                <tbody>
+                                    {my_assets.map((item, idx) => (
+                                        <tr key={idx}>
+                                            <td className="d-flex align-items-center ps-2">
+                                                <img
+                                                    src={item.icon}
+                                                    alt="coin icon"
+                                                    className="me-2"
+                                                />
+                                                <div>
+                                                    <p className="coin-abbr text-light">
+                                                        {item.name}
+                                                    </p>
+                                                </div>
+                                            </td>
+                                            <td>
+                                                <p className="coin-price fw-bold">
+                                                    {item.amount} {item.abbr}
+                                                </p>
+                                                <p className="coin-percent">
+                                                    {numberWithCommas(item.price)}$
+                                                </p>
+                                            </td>
+                                        </tr>
                                     ))}
-                                </ul>
-                            </TabPanel>
-                        </Tabs>
+                                </tbody>
+                            </table>
+                        </div>
                     </div>
                     <div className="section-history__right col-lg-8 col-md-7">
                         <Tabs onSelect={() => setState({ detail_show: false })}>
@@ -533,25 +435,25 @@ const History = () => {
                                     <Tab>referral</Tab>
                                     <Tab>airdrops</Tab>
                                     <Tab>transaction</Tab>
+                                    <Tab>bid activity</Tab>
                                 </TabList>
-                                <Link to="/" className="verify-link">
-                                    Get verified
-                                </Link>
                             </div>
                             <TabPanel>
                                 <MarketTab />
                             </TabPanel>
-
-                            <TabPanel></TabPanel>
+                            <TabPanel className="px-0">
+                                <StakeTab />
+                            </TabPanel>
                             <TabPanel>
                                 <ReferralTab />
                             </TabPanel>
                             <TabPanel>
                                 <table
-                                    className={`${detail_show &&
+                                    className={`${
+                                        detail_show &&
                                         (size.width > 1024 || size.width <= 576) &&
                                         "d-none"
-                                        }`}
+                                    }`}
                                 >
                                     <thead>
                                         <tr>
@@ -614,10 +516,10 @@ const History = () => {
                             <TabPanel>
                                 <Transactions />
                             </TabPanel>
+                            <TabPanel>
+                                <BidActivityTab />
+                            </TabPanel>
                         </Tabs>
-                        <div className="connect-external">
-                            <button className="btn-primary">CONNECT TO EXTERNAL WALLET</button>
-                        </div>
                     </div>
                 </div>
             </section>

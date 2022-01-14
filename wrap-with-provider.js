@@ -9,16 +9,8 @@ import { WalletConnectConnector } from 'wagmi/connectors/walletConnect'
 import { WalletLinkConnector } from 'wagmi/connectors/walletLink'
 
 import store from './src/redux/store';
-import { setCurrentAuthInfo } from "./src/redux/actions/authAction";
 import { INFURA_ID } from "./src/utilities/staticData"
-import { isBrowser } from './src/utilities/auth';
 
-if (isBrowser) {
-  if (localStorage.getItem('USER_DATA')) {
-    const authInfo = JSON.parse(localStorage.getItem('USER_DATA'));
-    store.dispatch(setCurrentAuthInfo(authInfo));
-  }
-}
 
 // API key for Ethereum node
 // Two popular services are Infura (infura.io) and Alchemy (alchemy.com)

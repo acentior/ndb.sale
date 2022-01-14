@@ -6,6 +6,7 @@ import Slider from "rc-slider"
 import Select from "react-select"
 import Modal from "react-modal"
 import ReactTooltip from "react-tooltip"
+
 import Header from "./header"
 import BidsChart1 from "./chart/BidsChart1"
 import RoundsChart1 from "./chart/RoundsChart1"
@@ -30,6 +31,7 @@ import { GET_ROUND_CHANCE, GET_ROUND_PERFORMANCE2 } from "../apollo/graghqls/que
 import {
     AUCTION_TOOLTIP_CONTENT1,
     AUCTION_TOOLTIP_CONTENT2,
+    NDB_TOKEN_CONTENT,
     Currencies,
 } from "../utilities/staticData"
 import {
@@ -40,11 +42,7 @@ import {
     isInbetween,
 } from "../utilities/number"
 import { User } from "../utilities/user-data"
-
-const ndb_token = `Since the beginning of NDB’s project the vision is to provide clean green technologies to the world. The NDB token is not a security token nor does it represent any shares of NDB SA.
-
-By using NDB token you will be able to contribute to the development of our technologies and our vision. We plan to expand our ecosystem to multiple areas including deep space exploration, sustainable fashion, quantum computing, and more. 
-`
+// import CurrencyConverter from "../utilities/currencyConverter"
 
 const options = [
     { value: "bid_performance", label: "BIDS PERFORMANCE" },
@@ -60,7 +58,7 @@ const Auction = () => {
         tabIndex: 0,
         amount: 1,
         price: 1,
-        isBid: true,
+        isBid: false,
         bidModal: false,
         show_chart: false,
         selectLabel: options[0],
@@ -151,16 +149,16 @@ const Auction = () => {
     ) //getSecTomorrow()
     const percentage = (distanceToDate / duration) * 100
 
-    const [PlaceBid] = useMutation(PLACE_BID, {
-        onCompleted: (data) => {
-            console.log("received Mutation data", data)
-            setState({ isBid: true })
-        },
-        onError: (err) => {
-            console.log("received Mutation data", err)
-            setState({ isBid: true })
-        },
-    })
+    // const [PlaceBid] = useMutation(PLACE_BID, {
+    //     onCompleted: (data) => {
+    //         console.log("received Mutation data", data)
+    //         setState({ isBid: true })
+    //     },
+    //     onError: (err) => {
+    //         console.log("received Mutation data", err)
+    //         setState({ isBid: true })
+    //     },
+    // })
 
     useEffect(() => {
         const id = setInterval(() => {
@@ -199,7 +197,7 @@ const Auction = () => {
                 </div>
                 <div className="row h-100">
                     <div
-                        className={`auction-left col-lg-4 col-md-5 ${
+                        className={`auction-left col-lg-4 col-md-5 position-relative ${
                             show_chart ? "d-none" : "d-block"
                         }`}
                     >
@@ -248,8 +246,13 @@ const Auction = () => {
                                     onSelect={(index) => setState({ tabIndex: index })}
                                 >
                                     <TabList>
-                                        <Tab>bids</Tab>
-                                        <Tab data-for="tooltip2">statistics</Tab>
+                                        <Tab onClick={() => setState({ isBid: false })}>bids</Tab>
+                                        <Tab
+                                            data-for="tooltip2"
+                                            onClick={() => setState({ isBid: true })}
+                                        >
+                                            statistics
+                                        </Tab>
                                         <ReactTooltip
                                             place="right"
                                             type="light"
@@ -280,7 +283,14 @@ const Auction = () => {
                                                         <td>{idx + 1}</td>
                                                         <td>
                                                             {item.totalPrice}
-                                                            <span className="txt-green"> $</span>
+                                                            <span className="txt-green">
+                                                                {" "}
+                                                                {
+                                                                    Currencies[
+                                                                        User.selectedCurrencyId
+                                                                    ].symbol
+                                                                }
+                                                            </span>
                                                         </td>
                                                     </tr>
                                                 ))}
@@ -288,7 +298,7 @@ const Auction = () => {
                                         </table>
                                     </TabPanel>
                                     <TabPanel>
-                                        <p className="text">{ndb_token}</p>
+                                        <p className="text">{NDB_TOKEN_CONTENT}</p>
                                     </TabPanel>
                                 </Tabs>
                                 {isInbetween(
@@ -299,59 +309,6 @@ const Auction = () => {
                                         percentage={percentage}
                                         round={fnSelectedRoundData()}
                                     />
-                                )}
-                                <div className="d-flex justify-content-between mt-4">
-                                    {fnAverateMinBid() !== 0 ? (
-                                        <div>
-                                            <p className="caption">Minimum bid</p>
-                                            <p className="value">
-                                                {fnAverateMinBid()}
-                                                <span className="txt-green"> $</span>{" "}
-                                            </p>
-                                        </div>
-                                    ) : (
-                                        <div></div>
-                                    )}
-                                    <div>
-                                        <p className="caption">Available Until</p>
-                                        <p className="value">
-                                            {numberWithLength(
-                                                parseInt(
-                                                    new Date(
-                                                        fnSelectedRoundData()?.endedAt
-                                                    ).getHours()
-                                                )
-                                            )}
-                                            :
-                                            {numberWithLength(
-                                                parseInt(
-                                                    new Date(
-                                                        fnSelectedRoundData()?.endedAt
-                                                    ).getMinutes()
-                                                )
-                                            )}
-                                            :
-                                            {numberWithLength(
-                                                parseInt(
-                                                    new Date(
-                                                        fnSelectedRoundData()?.endedAt
-                                                    ).getSeconds()
-                                                )
-                                            )}
-                                        </p>
-                                    </div>
-                                </div>
-                                {size.width <= 1024 && (
-                                    <div className="text-center my-5">
-                                        <button
-                                            className="btn-primary btn-increase"
-                                            onClick={() => {
-                                                setState({ bidModal: true })
-                                            }}
-                                        >
-                                            {!isBid ? "Place Bid" : "Increase bid"}
-                                        </button>
-                                    </div>
                                 )}
                             </div>
                             <div className="d-none d-md-block mt-5">
@@ -380,6 +337,66 @@ const Auction = () => {
                                     style={{ cursor: "pointer" }}
                                 />
                             </div>
+                        </div>
+                        {/* <CurrencyConverter /> */}
+                        <div
+                            className="position-absolute"
+                            style={{ bottom: "20%", width: "calc(100% - 24px)" }}
+                        >
+                            <div className="d-flex justify-content-between mt-4">
+                                {fnAverateMinBid() !== 0 ? (
+                                    <div>
+                                        <p className="caption">Minimum bid</p>
+                                        <p className="value">
+                                            {fnAverateMinBid()}
+                                            <span className="txt-green">
+                                                {" "}
+                                                {Currencies[User.selectedCurrencyId].symbol}
+                                            </span>{" "}
+                                        </p>
+                                    </div>
+                                ) : (
+                                    <div></div>
+                                )}
+                                <div>
+                                    <p className="caption">Available Until</p>
+                                    <p className="value">
+                                        {numberWithLength(
+                                            parseInt(
+                                                new Date(fnSelectedRoundData()?.endedAt).getHours()
+                                            )
+                                        )}
+                                        :
+                                        {numberWithLength(
+                                            parseInt(
+                                                new Date(
+                                                    fnSelectedRoundData()?.endedAt
+                                                ).getMinutes()
+                                            )
+                                        )}
+                                        :
+                                        {numberWithLength(
+                                            parseInt(
+                                                new Date(
+                                                    fnSelectedRoundData()?.endedAt
+                                                ).getSeconds()
+                                            )
+                                        )}
+                                    </p>
+                                </div>
+                            </div>
+                            {size.width <= 1024 && (
+                                <div className="text-center my-5">
+                                    <button
+                                        className="btn-primary btn-increase"
+                                        onClick={() => {
+                                            setState({ bidModal: true })
+                                        }}
+                                    >
+                                        {!isBid ? "Place Bid" : "Increase bid"}
+                                    </button>
+                                </div>
+                            )}
                         </div>
                     </div>
 
@@ -497,7 +514,7 @@ const Auction = () => {
                                         <div className="d-flex align-items-center pt-3 w-100 ">
                                             <button
                                                 className={`btn-small ${
-                                                    pricce ? "btn-disabled" : ""
+                                                    pricce ? "" : "btn-disabled"
                                                 }`}
                                                 onClick={() => {
                                                     if (!pricce) {
@@ -511,7 +528,7 @@ const Auction = () => {
                                             </button>
                                             <button
                                                 className={`btn-small ${
-                                                    volume ? "btn-disabled" : ""
+                                                    volume ? "" : "btn-disabled"
                                                 }`}
                                                 onClick={() => {
                                                     if (!volume) {
@@ -525,7 +542,7 @@ const Auction = () => {
                                             </button>
                                             <button
                                                 className={`btn-small ${
-                                                    price_volume ? "btn-disabled" : ""
+                                                    price_volume ? "" : "btn-disabled"
                                                 }`}
                                                 onClick={() => {
                                                     if (!price_volume) {
@@ -543,7 +560,7 @@ const Auction = () => {
                                         <div className="d-flex align-items-center pt-3 w-100 ">
                                             <button
                                                 className={`btn-small ${
-                                                    reser_price ? "btn-disabled" : ""
+                                                    reser_price ? "" : "btn-disabled"
                                                 }`}
                                                 onClick={() => {
                                                     if (!reser_price) {
@@ -557,7 +574,7 @@ const Auction = () => {
                                             </button>
                                             <button
                                                 className={`btn-small ${
-                                                    sold_price ? "btn-disabled" : ""
+                                                    sold_price ? "" : "btn-disabled"
                                                 }`}
                                                 onClick={() => {
                                                     if (!sold_price) {
@@ -571,7 +588,7 @@ const Auction = () => {
                                             </button>
                                             <button
                                                 className={`btn-small ${
-                                                    performance ? "btn-disabled" : ""
+                                                    performance ? "" : "btn-disabled"
                                                 }`}
                                                 onClick={() => {
                                                     if (!performance) {

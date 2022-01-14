@@ -234,7 +234,7 @@ const IndexPage = () => {
                     )}
                     {currentStep === 3 && (
                         <>
-                            <div className="input_div">
+                            <div className="input_div custom_scrollbar">
                                 {showError? (taskDataError.item? <Alert severity="error">{taskDataError.desc}</Alert>: <Alert severity="success">Success! Please click Next Button</Alert>): ''}
                                 {taskData.map((task, index) => {
                                     return (

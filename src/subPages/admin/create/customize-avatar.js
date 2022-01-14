@@ -342,5 +342,9 @@ const customSelectStyles = {
     singleValue: provided => ({
         ...provided,
         color: 'white',
+    }),
+    input: provided => ({
+        ...provided,
+        color: 'white'
     })
 };

@@ -35,6 +35,8 @@ exports.onCreateWebpackConfig = ({ stage, loaders, actions, plugins }) => {
         })
     }
     actions.setWebpackConfig({
-        plugins: [plugins.provide({ Buffer: ['buffer/', 'Buffer'] })]
-    })
+        plugins: [plugins.provide({
+            Buffer: ['buffer/', 'Buffer'],
+        })]
+    });
 };

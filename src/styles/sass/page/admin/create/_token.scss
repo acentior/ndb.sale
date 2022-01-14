@@ -1,0 +1,161 @@
+main.create-token-page {
+    .container {
+        @include mq("laptop-wide", max) {
+            max-width: 95%;
+        }
+        @include mq("phone", max) {
+            max-width: 100%;
+        }
+    }       
+    section.home {
+        div.container {
+            display: flex;
+            height: 80vh;
+            justify-content: center;
+            align-items: center;
+            @include mq('phone', max) {
+                height: auto;
+                overflow: auto;
+            }
+        }
+        div.createDiv {
+            width: 80%;
+            border: 1px solid #ffffff;   
+            padding: 24px;
+            position: relative;
+            margin-bottom: 20px;
+            height: 410px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            a.close {
+                position: absolute;
+                font-size: 25px;
+                top: 20px;
+                right: 20px;
+            }
+            p.subtitle {
+                font-size: 20px;
+                font-weight: 500;
+                margin-bottom: 10px;
+            }
+            @include mq("tablet", max) {
+                width: 90%;
+            }  
+            @include mq("phone", max) {
+                width: 100%;
+                height: 100vh;
+                border: none;
+                display: block;
+                a.close {
+                    display: none;
+                }
+                p.subtitle {
+                    text-align: center;
+                }
+            }  
+            div.input_div {
+                width: 80%;
+                margin: auto;
+                div.div1 {
+                    display: flex;
+                    flex-direction: row; 
+                    justify-content: space-between;
+                    &>div {
+                        width: 49%;                       
+                    }
+                }
+                div.upload {
+                    height: 38px;
+                    border: 1px solid #cccccc;
+                    display: flex;
+                    padding: 10px;
+                    align-items: center;
+                    justify-content: space-between;
+                    p {
+                        padding: 0;
+                    }
+                    p.file_name {
+                        width: 80%;
+                        font-size: 14px;
+                        font-weight: 400;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                    p.upload_btn {
+                        font-size: 24px;
+                        svg {cursor: pointer;}
+                    }
+                }
+                div.preview-icon {
+                    div {
+                        width: 120px;
+                        height: 120px;
+                        border: 1px dotted #cccccc;
+                        margin: auto;
+                        display: flex;
+                        justify-content: center;
+                        svg {
+                            width: 70%;
+                            height: auto;
+                        }
+                    }
+                    @include mq('phone', max) {
+                        margin-top: 20px;
+                    }
+                }
+                p {
+                    font-size: 12px;
+                    font-weight: 600;
+                    padding-bottom: 5px;
+                    &.desc {
+                        font-weight: 400;
+                        word-wrap: break-word;
+                    }
+                }
+                @include mq("laptop", max) {
+                    width: 100%;
+                }  
+                @include mq("phone", max) {
+                    div.div1 {
+                        display: flex;
+                        flex-direction: column;     
+                        &>div {
+                            width: 100%; 
+                            margin: 0;
+                            margin-top: 20px;                     
+                        }
+                    }
+                }
+            }
+            div.button_div {
+                display: flex;
+                justify-content: space-between;
+                margin-top: 30px;
+                .previous {
+                    font-size: 14px;
+                    font-weight: 500;
+                    color: black;
+                    background-color: #ffffff;
+                    cursor: pointer;
+                    padding: 7px 15px;
+                    &:hover {
+                        border: 1px solid $green;
+                    }
+                }
+                .next {
+                    font-size: 14px;
+                    font-weight: 500;
+                    background-color: $green;
+                    color: white;
+                    cursor: pointer;
+                    padding: 7px 15px;
+                    &:hover {
+                        color: black;
+                    }
+                }
+            }
+        }        
+    } 
+}

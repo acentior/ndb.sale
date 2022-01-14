@@ -1,8 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
+import { useQuery } from "@apollo/client";
 // Libraries
 import { Link } from "gatsby"
-
+import { isBrowser } from './../../utilities/auth';
 // Icons
 import { Bell, Logo } from "../../utilities/imgImport"
 import { User } from "../../utilities/user-data"
@@ -11,18 +12,29 @@ import { useAuth } from "../../hooks/useAuth"
 import DressupModal from "../dressup/dressup-modal"
 import { ROUTES } from "../../utilities/routes"
 import CurrencyChoice from "./currency-choice"
-import SaleCTA from "./sale-cta"
 import { fetch_Avatar_Components } from './../../redux/actions/avatarAction';
+import { GET_USER } from "../../apollo/graghqls/querys/Auth";
+import { setCurrentAuthInfo } from "../../redux/actions/authAction";
 
 const Menu = () => {
     const dispatch = useDispatch();
-    // Fetch avatarComponents Data from backend    
+    const { user, isAuthenticated } = useSelector(state => state.auth);
+    const { avatarComponents } = useSelector(state => state);
+
+    const { data: user_data } = useQuery(GET_USER);
+    const userInfo = user_data?.getUser;
+    // Fetch avatarComponents Data from backend
     useEffect(() => {
-        dispatch(fetch_Avatar_Components());
-    }, [dispatch]);
+        if(!avatarComponents.loaded) {
+            dispatch(fetch_Avatar_Components());
+        }
+        if(!isAuthenticated && userInfo) {
+            dispatch(setCurrentAuthInfo(userInfo));
+        }
+    }, [dispatch, userInfo, avatarComponents.loaded, isAuthenticated]);
+
 
     const auth = useAuth()
-    const { user } = useSelector((state) => state.auth)
 
     // State
     const [isDressUPModalOpen, setIsDressUPModalOpen] = useState(false)
@@ -77,8 +89,18 @@ const Menu = () => {
                     {typeof window !== `undefined` &&
                         (window.location.pathname === ROUTES.profile ||
                             window.location.pathname === ROUTES.faq ||
-                            window.location.pathname === ROUTES.wallet) && (
-                            <>
+                            window.location.pathname === ROUTES.wallet ||
+                            window.location.pathname === ROUTES.auction ||
+                            window.location.pathname.includes(ROUTES.admin)) && (
+                            <div className="d-none d-sm-flex justify-content-between gap-5">
+                                <Link
+                                    to={ROUTES.auction}
+                                    className={`${
+                                        window.location.pathname === ROUTES.auction && "txt-green"
+                                    }`}
+                                >
+                                    sale
+                                </Link>
                                 <Link
                                     to={ROUTES.wallet}
                                     className={`${
@@ -111,21 +133,23 @@ const Menu = () => {
                                 >
                                     faq
                                 </Link>
-                                {user.role && user.role.includes("ROLE_ADMIN") && (
+                                {user.role && user.role.includes("ROLE_ADMIN") ? (
                                     <Link
                                         to={ROUTES.admin}
                                         className={`${
-                                            window.location.pathname === ROUTES.admin && "txt-green"
+                                            window.location.pathname.includes(ROUTES.admin) &&
+                                            "txt-green"
                                         }`}
                                     >
                                         admin
                                     </Link>
+                                ) : (
+                                    ""
                                 )}
-                            </>
+                            </div>
                         )}
                 </div>
                 <div className="d-flex align-items-center">
-                    <SaleCTA />
                     <div>
                         {!auth?.isLoggedIn() ? (
                             <Link
@@ -136,10 +160,10 @@ const Menu = () => {
                             </Link>
                         ) : (
                             <ul className="d-flex align-items-center">
-                                <li className="">
+                                <li className="scale-75">
                                     <img src={Bell} alt="Bell Icon" />
                                 </li>
-                                <li className="px-3">
+                                <li className="px-sm-3 px-0 scale-75">
                                     <Link to={ROUTES.profile}>
                                         <img
                                             src={User.avatar}
@@ -155,7 +179,7 @@ const Menu = () => {
                             </ul>
                         )}
                     </div>
-                    <CurrencyChoice />
+                    {isBrowser && window.innerWidth > 576 && <CurrencyChoice />}
                     <button
                         type="button"
                         className="menu__toggler"

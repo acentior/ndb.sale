@@ -5,14 +5,13 @@ import { numberSign, numberWithCommas, numFormatter } from "../../utilities/numb
 import icons from "base64-cryptocurrency-icons"
 import { Icon } from "@iconify/react"
 import ReactECharts from "echarts-for-react"
-import useWebSocket, { ReadyState } from "react-use-websocket"
-import CustomSpinner from "../common/custom-spinner"
+import { useState } from "react"
 
 const QUOTE = "USDT"
 
-const SOCKET_ENDPOINT = "wss://stream.binance.com:9443/stream"
-
 const KLINE_ENDPOINT = "https://api.binance.com/api/v3/klines"
+
+const TICKER_24hr = "https://api.binance.com/api/v3/ticker/24hr"
 
 const KLINE_INTERVAL = "1h"
 
@@ -56,9 +55,11 @@ const CryptoRow = ({ data }) => {
     const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
         chart: [],
         min: 0,
+        percent: "",
+        price: "",
+        volume: "",
     })
-
-    const { chart, min } = state
+    const { chart, min, price, percent, volume } = state
 
     useEffect(() => {
         axios
@@ -78,30 +79,30 @@ const CryptoRow = ({ data }) => {
                     chart: data,
                 })
             })
-    }, [data.abbr])
-
-    const { sendJsonMessage, lastJsonMessage, readyState } = useWebSocket(SOCKET_ENDPOINT)
-
-    const percent = lastJsonMessage?.data?.P
-    const price = lastJsonMessage?.data?.c
-    const volume = numFormatter(lastJsonMessage?.data?.q, 2)
-
-    useEffect(() => {
-        if (readyState !== ReadyState.OPEN) return
-        sendJsonMessage({
-            method: "SUBSCRIBE",
-            params: [`${data.abbr.toLowerCase()}usdt@ticker`],
-            id: 1,
-        })
-    }, [readyState, sendJsonMessage, data.abbr])
+        const getTicker24hr = () => {
+            axios.get(TICKER_24hr, { params: { symbol: data.abbr + QUOTE } }).then((res) => {
+                setState({
+                    price: numberWithCommas(res.data.lastPrice),
+                    percent: res.data.priceChangePercent,
+                    volume: numFormatter(res.data.quoteVolume, 2),
+                })
+            })
+        }
+        getTicker24hr()
+        setInterval(() => {
+            getTicker24hr()
+        }, 5000)
+    }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (
         <tr>
             <td className="d-flex align-items-start ps-2">
-                <Icon
-                    icon="bx:bxs-star"
-                    className={`star-checkbox ${data.active ? "txt-green" : "txt-grey"}`}
-                />
+                <div>
+                    <Icon
+                        icon="bx:bxs-star"
+                        className={`star-checkbox ${data.active ? "txt-green" : "txt-grey"}`}
+                    />
+                </div>
                 <img src={icons[data.abbr]?.icon} alt="coin" className="me-2" width="30" />
                 <div>
                     <p className="coin-abbr">{data.abbr}</p>
@@ -109,13 +110,7 @@ const CryptoRow = ({ data }) => {
                 </div>
             </td>
             <td>
-                {!price ? (
-                    <div className="loading">
-                        <CustomSpinner />
-                    </div>
-                ) : (
-                    <p className="coin-price">${numberWithCommas(price)}</p>
-                )}
+                <p className="coin-price">${price}</p>
                 <p
                     className={
                         numberSign(percent) === "+"
@@ -167,8 +162,9 @@ const CryptoRow = ({ data }) => {
 }
 
 export default function MarketTab() {
+    const [searchValue, setSearchValue] = useState("")
     return (
-        <table>
+        <table className="wallet-transaction-table">
             <thead>
                 <tr>
                     <th>Name</th>
@@ -179,12 +175,38 @@ export default function MarketTab() {
                 </tr>
             </thead>
             <div className="search">
-                <Icon icon="akar-icons:search" color="white" className="search-icon" />
+                <svg
+                    class="search-icon text-light"
+                    fill="none"
+                    stroke="currentColor"
+                    viewBox="0 0 24 24"
+                    xmlns="http://www.w3.org/2000/svg"
+                >
+                    <path
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        stroke-width="2"
+                        d="M21 21l-6-6m2-5a7 7 0 11-14 0 7 7 0 0114 0z"
+                    ></path>
+                </svg>
+                <input
+                    type="text"
+                    placeholder="Search"
+                    className="bg-transparent text-secondary w-100 border-0"
+                    value={searchValue}
+                    onChange={(e) => setSearchValue(e.target.value)}
+                />
             </div>
-            <tbody>
-                {market_data.map((item, idx) => (
-                    <CryptoRow data={item} key={idx} />
-                ))}
+            <tbody className="pe-3">
+                {market_data
+                    .filter(
+                        (item) =>
+                            item.name.toLowerCase().includes(searchValue.toLowerCase()) ||
+                            item.abbr.toLowerCase().includes(searchValue.toLowerCase())
+                    )
+                    .map((item, idx) => (
+                        <CryptoRow data={item} key={idx} />
+                    ))}
             </tbody>
         </table>
     )

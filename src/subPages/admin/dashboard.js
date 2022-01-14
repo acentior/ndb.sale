@@ -22,8 +22,8 @@ const IndexPage = () => {
                             <Icon icon="grommet-icons:basket" />
                             Direct purchase round
                         </Link>
-                        <Link className="select-item" to="/admin/create/auction">
-                            <Icon icon="ant-design:user-add-outlined" />
+                        <Link className="select-item" to="/admin/create/user">
+                            <Icon icon="carbon:user-follow" />
                             User
                         </Link>
                         <Link className="select-item" to="/admin/create/auction">
@@ -35,12 +35,16 @@ const IndexPage = () => {
                             Avatar customization
                         </Link>
                         <Link className="select-item" to="/admin/create/avatar">
-                            <Icon icon="clarity:avatar-line" />
+                            <Icon icon="bx:bxs-user-rectangle" />
                             Avatar
                         </Link>
                         <Link className="select-item" to="/admin/create/email">
                             <Icon icon="ant-design:mail-outlined" />
                             Email
+                        </Link>
+                        <Link className="select-item" to="/admin/create/token">
+                            <Icon icon="ic:outline-generating-tokens" />
+                            Token
                         </Link>
                     </div> 
                 </LayoutWithMenu>

@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from "react"
-import { useDispatch } from "react-redux";
 import Header from "../components/header"
 import FigureItem from "../components/FigureItem"
 import { CloseIcon, Trees } from "../utilities/imgImport"
@@ -15,7 +14,6 @@ import { SET_AVATAR } from "../apollo/graghqls/mutations/Auth"
 import { useMutation, useQuery } from "@apollo/client"
 import { GET_USER } from "../apollo/graghqls/querys/Auth"
 import CustomSpinner from "../components/common/custom-spinner"
-import { setCurrentAuthInfo } from "../redux/actions/authAction";
 
 const SelectFigure = () => {
     const { data: user_data } = useQuery(GET_USER)
@@ -27,7 +25,6 @@ const SelectFigure = () => {
     const [modalIsOpen, setIsOpen] = useState(false)
     const [searchValue, setSearchValue] = useState("")
     const [randomName, setRandomName] = useState(figures[selectedId].lastname)
-    const dispatch = useDispatch();
 
     // Queries and Mutations
     const [setAvatar] = useMutation(SET_AVATAR, {

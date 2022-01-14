@@ -3,11 +3,13 @@ import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 
 import Seo from "./../../components/seo";
 import LayoutWithMenu from "../../components/admin/LayoutWithMenu";
+import PaginationBar from "../../components/admin/PaginationBar";
 import SocialTable from '../../components/admin/setting/SocialTable';
 import GeoTable from "../../components/admin/setting/GeoTable";
 import KYCTabPanel from "../../components/admin/setting/KYCTabPanel";
 import AMLTabPanel from "../../components/admin/setting/AMLTabPanel";
 import AvatarTabPanel from "../../components/admin/setting/AvatarTabPanel";
+import TokenTabPanel from "../../components/admin/setting/TokenTabPanel";
 import UserTiersPanel from "../../components/admin/setting/UserTiersPanel";
 import TasksTabPanel from "../../components/admin/setting/TasksTabPanel";
 
@@ -42,6 +44,7 @@ const IndexPage = () => {
                                 <Tab>KYC</Tab>
                                 <Tab>AML</Tab>
                                 <Tab>Avatar</Tab>
+                                <Tab>Token</Tab>
                                 <Tab>User Tiers</Tab>
                                 <Tab>Tasks</Tab>
                             </TabList>
@@ -59,6 +62,10 @@ const IndexPage = () => {
                             </TabPanel>
                             <TabPanel>
                                 <AvatarTabPanel />
+                            </TabPanel>
+                            <TabPanel>
+                                <TokenTabPanel />
+                                <PaginationBar />
                             </TabPanel>
                             <TabPanel>
                                 <UserTiersPanel />

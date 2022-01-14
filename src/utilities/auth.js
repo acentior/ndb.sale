@@ -1,5 +1,4 @@
-import decode from "jwt-decode"
-
+import decode from "jwt-decode";
 
 let inMemoryAuthTokenDefault = {
   authToken: null,

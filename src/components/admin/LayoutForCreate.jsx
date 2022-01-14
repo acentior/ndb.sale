@@ -1,10 +1,10 @@
 import React from 'react';
-import AdminHeader from './AdminHeader';
+import Header from './../header';
 
 const LayoutForCreate = ({children}) => {
     return (
         <>
-            <AdminHeader />
+            <Header />
             <section className="home">
                 <div className="container">                        
                     <div className="createDiv">

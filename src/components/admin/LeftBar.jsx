@@ -5,7 +5,7 @@ import { Icon } from '@iconify/react';
 const LeftBar = () => {
   return (
     <div className="admin-left_bar">
-      <Link id="link-create" to="/admin">
+      <Link id="link-create" to="/admin/">
           <p className="icon"><Icon icon="akar-icons:plus" /></p>
           <p className="desc">Create</p>
       </Link>

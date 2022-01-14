@@ -34,6 +34,21 @@
         @include mq("tablet", max) {
             padding: 0;
         }
+        button {
+            margin-top: 10px;
+        }
+        .connected {
+            border: 1px solid #23c865;
+            padding: 10px;
+            p {
+                color: #23c865;
+                margin: 10px 0;
+            }
+            img {
+                margin: 10px 0;
+                width: 90px;
+            }
+        }
         .react-tabs__tab-list {
             @include mq("tablet", max) {
                 display: none;
@@ -42,22 +57,27 @@
             justify-content: space-between;
             align-items: center;
             border: none;
-            margin-bottom: 0px;
+            margin-bottom: 10px;
         }
         &-list {
             font-weight: 600;
-            font-size: 18px;
-            line-height: 29px;
-            padding: 8px 3px;
+            font-size: 16px;
+            height: 50px;
+            padding: 0 3px;
             border: 1px solid white;
-            &[aria-selected="false"] {
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            label {
+                color: black;
+            }
+            &[aria-selected="false"] label {
                 color: rgba(255, 255, 255, 0.5);
             }
             text-transform: uppercase;
             cursor: pointer;
             @include mq("laptop-wide", max) {
                 font-size: 12px;
-                padding: 8px 0px;
             }
             @include mq("laptop", max) {
                 font-size: 12px;
@@ -273,7 +293,7 @@
                 height: 100%;
                 padding-top: 15px;
                 padding-bottom: 15px;
-                border: 2px solid #525252;
+                border: 1px solid white;
                 img {
                     margin-bottom: 12px;
                     width: 32px;
@@ -287,11 +307,16 @@
                     font-weight: 500;
                     font-size: 16px;
                     line-height: 20px;
-                    color: #8f8f8f;
+                    color: white;
                 }
-                &.active {
-                    background-color: white;
-                    border-color: white;
+                &.inactive {
+                    border-color: grey;
+                    p {
+                        color: grey;
+                    }
+                    img {
+                        opacity: 0.5;
+                    }
                 }
             }
         }
@@ -456,5 +481,5 @@
     display: flex;
     height: 274px;
     flex-direction: column;
-    justify-content: flex-end;
+    justify-content: center;
 }

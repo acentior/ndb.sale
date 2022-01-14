@@ -1,11 +1,11 @@
 import React from "react";
-import AdminHeader from "./AdminHeader";
+import Header from "./../header";
 import LeftBar from "./LeftBar";
 
 const LayoutWithMenu = ({children}) => {
     return (
         <>
-            <AdminHeader />
+            <Header />
             <section className="home">
                 <div className="container">
                     <div className="row">

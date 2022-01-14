@@ -3,16 +3,16 @@ import React from "react"
 export default function Transactions() {
     return (
         <table className="wallet-transaction-table">
-            <thead>
+            <thead className="border-0">
                 <tr>
                     <th>ID</th>
                     <th>Date</th>
                     <th>Type</th>
                     <th className="text-end">Amount</th>
-                    <th className="text-end">Status</th>
+                    <th className="text-center">Status</th>
                 </tr>
             </thead>
-            <tbody>
+            <tbody className="pe-3">
                 {[...Array(15).keys()].map((item) => (
                     <tr>
                         <td className="fw-bold text-success">BSNQ4X</td>
@@ -27,7 +27,7 @@ export default function Transactions() {
                             <br />
                             <div className="text-secondary fw-bold mt-1 fs-16px">NDB</div>
                         </td>
-                        <td className="d-flex align-items-center justify-content-end">
+                        <td className="d-flex align-items-center justify-content-center">
                             <div className="green-bullet me-2"></div>
                             <div>Success</div>
                         </td>

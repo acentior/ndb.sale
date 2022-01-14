@@ -1,5 +1,7 @@
 .history-page {
     background-color: $black;
+    margin-bottom: 1rem;
+    margin-top: -1rem;
     .menu {
         border-bottom: 2px solid #464646;
     }
@@ -185,32 +187,7 @@
                 }
                 &__tab-panel {
                     margin-top: 24px;
-                    .bid-activity {
-                        @include custom-scroll(250px);
-                        li {
-                            padding: 19px 0;
-                            border-bottom: 1px solid $green;
-                        }
-                        .bid {
-                            &-name {
-                                font-size: 13px;
-                                line-height: 16px;
-                                color: white;
-                            }
-                            &-date {
-                                font-size: 10px;
-                                line-height: 12px;
-                                color: #8e8e8e;
-                            }
-                            &-price {
-                                font-weight: 500;
-                                font-size: 15px;
-                                line-height: 18px;
-                                letter-spacing: 0.01em;
-                                color: white;
-                            }
-                        }
-                    }
+
                     h5 {
                         font-weight: bold;
                         font-size: 18px;
@@ -218,37 +195,7 @@
                         letter-spacing: 0.04em;
                         text-transform: uppercase;
                     }
-                    .profile-value {
-                        .value-box {
-                            margin-top: 16px;
-                            background: rgba(43, 43, 43, 0.5);
-                            padding: 24px 12px;
-                        }
-                        .value-label {
-                            font-size: 17px;
-                            color: #5e5e5e;
-                            .value-label-eye-icon {
-                                width: 22px;
-                                height: 22px;
-                                color: #666666;
-                                margin-left: 10px;
-                                cursor: pointer;
-                                transition: 500ms;
-                                &:hover {
-                                    color: #5e5e5e;
-                                }
-                            }
-                        }
-                        .value {
-                            font-size: 40px;
-                            line-height: 54px;
-                        }
-                        .max-value {
-                            font-size: 15px;
-                            line-height: 18px;
-                            color: #959595;
-                        }
-                    }
+
                     .transaction {
                         border-bottom: 2px solid #464646;
                         padding: 16px 0;
@@ -377,7 +324,7 @@
                 width: 100%;
                 .search {
                     display: flex;
-                    justify-content: flex-end;
+                    justify-content: flex-start;
                     .search-icon {
                         margin: 12px;
                         width: 20px;
@@ -428,6 +375,7 @@
                     display: block;
                     tr {
                         border-top: 2px solid #464646;
+
                         td {
                             padding-top: 24px;
                             padding-bottom: 16px;
@@ -934,5 +882,90 @@
         font-size: 24px;
         padding: 10px 60px;
         margin-top: 50px;
+    }
+}
+
+.stake-duration {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 5px;
+    & > div {
+        background-color: rgba(255, 255, 255, 0.1);
+        padding: 6px 8px;
+        cursor: pointer;
+    }
+    .active-duration {
+        border: 2px solid $green;
+    }
+}
+.clock-icon {
+    width: 20px;
+    height: 20px;
+}
+
+.circle-light {
+    width: 20px;
+    height: 20px;
+    background-color: #c4c4c4;
+    border-radius: 50%;
+}
+
+.profile-value {
+    .value-box {
+        margin-top: 16px;
+        background: rgba(43, 43, 43, 0.5);
+        padding: 16px 12px;
+    }
+    .value-label {
+        font-size: 17px;
+        color: #5e5e5e;
+        .value-label-eye-icon {
+            width: 22px;
+            height: 22px;
+            color: #666666;
+            margin-left: 10px;
+            cursor: pointer;
+            transition: 500ms;
+            &:hover {
+                color: #5e5e5e;
+            }
+        }
+    }
+    .value {
+        font-size: 40px;
+        line-height: 54px;
+    }
+    .max-value {
+        font-size: 15px;
+        line-height: 18px;
+        color: #959595;
+    }
+}
+
+.bid-activity {
+    @include custom-scroll(250px);
+    li {
+        padding: 19px 0;
+        border-bottom: 1px solid $green;
+    }
+    .bid {
+        &-name {
+            font-size: 13px;
+            line-height: 16px;
+            color: white;
+        }
+        &-date {
+            font-size: 10px;
+            line-height: 12px;
+            color: #8e8e8e;
+        }
+        &-price {
+            font-weight: 500;
+            font-size: 15px;
+            line-height: 18px;
+            letter-spacing: 0.01em;
+            color: white;
+        }
     }
 }

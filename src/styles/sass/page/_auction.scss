@@ -264,8 +264,7 @@
                     padding-right: 0;
                 }
                 .select-chart-type {
-                    width: 371px;
-                    padding-right: 5px;
+                    width: 375px;
                     @include mq("laptop", max) {
                         width: 100%;
                     }
@@ -276,7 +275,8 @@
                     border: 1px solid #ffffff;
                     border-radius: unset;
                     box-shadow: unset;
-                    .css-319lph-ValueContainer {
+                    .css-319lph-ValueContainer,
+                    .css-1d8n9bt {
                         justify-content: start;
                     }
                     .css-6j8wv5-Input,
@@ -293,6 +293,24 @@
                     }
                     .css-1okebmr-indicatorSeparator {
                         display: none;
+                    }
+                }
+                .css-26l3qy-menu {
+                    background-color: $black;
+                    border: 1px solid #ffffff;
+                    border-radius: unset;
+                    color: white;
+                    font-size: 24px;
+                    font-family: "Montserrat";
+                    font-style: normal;
+                    font-weight: bold;
+                    font-size: 24px;
+                    line-height: 29px;
+                    & > div {
+                        max-height: unset !important;
+                        &:hover {
+                            background: unset;
+                        }
                     }
                 }
                 .select-label {

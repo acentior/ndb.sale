@@ -22,6 +22,7 @@ const CreateAvatar = () => {
     const [currentStep, setCurrentStep] = useState(1)
     const [showError, setShowError] = useState(false)
     const [isDressUpModalOpen, setIsDressUpModalOpen] = useState(false)
+    const [pending, setPending] = useState(false);
 
     //------- Avatar Data and Validation
     const [avatarItems, setAvatarItems] = useState({
@@ -78,7 +79,7 @@ const CreateAvatar = () => {
                 return { index: i, item: "detail", desc: "Detail is required" }
         }
         if (!factsDetail.details) return { item: "details", desc: "Details Data is required" }
-        return {}
+        return {};
     }, [factsDetail])
 
     const setAvatarData = () => {
@@ -108,16 +109,19 @@ const CreateAvatar = () => {
         setShowError(false)
     }
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         const skillSet = stats.map(item => {
             return { skill: item.title, skillRate: item.stars };
         });
-        const avatarSet = Object.keys(avatarItems).map(item => {
-            if(item === 'hairColor') return;
+        const avatarSet = Object.keys(avatarItems).filter(item => {
+            return item !== 'hairColor';
+        }).map(item => {
             return {groupId: item, compId: avatarItems[item]};
         });
         const factsSet = factsDetail.facts;
-        dispatch(create_New_Avatar({
+
+        setPending(true);
+        await dispatch(create_New_Avatar({
             name: avatarName.name,
             surname: avatarName.surname,
             shortName: avatarName.name + ' ' + avatarName.surname,
@@ -127,6 +131,7 @@ const CreateAvatar = () => {
             details: factsDetail.details,
             hairColor: avatarItems.hairColor
         }));
+        setPending(false);
     }
 
     return (
@@ -365,7 +370,7 @@ const CreateAvatar = () => {
                                             }`}
                                             name="details"
                                             rows="3"
-                                            maxLength="250"
+                                            maxLength="300"
                                             value={factsDetail.details}
                                             onChange={(e) =>
                                                 setFactsDetail({
@@ -374,7 +379,7 @@ const CreateAvatar = () => {
                                                 })
                                             }
                                         />
-                                        <span>{factsDetail.details.length}/250</span>
+                                        <span>{factsDetail.details.length}/300</span>
                                     </div>
                                 </div>
                             </div>
@@ -467,8 +472,8 @@ const CreateAvatar = () => {
                                 <button className="btn previous" onClick={() => setCurrentStep(3)}>
                                     Previous
                                 </button>
-                                <button className="btn next" onClick={handleSubmit}>
-                                    Save
+                                <button className="btn next" onClick={handleSubmit} disabled={pending}>
+                                    {pending? 'Saving...': 'Save'}
                                 </button>
                             </div>
                         </>

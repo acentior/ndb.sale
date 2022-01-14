@@ -34,10 +34,10 @@ main.admin-setting-page {
                             padding-bottom: 10px;
                             border-bottom: 2px solid #464646;
                             margin: 0;
-                            @include mq("phone", max) {
-                                display: flex;
-                                justify-content: space-between;
-                            }
+                            // @include mq("phone", max) {
+                            //     display: flex;
+                            //     justify-content: space-between;
+                            // }
                             .react-tabs__tab {
                                 color: $dimgrey;
                                 border: none;
@@ -99,6 +99,12 @@ main.admin-setting-page {
                     }
                 }
                 div.task_table {
+                    overflow: auto;
+                    max-height: 70vh;
+                    @include mq('phone', max) {
+                        overflow: unset;
+                        max-height: unset;
+                    }
                     p {
                         font-size: 18px;
                         font-weight: 700;

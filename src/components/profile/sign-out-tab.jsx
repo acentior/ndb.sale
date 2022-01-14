@@ -11,7 +11,7 @@ export default function SignOutTab() {
     }
     return (
         <div className="sign-out">
-            <h4>confirm sign out</h4>
+            <h4 className="pt-3">confirm sign out</h4>
             <div className="h-100 d-flex flex-column align-items-center justify-content-center">
                 <p>Are you sure you want to sign out?</p>
                 <button className="btn-primary" onClick={(e) => signOut()}>

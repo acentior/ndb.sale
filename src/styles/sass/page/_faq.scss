@@ -1,12 +1,15 @@
 .faq-page {
     section {
-        margin-top: 90px;
+        margin-top: 62px;
         @include mq("tablet", max) {
             margin-top: 40px;
         }
         @include mq("phone", max) {
             margin-top: 16px;
         }
+    }
+    .menu {
+        border-bottom: 2px solid #464646;
     }
     .faq__tabs {
         display: flex;
@@ -73,7 +76,7 @@
             }
             @include mq("tablet", max) {
                 display: flex;
-                justify-content: space-around;
+                justify-content: flex-start;
                 margin: 0;
             }
         }
@@ -104,8 +107,13 @@
             line-height: 20px;
             color: white;
             margin-bottom: 16px;
+            margin-top: 6px;
         }
         .faq-list {
+            padding-right: 0px;
+            @include mq("phone") {
+                padding-right: 32px;
+            }
             @include mq("tablet") {
                 @include custom-scroll(300px);
             }

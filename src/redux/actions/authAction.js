@@ -1,4 +1,10 @@
-import { LOGIN_SUCCESS } from "../actionTypes";
+import { LOGIN_SUCCESS, LOGOUT_USER } from "../actionTypes";
+
+export const logOutUser = () => dispatch => {
+    dispatch({
+        type: LOGOUT_USER
+    });
+};
 
 export const setCurrentAuthInfo = authInfo => dispatch => {
     dispatch({
@@ -9,3 +15,4 @@ export const setCurrentAuthInfo = authInfo => dispatch => {
         }
     });
 };
+

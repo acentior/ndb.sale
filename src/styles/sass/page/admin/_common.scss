@@ -14,10 +14,6 @@ a:hover {
 nav.MuiPagination-root {
     display: flex;
     justify-content: end;
-
-    @include mq("phone", max) {
-        justify-content: center;
-    }
     li {
         width: 30px;
     }
@@ -28,6 +24,15 @@ nav.MuiPagination-root {
             @include mq("phone", max) {
                 background-color: transparent;
             }
+        }        
+    }
+    @include mq("phone", max) {
+        justify-content: center;
+        li {
+            width: 24px;
+        }
+        button {
+            font-size: 12px;
         }
     }
     button.Mui-selected {
@@ -110,6 +115,10 @@ input.white_input {
     width: 100%;
 }
 
+div.black_input {
+    border: 1px solid white;
+}
+
 p.error,
 svg.error {
     color: #e17070 !important;
@@ -118,7 +127,7 @@ svg.error {
 input.error,
 div.error,
 textarea.error {
-    border: 1px solid #e17070;
+    border: 1px solid #e17070!important;
 }
 
 p.disabled {

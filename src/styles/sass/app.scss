@@ -14,6 +14,7 @@
 @import "components/menu";
 @import "components/accordion";
 @import "components/loading";
+@import "components/react-select";
 @import "components/admin/leftBar";
 
 @import "layout/layout";
@@ -39,8 +40,10 @@
 @import "page/admin/users";
 @import "page/admin/create/auction";
 @import "page/admin/create/direct-purchase";
+@import "page/admin/create/user";
 @import "page/admin/create/avatar";
 @import "page/admin/create/email";
+@import "page/admin/create/token";
 @import "page/admin/create/customize-avatar";
 @import "page/admin/airdrop";
 @import "page/admin/setting";

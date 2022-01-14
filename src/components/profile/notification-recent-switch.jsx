@@ -78,7 +78,7 @@ export default function NotificationRecent() {
                         </div>
                     ))}
             </div>
-            <div className="w-100 d-flex flex-column align-items-center justify-content-center py-5">
+            <div className="w-100 d-flex flex-column align-items-center justify-content-center py-2">
                 <button
                     className="btn-primary d-flex align-items-center justify-content-center py-2"
                     onClick={(e) => loadMore()}

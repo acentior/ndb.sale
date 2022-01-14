@@ -143,7 +143,7 @@ const WalletBalance = () => {
                 <div className='input'>
                     {showError? (error.item? <Alert severity="error">{error.desc}</Alert>: <Alert severity="success">Success! Please click Save Button</Alert>): ''}
                 </div>
-                <form className="form" onSubmit={(e) => e.preventDefault()}>
+                <form className="form custom_scrollbar" onSubmit={(e) => e.preventDefault()}>
                     <div className='input'>
                         <div className='input_div'>
                             <p style={{fontSize: 12}}>Threshold</p>

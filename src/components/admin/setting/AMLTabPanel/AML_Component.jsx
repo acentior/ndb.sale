@@ -174,4 +174,8 @@ const customSelectStyles = {
         ...provided,
         color: "white",
     }),
+    input: provided => ({
+        ...provided,
+        color: 'white'
+    })
 };

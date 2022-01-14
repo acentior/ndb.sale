@@ -138,12 +138,10 @@ const Payment = () => {
                             <TabList>
                                 {payment_types.map((item, index) => (
                                     <Tab
-                                        className={`payment-type__tab-list text-center ${
-                                            index === 3 && "px-0"
-                                        }`}
+                                        className={`payment-type__tab-list text-center ${index === 3 && "px-0"}`}
                                         key={index}
                                     >
-                                        {item.label}
+                                        <label>{item.label}</label>
                                     </Tab>
                                 ))}
                             </TabList>
@@ -418,7 +416,7 @@ const Payment = () => {
                                 </div>
                             </TabPanel>
                             <TabPanel className="externalwallets-tab">
-                                <div className="payment-content">
+                                <div className="payment-content" style={{ display: 'block' }}>
                                     <ConnectWalletTab />
 
                                     <div className="mt-1 d-flex">

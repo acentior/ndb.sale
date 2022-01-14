@@ -8,6 +8,7 @@ import UserTable from "../../components/admin/users/UserTable";
 import BidTable from "../../components/admin/users/BidTable";
 import WalletTable from "../../components/admin/users/WalletTable";
 import FiatTable from "../../components/admin/users/FiatTable";
+import KYBTable from "../../components/admin/users/KYBTable";
 
 const users = [
     {name: 'Amy Matthews', avatar: 'Tesla.12', email: 'amy.matthers@mail.com', phone: '+32 932 429 32', password: '********', country: 'USA', privilege: 'user', 
@@ -59,6 +60,7 @@ const IndexPage = () => {
                                 <Tab>Bid</Tab>
                                 <Tab>Wallet</Tab>
                                 <Tab>Fiat</Tab>
+                                <Tab>KYB</Tab>
                             </TabList>
                             <TabPanel>
                                 <UserTable data={users} />
@@ -74,6 +76,10 @@ const IndexPage = () => {
                             </TabPanel>
                             <TabPanel>
                                 <FiatTable data={fiats} />
+                                <PaginationBar />
+                            </TabPanel>
+                            <TabPanel>
+                                <KYBTable />
                                 <PaginationBar />
                             </TabPanel>
                         </Tabs>

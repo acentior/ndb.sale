@@ -11,5 +11,5 @@ export const ROUTES = {
     home: "/",
     faq: "/faq/",
     wallet: "/history/",
-    admin: "/admin/"
+    admin: "/admin"
 }

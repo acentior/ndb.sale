@@ -1,11 +1,16 @@
 @use "sass:math";
 .profile-page {
+    margin-bottom: 1rem;
+    margin-top: -1rem;
+    .menu {
+        border-bottom: 2px solid #464646;
+    }
     &__left {
-        padding: 8px 32px;
+        padding: 0px 32px;
         display: flex;
         flex-direction: column;
-        justify-content: space-between;
-        max-height: 500px;
+        justify-content: start;
+        height: 100vh;
         .user-info {
             margin: 48px 0 105px;
             text-align: center;
@@ -144,7 +149,7 @@
             .react-tabs {
                 &__tab-list {
                     border: none;
-                    margin-bottom: 24px;
+                    margin-bottom: 12px;
                 }
                 &__tab {
                     font-weight: bold;
@@ -295,7 +300,6 @@
                     line-height: 22px;
                     letter-spacing: 0.04em;
                     color: #626161;
-                    padding: 0 24px 16px 0;
                     text-transform: uppercase;
                     &-list {
                         border-bottom: 2px solid #464646;
@@ -374,6 +378,18 @@
                 @include mq("laptop", max) {
                     margin-top: 24px;
                 }
+                .connected {
+                    border: 1px solid #23c865;
+                    padding: 30px;
+                    p {
+                        color: #23c865;
+                        margin: 10px 0;
+                    }
+                    img {
+                        margin: 30px 0;
+                        width: 90px;
+                    }
+                }
             }
             .col-sm-6 {
                 margin-bottom: 16px;
@@ -384,11 +400,11 @@
                 height: 100%;
                 padding-top: 20px;
                 padding-bottom: 20px;
-                border: 2px solid #525252;
+                border: 2px solid white;
                 img {
                     margin-bottom: 16px;
-                    width: 42px;
-                    height: 42px;
+                    width: 50px;
+                    height: 50px;
                     @include mq("phone", max) {
                         width: 32px;
                         height: 32px;
@@ -398,11 +414,16 @@
                     font-weight: 500;
                     font-size: 16px;
                     line-height: 20px;
-                    color: #8f8f8f;
+                    color: white;
                 }
-                &.active {
-                    background-color: white;
-                    border-color: white;
+                &.inactive {
+                    border-color: grey;
+                    p {
+                        color: grey;
+                    }
+                    img {
+                        opacity: 0.5;
+                    }
                 }
             }
             .btn-primary {
@@ -691,7 +712,7 @@
     div.profile {
         margin: auto;
         border: none;
-        @include mq('phone', max) {
+        @include mq("phone", max) {
             height: 100px;
             div.image_div {
                 width: 80px;
@@ -729,7 +750,7 @@
                 color: white;
             }
         }
-        @include mq('phone', max) {
+        @include mq("phone", max) {
             margin-top: 5px;
             margin-bottom: 5px;
             font-size: 20px;
@@ -754,7 +775,7 @@
             background-color: white;
             color: $black;
         }
-        @include mq('phone', max) {
+        @include mq("phone", max) {
             margin-bottom: 5px;
             font-size: 20px;
         }
@@ -770,7 +791,7 @@
     div.components {
         border-left: 1px solid white;
         padding: 20px;
-        @include mq('phone', max) {
+        @include mq("phone", max) {
             border-left: none;
             border-top: 1px solid white;
         }
@@ -816,7 +837,7 @@
                 text-align: center;
             }
         }
-        @include mq('tablet', max) {
+        @include mq("tablet", max) {
             height: 170px;
             & > div {
                 height: 170px;
@@ -826,7 +847,7 @@
                 }
             }
         }
-        @include mq('phone', max) {
+        @include mq("phone", max) {
             height: 100px;
             & > div {
                 height: 100px;

@@ -17,7 +17,7 @@ const UserTiersPanel = () => {
                 <div className='points'>POINTS</div>
                 <div className='edit'></div>
             </TableHead>
-            <div className='task_table'>
+            <div className='task_table custom_scrollbar'>
                 <KYCAMLComponent />
                 <WalletBalance />
                 <AuctionRound />
