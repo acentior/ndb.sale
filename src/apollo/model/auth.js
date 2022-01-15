@@ -17,7 +17,7 @@ export const useSigninMutation = () => {
                 setUser({
                     ...getUser(),
                     tempToken: data.signin.token,
-                    twoStep: data.signin.userTwoStep,
+                    twoStep: data.signin.twoStep,
                 })
                 navigate("/app/onetime-pwd")
             }

@@ -1,11 +1,12 @@
-import React, { useReducer, useEffect, useState } from "react"
-import { useDispatch } from "react-redux"
+import React, { useReducer, useEffect, useState, useMemo, useCallback } from "react"
+import { useDispatch, useSelector } from "react-redux"
 import { navigate } from "gatsby"
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
 import Slider from "rc-slider"
 import Select from "react-select"
 import Modal from "react-modal"
 import ReactTooltip from "react-tooltip"
+import axios from 'axios'
 
 import Header from "./header"
 import BidsChart1 from "./chart/BidsChart1"
@@ -17,6 +18,7 @@ import BidsChart2 from "./chart/BidsChart2"
 import ChanceChart from "./chart/ChanceChart"
 import { useQuery, useMutation } from "@apollo/client"
 import { setBidInfo } from "../redux/actions/bidAction"
+import Loading from "./common/Loading"
 
 import { ChartIcon, Qmark, CloseIcon } from "../utilities/imgImport"
 import { useWindowSize } from "../utilities/customHook"
@@ -53,6 +55,7 @@ const options = [
 const Auction = () => {
     const dispatch = useDispatch()
     const size = useWindowSize()
+    const currencyId = useSelector((state) => state.placeBid.currencyId)
 
     const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
         tabIndex: 0,
@@ -68,10 +71,13 @@ const Auction = () => {
     const [pricce, setPrice] = useState(true)
     const [volume, setVolume] = useState(true)
     const [price_volume, setPriceVolume] = useState(false)
-
+    const [ratio, setRatio] = useState({})
+    const [ratioFetched, setRatioFetched] = useState(false)
     const [reser_price, setReserPrice] = useState(true)
     const [sold_price, setSoldPrice] = useState(true)
     const [performance, setPerformance] = useState(false)
+    const [selectedCurrency, setSelectedCurrency] = useState(currencyId);
+    const [fnAverateMinBid, setfnAverateMinBid] = useState(0);
 
     const { tabIndex, amount, price, isBid, bidModal, show_chart, selectLabel } = state
     const [selectedData, setSelectedData] = useState(1)
@@ -82,26 +88,35 @@ const Auction = () => {
     )
 
     // get round based data
-    const { data: roundM } = useQuery(GET_AUCTION_BY_NUMBER, {
-        variables: { round: roundData && roundData[0].number },
+    const { data: roundM, error: mFetched } = useQuery(GET_AUCTION_BY_NUMBER, {
+        variables: { round: roundData && roundData[0].round },
     })
-    const { data: roundH } = useQuery(GET_AUCTION_BY_NUMBER, {
-        variables: { round: roundData && roundData[0]?.number + 1 },
+
+    const { data: roundH, error: hFetched } = useQuery(GET_AUCTION_BY_NUMBER, {
+        variables: { round: roundData && roundData[0]?.round + 1 },
     })
-    const { data: roundL } = useQuery(GET_AUCTION_BY_NUMBER, {
-        variables: { round: roundData && roundData[0]?.number - 1 },
+    const { data: roundL, error: lFetched } = useQuery(GET_AUCTION_BY_NUMBER, {
+        variables: { round: roundData && roundData[0]?.round - 1 },
     })
 
     // get history bids
-    const { data: historyBidListM } = useQuery(GET_BIDLIST_BY_ROUND, {
-        variables: { round: roundData && roundData[0].number },
+    const { data: historyBidListM, error: hmFetched } = useQuery(GET_BIDLIST_BY_ROUND, {
+        variables: { round: roundData && roundData[0].round },
     })
-    const { data: historyBidListH } = useQuery(GET_BIDLIST_BY_ROUND, {
-        variables: { round: roundData && roundData[0]?.number + 1 },
+    const { data: historyBidListH, error: hhFetched } = useQuery(GET_BIDLIST_BY_ROUND, {
+        variables: { round: roundData && roundData[0]?.round + 1 },
     })
-    const { data: historyBidListL } = useQuery(GET_BIDLIST_BY_ROUND, {
-        variables: { round: roundData && roundData[0]?.number - 1 },
+    const { data: historyBidListL, error: hlFetched } = useQuery(GET_BIDLIST_BY_ROUND, {
+        variables: { round: roundData && roundData[0]?.round - 1 },
     })
+
+    const loading = useMemo(() => {
+        if ((mFetched || roundM) && (roundH || hFetched) && (roundL || lFetched) && (historyBidListM || hmFetched) && (historyBidListH || hhFetched) && (historyBidListL || hlFetched) && ratioFetched) {
+            return false
+        } else {
+            return true
+        }
+    }, [mFetched, hFetched, lFetched, hmFetched, hhFetched, hlFetched, ratioFetched, roundM, roundH, roundL, historyBidListM, historyBidListH, historyBidListL])
 
     // get chart data
     const round_chance = useQuery(GET_ROUND_CHANCE)
@@ -113,31 +128,17 @@ const Auction = () => {
         selectedData === 0
             ? roundL?.getAuctionByNumber
             : selectedData === 1
-            ? roundM?.getAuctionByNumber
-            : roundH?.getAuctionByNumber
+                ? roundM?.getAuctionByNumber
+                : roundH?.getAuctionByNumber
 
     const fnSelectedBidhistoryData = () =>
         selectedData === 0
             ? historyBidListL?.getBidListByRound
             : selectedData === 1
-            ? historyBidListM?.getBidListByRound
-            : historyBidListH?.getBidListByRound
+                ? historyBidListM?.getBidListByRound
+                : historyBidListH?.getBidListByRound
 
-    const fnAverateMinBid = () => {
-        let hData = fnSelectedBidhistoryData()
-
-        if (hData === undefined) {
-            return 0
-        }
-
-        if (hData.length === 0) {
-            return 0
-        } else {
-            let totalValue = 0
-            hData.map((item) => (totalValue = +item.totalPrice))
-            return totalValue
-        }
-    }
+    const hData = fnSelectedBidhistoryData()
 
     const distanceToDate = getTimeDiffOverall(
         fnSelectedRoundData()?.startedAt,
@@ -160,6 +161,48 @@ const Auction = () => {
     //     },
     // })
 
+    const calcRatio = (from, to, value) => {
+        if (!ratioFetched) {
+            fetchRatio();
+            return value;
+        }
+
+        if (from === 'usd') return ratio[to] * value;
+        else return value / ratio[from] * ratio[to];
+    }
+
+    const calcItemPrice = useCallback((price) => {
+        calcRatio('usd', Currencies[currencyId].label.toLowerCase(), price)
+    }, [currencyId, ratioFetched])
+
+    useEffect(() => {
+        const newPrice = calcRatio(Currencies[selectedCurrency].label.toLowerCase(), Currencies[currencyId].label.toLowerCase(), price);
+        // setPrice(newPrice)
+        setState({ price: newPrice.toFixed(2) })
+        setSelectedCurrency(currencyId)
+
+    }, [currencyId])
+
+    useEffect(() => {
+        const newPrice = calcRatio(Currencies[selectedCurrency].label.toLowerCase(), Currencies[currencyId].label.toLowerCase(), price);
+        // setPrice(newPrice)
+        setState({ price: newPrice.toFixed(2) })
+        setSelectedCurrency(currencyId)
+
+
+        if (hData === undefined) {
+            setfnAverateMinBid(0)
+        }
+
+        else if (hData.length === 0) {
+            setfnAverateMinBid(0)
+        } else {
+            let totalValue = 0
+            hData.map((item) => (totalValue = +item.totalPrice))
+            setfnAverateMinBid(calcRatio('usd', Currencies[currencyId].label.toLowerCase(), totalValue).toFixed(2))
+        }
+    }, [currencyId, hData, ratioFetched])
+
     useEffect(() => {
         const id = setInterval(() => {
             setState({
@@ -169,11 +212,26 @@ const Auction = () => {
                     seconds: 0,
                 },
             })
-        }, 1000)
+        }, 1000);
+
+        fetchRatio()
+
         return () => {
             clearInterval(id)
         }
     }, [])
+
+    const fetchRatio = () => {
+        axios.get('https://cdn.jsdelivr.net/gh/fawazahmed0/currency-api@1/latest/currencies/usd.json')
+            .then((res) => {
+                if (res.data?.usd) {
+                    setRatio(res.data.usd)
+                    setRatioFetched(true)
+                }
+            }).catch((e) => {
+                console.log(e)
+            })
+    }
 
     return (
         <main className="auction-page">
@@ -196,10 +254,12 @@ const Auction = () => {
                     />
                 </div>
                 <div className="row h-100">
-                    <div
-                        className={`auction-left col-lg-4 col-md-5 position-relative ${
-                            show_chart ? "d-none" : "d-block"
-                        }`}
+                    {loading ? <div className={`auction-left col-lg-4 col-md-5 position-relative ${show_chart ? "d-none" : "d-block"
+                        }`}>
+                        <Loading position="relative" />
+                    </div> : <div
+                        className={`auction-left col-lg-4 col-md-5 position-relative ${show_chart ? "d-none" : "d-block"
+                            }`}
                     >
                         <div className="d-flex">
                             <div className="w-100">
@@ -282,12 +342,12 @@ const Auction = () => {
                                                     <tr key={idx}>
                                                         <td>{idx + 1}</td>
                                                         <td>
-                                                            {item.totalPrice}
+                                                            {calcItemPrice(item.totalPrice)}
                                                             <span className="txt-green">
                                                                 {" "}
                                                                 {
                                                                     Currencies[
-                                                                        User.selectedCurrencyId
+                                                                        currencyId
                                                                     ].symbol
                                                                 }
                                                             </span>
@@ -305,11 +365,11 @@ const Auction = () => {
                                     fnSelectedRoundData()?.startedAt,
                                     fnSelectedRoundData()?.endedAt
                                 ) && (
-                                    <TimeframeBar
-                                        percentage={percentage}
-                                        round={fnSelectedRoundData()}
-                                    />
-                                )}
+                                        <TimeframeBar
+                                            percentage={percentage}
+                                            round={fnSelectedRoundData()}
+                                        />
+                                    )}
                             </div>
                             <div className="d-none d-md-block mt-5">
                                 <ReactTooltip
@@ -344,14 +404,14 @@ const Auction = () => {
                             style={{ bottom: "20%", width: "calc(100% - 24px)" }}
                         >
                             <div className="d-flex justify-content-between mt-4">
-                                {fnAverateMinBid() !== 0 ? (
+                                {fnAverateMinBid !== 0 ? (
                                     <div>
                                         <p className="caption">Minimum bid</p>
                                         <p className="value">
-                                            {fnAverateMinBid()}
+                                            {fnAverateMinBid}
                                             <span className="txt-green">
                                                 {" "}
-                                                {Currencies[User.selectedCurrencyId].symbol}
+                                                {Currencies[currencyId].symbol}
                                             </span>{" "}
                                         </p>
                                     </div>
@@ -398,7 +458,7 @@ const Auction = () => {
                                 </div>
                             )}
                         </div>
-                    </div>
+                    </div>}
 
                     <div className="auction-right col-lg-8 col-md-7">
                         <div className={`place-bid ${isBid && "d-none"}`}>
@@ -443,7 +503,7 @@ const Auction = () => {
                                     readOnly
                                 />
                                 <h3 className="symbol-label">
-                                    {Currencies[User.selectedCurrencyId].symbol}
+                                    {Currencies[currencyId].symbol}
                                 </h3>
                             </div>
                             <button
@@ -466,14 +526,13 @@ const Auction = () => {
                             </button>
                         </div>
                         <div
-                            className={`chart-area ${
-                                size.width <= 768
-                                    ? show_chart
-                                        ? "d-block"
-                                        : "d-none"
-                                    : (size.width <= 1024 && size.width > 768 && "d-block") ||
-                                      (isBid && "d-block")
-                            }`}
+                            className={`chart-area ${size.width <= 768
+                                ? show_chart
+                                    ? "d-block"
+                                    : "d-none"
+                                : (size.width <= 1024 && size.width > 768 && "d-block") ||
+                                (isBid && "d-block")
+                                }`}
                         >
                             <div className="d-flex ">
                                 <div className="w-100">
@@ -513,9 +572,8 @@ const Auction = () => {
                                     {selectLabel.value === "bid_performance" && (
                                         <div className="d-flex align-items-center pt-3 w-100 ">
                                             <button
-                                                className={`btn-small ${
-                                                    pricce ? "" : "btn-disabled"
-                                                }`}
+                                                className={`btn-small ${pricce ? "" : "btn-disabled"
+                                                    }`}
                                                 onClick={() => {
                                                     if (!pricce) {
                                                         setPrice(true)
@@ -527,9 +585,8 @@ const Auction = () => {
                                                 Price
                                             </button>
                                             <button
-                                                className={`btn-small ${
-                                                    volume ? "" : "btn-disabled"
-                                                }`}
+                                                className={`btn-small ${volume ? "" : "btn-disabled"
+                                                    }`}
                                                 onClick={() => {
                                                     if (!volume) {
                                                         setPrice(true)
@@ -541,9 +598,8 @@ const Auction = () => {
                                                 Volume
                                             </button>
                                             <button
-                                                className={`btn-small ${
-                                                    price_volume ? "" : "btn-disabled"
-                                                }`}
+                                                className={`btn-small ${price_volume ? "" : "btn-disabled"
+                                                    }`}
                                                 onClick={() => {
                                                     if (!price_volume) {
                                                         setPrice(false)
@@ -559,9 +615,8 @@ const Auction = () => {
                                     {selectLabel.value === "round_performance" && (
                                         <div className="d-flex align-items-center pt-3 w-100 ">
                                             <button
-                                                className={`btn-small ${
-                                                    reser_price ? "" : "btn-disabled"
-                                                }`}
+                                                className={`btn-small ${reser_price ? "" : "btn-disabled"
+                                                    }`}
                                                 onClick={() => {
                                                     if (!reser_price) {
                                                         setReserPrice(true)
@@ -573,9 +628,8 @@ const Auction = () => {
                                                 Reserved Price
                                             </button>
                                             <button
-                                                className={`btn-small ${
-                                                    sold_price ? "" : "btn-disabled"
-                                                }`}
+                                                className={`btn-small ${sold_price ? "" : "btn-disabled"
+                                                    }`}
                                                 onClick={() => {
                                                     if (!sold_price) {
                                                         setReserPrice(true)
@@ -587,9 +641,8 @@ const Auction = () => {
                                                 Price Sold
                                             </button>
                                             <button
-                                                className={`btn-small ${
-                                                    performance ? "" : "btn-disabled"
-                                                }`}
+                                                className={`btn-small ${performance ? "" : "btn-disabled"
+                                                    }`}
                                                 onClick={() => {
                                                     if (!performance) {
                                                         setReserPrice(false)

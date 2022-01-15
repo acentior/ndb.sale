@@ -37,8 +37,8 @@ const OnetimePassword = () => {
                 user.tempToken,
                 user.twoStep.map((step) => {
                     return {
-                        key: step.key,
-                        value: code[step.key],
+                        key: step,
+                        value: code[step],
                     }
                 })
             )
@@ -55,16 +55,16 @@ const OnetimePassword = () => {
                     Array.isArray(user.twoStep) &&
                     user.twoStep.map(
                         (step) =>
-                            step.value && (
-                                <div key={step.key}>
-                                    <p className="text-uppercase">{step.key}</p>
+                            step && (
+                                <div key={step}>
+                                    <p className="text-uppercase">{step}</p>
                                     <div className="form-group">
                                         <Input
                                             name="code"
                                             type="text"
-                                            value={code[step.key]}
+                                            value={code[step]}
                                             onChange={(e) =>
-                                                setCode({ [step.key]: e.target.value })
+                                                setCode({ [step]: e.target.value })
                                             }
                                             placeholder="Enter code"
                                         />
