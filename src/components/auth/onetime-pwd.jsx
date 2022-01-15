@@ -53,30 +53,36 @@ const OnetimePassword = () => {
             <form className="form">
                 {user.twoStep &&
                     Array.isArray(user.twoStep) &&
-                    user.twoStep.map((step) => (
-                        <div key={step}>
-                            <p className="text-uppercase">{step}</p>
-                            <div className="form-group">
-                                <Input
-                                    name="code"
-                                    type="text"
-                                    value={code[step]}
-                                    onChange={(e) => setCode({ [step]: e.target.value })}
-                                    placeholder="Enter code"
-                                />
-                                {codeError && (
-                                    <span className="errorsapn">
-                                        <FontAwesomeIcon icon={faExclamationCircle} /> {codeError}
-                                    </span>
-                                )}
-                            </div>
-                            <div className="form-group text-white resend-2fa">
-                                <Link className="signup-link" to="#">
-                                    Resend
-                                </Link>
-                            </div>
-                        </div>
-                    ))}
+                    user.twoStep.map(
+                        (step) =>
+                            step && (
+                                <div key={step}>
+                                    <p className="text-uppercase">{step}</p>
+                                    <div className="form-group">
+                                        <Input
+                                            name="code"
+                                            type="text"
+                                            value={code[step]}
+                                            onChange={(e) =>
+                                                setCode({ [step]: e.target.value })
+                                            }
+                                            placeholder="Enter code"
+                                        />
+                                        {codeError && (
+                                            <span className="errorsapn">
+                                                <FontAwesomeIcon icon={faExclamationCircle} />{" "}
+                                                {codeError}
+                                            </span>
+                                        )}
+                                    </div>
+                                    <div className="form-group text-white resend-2fa">
+                                        <Link className="signup-link" to="#">
+                                            Resend
+                                        </Link>
+                                    </div>
+                                </div>
+                            )
+                    )}
                 <div className="mt-5 mb-2">
                     {webserviceError && (
                         <span className="errorsapn">

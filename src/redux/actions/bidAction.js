@@ -1,4 +1,4 @@
-import { BID_PLACE } from "../actionTypes"
+import { BID_PLACE, SET_CURRENCY } from "../actionTypes"
 
 export const setBidInfo = (state) => (dispatch) => {
     dispatch({
@@ -6,5 +6,11 @@ export const setBidInfo = (state) => (dispatch) => {
         payload: {
             place_bid: state,
         },
+    })
+}
+export const setCurrencyInfo = (currencyId) => dispatch => {
+    dispatch({
+        type: SET_CURRENCY,
+        payload: currencyId
     })
 }

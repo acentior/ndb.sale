@@ -25,8 +25,8 @@ export const REQUEST_2FA = gql`
 `
 
 export const CONFIRM_REQUEST_2FA = gql`
-    mutation confirmRequest2FA($email: String!, $method: String!, $code: String!) {
-        confirmRequest2FA(email: $email, method: $method, code: $code)
+    mutation confirmRequest2FA($email: String!, $code: String!) {
+        confirmRequest2FA(email: $email, code: $code)
     }
 `
 

@@ -3,13 +3,20 @@ import { gql } from "@apollo/client"
 export const GET_AUCTION = gql`
     query {
         getAuctions {
-            auctionId
-            number
+            id
+            regDate
+            updateDate
+            deleted
+            round
             startedAt
             endedAt
             totalToken
             minPrice
             avatar {
+                id
+                regDate
+                updateDate
+                deleted
                 groupId
                 compId
             }
@@ -31,8 +38,21 @@ export const GET_BIDLIST_BY_ROUND = gql`
             userId
             roundId
             tokenAmount
-            tokenPrice
             totalPrice
+            tokenPrice
+            tempTokenAmount
+            tempTokenPrice
+            delta
+            pendingIncrease
+            holdings {
+                key
+                value {
+                    crypto
+                    usd
+                }
+            }
+            payType
+            cryptoType
             placedAt
             updatedAt
             status
@@ -43,13 +63,20 @@ export const GET_BIDLIST_BY_ROUND = gql`
 export const GET_AUCTION_BY_NUMBER = gql`
     query getAuctionByNumber($round: Int!) {
         getAuctionByNumber(round: $round) {
-            auctionId
-            number
+            id
+            regDate
+            updateDate
+            deleted
+            round
             startedAt
             endedAt
             totalToken
             minPrice
             avatar {
+                id
+                regDate
+                updateDate
+                deleted
                 groupId
                 compId
             }

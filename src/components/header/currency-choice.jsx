@@ -1,10 +1,14 @@
 import React, { useState } from "react"
+import { useSelector, useDispatch } from "react-redux"
 import { ROUTES } from "../../utilities/routes"
 import { Currencies } from "../../utilities/staticData"
 import { User } from "../../utilities/user-data"
+import { setCurrencyInfo } from "../../redux/actions/bidAction"
 
 export default function CurrencyChoice() {
-    const [selectedCurrency, setSelectedCurrency] = useState(0)
+    const dispatch = useDispatch()
+    const currencyId = useSelector((state) => state.placeBid.currencyId)
+    const [selectedCurrency, setSelectedCurrency] = useState(currencyId || 0)
     const toggleCurrenciesMenuContent = () => {
         const menuItem = document.querySelector(".currencies-dropdown-content")
         menuItem.classList.toggle("d-none")
@@ -23,7 +27,7 @@ export default function CurrencyChoice() {
                             onKeyDown={toggleCurrenciesMenuContent}
                             role="presentation"
                         >
-                            <span>{Currencies[User.selectedCurrencyId].label}</span>
+                            <span>{Currencies[selectedCurrency].label}</span>
                             <svg
                                 className="down-arrow"
                                 fill="none"
@@ -45,16 +49,18 @@ export default function CurrencyChoice() {
                                     <li
                                         key={index}
                                         className={
-                                            Currencies[User.selectedCurrencyId].id === item.id?
-                                            "text-secondary": ""
+                                            Currencies[selectedCurrency].id === item.id ?
+                                                "text-secondary" : ""
                                         }
                                         onClick={() => {
-                                            User.selectedCurrencyId = item.id
+                                            // User.selectedCurrencyId = item.id
+                                            dispatch(setCurrencyInfo(item.id))
                                             toggleCurrenciesMenuContent()
                                             setSelectedCurrency(item.id)
                                         }}
                                         onKeyDown={() => {
-                                            User.selectedCurrencyId = item.id
+                                            // User.selectedCurrencyId = item.id
+                                            dispatch(setCurrencyInfo(item.id))
                                             toggleCurrenciesMenuContent()
                                             setSelectedCurrency(item.id)
                                         }}
