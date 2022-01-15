@@ -172,7 +172,6 @@ const Auction = () => {
     }
 
     const calcItemPrice = useCallback((price) => {
-        console.log(price)
         return calcRatio('usd', Currencies[currencyId].label.toLowerCase(), price)
     }, [currencyId, ratioFetched, hData])
 
