@@ -164,21 +164,22 @@ const Auction = () => {
     const calcRatio = (from, to, value) => {
         if (!ratioFetched) {
             fetchRatio();
-            return value;
+            return Number(value).toFixed(2);
         }
 
-        if (from === 'usd') return ratio[to] * value;
-        else return value / ratio[from] * ratio[to];
+        if (from === 'usd') return Number(ratio[to] * value).toFixed(2);
+        else return Number(value / ratio[from] * ratio[to]).toFixed(2);
     }
 
     const calcItemPrice = useCallback((price) => {
-        calcRatio('usd', Currencies[currencyId].label.toLowerCase(), price)
-    }, [currencyId, ratioFetched])
+        console.log(price)
+        return calcRatio('usd', Currencies[currencyId].label.toLowerCase(), price)
+    }, [currencyId, ratioFetched, hData])
 
     useEffect(() => {
         const newPrice = calcRatio(Currencies[selectedCurrency].label.toLowerCase(), Currencies[currencyId].label.toLowerCase(), price);
         // setPrice(newPrice)
-        setState({ price: newPrice.toFixed(2) })
+        setState({ price: Number(newPrice) })
         setSelectedCurrency(currencyId)
 
     }, [currencyId])
@@ -186,7 +187,7 @@ const Auction = () => {
     useEffect(() => {
         const newPrice = calcRatio(Currencies[selectedCurrency].label.toLowerCase(), Currencies[currencyId].label.toLowerCase(), price);
         // setPrice(newPrice)
-        setState({ price: newPrice.toFixed(2) })
+        setState({ price: Number(newPrice) })
         setSelectedCurrency(currencyId)
 
 
@@ -199,7 +200,7 @@ const Auction = () => {
         } else {
             let totalValue = 0
             hData.map((item) => (totalValue = +item.totalPrice))
-            setfnAverateMinBid(calcRatio('usd', Currencies[currencyId].label.toLowerCase(), totalValue).toFixed(2))
+            setfnAverateMinBid(calcRatio('usd', Currencies[currencyId].label.toLowerCase(), totalValue))
         }
     }, [currencyId, hData, ratioFetched])
 
@@ -239,7 +240,7 @@ const Auction = () => {
             <section className="section-auction container">
                 <div className="current-round">
                     <div>
-                        <h4>Round {roundData && roundData[0]?.number}</h4>
+                        <h4>Round {roundData && roundData[0]?.round}</h4>
                         <p>
                             Token Available <span>{roundData && roundData[0]?.token}</span>
                         </p>
@@ -275,9 +276,9 @@ const Auction = () => {
                                         }}
                                     >
                                         <TabList>
-                                            <Tab>Round {roundL?.getAuctionByNumber?.number}</Tab>
-                                            <Tab>Round {roundM?.getAuctionByNumber?.number}</Tab>
-                                            <Tab>Round {roundH?.getAuctionByNumber?.number}</Tab>
+                                            <Tab>Round {roundL?.getAuctionByNumber?.round}</Tab>
+                                            <Tab>Round {roundM?.getAuctionByNumber?.round}</Tab>
+                                            <Tab>Round {roundH?.getAuctionByNumber?.round}</Tab>
                                         </TabList>
 
                                         <TabPanel>
