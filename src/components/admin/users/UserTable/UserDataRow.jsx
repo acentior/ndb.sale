@@ -4,12 +4,19 @@ import { Icon } from '@iconify/react';
 import Modal from 'react-modal';
 import { device } from '../../../../utilities/device';
 import { width } from './columnWidth';
+import DeleteConfirmModal from '../../DeleteConfirmModal';
 
 const UserDataRow = ({datum, index}) => {
     const [show, setShow] = useState(false);
     const [showBtns, setShowBtns] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
     const [email, setEmail] = useState(datum.email);
+
+    const deleteUser = () => {
+        console.log('delete user' + index);
+        setIsConfirmOpen(false);
+    };
 
     return (
         <>
@@ -41,7 +48,7 @@ const UserDataRow = ({datum, index}) => {
                         <div className='btns'>
                             <span className='edit'><Icon icon="clarity:note-edit-line" /></span>
                             <span className='eye'><Icon icon="akar-icons:eye" data-bs-toggle="collapse" data-bs-target={`#id${index}`} onClick={() => setShow(!show)} /></span>
-                            <span className='trash'><Icon icon="akar-icons:trash-can" /></span>
+                            <span className='trash'><Icon icon="akar-icons:trash-can" onClick={() => setIsConfirmOpen(true)}/></span>
                         </div>
                     </div>
                     <div className='brief'>
@@ -53,7 +60,7 @@ const UserDataRow = ({datum, index}) => {
                                 <div className='btns'>
                                     <span className='edit'><Icon icon="clarity:note-edit-line" /></span>
                                     <span className='eye'><Icon icon="akar-icons:eye" data-bs-toggle="collapse" data-bs-target={`#id${index}`} onClick={() => {setShow(!show); setShowBtns(!showBtns)}}/></span>
-                                    <span className='trash'><Icon icon="akar-icons:trash-can" /></span>
+                                    <span className='trash'><Icon icon="akar-icons:trash-can" onClick={() => setIsConfirmOpen(true)}/></span>
                                 </div>
                             </Main>
                             <Toggle style={{display: (show? 'flex': 'none')}}>
@@ -115,7 +122,7 @@ const UserDataRow = ({datum, index}) => {
                                     <div className='btns'>
                                         <span className='edit'><Icon icon="clarity:note-edit-line" /></span>
                                         <span className='eye'><Icon icon="akar-icons:eye" data-bs-toggle="collapse" data-bs-target={`#id${index}`} onClick={() => {setShow(!show); setShowBtns(!showBtns)}} /></span>
-                                        <span className='trash'><Icon icon="akar-icons:trash-can" /></span>
+                                        <span className='trash'><Icon icon="akar-icons:trash-can" onClick={() => setIsConfirmOpen(true)}/></span>
                                     </div>                    
                                 </Main>
                                 <Toggle style={{display: (show? 'flex': 'none')}}>
@@ -242,6 +249,12 @@ const UserDataRow = ({datum, index}) => {
                     </div>
                 </form>
             </Modal>
+            <DeleteConfirmModal
+                isModalOpen={isConfirmOpen}
+                setIsModalOpen={setIsConfirmOpen}
+                confirmData={datum.name}
+                doAction={deleteUser}
+            />
         </>
     )
 };

@@ -88,30 +88,31 @@ const Auction = () => {
     )
 
     // get round based data
-    const { data: roundM, error: mFetched } = useQuery(GET_AUCTION_BY_NUMBER, {
+    const { data: roundM, loading: mFetched } = useQuery(GET_AUCTION_BY_NUMBER, {
         variables: { round: roundData && roundData[0].round },
-    })
+    }, [])
 
-    const { data: roundH, error: hFetched } = useQuery(GET_AUCTION_BY_NUMBER, {
+    const { data: roundH, loading: hFetched } = useQuery(GET_AUCTION_BY_NUMBER, {
         variables: { round: roundData && roundData[0]?.round + 1 },
-    })
-    const { data: roundL, error: lFetched } = useQuery(GET_AUCTION_BY_NUMBER, {
+    }, [])
+    const { data: roundL, loading: lFetched } = useQuery(GET_AUCTION_BY_NUMBER, {
         variables: { round: roundData && roundData[0]?.round - 1 },
-    })
+    }, [])
 
     // get history bids
-    const { data: historyBidListM, error: hmFetched } = useQuery(GET_BIDLIST_BY_ROUND, {
+    const { data: historyBidListM, loading: hmFetched } = useQuery(GET_BIDLIST_BY_ROUND, {
         variables: { round: roundData && roundData[0].round },
-    })
-    const { data: historyBidListH, error: hhFetched } = useQuery(GET_BIDLIST_BY_ROUND, {
+    }, [])
+    const { data: historyBidListH, loading: hhFetched } = useQuery(GET_BIDLIST_BY_ROUND, {
         variables: { round: roundData && roundData[0]?.round + 1 },
-    })
-    const { data: historyBidListL, error: hlFetched } = useQuery(GET_BIDLIST_BY_ROUND, {
+    }, [])
+    const { data: historyBidListL, loading: hlFetched } = useQuery(GET_BIDLIST_BY_ROUND, {
         variables: { round: roundData && roundData[0]?.round - 1 },
-    })
+    }, [])
 
     const loading = useMemo(() => {
-        if ((mFetched || roundM) && (roundH || hFetched) && (roundL || lFetched) && (historyBidListM || hmFetched) && (historyBidListH || hhFetched) && (historyBidListL || hlFetched) && ratioFetched) {
+        console.log(mFetched, hFetched, lFetched, hmFetched, hhFetched, hlFetched, ratioFetched)
+        if (!(mFetched && hFetched && lFetched && hmFetched && hhFetched && hlFetched) && ratioFetched) {
             return false
         } else {
             return true
@@ -204,6 +205,7 @@ const Auction = () => {
     }, [currencyId, hData, ratioFetched])
 
     useEffect(() => {
+        console.log("Mount")
         const id = setInterval(() => {
             setState({
                 curTime: {

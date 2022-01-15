@@ -221,7 +221,7 @@ export default function TwoFactorModal({ is2FAModalOpen, setIs2FAModalOpen }) {
                                 name="result_code"
                                 value={result_code}
                                 onChange={handleInput}
-                                placeholder="000-000"
+                                placeholder="000000"
                             />
                             <button
                                 className="btn-primary next-step"

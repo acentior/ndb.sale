@@ -1,4 +1,5 @@
 export const width = {
-    country: '25%',
-    note: '75%',
+    country: '35%',
+    note: '60%',
+    edit: '5%'
 };

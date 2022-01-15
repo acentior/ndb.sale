@@ -25,29 +25,39 @@ const IndexPage = () => {
             <main className="home-page">
                 <Header />
                 <ReferToFriendsModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
-                <section className="home-section">
-                    <div className="container h-100 d-flex flex-column justify-content-center">
+                <section className="home-section mt-5 mt-sm-0">
+                    <div className="container h-100 d-flex flex-column justify-content-sm-center justify-content-start mt-5 mt-sm-0">
                         <div className="row m-0">
-                            <div className="left-part col-md-6">
-                                <h3 className="home-title">
-                                    <span className="txt-green">round 20</span> ends in
+                            <div className="left-part col-md-6 pe-0 pe-sm-auto">
+                                <h3 className="home-title d-sm-block d-none">
+                                    <div>
+                                        <span className="txt-green">round 20</span> ends in
+                                    </div>
                                     <CountDown />
                                 </h3>
-                                <div className="tokens-lower-part">
+                                <h3 className="home-title-mobile d-sm-none d-block mb-5 mb-sm-0">
+                                    <div className="mb-3">
+                                        <span className="txt-green">round 20</span> ends in
+                                    </div>
+                                    <CountDown />
+                                </h3>
+                                <div className="tokens-lower-part mt-5 mt-sm-0">
                                     <p className="token-left text-uppercase mt-4">
                                         tokens left in this round
                                     </p>
-                                    <p className="token-value">{numberWithCommas(604800, " ")}</p>
-                                    <div className="cta">
+                                    <p className="token-value mt-2 mt-sm-0">
+                                        {numberWithCommas(604800, " ")}
+                                    </p>
+                                    <div className="cta mt-5 mt-sm-0 px-4 px-sm-0">
                                         <button
                                             className="btn btn-green"
                                             onClick={placeABidButtonClick}
                                         >
-                                            Place a bid
+                                            place a bid
                                         </button>
                                         <br />
                                         <div
-                                            className="learn-more"
+                                            className="learn-more mt-3 mt-sm-0"
                                             onClick={() => setIsModalOpen(true)}
                                             onKeyDown={() => setIsModalOpen(true)}
                                             role="presentation"
@@ -57,8 +67,8 @@ const IndexPage = () => {
                                     </div>
                                 </div>
                             </div>
-                            <div className="col-md-1"></div>
-                            <div className="right-part col-md-5">
+                            <div className="col-md-1 d-none d-sm-block"></div>
+                            <div className="right-part col-md-5 d-none d-sm-block">
                                 <img src={Hero2} alt="home hero" className="hero-image img-fluid" />
                             </div>
                         </div>

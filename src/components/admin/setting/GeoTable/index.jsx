@@ -9,7 +9,8 @@ const GeoTable = ({data}) => {
         <>
             <TableHead>
                 <div className='country'>Not allowed countries</div>
-                <div className='note'>Note</div>
+                <div className='note'>Alpha-2</div>
+                <div className='edit'></div>
             </TableHead>
             <TableHeadForMobile>
                 <div className='name'>GEO Data</div>
@@ -39,6 +40,7 @@ const TableHead = styled.div`
     }
     &>div.country {width: ${width.country}; padding-left: 16px;}
     &>div.note {width: ${width.note};}
+    &>div.edit {width: ${width.edit};}
 
     @media screen and (max-width: ${device['laptop-md']}){
         div.bid_status {

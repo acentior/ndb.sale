@@ -6,16 +6,18 @@ import { SuccesImage, FailImage } from '../../utilities/imgImport';
 
 const AlarmModal = () => {
     return (
-        <>               
-            <button type="button" id="success_alarm_btn" data-bs-toggle="modal" data-bs-target="#alarmSuccessModal" style={{display: 'none'}}>
-                Open modal
-            </button>
-            <button type="button" id="fail_alarm_btn" data-bs-toggle="modal" data-bs-target="#alarmFailModal" style={{display: 'none'}}>
-                Open modal
-            </button>
+        <>
+            <div style={{display: 'none'}}>
+                <button type="button" id="success_alarm_btn" data-bs-toggle="modal" data-bs-target="#alarmSuccessModal">
+                    Open modal
+                </button>
+                <button type="button" id="fail_alarm_btn" data-bs-toggle="modal" data-bs-target="#alarmFailModal">
+                    Open modal
+                </button>
+            </div>
             <AlarmModalContainer>
                 <div className="modal fade" id="alarmSuccessModal">
-                    <div className="modal-dialog">
+                    <div className="modal-dialog modal-dialog-centered modal-lg">
                         <div id="success" className="modal-content">
                             <div className="modal-body">
                                 <div className='icon'>
@@ -24,12 +26,13 @@ const AlarmModal = () => {
                                 <div className='inform'>
                                     Action made successfully
                                 </div>
+                                <div className='subInform'></div>
                             </div>
                         </div>
                     </div>
                 </div>
                 <div className="modal fade" id="alarmFailModal">
-                    <div className="modal-dialog">
+                    <div className="modal-dialog modal-dialog-centered modal-lg">
                         <div id="fail" className="modal-content">
                             <div className="modal-body">
                                 <div className='icon'>
@@ -82,18 +85,31 @@ const AlarmModalContainer = styled.div`
             div.icon>img {
                 display: block;
                 margin: auto;
-                width: 80px;
+                width: 120px;
             }
             div.inform {
-                font-size: 20px;
+                font-size: 32px;
                 font-weight: 600;
                 margin-top: 20px;
             }
             div.subInform {
-                font-size: 14px;
+                font-size: 24px;
                 font-weight: 500;
+                height: 50px;
             }
-            @media screen and (max-width: ${device.phone}) {
+            @media screen and (max-width: ${device['laptop']}) {
+                padding: 1rem;
+                div.icon>img {
+                    width: 90px;
+                }
+                div.inform {
+                    font-size: 24px;
+                }
+                div.subInform {
+                    font-size: 18px;
+                }
+            }
+            @media screen and (max-width: ${device['phone']}) {
                 padding: 1rem;
                 div.icon>img {
                     width: 60px;
@@ -103,6 +119,7 @@ const AlarmModalContainer = styled.div`
                 }
                 div.subInform {
                     font-size: 12px;
+                    height: 25px;
                 }
             }
         }

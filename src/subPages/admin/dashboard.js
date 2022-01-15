@@ -26,10 +26,10 @@ const IndexPage = () => {
                             <Icon icon="carbon:user-follow" />
                             User
                         </Link>
-                        <Link className="select-item" to="/admin/create/auction">
+                        {/* <Link className="select-item" to="/admin/create/auction">
                             <Icon icon="ic:sharp-pin-drop" />
                             Airdrop
-                        </Link>
+                        </Link> */}
                         <Link className="select-item" to="/admin/create/customize-avatar">
                             <Icon icon="clarity:avatar-outline-badged" />
                             Avatar customization

@@ -25,6 +25,8 @@ const Profile = () => {
     const { data: user_data } = useQuery(GET_USER)
     const user = user_data?.getUser
 
+    // console.log("user", user)
+
     useEffect(() => {
         dispatch(setCurrentAuthInfo(user))
     }, [dispatch, user])
@@ -151,10 +153,7 @@ const Profile = () => {
                                                     <h4>
                                                         Increase your account security&nbsp;
                                                         <span className="txt-green">
-                                                            {user &&
-                                                                user?.userSecurity.filter(
-                                                                    (s) => s.value
-                                                                ).length}
+                                                            {user && user?.security.length}
                                                         </span>
                                                         /4
                                                     </h4>

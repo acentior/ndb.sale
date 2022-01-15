@@ -2,40 +2,51 @@ import { gql } from "@apollo/client"
 
 export const GET_USER = gql`
     query getUser {
-        getUser {
+        getUser{
             id
-            name
-            surname
-            role
-            birthDate
+            regDate
+            updateDate
+            deleted
             email
-            mobile
+            name
             country
-            twoStep
-            avatarPrefix
-            avatarName
-            tos
+            phone
+            birthday
+            lastLoginDate
+            role
+            tierLevel
+            tierPoint
+            provider
+            providerId
             notifySetting
-            lastLogin
-            avatar {
-                groupId
-                compId
+            avatar{
+                id
+                regDate
+                updateDate
+                deleted
+                purchased
+                selected
+                prefix
+                name
             }
-            avatarPurchased {
-                key
-                value
+            security{
+                id
+                regDate
+                updateDate
+                deleted
+                authType
+                tfaEnabled
             }
-            userExtWallet {
-                key
-                value
-            }
-            userSecurity {
-                key
-                value
-            }
-            userVerify {
-                key
-                value
+            verify{
+                id
+                regDate
+                updateDate
+                deleted
+                emailVerified
+                phoneVerified
+                kycVerified
+                amlVerified
+                kybVerified
             }
         }
     }

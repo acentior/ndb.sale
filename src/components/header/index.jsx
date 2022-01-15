@@ -86,7 +86,7 @@ const Menu = () => {
                     <Link to="/" className="menu__logo d-flex" title="Logo">
                         <img src={Logo} alt="NDB Brand Logo" />
                     </Link>
-                    {typeof window !== `undefined` &&
+                    {isBrowser &&
                         (window.location.pathname === ROUTES.profile ||
                             window.location.pathname === ROUTES.faq ||
                             window.location.pathname === ROUTES.wallet ||

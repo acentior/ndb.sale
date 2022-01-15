@@ -10,6 +10,7 @@ export const useSigninMutation = () => {
     const [mutation, mutationResults] = useMutation(GraphQL.SIGNIN, {
         retry: 1,
         onCompleted: (data) => {
+            console.log("signin data", data)
             if (data.signin.status === "Failed") {
                 // do something
                 return
