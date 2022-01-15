@@ -16,6 +16,7 @@ import { capitalizeFirstLetter } from "../../../utilities/string";
 
 import { figures } from './../../../utilities/staticData';
 import PaginationBar from "../../../components/admin/PaginationBar";
+import { showFailAlarm, showSuccessAlarm } from "../../../components/admin/AlarmModal";
 
 const Countries = countryList.map(item => {
     return {label: item.name, value: item["alpha-2"]};
@@ -99,7 +100,8 @@ const IndexPage = () => {
     };
 
     const handleSubmit = () => {
-        alert('Created User Successfully');
+        // showSuccessAlarm('User created successfully');
+        showFailAlarm('Action failed', 'Ops! Something went wrong. Try again!');
     };
 
     return (

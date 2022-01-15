@@ -109,8 +109,9 @@
                 line-height: 46px;
             }
             @include mq("phone", max) {
-                font-size: 55px;
-                line-height: 60px;
+                font-size: 64px;
+                line-height: 78px;
+                letter-spacing: -0.02em;
             }
             &-text {
                 color: white;
@@ -195,4 +196,17 @@
             padding-right: 0;
         }
     }
+}
+
+.ReactModal__Overlay {
+    opacity: 0;
+    transition: opacity 50ms;
+}
+
+.ReactModal__Overlay--after-open{
+    opacity: 1;
+}
+
+.ReactModal__Overlay--before-close{
+    opacity: 0;
 }

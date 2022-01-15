@@ -3,9 +3,17 @@ import styled from 'styled-components';
 import { Icon } from '@iconify/react';
 import { device } from '../../../../utilities/device';
 import { width } from './columnWidth';
+import DeleteConfirmModal from '../../DeleteConfirmModal';
 
 const TokenDataRow = ({datum, index}) => {
     const [show, setShow] = useState(false);
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+
+    const deleteToken = () => {
+        console.log('delete token' + index);
+        setIsConfirmOpen(false);
+    };
+
     return (
         <>
             <DataRow>
@@ -38,7 +46,7 @@ const TokenDataRow = ({datum, index}) => {
                     <Main>
                         <p>
                             <span className='edit'><Icon icon="clarity:note-edit-line" /></span>
-                            <span className='delete'><Icon icon="akar-icons:trash-can" /></span>
+                            <span className='delete'><Icon icon="akar-icons:trash-can" onClick={() => setIsConfirmOpen(true)} /></span>
                         </p>
                     </Main>
                 </div>
@@ -59,7 +67,7 @@ const TokenDataRow = ({datum, index}) => {
                         </div>
                         <div className='right'>
                             <p>
-                                <span className='delete'><Icon icon="akar-icons:trash-can" /></span>
+                                <span className='delete'><Icon icon="akar-icons:trash-can" onClick={() => setIsConfirmOpen(true)} /></span>
                             </p>
                         </div>
                         <div className='right'>
@@ -96,6 +104,7 @@ const TokenDataRow = ({datum, index}) => {
                     </UnitRowForMobile>
                 </div>
             </DataRowForMobile>
+            <DeleteConfirmModal isModalOpen={isConfirmOpen} setIsModalOpen={setIsConfirmOpen} confirmData={datum.name} doAction={deleteToken} />
         </>
     );
 };

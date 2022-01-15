@@ -35,10 +35,7 @@ export const SIGNIN = gql`
         signin(email: $email, password: $password) {
             status
             token
-            userTwoStep{
-                key
-                value
-            }
+            twoStep
         }
     }
 `
@@ -48,10 +45,7 @@ export const SIGNIN_2FA = gql`
         confirm2FA(email: $email, token: $token, code: $code) {
             status
             token
-            userTwoStep{
-                key
-			    value
-            }
+            twoStep
         }
     }
 `

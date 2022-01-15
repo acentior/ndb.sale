@@ -36,15 +36,15 @@ const KYBDataRow = ({datum, index}) => {
                 </div>
                 <div className='attachment'>
                     <Main>
-                        <p>
-                            {datum.attachment.map(item => {
+                        <div>
+                            {datum.attachment.map((item, index) => {
                                 return (
-                                    <a href={item} target="_blank">
+                                    <a href={item} target="_blank" key={index} rel="noreferrer">
                                         <span className='download'><Icon icon="bx:bx-download" /></span>
                                     </a>
                                 );
                             })}
-                        </p>
+                        </div>
                     </Main>
                 </div>
                 <div className='kyb_status'>
@@ -61,10 +61,10 @@ const KYBDataRow = ({datum, index}) => {
                             <p className='text-white' style={{fontSize: 16, fontWeight: '700'}}>{datum.name}</p>
                         </div>
                         <div className='right'>
-                            <p style={{fontSize: 24}}>
+                            <div style={{fontSize: 24}}>
                                 {datum.status === 'complete' && <p style={{color: '#23c865'}}>Complete</p>}
                                 {datum.status === 'pending' && <p style={{color: 'dimgrey'}}>Pending</p>}
-                            </p>                            
+                            </div>                            
                         </div>
                         <div className='right'>
                             <p style={{fontSize: 16}}>
@@ -111,15 +111,15 @@ const KYBDataRow = ({datum, index}) => {
                             <p style={{color: 'dimgrey'}}>Attachment</p>
                         </div>
                         <div className='right'>
-                            <p>
-                                {datum.attachment.map(item => {
+                            <div>
+                                {datum.attachment.map((item, index) => {
                                     return (
-                                        <a href={item} target="_blank">
+                                        <a href={item} target="_blank" key={index} rel="noreferrer">
                                             <span className='download'><Icon icon="bx:bx-download" /></span>
                                         </a>
                                     );
                                 })}
-                            </p>
+                            </div>
                         </div>
                     </UnitRowForMobile>
                 </div>
@@ -187,6 +187,12 @@ const UnitRowForMobile = styled.div`
         width: 60%;
     }
     &>div.right {
+        div {
+            display: flex;
+            a {
+                margin: 0 5px;
+            }
+        }
         p {
             text-align: right;            
         }

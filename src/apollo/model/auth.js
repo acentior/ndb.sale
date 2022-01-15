@@ -10,6 +10,7 @@ export const useSigninMutation = () => {
     const [mutation, mutationResults] = useMutation(GraphQL.SIGNIN, {
         retry: 1,
         onCompleted: (data) => {
+            console.log("signin data", data)
             if (data.signin.status === "Failed") {
                 // do something
                 return
@@ -17,7 +18,7 @@ export const useSigninMutation = () => {
                 setUser({
                     ...getUser(),
                     tempToken: data.signin.token,
-                    twoStep: data.signin.userTwoStep,
+                    twoStep: data.signin.twoStep,
                 })
                 navigate("/app/onetime-pwd")
             }

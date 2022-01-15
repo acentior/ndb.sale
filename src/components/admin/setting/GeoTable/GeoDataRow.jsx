@@ -3,9 +3,17 @@ import styled from 'styled-components';
 import { Icon } from '@iconify/react';
 import { device } from '../../../../utilities/device';
 import { width } from './columnWidth';
+import DeleteConfirmModal from '../../DeleteConfirmModal';
 
 const GeoDataRow = ({datum, index}) => {
     const [show, setShow] = useState(false);
+    const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+
+    const deleteCountry = () => {
+        console.log('delete country' + index);
+        setIsConfirmOpen(false);
+    };
+
     return (
         <>
             <DataRow>
@@ -16,7 +24,14 @@ const GeoDataRow = ({datum, index}) => {
                 </div>
                 <div className='note'>
                     <Main>
-                        <p>Not allowed because ...</p>
+                        <p>{datum.alpha2}</p>
+                    </Main>
+                </div>
+                <div className='edit'>
+                    <Main>
+                        <p>
+                            <span className='delete'><Icon icon="akar-icons:trash-can" onClick={() => setIsConfirmOpen(true)} /></span>
+                        </p>
                     </Main>
                 </div>
             </DataRow>
@@ -25,6 +40,11 @@ const GeoDataRow = ({datum, index}) => {
                     <UnitRowForMobile>
                         <div className='left'>
                             <p className='text-white' style={{fontSize: 16, fontWeight: '700'}}>{datum.country}</p>
+                        </div>
+                        <div className='right'>
+                            <p>
+                                <span className='delete'><Icon icon="akar-icons:trash-can" onClick={() => setIsConfirmOpen(true)} /></span>
+                            </p>
                         </div>
                         <div className='right'>
                             <p style={{fontSize: 16}}>
@@ -36,14 +56,15 @@ const GeoDataRow = ({datum, index}) => {
                 <div id={`id${index}`} className='collapse'>
                     <UnitRowForMobile>
                         <div className='left'>
-                            <p style={{color: 'dimgrey'}}>Note</p>
+                            <p style={{color: 'dimgrey'}}>Alpha-2</p>
                         </div>
                         <div className='right'>
-                            <p>Not allowed because ...</p>
+                            <p>{datum.alpha2}</p>
                         </div>
                     </UnitRowForMobile>
                 </div>
             </DataRowForMobile>
+            <DeleteConfirmModal isModalOpen={isConfirmOpen} setIsModalOpen={setIsConfirmOpen} confirmData={datum.country} doAction={deleteCountry} />
         </>
     );
 };
@@ -63,6 +84,12 @@ const DataRow = styled.div`
 
     &>div.country {width: ${width.country}; padding-left: 16px;}
     &>div.note {width: ${width.note};}
+    &>div.edit {width: ${width.edit};}
+
+    span.delete {
+        color: #F32D2D;
+        font-size: 22px;
+    }
 
     @media screen and (max-width: ${device['phone']}){
         display: none;
@@ -95,11 +122,15 @@ const UnitRowForMobile = styled.div`
     display: flex;
     justify-content: space-between;
     &>div.left {
-        width: 60%;
+        width: 70%;
     }
     &>div.right {
         p {
             text-align: right;            
         }
+    }
+    span.delete {
+        color: #F32D2D;
+        font-size: 22px;
     }
 `;
