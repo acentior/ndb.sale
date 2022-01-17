@@ -16,7 +16,7 @@ import TimeframeBar from "./auction/TimeframeBar"
 import { ROUTES } from "../utilities/routes"
 import BidsChart2 from "./chart/BidsChart2"
 import ChanceChart from "./chart/ChanceChart"
-import { useQuery, useMutation } from "@apollo/client"
+import { useQuery, useMutation, useLazyQuery } from "@apollo/client"
 import { setBidInfo } from "../redux/actions/bidAction"
 import Loading from "./common/Loading"
 
@@ -78,6 +78,7 @@ const Auction = () => {
     const [performance, setPerformance] = useState(false)
     const [selectedCurrency, setSelectedCurrency] = useState(currencyId);
     const [fnAverateMinBid, setfnAverateMinBid] = useState(0);
+    const [auctionLoaded, setActionLoaded] = useState(false)
 
     const { tabIndex, amount, price, isBid, bidModal, show_chart, selectLabel } = state
     const [selectedData, setSelectedData] = useState(1)
@@ -87,32 +88,65 @@ const Auction = () => {
         (item) => (item.status === 2 || item.status === 0) && item
     )
 
-    // get round based data
-    const { data: roundM, loading: mFetched } = useQuery(GET_AUCTION_BY_NUMBER, {
-        variables: { round: roundData && roundData[0].round },
-    }, [])
+    useEffect(() => {
+        if (!auctionLoaded && roundData) {
+            console.log("loading...")
+            setActionLoaded(true);
+            loadRoundMByNumber({
+                variables: { round: roundData && roundData[0].round },
+            })
+            loadRoundHByNumber({
+                variables: { round: roundData && roundData[0].round + 1 },
+            })
+            loadRoundLByNumber({
+                variables: { round: roundData && roundData[0].round - 1 },
+            })
+            loadHistoryMByNumber({
+                variables: { round: roundData && roundData[0].round },
+            })
+            loadHistoryHByNumber({
+                variables: { round: roundData && roundData[0].round + 1 },
+            })
+            loadHistoryLByNumber({
+                variables: { round: roundData && roundData[0].round - 1 },
+            })
+        }
+    }, [roundData])
 
-    const { data: roundH, loading: hFetched } = useQuery(GET_AUCTION_BY_NUMBER, {
-        variables: { round: roundData && roundData[0]?.round + 1 },
-    }, [])
-    const { data: roundL, loading: lFetched } = useQuery(GET_AUCTION_BY_NUMBER, {
-        variables: { round: roundData && roundData[0]?.round - 1 },
-    }, [])
+    // get round based data
+    const [loadRoundMByNumber, { data: roundM, error: mFetched }] = useLazyQuery(GET_AUCTION_BY_NUMBER)
+    const [loadRoundHByNumber, { data: roundH, error: hFetched }] = useLazyQuery(GET_AUCTION_BY_NUMBER)
+    const [loadRoundLByNumber, { data: roundL, error: lFetched }] = useLazyQuery(GET_AUCTION_BY_NUMBER)
+
+    // const { data: roundM, loading: mFetched } = useQuery(GET_AUCTION_BY_NUMBER, {
+    //     variables: { round: roundData && roundData[0].round },
+    // })
+
+    // const { data: roundH, loading: hFetched } = useQuery(GET_AUCTION_BY_NUMBER, {
+    //     variables: { round: roundData && roundData[0]?.round + 1 },
+    // })
+    // const { data: roundL, loading: lFetched } = useQuery(GET_AUCTION_BY_NUMBER, {
+    //     variables: { round: roundData && roundData[0]?.round - 1 },
+    // })
 
     // get history bids
-    const { data: historyBidListM, loading: hmFetched } = useQuery(GET_BIDLIST_BY_ROUND, {
-        variables: { round: roundData && roundData[0].round },
-    }, [])
-    const { data: historyBidListH, loading: hhFetched } = useQuery(GET_BIDLIST_BY_ROUND, {
-        variables: { round: roundData && roundData[0]?.round + 1 },
-    }, [])
-    const { data: historyBidListL, loading: hlFetched } = useQuery(GET_BIDLIST_BY_ROUND, {
-        variables: { round: roundData && roundData[0]?.round - 1 },
-    }, [])
+    const [loadHistoryMByNumber, { data: historyBidListM, error: hmFetched }] = useLazyQuery(GET_BIDLIST_BY_ROUND)
+    const [loadHistoryLByNumber, { data: historyBidListL, error: hlFetched }] = useLazyQuery(GET_BIDLIST_BY_ROUND)
+    const [loadHistoryHByNumber, { data: historyBidListH, error: hhFetched }] = useLazyQuery(GET_BIDLIST_BY_ROUND)
+
+    // const { data: historyBidListM, loading: hmFetched } = useQuery(GET_BIDLIST_BY_ROUND, {
+    //     variables: { round: roundData && roundData[0].round },
+    // })
+    // const { data: historyBidListH, loading: hhFetched } = useQuery(GET_BIDLIST_BY_ROUND, {
+    //     variables: { round: roundData && roundData[0]?.round + 1 },
+    // })
+    // const { data: historyBidListL, loading: hlFetched } = useQuery(GET_BIDLIST_BY_ROUND, {
+    //     variables: { round: roundData && roundData[0]?.round - 1 },
+    // })
 
     const loading = useMemo(() => {
-        console.log(mFetched, hFetched, lFetched, hmFetched, hhFetched, hlFetched, ratioFetched)
-        if (!(mFetched && hFetched && lFetched && hmFetched && hhFetched && hlFetched) && ratioFetched) {
+        console.log(!!(mFetched || roundM), !!(hFetched || roundH), !!(lFetched || roundL), !!(hmFetched || historyBidListM), !!(hhFetched || historyBidListH), !!(hlFetched || historyBidListL))
+        if ((!!(mFetched || roundM) && !!(hFetched || roundH) && !!(lFetched || roundL) && !!(hmFetched || historyBidListM) && !!(hhFetched || historyBidListH) && !!(hlFetched || historyBidListL)) && ratioFetched) {
             return false
         } else {
             return true
@@ -167,30 +201,31 @@ const Auction = () => {
             fetchRatio();
             return Number(value).toFixed(2);
         }
-
-        if (from === 'usd') return Number(ratio[to] * value).toFixed(2);
+        console.log(from, to, ratio[from], ratio[to])
+        if (from === 'usd' && to === 'usd') return value
+        else if (from === 'usd') return Number(ratio[to] * value).toFixed(2);
+        else if (to === 'usd') return Number(value / ratio[from]).toFixed(2);
         else return Number(value / ratio[from] * ratio[to]).toFixed(2);
     }
 
-    const calcItemPrice = useCallback((price) => {
+    const calcPriceFromUsd = (price) => {
         return calcRatio('usd', Currencies[currencyId].label.toLowerCase(), price)
-    }, [currencyId, ratioFetched, hData])
+    }
+
+    const calcPriceToUsd = (price) => {
+        return calcRatio(Currencies[currencyId].label.toLowerCase(), 'usd', price)
+    }
+
+    const calcRatioInteger = (value) => {
+        console.log(value, Math.ceil(calcRatio(Currencies[currencyId].label.toLowerCase(), 'usd', value)))
+        return Math.ceil(calcRatio(Currencies[currencyId].label.toLowerCase(), 'usd', value))
+    }
 
     useEffect(() => {
-        const newPrice = calcRatio(Currencies[selectedCurrency].label.toLowerCase(), Currencies[currencyId].label.toLowerCase(), price);
-        // setPrice(newPrice)
-        setState({ price: Number(newPrice) })
         setSelectedCurrency(currencyId)
-
     }, [currencyId])
 
     useEffect(() => {
-        const newPrice = calcRatio(Currencies[selectedCurrency].label.toLowerCase(), Currencies[currencyId].label.toLowerCase(), price);
-        // setPrice(newPrice)
-        setState({ price: Number(newPrice) })
-        setSelectedCurrency(currencyId)
-
-
         if (hData === undefined) {
             setfnAverateMinBid(0)
         }
@@ -344,7 +379,7 @@ const Auction = () => {
                                                     <tr key={idx}>
                                                         <td>{idx + 1}</td>
                                                         <td>
-                                                            {calcItemPrice(item.totalPrice)}
+                                                            {calcPriceFromUsd(item.totalPrice)}
                                                             <span className="txt-green">
                                                                 {" "}
                                                                 {
@@ -468,12 +503,12 @@ const Auction = () => {
                             <div className="d-flex align-items-center mb-4">
                                 <input
                                     type="number"
-                                    value={amount}
+                                    value={amount || 1}
                                     onChange={(e) => setState({ amount: e.target.value })}
                                     className="range-input"
                                 />
                                 <Slider
-                                    value={amount}
+                                    value={amount || 1}
                                     onChange={(value) => setState({ amount: value })}
                                     min={1}
                                     max={fnSelectedRoundData()?.token}
@@ -484,14 +519,14 @@ const Auction = () => {
                             <div className="d-flex align-items-center mb-4">
                                 <input
                                     type="number"
-                                    value={price}
-                                    onChange={(e) => setState({ price: e.target.value })}
+                                    value={calcPriceFromUsd(price || 1)}
+                                    onChange={(e) => setState({ price: calcPriceToUsd(e.target.value) })}
                                     className="range-input"
                                 />
                                 <Slider
-                                    value={price}
-                                    onChange={(value) => setState({ price: value })}
-                                    min={fnSelectedRoundData()?.minPrice}
+                                    value={calcPriceFromUsd(price || 1)}
+                                    onChange={(value) => setState({ price: calcPriceToUsd(value) })}
+                                    min={100}
                                     max={10000}
                                     step={100}
                                 />
@@ -501,7 +536,7 @@ const Auction = () => {
                                 <input
                                     className="total-input"
                                     type="text"
-                                    value={numberWithCommas(price * amount, " ")}
+                                    value={numberWithCommas(Number(calcPriceFromUsd(price * amount || price), " "))}
                                     readOnly
                                 />
                                 <h3 className="symbol-label">
@@ -728,13 +763,13 @@ const Auction = () => {
                     <div className="d-flex align-items-center mb-4">
                         <input
                             type="number"
-                            value={price}
-                            onChange={(e) => setState({ price: e.target.value })}
+                            value={calcPriceFromUsd(price)}
+                            onChange={(e) => setState({ price: calcPriceToUsd(e.target.value) })}
                             className="range-input"
                         />
                         <Slider
-                            value={price}
-                            onChange={(value) => setState({ price: value })}
+                            value={calcPriceFromUsd(price)}
+                            onChange={(value) => setState({ price: calcPriceToUsd(value) })}
                             min={fnSelectedRoundData()?.minPrice}
                             max={10000}
                             step={100}
@@ -745,7 +780,7 @@ const Auction = () => {
                         <input
                             className="total-input"
                             type="number"
-                            value={price * amount}
+                            value={calcPriceFromUsd(price * amount)}
                             readOnly
                         />
                     </div>
