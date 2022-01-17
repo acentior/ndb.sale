@@ -26,6 +26,10 @@ const IndexPage = () => {
                             <Icon icon="carbon:user-follow" />
                             User
                         </Link>
+                        <Link className="select-item" to="/admin/create/user-tier">
+                            <Icon icon="carbon:increase-level" />
+                            User Tier
+                        </Link>
                         {/* <Link className="select-item" to="/admin/create/auction">
                             <Icon icon="ic:sharp-pin-drop" />
                             Airdrop

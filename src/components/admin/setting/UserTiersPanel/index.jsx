@@ -1,27 +1,29 @@
-import React from 'react';
+import React, { useEffect } from 'react';
+import _ from 'lodash';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import TierComponent from './Tier_Component';
 import { device } from '../../../../utilities/device';
-import { Bronze, SilverCoin, GoldCoin, Platinum, Diamond } from '../../../../utilities/imgImport';
-
-const tiers = [
-    { image: Bronze, name: 'Bronze', threshold: 500 },
-    { image: SilverCoin, name: 'Silver', threshold: 1500 },
-    { image: GoldCoin, name: 'Gold', threshold: 3500 },
-    { image: Platinum, name: 'Platinum', threshold: 6000 },
-    { image: Diamond, name: 'Diamond', threshold: 10000 },
-];
+import { get_User_Tiers } from '../../../../redux/actions/userTierAction';
 
 const UserTiersPanel = () => {
+    const dispatch = useDispatch();
+    const tiers = useSelector(state => state.userTiers);
+
+    useEffect(() => {
+        dispatch(get_User_Tiers());
+    }, [dispatch]);
     return (
         <>
             <TableHead>
                 <div className='name'>TIER NAME</div>
                 <div className='threshold'>THRESHOLD</div>
             </TableHead>
-            {tiers.map((tier, index) => {
-                return <TierComponent key={index} tier={tier} />
-            })}
+            <TableBody className='custom_scrollbar'>
+                {_.map(tiers, (tier, index) => {
+                    return <TierComponent key={index} tier={tier} />
+                })}
+            </TableBody>
         </>
     );
 };
@@ -47,3 +49,10 @@ const TableHead = styled.div`
     }
 `;
 
+const TableBody = styled.div`
+    overflow: auto;
+    max-height: 70vh;
+    @media screen and (max-width: ${device['phone']}){
+        max-height: unset;
+    }
+`;

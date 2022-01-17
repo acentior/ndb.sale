@@ -174,186 +174,6 @@ input.disabled {
     }
 }
 
-.pwd-reset-modal {
-    max-width: 800px;
-    .pwd-modal__header {
-        text-transform: unset;
-        margin-bottom: 30px;
-        svg {
-            color: #ffffff;
-        }
-        p {
-            font-size: 20px;
-            font-weight: 500;
-            @include mq("phone", max) {
-                font-size: 14px;
-            }
-        }
-        @include mq("phone", max) {
-            margin-bottom: 20px;
-        }
-    }
-    form {
-        p {
-            color: lightgray;
-            margin-bottom: 1px;
-        }
-        div.description {
-            text-align: center;
-        }
-        div.input {
-            width: 60%;
-            margin: auto;
-        }
-        @include mq("phone", max) {
-            div.description {
-                text-align: left;
-            }
-            div.input {
-                width: 100%;
-            }
-        }
-    }
-    .pwd-modal__footer {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-}
-
-.kyc-aml-modal {
-    max-width: 1000px;
-    .pwd-modal__header {
-        text-transform: unset;
-        margin-bottom: 30px;
-        svg {
-            color: #ffffff;
-        }
-        p {
-            font-size: 20px;
-            font-weight: 500;
-        }
-        @include mq("phone", max) {
-            margin-bottom: 20px;
-        }
-    }
-    form {
-        input.black_input {
-            height: 37px;
-            border: 1px solid #cccccc;
-        }
-        p {
-            margin-top: 15px;
-            margin-bottom: 1px;
-        }
-        div.input_div {
-            width: 86%;
-            margin: auto;
-            display: flex;
-            justify-content: space-between;
-            margin-top: 50px;
-            div.input {
-                width: 49%;
-            }
-            @include mq("tablet", max) {
-                width: 100%;
-            }
-            @include mq("phone", max) {
-                flex-direction: column;
-                margin-top: 0;
-                div.input {
-                    width: 100%;
-                }
-            }
-        }
-    }
-    .pwd-modal__footer {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-}
-
-.wallet-balance-modal {
-    max-width: 800px;
-    .pwd-modal__header {
-        text-transform: unset;
-        margin-bottom: 30px;
-        svg {
-            color: #ffffff;
-        }
-        p {
-            font-size: 20px;
-            font-weight: 500;
-            @include mq("phone", max) {
-                font-size: 14px;
-            }
-        }
-        @include mq("phone", max) {
-            margin-bottom: 20px;
-        }
-    }
-    form {
-        margin-top: 10px;
-        max-height: 350px;
-        overflow: auto;
-        p {
-            margin-top: 15px;
-            margin-bottom: 1px;
-        }
-    }
-    div.input {
-        width: 80%;
-        margin: auto;
-        display: flex;
-        margin-bottom: 7px;
-        & > div > input {
-            width: 95%;
-        }
-        div.input_div {
-            width: 48%;
-        }
-        div.trash_btn {
-            width: 4%;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            svg {
-                color: #f32d2d;
-                font-size: 22px;
-                cursor: pointer;
-            }
-        }
-        @include mq("tablet", max) {
-            width: 100%;
-        }
-        @include mq("tablet", max) {
-            div.input_div {
-                width: 46%;
-            }
-            div.trash_btn {
-                width: 8%;
-            }
-        }
-
-        span.add_balance {
-            font-size: 25px;
-            cursor: pointer;
-            svg {
-                color: white;
-            }
-        }
-    }
-    .pwd-modal__footer {
-        display: flex;
-        flex-direction: row;
-        justify-content: space-between;
-        align-items: center;
-    }
-}
-
 .delete-confirm-modal {
     max-width: 600px;
 }
@@ -387,6 +207,59 @@ div.profile {
         }
         img {
             width: 100%;
+        }
+    }
+}
+
+div.searchBar {
+    margin: 5px 0;
+    div.input-group {
+        width: 50%;
+        margin-top: 5px
+    }
+    button.btn {
+        color: white;
+        border: 1px solid dimgray;
+        &:hover {
+            color: $green;
+        }
+    }
+    input.form-control {
+        background-color: #1e1e1e;
+        color: white;
+        border: 1px solid dimgray;
+    }
+    @include mq('phone', max) {
+        div.input-group {
+            width: 100%;
+        }
+    }
+}
+
+div.button_div {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 30px;
+    .previous {
+        font-size: 14px;
+        font-weight: 500;
+        color: black;
+        background-color: #ffffff;
+        cursor: pointer;
+        padding: 7px 15px;
+        &:hover {
+            border: 1px solid $green;
+        }
+    }
+    .next {
+        font-size: 14px;
+        font-weight: 500;
+        background-color: $green;
+        color: white;
+        cursor: pointer;
+        padding: 7px 15px;
+        &:hover {
+            color: black;
         }
     }
 }

@@ -32,7 +32,7 @@ const Profile = () => {
     }, [dispatch, user])
     // Containers
     const [loadingPage, setLoadingPage] = useState(true)
-    const displayName = user?.avatarPrefix + "." + user?.avatarName
+    const displayName = user?.avatar ? user?.avatar?.prefix + "." + user?.avatar?.name : "none"
     const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
     const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] = useState(false)
     const [is2FAModalOpen, setIs2FAModalOpen] = useState(false)

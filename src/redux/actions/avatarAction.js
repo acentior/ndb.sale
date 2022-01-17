@@ -11,12 +11,14 @@ export const create_Avatar_Component = createData => async dispatch => {
             mutation: Mutation.CREATE_NEW_COMPONENT,
             variables: { ...createData }
         });
+        showSuccessAlarm('Avatar Component created successfully');
         dispatch({
             type: CREATE_AVATAR_COMPONENT,
             payload: data.createNewComponent
         });
     } catch(err) {
         console.log(err.message);
+        showFailAlarm('Action failed', 'Ops! Something went wrong!');
     }
 };
 

@@ -4,6 +4,7 @@ import { device } from '../../../../utilities/device';
 import TokenDataRow from './TokenDataRow';
 import { width } from './columnWidth';
 import { DAI, ETH, BTC, BCH, USDC } from '../../../../utilities/imgImport';
+import SearchBar from '../../shared/SearchBar';
 
 const tokens = [
     {name: 'Ethereum', symbol: 'ETH', network: 'ERC20', address: '0x4206931337dc273a6', svg: ETH},
@@ -16,6 +17,7 @@ const tokens = [
 const TokenTable = () => {
     return (
         <>
+            <SearchBar />
             <TableHead>
                 <div className='image'> </div>
                 <div className='name'>Token Name</div>

@@ -385,9 +385,6 @@
             margin-top: -10px;
         }
     }
-    .btn-primary {
-        margin-top: 60px;
-    }
     .desktop-view {
         @include mq("tablet", max) {
             display: none;

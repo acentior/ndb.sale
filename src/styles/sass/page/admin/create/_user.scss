@@ -196,36 +196,6 @@ main.create-user-page {
                     justify-content: center;
                 }
             }
-            div.button_div {
-                display: flex;
-                justify-content: space-between;
-                margin-top: 15px;
-                .previous {
-                    font-size: 14px;
-                    font-weight: 500;
-                    color: black;
-                    background-color: #ffffff;
-                    cursor: pointer;
-                    padding: 7px 15px;
-                    &:hover {
-                        border: 1px solid $green;
-                    }
-                }
-                .next {
-                    font-size: 14px;
-                    font-weight: 500;
-                    background-color: $green;
-                    color: white;
-                    cursor: pointer;
-                    padding: 7px 15px;
-                    &:hover {
-                        color: black;
-                    }
-                }
-                @include mq('phone', max) {
-                    margin-top: 30px;
-                }
-            }
         }        
     } 
 }

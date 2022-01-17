@@ -32,7 +32,7 @@ main.admin-setting-page {
                     .react-tabs {
                         .react-tabs__tab-list {
                             padding-bottom: 10px;
-                            border-bottom: 2px solid #464646;
+                            border: unset;
                             margin: 0;
                             // @include mq("phone", max) {
                             //     display: flex;

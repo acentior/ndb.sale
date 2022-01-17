@@ -10,6 +10,7 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons"
 import { countries, passwordValidatorOptions, social_links } from "../../utilities/staticData"
 import termsAndConditionsFile from "../../assets/files/NDB Coin Auction - Terms and Conditions.pdf"
+import PasswordEyeIcon from "../common/password-eye-icon"
 
 const SingupPage = () => {
     const [email, setEmail] = useState("")
@@ -17,6 +18,9 @@ const SingupPage = () => {
     const [pwdConfirm, setPwdConfirm] = useState("")
     const [agree, setAgree] = useState("")
     const [country, setCountry] = useState(countries[0])
+    // password visibility feature
+    const [passwordVisible, setPasswordVisible] = useState(false)
+    const [passwordConfirmVisible, setPasswordConfirmVisible] = useState(false)
 
     const [emailError, setEmailError] = useState("")
     const [pwdError, setPwdError] = useState("")
@@ -56,10 +60,7 @@ const SingupPage = () => {
 
     return (
         <AuthLayout>
-            <h3 className="signup-head">Create an Account</h3>
-            <p className="signup-subhead">
-                Create an account to participate in the auction and to start bidding!
-            </p>
+            <h3 className="signup-head mb-4">Create an Account</h3>
             <form className="form" onSubmit={signUserUp}>
                 <div className="form-group">
                     <FormInput
@@ -73,24 +74,36 @@ const SingupPage = () => {
                     />
                 </div>
                 <div className="row">
-                    <div className="form-group col-md-6 mb-0">
+                    <div className="form-group col-md-6 mb-0 position-relative">
                         <FormInput
-                            name="password"
-                            type="password"
+                            type={passwordVisible ? "text" : "password"}
                             label="Password"
                             value={pwd}
                             onChange={(e) => setPwd(e.target.value)}
                             placeholder="Enter password"
                         />
+                        <PasswordEyeIcon
+                            passwordVisible={passwordVisible}
+                            setPasswordVisible={setPasswordVisible}
+                            styles={{
+                                right: "18px",
+                            }}
+                        />
                     </div>
-                    <div className="form-group col-md-6 mb-0">
+                    <div className="form-group col-md-6 mb-0 position-relative">
                         <FormInput
-                            name="pwd_confirm"
-                            type="password"
-                            label="Password Confirmation"
+                            type={passwordConfirmVisible ? "text" : "password"}
+                            label="Password confirmation"
                             value={pwdConfirm}
                             onChange={(e) => setPwdConfirm(e.target.value)}
                             placeholder="Enter password"
+                        />
+                        <PasswordEyeIcon
+                            passwordVisible={passwordConfirmVisible}
+                            setPasswordVisible={setPasswordConfirmVisible}
+                            styles={{
+                                right: "18px",
+                            }}
                         />
                     </div>
                     {pwdError && (

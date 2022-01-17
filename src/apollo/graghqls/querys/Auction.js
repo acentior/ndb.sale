@@ -36,6 +36,8 @@ export const GET_BIDLIST_BY_ROUND = gql`
     query getBidListByRound($round: Int!) {
         getBidListByRound(round: $round) {
             userId
+            prefix
+            name
             roundId
             tokenAmount
             totalPrice

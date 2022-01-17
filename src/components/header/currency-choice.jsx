@@ -2,10 +2,9 @@ import React, { useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { ROUTES } from "../../utilities/routes"
 import { Currencies } from "../../utilities/staticData"
-import { User } from "../../utilities/user-data"
 import { setCurrencyInfo } from "../../redux/actions/bidAction"
 
-export default function CurrencyChoice() {
+export default function CurrencyChoice({ classNames }) {
     const dispatch = useDispatch()
     const currencyId = useSelector((state) => state.placeBid.currencyId)
     const [selectedCurrency, setSelectedCurrency] = useState(currencyId || 0)
@@ -15,7 +14,7 @@ export default function CurrencyChoice() {
         menuItem.classList.toggle("d-block")
     }
     return (
-        <div>
+        <div className={classNames}>
             {typeof window !== `undefined` &&
                 (window.location.pathname === ROUTES.auction ||
                     window.location.pathname === ROUTES.wallet ||
@@ -49,8 +48,9 @@ export default function CurrencyChoice() {
                                     <li
                                         key={index}
                                         className={
-                                            Currencies[selectedCurrency].id === item.id ?
-                                                "text-secondary" : ""
+                                            Currencies[selectedCurrency].id === item.id
+                                                ? "text-secondary"
+                                                : ""
                                         }
                                         onClick={() => {
                                             // User.selectedCurrencyId = item.id

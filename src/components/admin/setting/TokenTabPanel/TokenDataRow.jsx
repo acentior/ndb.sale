@@ -4,10 +4,12 @@ import { Icon } from '@iconify/react';
 import { device } from '../../../../utilities/device';
 import { width } from './columnWidth';
 import DeleteConfirmModal from '../../DeleteConfirmModal';
+import EditTokenModal from '../../editModals/EditTokenModal';
 
 const TokenDataRow = ({datum, index}) => {
     const [show, setShow] = useState(false);
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
+    const [isEditOpen, setIsEditOpen] = useState(false);
 
     const deleteToken = () => {
         console.log('delete token' + index);
@@ -45,7 +47,7 @@ const TokenDataRow = ({datum, index}) => {
                 <div className='edit'>
                     <Main>
                         <p>
-                            <span className='edit'><Icon icon="clarity:note-edit-line" /></span>
+                            <span className='edit'><Icon icon="clarity:note-edit-line" onClick={() => setIsEditOpen(true)} /></span>
                             <span className='delete'><Icon icon="akar-icons:trash-can" onClick={() => setIsConfirmOpen(true)} /></span>
                         </p>
                     </Main>
@@ -62,7 +64,7 @@ const TokenDataRow = ({datum, index}) => {
                         </div>
                         <div className='right'>
                             <p>
-                                <span className='edit'><Icon icon="clarity:note-edit-line" /></span>
+                                <span className='edit'><Icon icon="clarity:note-edit-line" onClick={() => setIsEditOpen(true)} /></span>
                             </p>
                         </div>
                         <div className='right'>
@@ -104,6 +106,7 @@ const TokenDataRow = ({datum, index}) => {
                     </UnitRowForMobile>
                 </div>
             </DataRowForMobile>
+            <EditTokenModal isModalOpen={isEditOpen} setIsModalOpen={setIsEditOpen} datum={datum} />
             <DeleteConfirmModal isModalOpen={isConfirmOpen} setIsModalOpen={setIsConfirmOpen} confirmData={datum.name} doAction={deleteToken} />
         </>
     );

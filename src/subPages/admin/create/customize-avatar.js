@@ -58,6 +58,7 @@ const IndexPage = () => {
     // tiers from the backend
     let tiers = [];
     const userTiersResults = useGetUserTierQuery();
+    
     if(userTiersResults.data) {
         tiers = userTiersResults.data.getUserTiers.map(item => {
             return { value: item.level, label: item.name };

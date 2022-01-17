@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { useQuery } from "@apollo/client";
+import { useQuery } from "@apollo/client"
 // Libraries
 import { Link } from "gatsby"
-import { isBrowser } from './../../utilities/auth';
+import { isBrowser } from "./../../utilities/auth"
 // Icons
 import { Bell, Logo } from "../../utilities/imgImport"
 import { User } from "../../utilities/user-data"
@@ -12,27 +12,26 @@ import { useAuth } from "../../hooks/useAuth"
 import DressupModal from "../dressup/dressup-modal"
 import { ROUTES } from "../../utilities/routes"
 import CurrencyChoice from "./currency-choice"
-import { fetch_Avatar_Components } from './../../redux/actions/avatarAction';
-import { GET_USER } from "../../apollo/graghqls/querys/Auth";
-import { setCurrentAuthInfo } from "../../redux/actions/authAction";
+import { fetch_Avatar_Components } from "./../../redux/actions/avatarAction"
+import { GET_USER } from "../../apollo/graghqls/querys/Auth"
+import { setCurrentAuthInfo } from "../../redux/actions/authAction"
 
 const Menu = () => {
-    const dispatch = useDispatch();
-    const { user, isAuthenticated } = useSelector(state => state.auth);
-    const { avatarComponents } = useSelector(state => state);
+    const dispatch = useDispatch()
+    const { user, isAuthenticated } = useSelector((state) => state.auth)
+    const { avatarComponents } = useSelector((state) => state)
 
-    const { data: user_data } = useQuery(GET_USER);
-    const userInfo = user_data?.getUser;
+    const { data: user_data } = useQuery(GET_USER)
+    const userInfo = user_data?.getUser
     // Fetch avatarComponents Data from backend
     useEffect(() => {
-        if(!avatarComponents.loaded) {
-            dispatch(fetch_Avatar_Components());
+        if (!avatarComponents.loaded) {
+            dispatch(fetch_Avatar_Components())
         }
-        if(!isAuthenticated && userInfo) {
-            dispatch(setCurrentAuthInfo(userInfo));
+        if (!isAuthenticated && userInfo) {
+            dispatch(setCurrentAuthInfo(userInfo))
         }
-    }, [dispatch, userInfo, avatarComponents.loaded, isAuthenticated]);
-
+    }, [dispatch, userInfo, avatarComponents.loaded, isAuthenticated])
 
     const auth = useAuth()
 
@@ -179,7 +178,7 @@ const Menu = () => {
                             </ul>
                         )}
                     </div>
-                    {isBrowser && window.innerWidth > 576 && <CurrencyChoice />}
+                    <CurrencyChoice classNames="d-sm-block d-none" />
                     <button
                         type="button"
                         className="menu__toggler"

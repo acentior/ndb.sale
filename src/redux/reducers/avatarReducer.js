@@ -3,11 +3,11 @@ import { CREATE_AVATAR_COMPONENT, FETCH_AVATAR_COMPONENTS } from "../actionTypes
 
 const InitialAvatarComponents = {
     loaded: false,
-    hairStyles: {'default': defaultComponents.hairStyle},
-    facialStyles: {'default': defaultComponents.facialStyle},
-    expressions: {'default': defaultComponents.expression},
-    hats: {'default': defaultComponents.hat},
-    others: {'default': defaultComponents.other},
+    hairStyles: {'0': defaultComponents.hairStyle},
+    facialStyles: {'0': defaultComponents.facialStyle},
+    expressions: {'0': defaultComponents.expression},
+    hats: {'0': defaultComponents.hat},
+    others: {'0': defaultComponents.other},
 };
 
 export const avatarComponentsReducer = (state = InitialAvatarComponents, action) => {

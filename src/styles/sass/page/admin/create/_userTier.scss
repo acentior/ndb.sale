@@ -1,4 +1,4 @@
-main.create-email-page {
+main.create-userTier-page {
     .container {
         @include mq("laptop-wide", max) {
             max-width: 95%;
@@ -24,7 +24,7 @@ main.create-email-page {
             padding: 24px;
             position: relative;
             margin-bottom: 20px;
-            height: 470px;
+            height: 410px;
             display: flex;
             flex-direction: column;
             justify-content: space-between;
@@ -62,21 +62,59 @@ main.create-email-page {
                     flex-direction: row; 
                     justify-content: space-between;
                     &>div {
-                        width: 49%;                       
+                        width: 32%;                       
                     }
                 }
-                div.div2 {
-                    textarea {
-                        min-height: 55px;
-                        max-height: 130px;
+                div.upload {
+                    height: 38px;
+                    border: 1px solid #cccccc;
+                    display: flex;
+                    padding: 10px;
+                    align-items: center;
+                    justify-content: space-between;
+                    p {
+                        padding: 0;
+                    }
+                    p.file_name {
+                        width: 80%;
+                        font-size: 14px;
+                        font-weight: 400;
+                        white-space: nowrap;
+                        overflow: hidden;
+                        text-overflow: ellipsis;
+                    }
+                    p.upload_btn {
+                        font-size: 24px;
+                        svg {cursor: pointer;}
+                    }
+                }
+                div.preview-icon {
+                    div {
+                        width: 120px;
+                        height: 120px;
+                        border: 1px dotted #cccccc;
+                        margin: auto;
+                        display: flex;
+                        justify-content: center;
+                        svg {
+                            width: 70%;
+                            height: auto;
+                        }
+                    }
+                    @include mq('phone', max) {
+                        margin-top: 20px;
                     }
                 }
                 p {
                     font-size: 12px;
                     font-weight: 600;
                     padding-bottom: 5px;
+                    &.desc {
+                        font-weight: 400;
+                        word-wrap: break-word;
+                    }
                 }
-                @include mq("tablet", max) {
+                @include mq("laptop", max) {
                     width: 100%;
                 }  
                 @include mq("phone", max) {
@@ -89,16 +127,8 @@ main.create-email-page {
                             margin-top: 20px;                     
                         }
                     }
-                } 
-                div.date_picker {
-                    @include mq('phone', max) {
-                        margin-bottom: 50px;
-                    }
-                    div.MuiOutlinedInput-root {
-                        height: 38px;
-                    }
                 }
             }
-        }        
+        }
     } 
 }

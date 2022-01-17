@@ -7,11 +7,11 @@ import { SuccesImage, FailImage } from '../../utilities/imgImport';
 const AlarmModal = () => {
     return (
         <>
-            <div style={{display: 'none'}}>
-                <button type="button" id="success_alarm_btn" data-bs-toggle="modal" data-bs-target="#alarmSuccessModal">
+            <div style={{display: 'none!important'}}>
+                <button type="button" id="success_alarm_btn" data-bs-toggle="modal" data-bs-target="#alarmSuccessModal" style={{display: 'none'}}>
                     Open modal
                 </button>
-                <button type="button" id="fail_alarm_btn" data-bs-toggle="modal" data-bs-target="#alarmFailModal">
+                <button type="button" id="fail_alarm_btn" data-bs-toggle="modal" data-bs-target="#alarmFailModal" style={{display: 'none'}}>
                     Open modal
                 </button>
             </div>
