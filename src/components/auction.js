@@ -516,14 +516,14 @@ const Auction = () => {
                             <div className="d-flex align-items-center mb-4">
                                 <input
                                     type="number"
-                                    value={calcPriceFromUsd(price || 1)}
+                                    value={calcPriceFromUsd(price || fnSelectedRoundData()?.minPrice)}
                                     onChange={(e) => setState({ price: calcPriceToUsd(e.target.value) })}
                                     className="range-input"
                                 />
                                 <Slider
-                                    value={calcPriceFromUsd(price || 1)}
+                                    value={calcPriceFromUsd(price || fnSelectedRoundData()?.minPrice)}
                                     onChange={(value) => setState({ price: calcPriceToUsd(value) })}
-                                    min={100}
+                                    min={fnSelectedRoundData()?.minPrice}
                                     max={10000}
                                     step={100}
                                 />
@@ -533,7 +533,7 @@ const Auction = () => {
                                 <input
                                     className="total-input"
                                     type="text"
-                                    value={numberWithCommas(Number(calcPriceFromUsd(price * amount || 1), " "))}
+                                    value={numberWithCommas(Number(calcPriceFromUsd(price * amount || fnSelectedRoundData()?.minPrice), " "))}
                                     readOnly
                                 />
                                 <h3 className="symbol-label">
