@@ -56,7 +56,7 @@ const Auction = () => {
     const dispatch = useDispatch()
     const size = useWindowSize()
     const currencyId = useSelector((state) => state.placeBid.currencyId)
-
+    const user = useSelector((state) => state.auth.user)
     const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
         tabIndex: 0,
         amount: 1,
@@ -90,7 +90,6 @@ const Auction = () => {
 
     useEffect(() => {
         if (!auctionLoaded && roundData) {
-            console.log("loading...")
             setActionLoaded(true);
             loadRoundMByNumber({
                 variables: { round: roundData && roundData[0].round },
@@ -145,7 +144,7 @@ const Auction = () => {
     // })
 
     const loading = useMemo(() => {
-        console.log(!!(mFetched || roundM), !!(hFetched || roundH), !!(lFetched || roundL), !!(hmFetched || historyBidListM), !!(hhFetched || historyBidListH), !!(hlFetched || historyBidListL))
+        // console.log(!!(mFetched || roundM), !!(hFetched || roundH), !!(lFetched || roundL), !!(hmFetched || historyBidListM), !!(hhFetched || historyBidListH), !!(hlFetched || historyBidListL))
         if ((!!(mFetched || roundM) && !!(hFetched || roundH) && !!(lFetched || roundL) && !!(hmFetched || historyBidListM) && !!(hhFetched || historyBidListH) && !!(hlFetched || historyBidListL)) && ratioFetched) {
             return false
         } else {
@@ -201,7 +200,6 @@ const Auction = () => {
             fetchRatio();
             return Number(value).toFixed(2);
         }
-        console.log(from, to, ratio[from], ratio[to])
         if (from === 'usd' && to === 'usd') return value
         else if (from === 'usd') return Number(ratio[to] * value).toFixed(2);
         else if (to === 'usd') return Number(value / ratio[from]).toFixed(2);
@@ -217,7 +215,6 @@ const Auction = () => {
     }
 
     const calcRatioInteger = (value) => {
-        console.log(value, Math.ceil(calcRatio(Currencies[currencyId].label.toLowerCase(), 'usd', value)))
         return Math.ceil(calcRatio(Currencies[currencyId].label.toLowerCase(), 'usd', value))
     }
 
@@ -240,7 +237,6 @@ const Auction = () => {
     }, [currencyId, hData, ratioFetched])
 
     useEffect(() => {
-        console.log("Mount")
         const id = setInterval(() => {
             setState({
                 curTime: {
@@ -377,7 +373,7 @@ const Auction = () => {
                                             <tbody>
                                                 {fnSelectedBidhistoryData()?.map((item, idx) => (
                                                     <tr key={idx}>
-                                                        <td>{idx + 1}</td>
+                                                        <td>{`${idx + 1}. ${item.userId}`}</td>
                                                         <td>
                                                             {calcPriceFromUsd(item.totalPrice)}
                                                             <span className="txt-green">
@@ -484,6 +480,7 @@ const Auction = () => {
                             </div>
                             {size.width <= 1024 && (
                                 <div className="text-center my-5">
+                                    <p>Audited by {user.name}</p>
                                     <button
                                         className="btn-primary btn-increase"
                                         onClick={() => {
@@ -536,13 +533,14 @@ const Auction = () => {
                                 <input
                                     className="total-input"
                                     type="text"
-                                    value={numberWithCommas(Number(calcPriceFromUsd(price * amount || price), " "))}
+                                    value={numberWithCommas(Number(calcPriceFromUsd(price * amount || 1), " "))}
                                     readOnly
                                 />
                                 <h3 className="symbol-label">
                                     {Currencies[currencyId].symbol}
                                 </h3>
                             </div>
+                            <div style={{ paddingTop: '20px' }}><p>Audited by {user.name}</p></div>
                             <button
                                 className="btn-primary text-uppercase w-100"
                                 onClick={() => {
@@ -780,7 +778,7 @@ const Auction = () => {
                         <input
                             className="total-input"
                             type="number"
-                            value={calcPriceFromUsd(price * amount)}
+                            value={calcPriceFromUsd(price * amount || 1)}
                             readOnly
                         />
                     </div>
@@ -814,7 +812,7 @@ const Auction = () => {
                         className="range-input"
                     />
                     <h4 className="range-label">Total price</h4>
-                    <input className="total-input" type="number" value={price * amount} readOnly />
+                    <input className="total-input" type="number" value={price * amount || 1} readOnly />
                     <button
                         className="btn-primary text-uppercase"
                         onClick={() => {
