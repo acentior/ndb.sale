@@ -27,8 +27,8 @@ const BidsChart2 = ({ data }) => {
             },
         },
         grid: {
-            left: "3%",
-            right: "3%",
+            left: 0,
+            right: 10,
             bottom: "3%",
             containLabel: true,
         },
@@ -62,17 +62,18 @@ const BidsChart2 = ({ data }) => {
                     label: {
                         backgroundColor: "#fff",
                         color:"#7a7a7a",
-                        width:50,
-                        padding:[4,2,2,15],
+                        padding:[4,15,2,15],
                         formatter: function ({ value }) {
                             return numFormatter(value,2)
                         },
                     },
+                    margin:"10%"
                 },
                 axisLabel: {
                     formatter: function (value) {
                         return numFormatter(value, 2)
-                    }
+                    },
+                    margin:30
                 },
             },
         ],

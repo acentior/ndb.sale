@@ -7,7 +7,7 @@ const ChanceChart = ({ data }) => {
     const [fails, setFails] = useState([])
 
     ///////added///////////
-    const [option, setOption] = useState({})
+    const [option, setOption]=useState({})
     const [winFlag, setWinFlag] = useState(true)
     const [failFlag, setFailFlag] = useState(true)
 
@@ -28,19 +28,19 @@ const ChanceChart = ({ data }) => {
         setRnd(trnd)
         setWins(wins_arr)
         setFails(fails_arr)
-    }, [data, winFlag, failFlag])
+    }, [data,winFlag,failFlag])
 
     var opt = {
         color: ["#23C865", "#E8503A"],
         plugins: {
             tooltip: {
                 filter: function () {
-                    return false
-                },
+                    return false;
+                }
             },
             legend: {
-                display: false,
-            },
+                display: false
+            }
         },
         grid: {
             left: "0%",
@@ -50,6 +50,13 @@ const ChanceChart = ({ data }) => {
         },
         xAxis: {
             data: rnd,
+            offset:10,
+            axisLabel:{
+                fontSize:14
+            },
+            axisLine:{
+                show:false
+            }
         },
         yAxis: [
             {
@@ -64,8 +71,9 @@ const ChanceChart = ({ data }) => {
                 },
                 axisLabel: {
                     formatter: function (value) {
-                        return value * 100 + "%"
+                        return value * 100 
                     },
+                    margin:20
                 },
             },
         ],
@@ -82,53 +90,50 @@ const ChanceChart = ({ data }) => {
             },
         ],
         left: 0,
+        layout: {
+            padding: {
+                left: 0,
+                right: 0,
+                top: 10,
+                bottom: 10
+            }
+        }
     }
-    if (winFlag && !failFlag) {
+    if (winFlag && !failFlag){
         opt.series[0].data = wins
         opt.series[1].data = []
-    } else if (!winFlag && failFlag) {
+    }else if (!winFlag && failFlag){
         opt.series[0].data = []
         opt.series[1].data = fails
-    } else if (winFlag && failFlag) {
+    }else if (winFlag && failFlag ){
         opt.series[0].data = wins
         opt.series[1].data = fails
-    } else {
+    }else{
         opt.series[0].data = []
         opt.series[1].data = []
     }
-
+    
     return (
         <React.Fragment>
             <div className="select-chart-type">
                 <div className="d-flex justify-content-between mt-2 ">
                     <div>
-                        <input
-                            type="checkbox"
-                            className="btn-check"
-                            id="btn-wins-outlined"
-                            autoComplete="off"
-                            onClick={() => {
-                                setWinFlag(!winFlag)
-                            }}
+                        <input type="checkbox" class="btn-check" id="btn-wins-outlined" autocomplete="off"   
+                            onClick={
+                                ()=>{setWinFlag(!winFlag)}
+                            }
                         />
-                        <label className="_btn _btn-wins-outlined" htmlFor="btn-wins-outlined">
-                            Win Rate
-                        </label>
+                        <label class="_btn _btn-wins-outlined" for="btn-wins-outlined">Win Rate</label>
                     </div>
-                    <div>
-                        <input
-                            type="checkbox"
-                            className="btn-check"
-                            id="btn-fails-outlined"
-                            autoComplete="off"
-                            onClick={() => {
-                                setFailFlag(!failFlag)
-                            }}
+                    <div >
+                        <input type="checkbox" class="btn-check" id="btn-fails-outlined" autocomplete="off"   
+                            onClick={
+                                ()=>{setFailFlag(!failFlag)}
+                            }
                         />
-                        <label className="_btn _btn-fails-outlined" htmlFor="btn-fails-outlined">
-                            Fail Rate
-                        </label>
+                        <label class="_btn _btn-fails-outlined" for="btn-fails-outlined">Fail Rate</label>
                     </div>
+                    
                 </div>
                 
             </div>
@@ -136,13 +141,18 @@ const ChanceChart = ({ data }) => {
                 <div style={{position:'absolute',top:'10px', left:'5px', color:'white'}}>
                     %
                 </div>
-                <ReactEcharts
-                    option={opt}
-                    style={{ height: "500px", width: "100%" }}
-                    className="echarts-for-echarts"
-                />
+                <div style={{position:'relative'}}>
+                    <ReactEcharts
+                        option={opt}
+                        style={{ height: "500px", width: "100%" }}
+                        className="echarts-for-echarts"
+                    />
+                    <div style={{bottom:'60px',borderBottom:"solid 1px #a3a7af" , zIndex:"9999",position:'relative',backgroundColor:"#1e1e1e",marginRight:"21px", marginLeft:"40px",color:"#fff0"}}>
+                        Mask Canvas
+                    </div>
+                </div>
             </div>
-            
+            <div style={{borderBottom:"solid 1px #a3a7af" , marginRight:"21px", marginLeft:"40px",color:"#fff0"}}>Nothing</div>
         </React.Fragment>
     )
 }
