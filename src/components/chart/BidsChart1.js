@@ -24,12 +24,13 @@ const BidsChart1 = ({ data ,period}) => {
         setZeroLabel(tmpData.zeroLabel)
         setStartDate(tmpData.fData[0].placedAt)
         tmpData.fData.forEach((ele) => {
-            tTotal.push({ value: [ele.placedAt, ele.totalPrice] })
-            tAmount.push({ value: [ele.placedAt, ele.tokenAmount] })
+            tTotal.push({ value: [new Date(ele.placedAt), ele.totalPrice] })
+            tAmount.push({ value: [new Date(ele.placedAt), ele.tokenAmount] })
         })
-
+        
         setTotal(tTotal)
         setAmount(tAmount)
+        console.log(tTotal)
         
     }, [data,period])
 
@@ -40,16 +41,17 @@ const BidsChart1 = ({ data ,period}) => {
             axisPointer: {
                 type: "cross",
             },
+            position:'middle'
         },
         grid: [
             {
-                left: 30,
+                left: 75,
                 right: 10,
                 top: "5%",
                 height: "50%",
             },
             {
-                left: 30,
+                left: 75,
                 right: 10,
                 top: "65%",
                 height: "30%",
@@ -74,18 +76,18 @@ const BidsChart1 = ({ data ,period}) => {
                     label:{
                         show:false
                     }
+                },
+                axisLabel:{
+                    margin:30
                 }
             },
             {
                 type: "time",
-                min:stDate,
                 axisTick: {
                     alignWithLabel: true,
                 },
+                min:stDate,
                 gridIndex: 1,
-                axisLabel:{
-                    margin:16
-                },
                 splitNumber:2,
                 axisPointer:{
                     label:{
@@ -96,7 +98,11 @@ const BidsChart1 = ({ data ,period}) => {
                         width:70,
                         padding:[4,2,2,5]
                     }
-                }
+                },
+                axisLabel:{
+                    margin:12,
+                },
+                scale:true
             }
         ],
         
@@ -108,6 +114,7 @@ const BidsChart1 = ({ data ,period}) => {
                     formatter: function (value) {
                         return numFormatter(value, 0)
                     },
+                    margin:30,
                 },
                 axisPointer: {
                     label: {
@@ -119,7 +126,11 @@ const BidsChart1 = ({ data ,period}) => {
                         width:50,
                         padding:[4,2,2,30]
                     },
-                    
+                    margin:"10%",
+                },
+                offset:20,
+                position:{
+                    align:'right'
                 }
             },
             {
@@ -129,7 +140,7 @@ const BidsChart1 = ({ data ,period}) => {
                     formatter: function (value,index) {
                         return numFormatter(value, 0)
                     },
-                    margin:10
+                    margin:30
                 },
                 axisPointer: {
                     label: {
@@ -138,7 +149,12 @@ const BidsChart1 = ({ data ,period}) => {
                         width:70,
                         padding:[4,2,2,10],
                     },
+                    margin:"10%",
+                    position:{
+                        align:'right'
+                    }
                 },
+                offset:20,
                 gridIndex: 1,
                 name:zeroLabel.toString(),
                 nameLocation:"start"
