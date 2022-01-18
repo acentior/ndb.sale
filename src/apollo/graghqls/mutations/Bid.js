@@ -16,6 +16,8 @@ export const PLACE_BID = gql`
             cryptoType: $cryptoType
         ) {
             userId
+            prefix
+            name
             roundId
             tokenAmount
             totalPrice

@@ -291,7 +291,7 @@ const Auction = () => {
     const bidMutation = () => {
         PlaceBid({
             variables: {
-                roundId: fnSelectedRoundData()?.round,
+                roundId: fnSelectedRoundData()?.id,
                 tokenAmount: amount,
                 tokenPrice: Math.max(fnSelectedRoundData()?.minPrice, price),
                 payment: 1,
