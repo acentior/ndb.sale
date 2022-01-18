@@ -3,30 +3,13 @@ import { gql } from "@apollo/client"
 export const GET_AUCTION = gql`
     query {
         getAuctions {
-            id
-            regDate
-            updateDate
-            deleted
             round
             startedAt
             endedAt
             totalToken
             minPrice
-            avatar {
-                id
-                regDate
-                updateDate
-                deleted
-                groupId
-                compId
-            }
             token
             sold
-            stats {
-                qty
-                win
-                fail
-            }
             status
         }
     }

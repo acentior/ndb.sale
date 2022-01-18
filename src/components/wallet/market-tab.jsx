@@ -176,7 +176,7 @@ export default function MarketTab() {
             </thead>
             <div className="search">
                 <svg
-                    class="search-icon text-light"
+                    className="search-icon text-light"
                     fill="none"
                     stroke="currentColor"
                     viewBox="0 0 24 24"
