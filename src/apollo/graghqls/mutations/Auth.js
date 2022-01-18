@@ -23,7 +23,11 @@ export const REQUEST_2FA = gql`
         request2FA(email: $email, method: $method, phone: $phone)
     }
 `
-
+export const DISABLE_2FA = gql`
+    mutation disable2FA($method: String!) {
+        disable2FA(method: $method)
+    }
+`
 export const CONFIRM_REQUEST_2FA = gql`
     mutation confirmRequest2FA($email: String!, $method: String!, $code: String!) {
         confirmRequest2FA(email: $email, method: $method, code: $code)

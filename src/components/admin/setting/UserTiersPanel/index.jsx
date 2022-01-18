@@ -13,11 +13,13 @@ const UserTiersPanel = () => {
     useEffect(() => {
         dispatch(get_User_Tiers());
     }, [dispatch]);
+
     return (
         <>
             <TableHead>
                 <div className='name'>TIER NAME</div>
                 <div className='threshold'>THRESHOLD</div>
+                <div className='edit'></div>
             </TableHead>
             <TableBody className='custom_scrollbar'>
                 {_.map(tiers, (tier, index) => {
@@ -43,9 +45,10 @@ const TableHead = styled.div`
         padding: 8px 2px;
     }
     &>div.name {width: 50%; padding-left: 16px;}
-    &>div.threshold {width: 50%;}
+    &>div.threshold {width: 40%;}
+    &>div.edit {width: 10%}
     @media screen and (max-width: ${device['phone']}){
-        &>div.threshold {width: 40%;}
+        &>div.edit {width: 0;}
     }
 `;
 

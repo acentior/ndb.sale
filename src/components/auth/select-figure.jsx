@@ -14,6 +14,8 @@ import { SET_AVATAR } from "../../apollo/graghqls/mutations/Auth"
 import { useMutation, useQuery } from "@apollo/client"
 import { GET_USER } from "../../apollo/graghqls/querys/Auth"
 import CustomSpinner from "../common/custom-spinner"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons"
 
 const SelectFigure = () => {
     const { data: user_data } = useQuery(GET_USER)
@@ -25,6 +27,7 @@ const SelectFigure = () => {
     const [modalIsOpen, setIsOpen] = useState(false)
     const [searchValue, setSearchValue] = useState("")
     const [randomName, setRandomName] = useState(figures[selectedId].lastname)
+    const [error, setError] = useState("")
 
     // Queries and Mutations
     const [setAvatar] = useMutation(SET_AVATAR, {
@@ -32,6 +35,7 @@ const SelectFigure = () => {
         onCompleted: (data) => {
             setPending(false)
             if (data?.setAvatar === "Success") navigate(ROUTES.profile)
+            else setError(`${figures[selectedId].lastname}.${randomName} Already Exists`)
         },
     })
 
@@ -48,6 +52,7 @@ const SelectFigure = () => {
     const handleOnConfirmButtonClick = (e) => {
         e.preventDefault()
         setPending(true)
+        setError("")
         setAvatar({
             variables: {
                 prefix: figures[selectedId].lastname,
@@ -57,12 +62,15 @@ const SelectFigure = () => {
     }
     //Authentication
     useEffect(() => {
-        if (user_data)
-            if ("getUser" in user_data)
-                if (user_data.getUser)
-                    if (user_data.getUser.avatarPrefix && user_data.getUser.avatarName)
-                        return navigate(ROUTES.profile)
-                    else return setLoadingPage(false)
+        if (user_data) {
+            if (user_data?.getUser) {
+                if (user_data.getUser?.avatar?.prefix && user_data.getUser?.avatar?.name) {
+                    return navigate(ROUTES.profile)
+                } else {
+                    return setLoadingPage(false)
+                }
+            }
+        }
     }, [user_data])
     if (loadingPage) return <Loading />
     else
@@ -228,27 +236,36 @@ const SelectFigure = () => {
                                         )}
                                     </div>
                                 </div>
-                                {selected ? (
-                                    <button
-                                        className="btn-primary text-uppercase w-100 mt-3 d-flex align-items-center justify-content-center"
-                                        disabled={pending}
-                                        onClick={handleOnConfirmButtonClick}
-                                    >
-                                        <div className={`${pending ? "opacity-1" : "opacity-0"}`}>
-                                            <CustomSpinner />
-                                        </div>
-                                        <div className={`${pending ? "ms-3" : "pe-4"}`}>
-                                            confirm
-                                        </div>
-                                    </button>
-                                ) : (
-                                    <button
-                                        className="btn-primary text-uppercase w-100 mt-3"
-                                        onClick={() => setSelect(true)}
-                                    >
-                                        select
-                                    </button>
-                                )}
+                                <div className="mt-3">
+                                    {error && (
+                                        <span className="errorsapn">
+                                            <FontAwesomeIcon icon={faExclamationCircle} /> {error}
+                                        </span>
+                                    )}
+                                    {selected ? (
+                                        <button
+                                            className="btn-primary text-uppercase w-100 d-flex align-items-center justify-content-center"
+                                            disabled={pending}
+                                            onClick={handleOnConfirmButtonClick}
+                                        >
+                                            <div
+                                                className={`${pending ? "opacity-1" : "opacity-0"}`}
+                                            >
+                                                <CustomSpinner />
+                                            </div>
+                                            <div className={`${pending ? "ms-3" : "pe-4"}`}>
+                                                confirm
+                                            </div>
+                                        </button>
+                                    ) : (
+                                        <button
+                                            className="btn-primary text-uppercase w-100 mt-3"
+                                            onClick={() => setSelect(true)}
+                                        >
+                                            select
+                                        </button>
+                                    )}
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -23,16 +23,16 @@ main.admin-setting-page {
                     color: #ffffff;
                 }
                 div.tabs_container {
-                    overflow-y: auto;
-                    overflow-x: hidden;
-                    max-height: 80vh;
+                    // overflow-y: auto;
+                    // overflow-x: hidden;
+                    // max-height: 80vh;
                     @include mq('phone', max) {
                         max-height: unset;
                     }
                     .react-tabs {
                         .react-tabs__tab-list {
                             padding-bottom: 10px;
-                            border: unset;
+                            border-bottom: 1px solid $dimgrey;
                             margin: 0;
                             // @include mq("phone", max) {
                             //     display: flex;

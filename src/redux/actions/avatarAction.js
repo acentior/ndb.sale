@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import * as Query from '../../apollo/graghqls/querys/AvatarComponent';
 import * as Mutation from './../../apollo/graghqls/mutations/AvatarComponent';
-import { CREATE_AVATAR_COMPONENT, FETCH_AVATAR_COMPONENTS } from "../actionTypes";
+import { CREATE_AVATAR_COMPONENT, FETCH_DATA, FETCH_AVATAR_COMPONENTS } from "../actionTypes";
 import { client } from './../../apollo/client';
 import { showFailAlarm, showSuccessAlarm } from '../../components/admin/AlarmModal';
 
@@ -11,6 +11,7 @@ export const create_Avatar_Component = createData => async dispatch => {
             mutation: Mutation.CREATE_NEW_COMPONENT,
             variables: { ...createData }
         });
+        
         showSuccessAlarm('Avatar Component created successfully');
         dispatch({
             type: CREATE_AVATAR_COMPONENT,
@@ -49,9 +50,25 @@ export const create_New_Avatar = createData => async dispatch => {
             variables: { ...createData }
         });
         showSuccessAlarm('Avatar created successfully');
-        console.log(data);
+        // console.log(data);
     } catch(err) {
-        console.log(err.message);
+        // console.log(err.message);
         showFailAlarm('Action failed', 'Ops! Something went wrong. Try again!');
+    }
+};
+
+export const fetch_Avatars = () => async dispatch => {
+    try {
+        const { data } = await client.query({
+            query: Query.GET_AVATARS
+        });
+        
+        dispatch({
+            type: FETCH_DATA,
+            payload: data.getAvatars
+        });
+    } catch(err) {
+        // console.log(err.message);
+        showFailAlarm('Data Loading Error', 'Ops! Something went wrong. Try again!');
     }
 };

@@ -18,8 +18,6 @@ export default function NotificationRecent() {
         },
     })
 
-    console.log("list", ntf_list, loading)
-
     const tempList = ntf_list?.getNotifications
 
     useEffect(() => {

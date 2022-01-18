@@ -17,7 +17,7 @@ const VerifyEmail = (props) => {
 
     const [code, setCode] = useState("")
 
-    const [is2FAModalOpen, setIs2FAModalOpen] = useState(props.verified)
+    const [is2FAModalOpen, setIs2FAModalOpen] = useState(!!props.verified)
 
     const [verifyAccount] = useMutation(VERIFY_ACCOUNT, {
         onCompleted: (data) => {
@@ -28,7 +28,9 @@ const VerifyEmail = (props) => {
 
     const [resendVerifyCode] = useMutation(RESEND_VERIFY_CODE, {
         onCompleted: (data) => {
-            // do something here to show resend email result.
+            if (data.resendVerifyCode === "Already verified") {
+                setIs2FAModalOpen(true)
+            }
         },
     })
 
@@ -82,7 +84,13 @@ const VerifyEmail = (props) => {
                     Sign up
                 </Link>
             </p>
-            <TwoFactorModal is2FAModalOpen={is2FAModalOpen} setIs2FAModalOpen={setIs2FAModalOpen} />
+            <TwoFactorModal
+                is2FAModalOpen={is2FAModalOpen}
+                setIs2FAModalOpen={setIs2FAModalOpen}
+                email={user?.email}
+                twoStep={user?.twoStep}
+                updateUser={() => {}}
+            />
         </AuthLayout>
     )
 }

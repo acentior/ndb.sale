@@ -33,10 +33,10 @@ const CreateAvatar = () => {
         hat: '',
         other: ''
     });
-    const [avatarName, setAvatarName] = useState({name: '', surname: ''});
+    const [avatarName, setAvatarName] = useState({fname: '', surname: ''});
 
     const avatarDataError = useMemo(() => {
-        if(!avatarName.name) return 'Name is required';
+        if(!avatarName.fname) return 'First Name is required';
         if(!avatarName.surname) return 'Surname is required';
         return '';
     }, [avatarName]);
@@ -111,7 +111,7 @@ const CreateAvatar = () => {
 
     const handleSubmit = async () => {
         const skillSet = stats.map(item => {
-            return { skill: item.title, skillRate: item.stars };
+            return { name: item.title, rate: item.stars };
         });
         const avatarSet = Object.keys(avatarItems).filter(item => {
             return item !== 'hairColor';
@@ -122,9 +122,8 @@ const CreateAvatar = () => {
 
         setPending(true);
         await dispatch(create_New_Avatar({
-            name: avatarName.name,
+            fname: avatarName.fname,
             surname: avatarName.surname,
-            shortName: avatarName.name + ' ' + avatarName.surname,
             skillSet,
             avatarSet,
             factsSet,
@@ -184,11 +183,11 @@ const CreateAvatar = () => {
                                         </div>
                                     </div>
                                     <div className="name_div">
-                                        <p>Name</p>
+                                        <p>First Name</p>
                                         <input
                                             className="black_input"
-                                            value={avatarName.name}
-                                            onChange={(e) => setAvatarName({...avatarName, name: e.target.value})}
+                                            value={avatarName.fname}
+                                            onChange={(e) => setAvatarName({...avatarName, fname: e.target.value})}
                                         />
                                         <p className="mt-3">Surname</p>
                                         <input
@@ -399,7 +398,7 @@ const CreateAvatar = () => {
                                 <div className="preview_div">
                                     <p className="name">
                                         {avatarName ? 
-                                            `${capitalizeFirstLetter(avatarName.name)} ${capitalizeFirstLetter(avatarName.surname)}`:
+                                            `${capitalizeFirstLetter(avatarName.fname)} ${capitalizeFirstLetter(avatarName.surname)}`:
                                             "Nicolla Tesla"
                                         }
                                     </p>

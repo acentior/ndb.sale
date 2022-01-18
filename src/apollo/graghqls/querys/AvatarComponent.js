@@ -15,3 +15,18 @@ export const GET_AVATAR_COMPONENTS = gql`
         }
     }
 `;
+
+export const GET_AVATARS = gql`
+    query {
+        getAvatars {
+            id
+            fname
+            surname
+            avatarSet {
+                groupId
+                compId
+            }
+            hairColor
+        }
+    }
+`;
