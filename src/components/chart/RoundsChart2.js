@@ -1,16 +1,23 @@
 import React, { useEffect, useState } from "react"
 import ReactEcharts from "echarts-for-react"
-
-const RoundsChart2 = ({ data,onDispData }) => {
+var xPoint=0;
+var tmpdata=[]
+var curDisp;
+var dispData={}
+const RoundsChart2 = ({ data }) => {
     const [chart, setChart] = useState([])
     const [rnd, setRnd] = useState([])
 
-    var xPoint
-    var tmpdata;
+    const [display,setDisplay] = useState({
+        
+    })
+
+    const [loop, setLoop] = useState()
     useEffect(() => {
         let trnd = []
         let rdata = []
         tmpdata = data?.getRoundPerform2.slice()
+        console.log(tmpdata)
         tmpdata
             .sort((a, b) => {
                 return a.roundNumber - b.roundNumber
@@ -25,41 +32,71 @@ const RoundsChart2 = ({ data,onDispData }) => {
         setRnd(trnd)
         setChart(rdata)
     }, [data])
-  
     useEffect(()=>{
-        onDispData(xPoint)
+        console.log('----')
+        for (var i=0;i<=tmpdata.length;i++){
+            if (tmpdata[i].roundNumber==xPoint){
+                curDisp = tmpdata[i]
+            }
+        }
+        setLoop(setInterval(()=>{
+            console.log('-----')
+        },100))
+        return function cleanup(){
+            console.log('clean')
+            clearInterval(loop)
+        }
+    },[xPoint])
+    
 
-    },[])
-   
     const option = {
         tooltip: {
-            trigger: "axis",
-            axisPointer: {
-                type: "cross",
-            },
-          
+            show:false,
         },
+        
         grid: {
-            left: "3%",
-            right: "3%",
+            left: 27,
+            right: 10,
             bottom: "3%",
             containLabel: true,
         },
         xAxis: {
             data: rnd,
             axisPointer: {
+                show:true,
                 label: {
                     backgroundColor: "#eb5454",
                     formatter: function ({ value }) {
                         xPoint = value
+                        // setDisplay(tmpdata)
+                        // curDisp = tmpdata.filter((item)=>item.roundNumber==xPoint)
+                        // for (var i=0;i<tmpdata.length;i++){
+                        //     if (tmpdata[i].roundNumber == xPoint){
+                        //         console.log(tmpdata[i])
+                        //         dispData =tmpdata[i]
+                        //     }
+                        // }
                         return value
                     },
-                    width:30,
-                    padding:[4,5,4,20],
+                    padding:[4,25,2,25],
                 },
             },
+            axisLabel:{
+                margin:30
+            }
         },
-        yAxis: {},
+        yAxis: {
+            axisPointer:{
+                show:false
+            },
+            offset:20,
+            axisLabel:{
+                margin:30
+            },
+            position:{
+                align:'right'
+            }
+        },
         series: [
             {
                 type: "candlestick",
@@ -68,11 +105,33 @@ const RoundsChart2 = ({ data,onDispData }) => {
         ],
     }
     return (
-        <ReactEcharts
-            option={option}
-            style={{ height: "500px", width: "100%" }}
-            className="echarts-for-echarts"
-        />
+        <div style={{position:'relative'}}>
+            <div style={{ position: 'relative' , top:'-20px'}}>
+                <div className="d-flex py-auto" style={{float:'right'}}>
+                    <div className="px-auto">
+                        <label className="text-white">Max:&nbsp;&nbsp;</label>
+                        <span className="text-secondary">0.034</span>
+                    </div>
+                    <div className="px-2">
+                        <label className="text-white">Min:&nbsp;&nbsp;</label>
+                        <span className="text-secondary ">0.034</span>
+                    </div>
+                    <div className="px-2">
+                        <label className="text-white">Std:&nbsp;&nbsp;</label>
+                        <span className="text-secondary ">{curDisp.max}</span>
+                    </div>
+                    <div className="px-2">
+                        <label className="text-white">Rnd:&nbsp;&nbsp;</label>
+                        <span className="text-secondary ">{xPoint}</span>
+                    </div>
+                </div>
+                <ReactEcharts
+                    option={option}
+                    style={{ height: "500px", width: "100%" }}
+                    className="echarts-for-echarts"
+                />
+            </div>
+        </div>
     )
 }
 

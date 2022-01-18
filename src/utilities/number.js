@@ -118,19 +118,19 @@ export const getDataOnPeriod = (data, period) => {
                 zeroLabel = 'Date '+ startDate.getDate()
                 break;
             case '1M' :
-                startDate = new Date(now.getFullYear(), now.getMonth() - 1, now.getDate())
+                startDate = new Date(now.getFullYear(), now.getMonth())
                 zeroLabel = monthNames[startDate.getMonth()]
                 break;
             case '3M' :
-                startDate = new Date(now.getFullYear(), now.getMonth() - 3, now.getDate())
+                startDate = new Date(now.getFullYear(), now.getMonth()-2)
                 zeroLabel = monthNames[startDate.getMonth()]
                 break;
             case '6M' :
-                startDate = new Date(now.getFullYear(), now.getMonth() - 6, now.getDate())
+                startDate = new Date(now.getFullYear(), now.getMonth()-5)
                 zeroLabel = monthNames[startDate.getMonth()]
                 break;
             case '1Y' :
-                startDate = new Date(now.getFullYear() - 1, now.getMonth(), now.getDate())
+                startDate = new Date(now.getFullYear(), 0,1)
                 zeroLabel = startDate.getFullYear()-1+1 + 'Y'
                 break;
             case 'default' :
@@ -145,7 +145,7 @@ export const getDataOnPeriod = (data, period) => {
         fData = data
     }
     return {
-        fData, zeroLabel
+        fData, zeroLabel, startDate
     }
 }
 

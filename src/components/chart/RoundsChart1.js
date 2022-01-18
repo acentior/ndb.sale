@@ -8,6 +8,7 @@ const RoundsChart1 = ({ data }) => {
     useEffect(() => {
         let ttotal = []
         let tsold = []
+        console.log(data.getAuctions)
         data?.getAuctions.forEach((ele) => {
             ttotal.push([ele.totalToken, ele.minPrice * ele.totalToken])
             tsold.push([ele.minPrice, ele.sold])
@@ -22,19 +23,19 @@ const RoundsChart1 = ({ data }) => {
                 return a[0] - b[0]
             })
         )
+        console.log(ttotal, tsold)
     }, [data])
 
     const option = {
-        // tooltip: {
-        //     trigger: "axis",
-        //     axisPointer: {
-        //         type: "cross",
-        //     },
+        tooltip: {
+            axisPointer: {
+                type: "cross",
+            },
             
-        // },
+        },
         grid: {
-            left: "3%",
-            right: "3%",
+            left: 20,
+            right: 10,
             bottom: "3%",
             containLabel: true,
         },
@@ -52,8 +53,12 @@ const RoundsChart1 = ({ data }) => {
                 label: {
                     backgroundColor: "#8F8F8F",
                     formatter: function ({ value }) {
+                        if (value<1000){
+                            return value.toFixed(0)
+                        }
                         return numFormatter(value, 0)
                     },
+                    padding:[4,25,2,25],
                 },
             },
         },
@@ -69,13 +74,19 @@ const RoundsChart1 = ({ data }) => {
                     formatter: function ({ value }) {
                         return numFormatter(value, 2)
                     },
+                    padding:[4,15,2,15],
                 },
             },
             axisLabel: {
                 formatter: function (value) {
                     return numFormatter(value, 2)
                 },
+                margin:17,
             },
+            position:{
+                align:'right'
+            },
+            offset:20
         },
         series: [
             {

@@ -225,10 +225,6 @@ const Auction = () => {
     //     return Math.ceil(calcRatio(Currencies[currencyId].label.toLowerCase(), "usd", value))
     // }
 
-    const onDispData=(data)=>{  //this is temparary for candlestick
-        console.log(data)
-    }
-
     useEffect(() => {
         if (hData === undefined) {
             setfnAverateMinBid(0)
@@ -734,7 +730,10 @@ const Auction = () => {
                                                         Histogram
                                                     </button>
                                                 </div>
-                                                {
+
+
+
+                                                {/* {
                                                     performance && (
                                                         <div className="d-flex py-auto">
                                                             <div className="px-auto">
@@ -755,7 +754,11 @@ const Auction = () => {
                                                             </div>
                                                         </div>
                                                     )
-                                                }
+                                                } */}
+
+
+
+
 
                                             </div>
                                         )}
@@ -830,66 +833,73 @@ const Auction = () => {
                                     performance &&
                                     !round_perform2.loading &&
                                     !round_perform2.error && (
-                                        <RoundsChart2 data={round_perform2?.data} onDispData={onDispData}/>
+                                        <RoundsChart2 data={round_perform2?.data}/>
                                     )}
                                 {selectLabel.value === "round_chance" &&
                                     !round_chance.loading &&
                                     !round_chance.error && (
-                                        <ChanceChart data={round_chance?.data} />
+                                        <React.Fragment>
+                                            <ChanceChart data={round_chance?.data} />
+                                        </React.Fragment>
                                     )}
-                                <div
-                                    className="btnGroup " role="group"
-                                    style={{ borderTop: "2px solid #c4c4c4", marginLeft: "33px", marginTop: "22px", paddingLeft: "18px", marginRight: "11px", paddingTop: "12px" }}
-                                >
-                                    <button
-                                        className="btn-no-border-green text-uppercase btn-small  "
-                                        onClick={() => {
-                                            setPeriod('1D')
-                                        }}
-                                    >
-                                        1D
-                                    </button>
-                                    <button
-                                        className="btn-no-border-green text-uppercase btn-small  "
-                                        onClick={() => {
-                                            setPeriod('5D')
-                                        }}
-                                    >
-                                        5D
-                                    </button>
-                                    <button
-                                        className="btn-no-border-green text-uppercase btn-small "
-                                        onClick={() => {
-                                            setPeriod('1M')
-                                        }}
-                                    >
-                                        1M
-                                    </button>
-                                    <button
-                                        className="btn-no-border-green text-uppercase btn-small  "
-                                        onClick={() => {
-                                            setPeriod('6M')
-                                        }}
-                                    >
-                                        3M
-                                    </button>
-                                    <button
-                                        className="btn-no-border-green text-uppercase btn-small  "
-                                        onClick={() => {
-                                            setPeriod('1Y')
-                                        }}
-                                    >
-                                        1Y
-                                    </button>
-                                    <button
-                                        className="btn-no-border-green text-uppercase btn-small  "
-                                        onClick={() => {
-                                            setPeriod('ALL')
-                                        }}
-                                    >
-                                        ALL
-                                    </button>
-                                </div>
+                                {
+                                    selectLabel.value !== "round_chance" && (
+                                        <div
+                                            className="btnGroup " role="group"
+                                            style={{ borderTop: "2px solid #c4c4c4", marginLeft: "76px", marginTop: "25px", paddingLeft: "18px", marginRight: "11px", paddingTop: "12px" , zIndex:"-2"}}
+                                        >
+                                            <button
+                                                className="btn-no-border-green text-uppercase btn-small  "
+                                                onClick={() => {
+                                                    setPeriod('1D')
+                                                }}
+                                            >
+                                                1D
+                                            </button>
+                                            <button
+                                                className="btn-no-border-green text-uppercase btn-small  "
+                                                onClick={() => {
+                                                    setPeriod('5D')
+                                                }}
+                                            >
+                                                5D
+                                            </button>
+                                            <button
+                                                className="btn-no-border-green text-uppercase btn-small "
+                                                onClick={() => {
+                                                    setPeriod('1M')
+                                                }}
+                                            >
+                                                1M
+                                            </button>
+                                            <button
+                                                className="btn-no-border-green text-uppercase btn-small  "
+                                                onClick={() => {
+                                                    setPeriod('6M')
+                                                }}
+                                            >
+                                                6M
+                                            </button>
+                                            <button
+                                                className="btn-no-border-green text-uppercase btn-small  "
+                                                onClick={() => {
+                                                    setPeriod('1Y')
+                                                }}
+                                            >
+                                                1Y
+                                            </button>
+                                            <button
+                                                className="btn-no-border-green text-uppercase btn-small  "
+                                                onClick={() => {
+                                                    setPeriod('ALL')
+                                                }}
+                                            >
+                                                ALL
+                                            </button>
+                                        </div>
+                                    )
+                                }
+                               
                             </div>
                         </div>
                     </div>

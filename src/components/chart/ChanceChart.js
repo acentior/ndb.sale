@@ -119,12 +119,19 @@ const ChanceChart = ({ data }) => {
                     </div>
                     
                 </div>
+                
             </div>
-            <ReactEcharts
-                option={opt}
-                style={{ height: "500px", width: "100%" }}
-                className="echarts-for-echarts"
-            />
+            <div style={{position:'relative'}}>
+                <div style={{position:'absolute',top:'10px', left:'5px', color:'white'}}>
+                    %
+                </div>
+                <ReactEcharts
+                    option={opt}
+                    style={{ height: "500px", width: "100%" }}
+                    className="echarts-for-echarts"
+                />
+            </div>
+            
         </React.Fragment>
     )
 }

@@ -46,8 +46,7 @@ const BidsChart2 = ({ data }) => {
                 },
                 axisPointer:{
                     label:{
-                        width:40,
-                        padding:[4,2,2,15],
+                       padding:[4,25,2,25]
                     }
                 }
             }
