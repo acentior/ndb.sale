@@ -25,7 +25,10 @@ const TierComponent = ({tier = {}}) => {
                         thousandSeparator={true}
                         renderText={(value, props) => <p {...props}>{value}</p>}
                     />
-                    <p><span><Icon icon="clarity:note-edit-line" onClick={() => setModalIsOpen(true)}/></span></p>
+                </div>
+                <div className='edit'>
+                    <p><span className='edit'><Icon icon="clarity:note-edit-line" onClick={() => setModalIsOpen(true)}/></span></p>                    
+                    <p><span className='delete'><Icon icon="akar-icons:trash-can" onClick={() => setModalIsOpen(true)}/></span></p>
                 </div>
             </Container>
         </>
@@ -55,14 +58,24 @@ const Container = styled.div`
         width: 43%;
     }
     &>div.threshold {
-        width: 50%;
+        width: 40%;
         display: flex;
         justify-content: space-between;
         padding-right: 2%;
+    }
+    &>div.edit {
+        width: 10%;
+        display: flex;
+        justify-content: space-around;
         p span {
             font-size: 22px;
-            color: #23c865;
             cursor: pointer;
+            &.edit {
+                color: #23c865;
+            }
+            &.delete {
+                color: #F32D2D;
+            }
         }
     }
     @media screen and (max-width: ${device['laptop-md']}){
@@ -88,6 +101,7 @@ const Container = styled.div`
             }
         }
         &>div.name {width: 45%;}
-        &>div.threshold {width: 40%;}
+        &>div.threshold {width: 30%;}
+        &>div.edit {width: 20%;}
     }
 `;

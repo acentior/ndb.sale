@@ -62,10 +62,10 @@ const IndexPage = () => {
                             </TabPanel>
                             <TabPanel>
                                 <AvatarTabPanel />
+                                <PaginationBar />
                             </TabPanel>
                             <TabPanel>
                                 <TokenTabPanel />
-                                <PaginationBar />
                             </TabPanel>
                             <TabPanel>
                                 <UserTiersPanel />

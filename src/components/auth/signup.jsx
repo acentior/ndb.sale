@@ -56,7 +56,9 @@ const SingupPage = () => {
     }
 
     const pending = signupMutationResults.loading
-    const webserviceError = signupMutationResults?.data?.signup.status === "Failed"
+    const signupResult = signupMutationResults?.data?.signup
+
+    console.log("signup", signupResult)
 
     return (
         <AuthLayout>
@@ -150,10 +152,9 @@ const SingupPage = () => {
                     </label>
                 </div>
                 <div className="mt-3">
-                    {webserviceError && (
+                    {signupResult && signupResult !== "Success" && (
                         <span className="errorsapn">
-                            <FontAwesomeIcon icon={faExclamationCircle} />{" "}
-                            {"Your email and password do not match!"}
+                            <FontAwesomeIcon icon={faExclamationCircle} /> {signupResult}
                         </span>
                     )}
                     {agreeError && (

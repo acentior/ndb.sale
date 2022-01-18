@@ -211,6 +211,22 @@ div.profile {
     }
 }
 
+div.image_div {
+    position: relative;
+    
+    div {
+        position: absolute;
+        svg {
+            width: 100%;
+            height: auto;
+            position: absolute;
+        }
+    }
+    img {
+        width: 100%;
+    }
+}
+
 div.searchBar {
     margin: 5px 0;
     div.input-group {

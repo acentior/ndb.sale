@@ -17,7 +17,6 @@ const tokens = [
 const TokenTable = () => {
     return (
         <>
-            <SearchBar />
             <TableHead>
                 <div className='image'> </div>
                 <div className='name'>Token Name</div>
@@ -29,7 +28,7 @@ const TokenTable = () => {
             <TableHeadForMobile>
                 <div className='name'>Token Data</div>
             </TableHeadForMobile>
-            <TableBody>
+            <TableBody className='custom_scrollbar'>
                 {tokens.map((datum, index) => {
                     return <TokenDataRow key={index} datum={datum} index={index} />
                 })}
@@ -81,4 +80,9 @@ const TableHeadForMobile = styled.div`
 const TableBody = styled.div`
     border-left: 1px solid #464646;
     border-right: 1px solid #464646;
+    max-height: 70vh;
+    overflow: auto;
+    @media screen and (max-width: ${device['phone']}){
+        max-height: unset;
+    }
 `;

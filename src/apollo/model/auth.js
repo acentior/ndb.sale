@@ -12,7 +12,9 @@ export const useSigninMutation = () => {
         onCompleted: (data) => {
             console.log("signin data", data)
             if (data.signin.status === "Failed") {
-                // do something
+                if (data.signin.token === "Please set 2FA.") {
+                    navigate("/app/verify-email/1")
+                }
                 return
             } else if (data.signin.status === "Success") {
                 setUser({
@@ -46,7 +48,11 @@ export const useSigninMutation = () => {
 export const useSignupMutation = () => {
     const [mutation, mutationResults] = useMutation(GraphQL.SIGNUP, {
         onCompleted: (data) => {
-            navigate("/app/verify-email")
+            console.log("Signup data", data)
+            if (data?.signup === "Already verified")
+                navigate("/app/signin")
+            else
+                navigate("/app/verify-email")
         },
     })
 
@@ -70,6 +76,7 @@ export const useSignupMutation = () => {
 export const useSignIn2FA = () => {
     const [mutation, mutationResults] = useMutation(GraphQL.SIGNIN_2FA, {
         onCompleted: (data) => {
+            console.log("2fa data", data)
             if (data.confirm2FA.status === "Failed") {
                 return
             } else if (data.confirm2FA.status === "Success") {

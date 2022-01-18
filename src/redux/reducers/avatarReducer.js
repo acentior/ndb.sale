@@ -1,18 +1,18 @@
-import { defaultComponents } from "../../components/dress-up/dressup-data";
 import { CREATE_AVATAR_COMPONENT, FETCH_AVATAR_COMPONENTS } from "../actionTypes";
 
 const InitialAvatarComponents = {
     loaded: false,
-    hairStyles: {'0': defaultComponents.hairStyle},
-    facialStyles: {'0': defaultComponents.facialStyle},
-    expressions: {'0': defaultComponents.expression},
-    hats: {'0': defaultComponents.hat},
-    others: {'0': defaultComponents.other},
+    hairStyles: {},
+    facialStyles: {},
+    expressions: {},
+    hats: {},
+    others: {},
 };
 
 export const avatarComponentsReducer = (state = InitialAvatarComponents, action) => {
     switch(action.type) {
         case CREATE_AVATAR_COMPONENT:
+            console.log(action.payload)
             state[`${action.payload.groupId}s`] = { ...state[`${action.payload.groupId}s`], [action.payload.compId]: action.payload };
             return { ...state };
         case FETCH_AVATAR_COMPONENTS:

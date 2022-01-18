@@ -1,26 +1,17 @@
-import React, { useCallback, useReducer, useState } from "react"
+import React, { useCallback, useReducer, useState, useEffect } from "react"
 import { navigate } from "gatsby"
 import { Input } from "../common/FormControl"
 import Modal from "react-modal"
 import { CloseIcon } from "../../utilities/imgImport"
 import { useMutation } from "@apollo/client"
-import { REQUEST_2FA, CONFIRM_REQUEST_2FA } from "../../apollo/graghqls/mutations/Auth"
-import { getUser, setUser } from "../../utilities/auth"
+import { REQUEST_2FA, DISABLE_2FA, CONFIRM_REQUEST_2FA } from "../../apollo/graghqls/mutations/Auth"
 import { ROUTES } from "../../utilities/routes"
-import { getCountries, getCountryCallingCode } from "react-phone-number-input/input"
-import en from "react-phone-number-input/locale/en.json"
-import "react-phone-number-input/style.css"
+import CustomSpinner from "../common/custom-spinner"
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
+import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons"
 
-const CountrySelect = ({ value, onChange, labels, ...rest }) => (
-    <select {...rest} value={value} onChange={(event) => onChange(event.target.value || undefined)}>
-        <option value="">{labels.ZZ}</option>
-        {getCountries().map((country) => (
-            <option key={country} value={country}>
-                {labels[country]}
-            </option>
-        ))}
-    </select>
-)
+import "react-phone-number-input/style.css"
+import ConnectMobile from "./connect-mobile"
 
 const two_factors = [
     { label: "Authenticator App", method: "app" },
@@ -29,49 +20,67 @@ const two_factors = [
 ]
 const initial = {
     result_code: "",
-    choose_type: 0,
+    selected: 0,
     set_type: -1,
     input_mobile: false,
-    mobile: "",
+    loading: false,
+    error: false,
 }
 
-export default function TwoFactorModal({ is2FAModalOpen, setIs2FAModalOpen }) {
-    const user = getUser()
+export default function TwoFactorModal({
+    is2FAModalOpen,
+    setIs2FAModalOpen,
+    email,
+    phone,
+    twoStep,
+    updateUser,
+}) {
     const [qrcode, setQRCode] = useState("")
-    const [country, setCountry] = useState("")
     const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), initial)
-
-    const { result_code, choose_type, set_type, input_mobile, mobile } = state
+    const { result_code, selected, set_type, input_mobile, loading, error } = state
 
     const handleInput = useCallback((e) => {
         e.preventDefault()
         setState({ [e.target.name]: e.target.value })
     }, [])
 
+    useEffect(() => {
+        setState({ loading: false })
+    }, [twoStep])
+
     const [request2FA] = useMutation(REQUEST_2FA, {
         onCompleted: (data) => {
             setQRCode(data.request2FA)
-            setState({ set_type: choose_type })
+            setState({ set_type: selected })
         },
     })
-    const [confirmRequest2FA] = useMutation(CONFIRM_REQUEST_2FA, {
+
+    // This will be only trigger on Profile page
+    const [disable2FA] = useMutation(DISABLE_2FA, {
         onCompleted: (data) => {
+            updateUser()
+        },
+    })
+
+    const [confirmRequest2FA, { loading: confirmLoading }] = useMutation(CONFIRM_REQUEST_2FA, {
+        onCompleted: (data) => {
+            console.log("confirm Request 2FA", data)
             if (data.confirmRequest2FA === "Failed") {
-                user.isVerify = false
-                setUser(user)
                 navigate(ROUTES.verifyFailed)
             } else if (data.confirmRequest2FA === "Success") {
-                user.isVerify = true
-                setUser(user)
+                updateUser()
                 navigate(ROUTES.signIn)
             }
         },
     })
-    const sendRequest2FA = () => {
+
+    const sendRequest2FA = (i, mobile = "") => {
+        console.log("Two : ", two_factors[i].method)
+        setState({ loading: true })
         request2FA({
             variables: {
-                email: user.email,
-                method: two_factors[choose_type].method,
+                email,
+                method: two_factors[i].method,
                 phone: mobile,
             },
         })
@@ -80,6 +89,8 @@ export default function TwoFactorModal({ is2FAModalOpen, setIs2FAModalOpen }) {
         setIs2FAModalOpen(false)
         setState(initial)
     }
+
+    console.log("loading", loading)
     return (
         <Modal
             isOpen={is2FAModalOpen}
@@ -101,43 +112,7 @@ export default function TwoFactorModal({ is2FAModalOpen, setIs2FAModalOpen }) {
             <div className="twoFA-modal__body">
                 {set_type === -1 ? (
                     input_mobile ? (
-                        <div className="input_mobile">
-                            <h3>Connect Mobile</h3>
-                            <p className="mt-3 pb-3">You will recive a sms code to the number</p>
-                            <div className="form-group">
-                                <div className="mobile-input-field">
-                                    <CountrySelect
-                                        className="form-control"
-                                        labels={en}
-                                        name="countrySelect"
-                                        onChange={(c) => {
-                                            const code = `+${getCountryCallingCode(c)} `
-                                            setCountry(code)
-                                            setState({
-                                                mobile: code,
-                                            })
-                                        }}
-                                    />
-                                    <Input
-                                        type="text"
-                                        value={mobile}
-                                        onChange={(e) => {
-                                            const input = e.target.value
-                                            setState({
-                                                mobile: country + input.substr(country.length),
-                                            })
-                                        }}
-                                    />
-                                </div>
-                                <p>You will receive a sms code to the number above</p>
-                                <button
-                                    className="btn-primary next-step mt-4"
-                                    onClick={() => sendRequest2FA()}
-                                >
-                                    Confirm Number
-                                </button>
-                            </div>
-                        </div>
+                        <ConnectMobile confirm={(number) => sendRequest2FA(1, number)} />
                     ) : (
                         <div className="tfa-select">
                             <h3>Protect your account with 2-step verification</h3>
@@ -147,30 +122,100 @@ export default function TwoFactorModal({ is2FAModalOpen, setIs2FAModalOpen }) {
                                 authenticator app.
                             </p>
                             <div className="d-flex flex-column justify-content-center align-items-center">
-                                {two_factors.map((item, idx) => (
-                                    <button
-                                        key={idx}
-                                        className={`btn-primary mb-2 select-tfa ${
-                                            choose_type === idx && "active"
-                                        }`}
-                                        onClick={() => setState({ choose_type: idx })}
-                                    >
-                                        {item.label}
-                                    </button>
-                                ))}
-
-                                <button
-                                    className="btn-primary next-step mt-4"
-                                    onClick={() => {
-                                        if (two_factors[choose_type].method === "phone") {
-                                            setState({ input_mobile: true })
-                                        } else {
-                                            sendRequest2FA()
-                                        }
-                                    }}
-                                >
-                                    Next
-                                </button>
+                                {two_factors.map((item, idx) => {
+                                    const enable = !!twoStep ? twoStep.includes(item.method) : false
+                                    return (
+                                        <div key={idx} className="tfa-line">
+                                            <div className="tfa-line_labels">
+                                                <p className="tfa-line_labels_type">{item.label}</p>
+                                                {enable && (
+                                                    <p className="tfa-line_labels_preview">
+                                                        {item.method === "phone" && phone
+                                                            ? "*******" + phone.slice(-3)
+                                                            : ""}
+                                                        {item.method === "email" &&
+                                                            email.slice(0, 2) +
+                                                                "***@***" +
+                                                                email.slice(-2)}
+                                                    </p>
+                                                )}
+                                            </div>
+                                            <div className="tfa-line_buttons">
+                                                {enable ? (
+                                                    <>
+                                                        <button className="tfa-line_buttons_change">
+                                                            Change
+                                                        </button>
+                                                        <button
+                                                            className="btn-primary select-tfa d-flex align-items-center justify-content-center"
+                                                            onClick={() => {
+                                                                setState({
+                                                                    selected: idx,
+                                                                    loading: true,
+                                                                })
+                                                                disable2FA({
+                                                                    variables: {
+                                                                        method: item.method,
+                                                                    },
+                                                                })
+                                                            }}
+                                                        >
+                                                            <div
+                                                                className={`${
+                                                                    selected === idx && loading
+                                                                        ? "opacity-1"
+                                                                        : "opacity-0"
+                                                                }`}
+                                                            >
+                                                                <CustomSpinner />
+                                                            </div>
+                                                            <div
+                                                                className={`${
+                                                                    selected === idx && loading
+                                                                        ? "ms-3"
+                                                                        : "pe-4"
+                                                                }`}
+                                                            >
+                                                                Disable
+                                                            </div>
+                                                        </button>
+                                                    </>
+                                                ) : (
+                                                    <button
+                                                        className="btn-primary select-tfa d-flex align-items-center justify-content-center enable"
+                                                        onClick={() => {
+                                                            setState({ selected: idx })
+                                                            if (item.method === "phone") {
+                                                                setState({ input_mobile: true })
+                                                            } else {
+                                                                sendRequest2FA(idx)
+                                                            }
+                                                        }}
+                                                    >
+                                                        <div
+                                                            className={`${
+                                                                selected === idx && loading
+                                                                    ? "opacity-1"
+                                                                    : "opacity-0"
+                                                            }`}
+                                                        >
+                                                            <CustomSpinner color="black" />
+                                                        </div>
+                                                        <div
+                                                            className={`${
+                                                                selected === idx && loading
+                                                                    ? "ms-3"
+                                                                    : "pe-4"
+                                                            }`}
+                                                        >
+                                                            Enable
+                                                        </div>
+                                                    </button>
+                                                )}
+                                            </div>
+                                        </div>
+                                    )
+                                })}
                             </div>
                         </div>
                     )
@@ -221,21 +266,34 @@ export default function TwoFactorModal({ is2FAModalOpen, setIs2FAModalOpen }) {
                                 name="result_code"
                                 value={result_code}
                                 onChange={handleInput}
-                                placeholder="000000"
+                                placeholder="000 000"
                             />
+                            <div className="result_code_error">
+                                {error && (
+                                    <span className="errorsapn">
+                                        <FontAwesomeIcon icon={faExclamationCircle} />{" "}
+                                        {"Please input confirm code"}
+                                    </span>
+                                )}
+                            </div>
                             <button
-                                className="btn-primary next-step"
-                                onClick={() =>
-                                    confirmRequest2FA({
-                                        variables: {
-                                            email: user.email,
-                                            method: two_factors[choose_type].method,
-                                            code: result_code,
-                                        },
-                                    })
-                                }
+                                className="btn-primary next-step d-flex align-items-center justify-content-center"
+                                onClick={() => {
+                                    if (!result_code.length) setState({ error: true })
+                                    else
+                                        confirmRequest2FA({
+                                            variables: {
+                                                email,
+                                                method: two_factors[selected].method,
+                                                code: result_code,
+                                            },
+                                        })
+                                }}
                             >
-                                Confirm
+                                <div className={`${confirmLoading ? "opacity-1" : "opacity-0"}`}>
+                                    <CustomSpinner />
+                                </div>
+                                <div className={`${confirmLoading ? "ms-3" : "pe-4"}`}>Confirm</div>
                             </button>
                         </div>
                     </div>

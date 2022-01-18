@@ -36,43 +36,24 @@ export const CREATE_NEW_COMPONENT = gql`
 
 export const CREATE_NEW_AVATAR = gql`
     mutation CreateNewAvatar(
-        $name: String!
+        $fname: String!
         $surname: String!
-        $shortName: String!
         $skillSet: [SkillSetInput]!
-        $avatarSet: [AvatarSetInput]!
-        $factsSet: [FactsInput]!
+        $avatarSet: [AvatarSetInput]
+        $factsSet: [FactsInput]
+        $hairColor: String
         $details: String
-        $hairColor: String!
     ) {
         createNewAvatar(
-            name: $name
+            fname: $fname
             surname: $surname
-            shortName: $shortName
             skillSet: $skillSet
             avatarSet: $avatarSet
             factsSet: $factsSet
-            details: $details
             hairColor: $hairColor
+            details: $details
         ) {
             id
-            name
-            surname
-            shortName
-            skillSet {
-                skill
-                skillRate
-            }
-            avatarSet {
-                groupId
-                compId
-            }
-            factsSet {
-                topic
-                detail
-            }
-            details
-            hairColor
         }
     }
 `;

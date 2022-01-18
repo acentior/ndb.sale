@@ -63,6 +63,10 @@
                 color: $green;
             }
         }
+        .result_code_error {
+            height: 20px;
+            text-align: left;
+        }
         .form {
             &-group {
                 margin-bottom: 8px;
@@ -151,38 +155,74 @@
         line-height: 40px;
     }
     .next-step {
+        margin: auto;
         font-weight: bold;
         font-size: 24px;
         line-height: 29px;
         width: 322px;
+        margin-bottom: 40px;
         @include mq("phone", max) {
             width: 100%;
         }
     }
     .tfa-select {
         max-width: 614px;
-        margin: 0 auto;
+        margin: 0 auto 50px;
         text-align: center;
         h3 {
             max-width: 445px;
         }
-        .select-tfa {
-            font-weight: bold;
-            font-size: 18px;
-            line-height: 20px;
-            padding: 18px 20px;
-            width: 322px;
-            text-transform: none;
-            text-align: left;
-            &.active {
-                color: $black;
-                background: white;
-                &:focus {
-                    box-shadow: unset;
-                }
-            }
+        .tfa-line {
+            display: flex;
+            width: 640px;
+            justify-content: space-between;
+            margin-bottom: 10px;
             @include mq("phone", max) {
                 width: 100%;
+            }
+            &_labels {
+                justify-content: center;
+                display: flex;
+                flex-direction: column;
+                text-align: left;
+                &_type {
+                    font-size: 18px;
+                    font-weight: 700;
+                }
+                &_preview {
+                    font-size: 12px;
+                    font-weight: 400;
+                }
+            }
+            &_buttons {
+                display: flex;
+                &_change {
+                    background-color: transparent;
+                    border: none;
+                    margin-right: 10px;
+                    &:hover {
+                        color: darkgrey;
+                    }
+                    &:active {
+                        color: grey;
+                    }
+                }
+                .select-tfa {
+                    font-weight: bold;
+                    font-size: 18px;
+                    line-height: 20px;
+                    padding: 18px 20px;
+                    width: 200px;
+                    text-transform: none;
+                    text-align: center;
+                    &.enable {
+                        color: $black;
+                        background: white;
+                        &:focus {
+                            box-shadow: unset;
+                        }
+                    }
+                }
             }
         }
     }

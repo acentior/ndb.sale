@@ -16,16 +16,18 @@ import { useQuery } from "@apollo/client"
 import NotificationSetting from "./profile/notification-setting-switch"
 import NotificationRecent from "./profile/notification-recent-switch"
 import Loading from "./common/Loading"
-// import { ROUTES } from "../utilities/routes"
+import { ROUTES } from "../utilities/routes"
 import { setCurrentAuthInfo } from "../redux/actions/authAction"
 
 const Profile = () => {
     const dispatch = useDispatch()
     // Queries and Mutations
-    const { data: user_data } = useQuery(GET_USER)
+    const { data: user_data, refetch } = useQuery(GET_USER)
     const user = user_data?.getUser
 
-    // console.log("user", user)
+    const twoStep = user?.security
+        ? user.security.filter((f) => f.tfaEnabled).map((m) => m.authType)
+        : []
 
     useEffect(() => {
         dispatch(setCurrentAuthInfo(user))
@@ -53,14 +55,15 @@ const Profile = () => {
 
     const getSecurityStatus = (key) => user?.userSecurity?.find((f) => f?.key === key)?.value
     useEffect(() => {
-        if (user_data)
-            if ("getUser" in user_data)
-                if (user_data.getUser)
-                    if (user_data.getUser.avatarPrefix && user_data.getUser.avatarName)
-                        return setLoadingPage(false)
-                    //DO NOT REMOVE THIS COMMENT.
-                    // else return navigate(ROUTES.selectFigure)
-                    else return setLoadingPage(false)
+        if (user_data) {
+            if (user_data?.getUser) {
+                if (user_data.getUser?.avatar?.prefix && user_data.getUser?.avatar?.name) {
+                    return setLoadingPage(false)
+                } else {
+                    return navigate(ROUTES.selectFigure)
+                }
+            }
+        }
     }, [user_data])
     if (loadingPage) return <Loading />
     else
@@ -358,6 +361,10 @@ const Profile = () => {
                 <TwoFactorModal
                     is2FAModalOpen={is2FAModalOpen}
                     setIs2FAModalOpen={setIs2FAModalOpen}
+                    email={user?.email}
+                    phone={user?.phone}
+                    twoStep={twoStep}
+                    updateUser={() => refetch()}
                 />
             </main>
         )
