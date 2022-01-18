@@ -2,52 +2,59 @@ import React, { useEffect, useState } from "react"
 import ReactEcharts from "echarts-for-react"
 var xPoint=0;
 var tmpdata=[]
-var curDisp;
-var dispData={}
+
 const RoundsChart2 = ({ data }) => {
     const [chart, setChart] = useState([])
     const [rnd, setRnd] = useState([])
 
-    const [display,setDisplay] = useState({
-        
-    })
+    const [display,setDisplay] = useState() 
 
     const [loop, setLoop] = useState()
     useEffect(() => {
-        // let trnd = []
-        // let rdata = []
-        // tmpdata = data?.getRoundPerform2.slice()
-        // console.log(tmpdata)
-        // tmpdata
-        //     .sort((a, b) => {
-        //         return a.roundNumber - b.roundNumber
-        //     })
-        //     .map((ele) => {
-        //         if (ele.max > 0) {
-        //             trnd.push(ele.roundNumber)
-        //             rdata.push([ele.min + ele.std, ele.max - ele.std, ele.min, ele.max])
-        //         }
-        //     })
+        let trnd = []
+        let rdata = []
+        tmpdata = data?.getRoundPerform2.slice()
+        console.log(tmpdata)
+        tmpdata
+            .sort((a, b) => {
+                return a.roundNumber - b.roundNumber
+            })
+            .map((ele) => {
+                if (ele.max > 0) {
+                    trnd.push(ele.roundNumber)
+                    rdata.push([ele.min + ele.std, ele.max - ele.std, ele.min, ele.max])
+                }
+            })
 
-        // setRnd(trnd)
-        // setChart(rdata)
+        setRnd(trnd)
+        setChart(rdata)
     }, [data])
-    useEffect(()=>{
-        console.log('----')
-        for (var i=0;i<=tmpdata.length;i++){
-            if (tmpdata[i].roundNumber==xPoint){
-                curDisp = tmpdata[i]
-            }
-        }
-        setLoop(setInterval(()=>{
-            console.log('-----')
-        },100))
-        return function cleanup(){
-            console.log('clean')
-            clearInterval(loop)
-        }
-    },[xPoint])
+   
+    // useEffect(
+    //     () => {
+    //       setLoop(
+    //         setInterval(() => {
+    //           console.log("loading");
+    //         }, 1000)
+    //       );
     
+    //       return function cleanup() {
+    //         console.log("cleaning up");
+    //         clearInterval(loop);
+    //       };
+    //     },
+    //     []
+    //   );
+    
+    useEffect(()=>{
+        var clockId = setInterval(()=>{
+            console.log('------')
+        },1000)
+        return ()=>{
+            console.log('celadsf')
+            clearInterval(clockId)
+        }
+    },[])
 
     const option = {
         tooltip: {
@@ -83,7 +90,7 @@ const RoundsChart2 = ({ data }) => {
             },
             axisLabel:{
                 margin:30
-            }
+            },
         },
         yAxis: {
             axisPointer:{
@@ -118,7 +125,7 @@ const RoundsChart2 = ({ data }) => {
                     </div>
                     <div className="px-2">
                         <label className="text-white">Std:&nbsp;&nbsp;</label>
-                        <span className="text-secondary ">{curDisp.max}</span>
+                        <span className="text-secondary ">{111}</span>
                     </div>
                     <div className="px-2">
                         <label className="text-white">Rnd:&nbsp;&nbsp;</label>
