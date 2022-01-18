@@ -91,7 +91,7 @@ const CryptoRow = ({ data }) => {
         getTicker24hr()
         setInterval(() => {
             getTicker24hr()
-        }, 5000)
+        }, 1000 * 60 * 30)
     }, []) // eslint-disable-line react-hooks/exhaustive-deps
 
     return (

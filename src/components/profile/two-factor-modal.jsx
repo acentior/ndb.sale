@@ -64,7 +64,6 @@ export default function TwoFactorModal({
 
     const [confirmRequest2FA, { loading: confirmLoading }] = useMutation(CONFIRM_REQUEST_2FA, {
         onCompleted: (data) => {
-            console.log("confirm Request 2FA", data)
             if (data.confirmRequest2FA === "Failed") {
                 navigate(ROUTES.verifyFailed)
             } else if (data.confirmRequest2FA === "Success") {
@@ -75,7 +74,6 @@ export default function TwoFactorModal({
     })
 
     const sendRequest2FA = (i, mobile = "") => {
-        console.log("Two : ", two_factors[i].method)
         setState({ loading: true })
         request2FA({
             variables: {
@@ -90,7 +88,6 @@ export default function TwoFactorModal({
         setState(initial)
     }
 
-    console.log("loading", loading)
     return (
         <Modal
             isOpen={is2FAModalOpen}

@@ -28,7 +28,6 @@ const VerifyEmail = (props) => {
 
     const [resendVerifyCode] = useMutation(RESEND_VERIFY_CODE, {
         onCompleted: (data) => {
-            console.log("resend result", data)
             if (data.resendVerifyCode === "Already verified") {
                 setIs2FAModalOpen(true)
             }
@@ -90,6 +89,7 @@ const VerifyEmail = (props) => {
                 setIs2FAModalOpen={setIs2FAModalOpen}
                 email={user?.email}
                 twoStep={user?.twoStep}
+                updateUser={() => {}}
             />
         </AuthLayout>
     )

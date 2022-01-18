@@ -1044,7 +1044,6 @@ export const API_BASE_URL = "https://api.ndb.money"
 // export const SUBSCRIPTION_BASE_URL = "ws://localhost:5000/subscriptions";
 export const SUBSCRIPTION_BASE_URL = "wss://api.ndb.money/subscriptions"
 
-// export const OAUTH2_REDIRECT_URI = "https://ndbsale.gatsbyjs.io/oauth2"
 // export const OAUTH2_REDIRECT_URI = "http://localhost:4000/oauth2/redirect"
 export const OAUTH2_REDIRECT_URI = "https://sale.ndb.money/oauth2/redirect"
 

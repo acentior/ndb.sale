@@ -58,8 +58,6 @@ const SingupPage = () => {
     const pending = signupMutationResults.loading
     const signupResult = signupMutationResults?.data?.signup
 
-    console.log("signup", signupResult)
-
     return (
         <AuthLayout>
             <h3 className="signup-head mb-4">Create an Account</h3>

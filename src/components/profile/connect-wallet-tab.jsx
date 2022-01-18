@@ -12,9 +12,6 @@ export default function ConnectWalletTab() {
         fetchEns: true,
     })
 
-    console.log("Connect Data", connectData)
-    console.log("Account Data", accountData)
-
     return (
         <div className="row">
             {accountData ? (
