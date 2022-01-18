@@ -14,23 +14,23 @@ const RoundsChart2 = ({ data }) => {
 
     const [loop, setLoop] = useState()
     useEffect(() => {
-        let trnd = []
-        let rdata = []
-        tmpdata = data?.getRoundPerform2.slice()
-        console.log(tmpdata)
-        tmpdata
-            .sort((a, b) => {
-                return a.roundNumber - b.roundNumber
-            })
-            .map((ele) => {
-                if (ele.max > 0) {
-                    trnd.push(ele.roundNumber)
-                    rdata.push([ele.min + ele.std, ele.max - ele.std, ele.min, ele.max])
-                }
-            })
+        // let trnd = []
+        // let rdata = []
+        // tmpdata = data?.getRoundPerform2.slice()
+        // console.log(tmpdata)
+        // tmpdata
+        //     .sort((a, b) => {
+        //         return a.roundNumber - b.roundNumber
+        //     })
+        //     .map((ele) => {
+        //         if (ele.max > 0) {
+        //             trnd.push(ele.roundNumber)
+        //             rdata.push([ele.min + ele.std, ele.max - ele.std, ele.min, ele.max])
+        //         }
+        //     })
 
-        setRnd(trnd)
-        setChart(rdata)
+        // setRnd(trnd)
+        // setChart(rdata)
     }, [data])
     useEffect(()=>{
         console.log('----')
