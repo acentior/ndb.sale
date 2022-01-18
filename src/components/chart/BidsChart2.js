@@ -73,6 +73,7 @@ const BidsChart2 = ({ data }) => {
                     formatter: function (value) {
                         return numFormatter(value, 2)
                     },
+                    margin:30
                 },
             },
         ],
