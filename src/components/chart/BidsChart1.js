@@ -114,10 +114,10 @@ const BidsChart1 = ({ data ,period}) => {
                         backgroundColor: "#23C865",
                         color:"#fff",
                         formatter: function (value,index) {
-                            return value.value.toFixed(4)
+                             return numFormatter(value.value, 0)
                         },
-                        width:70,
-                        padding:[4,2,2,10]
+                        width:50,
+                        padding:[4,2,2,30]
                     },
                     
                 }

@@ -46,8 +46,8 @@ const BidsChart2 = ({ data }) => {
                 },
                 axisPointer:{
                     label:{
-                        width:70,
-                        padding:[4,2,2,10],
+                        width:40,
+                        padding:[4,2,2,15],
                     }
                 }
             }
@@ -63,10 +63,10 @@ const BidsChart2 = ({ data }) => {
                     label: {
                         backgroundColor: "#fff",
                         color:"#7a7a7a",
-                        width:70,
-                        padding:[4,2,2,10],
+                        width:50,
+                        padding:[4,2,2,15],
                         formatter: function ({ value }) {
-                            return value.toFixed(4)
+                            return numFormatter(value,2)
                         },
                     },
                 },
