@@ -1,14 +1,16 @@
 import React, { useEffect, useState } from "react"
 import ReactEcharts from "echarts-for-react"
 
-const RoundsChart2 = ({ data }) => {
+const RoundsChart2 = ({ data,onDispData }) => {
     const [chart, setChart] = useState([])
     const [rnd, setRnd] = useState([])
+
+    var xPoint
+    var tmpdata;
     useEffect(() => {
         let trnd = []
         let rdata = []
-        let tmpdata = data?.getRoundPerform2.slice()
-
+        tmpdata = data?.getRoundPerform2.slice()
         tmpdata
             .sort((a, b) => {
                 return a.roundNumber - b.roundNumber
@@ -23,12 +25,19 @@ const RoundsChart2 = ({ data }) => {
         setRnd(trnd)
         setChart(rdata)
     }, [data])
+  
+    useEffect(()=>{
+        onDispData(xPoint)
+
+    },[])
+   
     const option = {
         tooltip: {
             trigger: "axis",
             axisPointer: {
                 type: "cross",
             },
+          
         },
         grid: {
             left: "3%",
@@ -38,6 +47,17 @@ const RoundsChart2 = ({ data }) => {
         },
         xAxis: {
             data: rnd,
+            axisPointer: {
+                label: {
+                    backgroundColor: "#eb5454",
+                    formatter: function ({ value }) {
+                        xPoint = value
+                        return value
+                    },
+                    width:30,
+                    padding:[4,5,4,20],
+                },
+            },
         },
         yAxis: {},
         series: [

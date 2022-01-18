@@ -1,26 +1,37 @@
 import React, { useState, useEffect } from "react"
 import ReactEcharts from "echarts-for-react"
-import { numFormatter } from "../../utilities/number"
+import { getDataOnPeriod, numFormatter, getFormatedDateOnBids } from "../../utilities/number"
 
 const colors = ["#C4C4C4", "#23C865"]
 
-const BidsChart1 = ({ data }) => {
+const BidsChart1 = ({ data ,period}) => {
     const [total, setTotal] = useState([])
     const [amount, setAmount] = useState([])
+    const [zeroLabel, setZeroLabel]=useState('')
+    const [stDate, setStartDate]=useState(0)
+
     useEffect(() => {
         let tTotal = []
         let tAmount = []
         let list = []
+        console.log(data)
         data?.getBidList.forEach((x) => list.push(x))
         list.sort((a, b) => {
             return a.placedAt - b.placedAt
-        }).forEach((ele) => {
+        })
+
+        var tmpData = getDataOnPeriod(list, period)
+        setZeroLabel(tmpData.zeroLabel)
+        setStartDate(tmpData.fData[0].placedAt)
+        tmpData.fData.forEach((ele) => {
             tTotal.push({ value: [ele.placedAt, ele.totalPrice] })
             tAmount.push({ value: [ele.placedAt, ele.tokenAmount] })
         })
+
         setTotal(tTotal)
         setAmount(tAmount)
-    }, [data])
+        
+    }, [data,period])
 
     const option = {
         color: colors,
@@ -32,13 +43,13 @@ const BidsChart1 = ({ data }) => {
         },
         grid: [
             {
-                left: 80,
+                left: 30,
                 right: 10,
                 top: "5%",
                 height: "50%",
             },
             {
-                left: 80,
+                left: 30,
                 right: 10,
                 top: "65%",
                 height: "30%",
@@ -58,15 +69,37 @@ const BidsChart1 = ({ data }) => {
                     alignWithLabel: true,
                 },
                 show: false,
+                splitNumber:2,
+                axisPointer:{
+                    label:{
+                        show:false
+                    }
+                }
             },
             {
                 type: "time",
+                min:stDate,
                 axisTick: {
                     alignWithLabel: true,
                 },
                 gridIndex: 1,
-            },
+                axisLabel:{
+                    margin:16
+                },
+                splitNumber:2,
+                axisPointer:{
+                    label:{
+                        formatter: function (value,index) {
+                        
+                            return getFormatedDateOnBids(value.value,period)
+                        },
+                        width:70,
+                        padding:[4,2,2,5]
+                    }
+                }
+            }
         ],
+        
         yAxis: [
             {
                 type: "value",
@@ -79,26 +112,36 @@ const BidsChart1 = ({ data }) => {
                 axisPointer: {
                     label: {
                         backgroundColor: "#23C865",
-                        formatter: function (value) {
-                            return numFormatter(value, 0)
+                        color:"#fff",
+                        formatter: function (value,index) {
+                            return value.value.toFixed(4)
                         },
+                        width:70,
+                        padding:[4,2,2,10]
                     },
-                },
+                    
+                }
             },
             {
                 type: "value",
                 min: 0,
                 axisLabel: {
-                    formatter: function (value) {
+                    formatter: function (value,index) {
                         return numFormatter(value, 0)
                     },
+                    margin:10
                 },
                 axisPointer: {
                     label: {
-                        backgroundColor: "#23C865",
+                        backgroundColor: "#fff",
+                        color:"#7a7a7a",
+                        width:70,
+                        padding:[4,2,2,10],
                     },
                 },
                 gridIndex: 1,
+                name:zeroLabel.toString(),
+                nameLocation:"start"
             },
         ],
         series: [
@@ -108,15 +151,17 @@ const BidsChart1 = ({ data }) => {
                 data: amount,
                 xAxisIndex: 1,
                 yAxisIndex: 1,
-                barWidth: 30,
+                barWidth: 15,
             },
             {
                 name: "Volume",
                 type: "line",
                 smooth: "true",
+                
                 showSymbol: false,
                 data: total,
-            },
+            }
+            
         ],
     }
     return (

@@ -87,6 +87,10 @@ const Auction = () => {
         (item) => (item.status === 2 || item.status === 0) && item
     )
 
+
+    ////////////////////////
+
+    const [period, setPeriod] = useState('1M')
     useEffect(() => {
         if (!auctionLoaded && roundData) {
             setActionLoaded(true)
@@ -167,15 +171,15 @@ const Auction = () => {
         selectedData === 0
             ? roundL?.getAuctionByNumber
             : selectedData === 1
-            ? roundM?.getAuctionByNumber
-            : roundH?.getAuctionByNumber
+                ? roundM?.getAuctionByNumber
+                : roundH?.getAuctionByNumber
 
     const fnSelectedBidhistoryData = () =>
         selectedData === 0
             ? historyBidListL?.getBidListByRound
             : selectedData === 1
-            ? historyBidListM?.getBidListByRound
-            : historyBidListH?.getBidListByRound
+                ? historyBidListM?.getBidListByRound
+                : historyBidListH?.getBidListByRound
 
     const hData = fnSelectedBidhistoryData()
 
@@ -220,6 +224,10 @@ const Auction = () => {
     // const calcRatioInteger = (value) => {
     //     return Math.ceil(calcRatio(Currencies[currencyId].label.toLowerCase(), "usd", value))
     // }
+
+    const onDispData=(data)=>{  //this is temparary for candlestick
+        console.log(data)
+    }
 
     useEffect(() => {
         if (hData === undefined) {
@@ -298,9 +306,8 @@ const Auction = () => {
                     </div>
                     <div className="row h-100">
                         <div
-                            className={`auction-left col-lg-4 col-md-5 position-relative ${
-                                show_chart ? "d-none" : "d-block"
-                            }`}
+                            className={`auction-left col-lg-4 col-md-5 position-relative ${show_chart ? "d-none" : "d-block"
+                                }`}
                         >
                             <div className="d-flex">
                                 <div className="w-100">
@@ -384,9 +391,8 @@ const Auction = () => {
                                                     {fnSelectedBidhistoryData()?.map(
                                                         (item, idx) => (
                                                             <tr key={idx}>
-                                                                <td>{`${idx + 1}. ${
-                                                                    item.prefix + "." + item.name
-                                                                }`}</td>
+                                                                <td>{`${idx + 1}. ${item.prefix + "." + item.name
+                                                                    }`}</td>
                                                                 <td>
                                                                     {calcPriceFromUsd(
                                                                         item.totalPrice
@@ -445,11 +451,11 @@ const Auction = () => {
                                     fnSelectedRoundData()?.startedAt,
                                     fnSelectedRoundData()?.endedAt
                                 ) && (
-                                    <TimeframeBar
-                                        percentage={percentage}
-                                        round={fnSelectedRoundData()}
-                                    />
-                                )}
+                                        <TimeframeBar
+                                            percentage={percentage}
+                                            round={fnSelectedRoundData()}
+                                        />
+                                    )}
                                 <div className="d-flex justify-content-between mt-4">
                                     {fnAverateMinBid !== 0 ? (
                                         <div>
@@ -599,14 +605,13 @@ const Auction = () => {
                                 </button>
                             </div>
                             <div
-                                className={`chart-area ${
-                                    size.width <= 768
+                                className={`chart-area ${size.width <= 768
                                         ? show_chart
                                             ? "d-block"
                                             : "d-none"
                                         : (size.width <= 1024 && size.width > 768 && "d-block") ||
-                                          (isBid && "d-block")
-                                }`}
+                                        (isBid && "d-block")
+                                    }`}
                             >
                                 <div className="d-flex ">
                                     <div className="w-100">
@@ -646,9 +651,8 @@ const Auction = () => {
                                         {selectLabel.value === "bid_performance" && (
                                             <div className="d-flex align-items-center pt-3 w-100 ">
                                                 <button
-                                                    className={`btn-small ${
-                                                        pricce ? "" : "btn-disabled"
-                                                    }`}
+                                                    className={`btn-small ${pricce ? "" : "btn-disabled"
+                                                        }`}
                                                     onClick={() => {
                                                         if (!pricce) {
                                                             setPrice(true)
@@ -660,9 +664,8 @@ const Auction = () => {
                                                     Price
                                                 </button>
                                                 <button
-                                                    className={`btn-small ${
-                                                        volume ? "" : "btn-disabled"
-                                                    }`}
+                                                    className={`btn-small ${volume ? "" : "btn-disabled"
+                                                        }`}
                                                     onClick={() => {
                                                         if (!volume) {
                                                             setPrice(true)
@@ -674,9 +677,8 @@ const Auction = () => {
                                                     Volume
                                                 </button>
                                                 <button
-                                                    className={`btn-small ${
-                                                        price_volume ? "" : "btn-disabled"
-                                                    }`}
+                                                    className={`btn-small ${price_volume ? "" : "btn-disabled"
+                                                        }`}
                                                     onClick={() => {
                                                         if (!price_volume) {
                                                             setPrice(false)
@@ -690,6 +692,74 @@ const Auction = () => {
                                             </div>
                                         )}
                                         {selectLabel.value === "round_performance" && (
+                                            <div className=" d-flex justify-content-between pt-3 w-100 flex-wrap">
+                                                <div className="d-flex">
+                                                    <button
+                                                        className={`btn-small ${reser_price ? "" : "btn-disabled"
+                                                            }`}
+                                                        onClick={() => {
+                                                            if (!reser_price) {
+                                                                setReserPrice(true)
+                                                                setSoldPrice(true)
+                                                                setPerformance(false)
+                                                            }
+                                                        }}
+                                                    >
+                                                        Reserved Price
+                                                    </button>
+                                                    <button
+                                                        className={`btn-small ${sold_price ? "" : "btn-disabled"
+                                                            }`}
+                                                        onClick={() => {
+                                                            if (!sold_price) {
+                                                                setReserPrice(true)
+                                                                setSoldPrice(true)
+                                                                setPerformance(false)
+                                                            }
+                                                        }}
+                                                    >
+                                                        Price Sold
+                                                    </button>
+                                                    <button
+                                                        className={`btn-small ${performance ? "" : "btn-disabled"
+                                                            }`}
+                                                        onClick={() => {
+                                                            if (!performance) {
+                                                                setReserPrice(false)
+                                                                setSoldPrice(false)
+                                                                setPerformance(true)
+                                                            }
+                                                        }}
+                                                    >
+                                                        Histogram
+                                                    </button>
+                                                </div>
+                                                {
+                                                    performance && (
+                                                        <div className="d-flex py-auto">
+                                                            <div className="px-auto">
+                                                                <label className="text-white">Max:&nbsp;&nbsp;</label>
+                                                                <span className="text-secondary">0.034</span>
+                                                            </div>
+                                                            <div className="px-2">
+                                                                <label className="text-white">Min:&nbsp;&nbsp;</label>
+                                                                <span className="text-secondary ">0.034</span>
+                                                            </div>
+                                                            <div className="px-2">
+                                                                <label className="text-white">Std:&nbsp;&nbsp;</label>
+                                                                <span className="text-secondary ">0.034</span>
+                                                            </div>
+                                                            <div className="px-2">
+                                                                <label className="text-white">Rnd:&nbsp;&nbsp;</label>
+                                                                <span className="text-secondary ">5</span>
+                                                            </div>
+                                                        </div>
+                                                    )
+                                                }
+
+                                            </div>
+                                        )}
+                                        {/* {selectLabel.value === "round_performance" && (
                                             <div className="d-flex align-items-center pt-3 w-100 ">
                                                 <button
                                                     className={`btn-small ${
@@ -734,7 +804,8 @@ const Auction = () => {
                                                     Histogram
                                                 </button>
                                             </div>
-                                        )}
+                                            
+                                        )} */}
                                     </div>
                                 </div>
 
@@ -742,11 +813,11 @@ const Auction = () => {
                                     pricce &&
                                     volume &&
                                     !bid_perform.loading &&
-                                    !bid_perform.error && <BidsChart1 data={bid_perform?.data} />}
+                                    !bid_perform.error && <BidsChart1 data={bid_perform?.data} period={period} />}
                                 {selectLabel.value === "bid_performance" &&
                                     price_volume &&
                                     !bid_perform.loading &&
-                                    !bid_perform.error && <BidsChart2 data={bid_perform?.data} />}
+                                    !bid_perform.error && <BidsChart2 data={bid_perform?.data} period={period} />}
 
                                 {selectLabel.value === "round_performance" &&
                                     reser_price &&
@@ -759,13 +830,66 @@ const Auction = () => {
                                     performance &&
                                     !round_perform2.loading &&
                                     !round_perform2.error && (
-                                        <RoundsChart2 data={round_perform2?.data} />
+                                        <RoundsChart2 data={round_perform2?.data} onDispData={onDispData}/>
                                     )}
                                 {selectLabel.value === "round_chance" &&
                                     !round_chance.loading &&
                                     !round_chance.error && (
                                         <ChanceChart data={round_chance?.data} />
                                     )}
+                                <div
+                                    className="btnGroup " role="group"
+                                    style={{ borderTop: "2px solid #c4c4c4", marginLeft: "33px", marginTop: "22px", paddingLeft: "18px", marginRight: "11px", paddingTop: "12px" }}
+                                >
+                                    <button
+                                        className="btn-no-border-green text-uppercase btn-small  "
+                                        onClick={() => {
+                                            setPeriod('1D')
+                                        }}
+                                    >
+                                        1D
+                                    </button>
+                                    <button
+                                        className="btn-no-border-green text-uppercase btn-small  "
+                                        onClick={() => {
+                                            setPeriod('5D')
+                                        }}
+                                    >
+                                        5D
+                                    </button>
+                                    <button
+                                        className="btn-no-border-green text-uppercase btn-small "
+                                        onClick={() => {
+                                            setPeriod('1M')
+                                        }}
+                                    >
+                                        1M
+                                    </button>
+                                    <button
+                                        className="btn-no-border-green text-uppercase btn-small  "
+                                        onClick={() => {
+                                            setPeriod('6M')
+                                        }}
+                                    >
+                                        3M
+                                    </button>
+                                    <button
+                                        className="btn-no-border-green text-uppercase btn-small  "
+                                        onClick={() => {
+                                            setPeriod('1Y')
+                                        }}
+                                    >
+                                        1Y
+                                    </button>
+                                    <button
+                                        className="btn-no-border-green text-uppercase btn-small  "
+                                        onClick={() => {
+                                            setPeriod('ALL')
+                                        }}
+                                    >
+                                        ALL
+                                    </button>
+                                </div>
                             </div>
                         </div>
                     </div>

@@ -6,12 +6,16 @@ const ChanceChart = ({ data }) => {
     const [wins, setWins] = useState([])
     const [fails, setFails] = useState([])
 
+    ///////added///////////
+    const [option, setOption]=useState({})
+    const [winFlag, setWinFlag] = useState(true)
+    const [failFlag, setFailFlag] = useState(true)
+
     useEffect(() => {
         let wins_arr = []
         let fails_arr = []
         let trnd = []
         let tmpdata = data?.getRoundChance.slice()
-
         tmpdata
             .sort((a, b) => {
                 return a.roundNumber - b.roundNumber
@@ -24,56 +28,22 @@ const ChanceChart = ({ data }) => {
         setRnd(trnd)
         setWins(wins_arr)
         setFails(fails_arr)
-    }, [data])
+    }, [data,winFlag,failFlag])
 
-    const option = {
+    var opt = {
         color: ["#23C865", "#E8503A"],
-        tooltip: {
-            trigger: "axis",
-            axisPointer: {
-                type: "shadow",
-                label: {
-                    show: true,
-                },
+        plugins: {
+            tooltip: {
+                filter: function () {
+                    return false;
+                }
             },
-        },
-        legend: {
-            data: [
-                {
-                    name: "Win Rate",
-                    // compulsorily set icon as a circle
-                    icon: "none",
-                    // set up the text in red
-                    textStyle: {
-                        color: "wight",
-                    },
-                    itemStyle: {
-                        color: "#23C865",
-                    },
-                    backgroundColor: "#23C865",
-                    borderColor: "#23C865",
-                    borderWidth: "2px",
-                    brderType: "solid",
-                },
-                {
-                    name: "Fail Rate",
-                    // compulsorily set icon as a circle
-                    icon: "none",
-                    // set up the text in red
-                    textStyle: {
-                        color: "wight",
-                    },
-                    backgroundColor: "#E8503A",
-                    borderColor: "#23C865",
-                    borderWidth: "2px",
-                    brderType: "solid",
-                },
-            ],
-            // data: ["Win Rate", "Fail Rate"],
-            left: "0%",
+            legend: {
+                display: false
+            }
         },
         grid: {
-            left: "3%",
+            left: "0%",
             right: "3%",
             bottom: "3%",
             containLabel: true,
@@ -111,13 +81,51 @@ const ChanceChart = ({ data }) => {
                 data: fails,
             },
         ],
+        left: 0
     }
+    if (winFlag && !failFlag){
+        opt.series[0].data = wins
+        opt.series[1].data = []
+    }else if (!winFlag && failFlag){
+        opt.series[0].data = []
+        opt.series[1].data = fails
+    }else if (winFlag && failFlag ){
+        opt.series[0].data = wins
+        opt.series[1].data = fails
+    }else{
+        opt.series[0].data = []
+        opt.series[1].data = []
+    }
+    
     return (
-        <ReactEcharts
-            option={option}
-            style={{ height: "500px", width: "100%" }}
-            className="echarts-for-echarts"
-        />
+        <React.Fragment>
+            <div className="select-chart-type">
+                <div className="d-flex justify-content-between mt-2 ">
+                    <div>
+                        <input type="checkbox" class="btn-check" id="btn-wins-outlined" autocomplete="off"   
+                            onClick={
+                                ()=>{setWinFlag(!winFlag)}
+                            }
+                        />
+                        <label class="_btn _btn-wins-outlined" for="btn-wins-outlined">Win Rate</label>
+                    </div>
+                    <div >
+                        <input type="checkbox" class="btn-check" id="btn-fails-outlined" autocomplete="off"   
+                            onClick={
+                                ()=>{setFailFlag(!failFlag)}
+                            }
+                        />
+                        <label class="_btn _btn-fails-outlined" for="btn-fails-outlined">Fail Rate</label>
+                    </div>
+                    
+                </div>
+            </div>
+            <ReactEcharts
+                option={opt}
+                style={{ height: "500px", width: "100%" }}
+                className="echarts-for-echarts"
+            />
+        </React.Fragment>
     )
 }
 

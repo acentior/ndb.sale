@@ -25,12 +25,13 @@ const RoundsChart1 = ({ data }) => {
     }, [data])
 
     const option = {
-        tooltip: {
-            trigger: "axis",
-            axisPointer: {
-                type: "cross",
-            },
-        },
+        // tooltip: {
+        //     trigger: "axis",
+        //     axisPointer: {
+        //         type: "cross",
+        //     },
+            
+        // },
         grid: {
             left: "3%",
             right: "3%",
