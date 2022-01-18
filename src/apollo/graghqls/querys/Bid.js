@@ -1,9 +1,22 @@
 import { gql } from "@apollo/client"
 
 export const GET_BID = gql`
+    query getBid($round: Int!) {
+        getBid(roundId: $round) {
+            userId
+            tokenAmount
+            tokenPrice
+            totalPrice
+        }
+    }
+`
+
+export const GET_BIDLIST_BY_ROUND = gql`
     query getBidListByRound($round: Int!) {
         getBidListByRound(round: $round) {
             userId
+            prefix
+            name
             roundId
             tokenAmount
             totalPrice
@@ -24,6 +37,16 @@ export const GET_BID = gql`
             placedAt
             updatedAt
             status
+        }
+    }
+`
+
+export const GET_BID_LIST = gql`
+    query GetBidList {
+        getBidList {
+            tokenAmount
+            totalPrice
+            placedAt
         }
     }
 `

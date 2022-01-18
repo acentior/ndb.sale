@@ -2,11 +2,11 @@ import { gql } from "@apollo/client"
 
 export const PLACE_BID = gql`
     mutation PlaceBid(
-        $roundId: String!
+        $roundId: Int!
         $tokenAmount: Float!
         $tokenPrice: Float!
         $payment: Int!
-        $cryptoType: String
+        $cryptoType: String!
     ) {
         placeBid(
             roundId: $roundId

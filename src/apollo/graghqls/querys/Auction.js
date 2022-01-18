@@ -15,36 +15,6 @@ export const GET_AUCTION = gql`
     }
 `
 
-export const GET_BIDLIST_BY_ROUND = gql`
-    query getBidListByRound($round: Int!) {
-        getBidListByRound(round: $round) {
-            userId
-            prefix
-            name
-            roundId
-            tokenAmount
-            totalPrice
-            tokenPrice
-            tempTokenAmount
-            tempTokenPrice
-            delta
-            pendingIncrease
-            holdings {
-                key
-                value {
-                    crypto
-                    usd
-                }
-            }
-            payType
-            cryptoType
-            placedAt
-            updatedAt
-            status
-        }
-    }
-`
-
 export const GET_AUCTION_BY_NUMBER = gql`
     query getAuctionByNumber($round: Int!) {
         getAuctionByNumber(round: $round) {
@@ -82,16 +52,6 @@ export const GET_AUCTION_BY_STATUS = gql`
             number
             token
             status
-        }
-    }
-`
-
-export const GET_BID_LIST = gql`
-    query GetBidList {
-        getBidList {
-            tokenAmount
-            totalPrice
-            placedAt
         }
     }
 `
