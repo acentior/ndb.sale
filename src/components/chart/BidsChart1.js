@@ -19,8 +19,8 @@ const BidsChart1 = ({ data ,period}) => {
         list.sort((a, b) => {
             return a.placedAt - b.placedAt
         })
-
         var tmpData = getDataOnPeriod(list, period)
+        console.log(tmpData)
         setZeroLabel(tmpData.zeroLabel)
         setStartDate(tmpData.fData[0].placedAt)
         tmpData.fData.forEach((ele) => {
