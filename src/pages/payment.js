@@ -2,6 +2,7 @@
 
 import React, { useCallback, useReducer, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
+import { useMutation } from "@apollo/client"
 import ReactTooltip from "react-tooltip"
 import Select, { components } from "react-select"
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
@@ -14,6 +15,7 @@ import { CopyToClipboard } from "react-copy-to-clipboard"
 import ConnectWalletTab from "../components/profile/connect-wallet-tab"
 import { FOO_COINS, PAYMENT_FRACTION_TOOLTIP_CONTENT, Currencies } from "../utilities/staticData"
 import { setBidInfo } from "../redux/actions/bidAction"
+import { CREATE_CRYPTO_PAYMENT } from "../apollo/graghqls/mutations/Payment"
 
 const { Option, SingleValue } = components
 
@@ -70,8 +72,9 @@ const CustomSingleValue = (props) => {
 
 const Payment = () => {
     const dispatch = useDispatch()
-    const bidAmount = useSelector((state) => state?.placeBid)
+    const bidAmount = useSelector((state) => state?.placeBid.bid_amount)
     const currencyId = useSelector((state) => state?.placeBid.currencyId)
+    const currentRound = useSelector((state) => state?.placeBid.round_id)
 
     const [fooPayAmount, setFooPayAmount] = useState("")
     const [showEditPayAmountBox, setShowEditPayAmountBox] = useState(false)
@@ -118,11 +121,20 @@ const Payment = () => {
         },
         [allow_fraction]
     )
-
     const handlePaymentType = (value) => {
         setPaymentType(value)
         setTabIndex(value.index)
     }
+
+    const [CreateCryptoPayment] = useMutation(CREATE_CRYPTO_PAYMENT, {
+        onCompleted: (data) => {
+            console.log("create cypto payment: ", data)
+        },
+        onError: (err) => {
+            console.log("create cypto payment: ", err)
+        },
+    })
+
     return (
         <main className="payment-page">
             <Header />
@@ -174,16 +186,20 @@ const Payment = () => {
                                                         SingleValue: SelectedValue,
                                                     }}
                                                 />
-                                                <Input
-                                                    type="number"
-                                                    value={bidAmount.place_bid}
-                                                    disabled
-                                                />
+                                                <Input type="number" value={bidAmount} disabled />
                                             </div>
                                             {!getAddress ? (
                                                 <button
                                                     className="btn btn-light rounded-0 text-uppercase fw-bold mt-2 py-10px w-100"
-                                                    onClick={() => setState({ getAddress: true })}
+                                                    onClick={() => {
+                                                        setState({ getAddress: true })
+                                                        CreateCryptoPayment({
+                                                            variables: {
+                                                                round: currentRound,
+                                                                amount: bidAmount,
+                                                            },
+                                                        })
+                                                    }}
                                                 >
                                                     get deposit Address
                                                 </button>
@@ -380,7 +396,7 @@ const Payment = () => {
                                             <input
                                                 type="number"
                                                 className="form-control"
-                                                value={bidAmount.place_bid}
+                                                value={bidAmount}
                                                 disabled
                                             />
                                         </div>
@@ -506,7 +522,7 @@ const Payment = () => {
                                         </div>
                                     </div>
                                 )}
-                                {bidAmount.place_bid}
+                                {bidAmount}
                                 <span> {Currencies[currencyId].label}</span>
                             </div>
                         </div>

@@ -19,12 +19,14 @@ const OAuth2RedirectHandler = ({ type, dataType, data }) => {
                 for (let i in data.split("*")) {
                     const d = data.split("*")[i]
                     if (i === "0") email = d
-                    else twoStep.push({ key: d, value: true })
+                    else twoStep.push(d)
                 }
+                console.log(email, twoStep)
                 setState({
                     tempToken: dataType,
                     email: email,
                     twoStep: twoStep,
+                    success: true
                 })
             } else {
                 navigate("/app/signin")

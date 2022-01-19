@@ -19,7 +19,7 @@ import { ROUTES } from "../utilities/routes"
 import BidsChart2 from "./chart/BidsChart2"
 import ChanceChart from "./chart/ChanceChart"
 import { useQuery, useLazyQuery, useMutation } from "@apollo/client"
-import { setBidInfo, setCurrencyInfo } from "../redux/actions/bidAction"
+import { setBidInfo, setCurrencyInfo, setCurrentRound } from "../redux/actions/bidAction"
 import Loading from "./common/Loading"
 
 import { ChartIcon, Qmark, CloseIcon } from "../utilities/imgImport"
@@ -237,9 +237,6 @@ const Auction = () => {
     const calcPriceToUsd = (price) => {
         return calcRatio(Currencies[currencyId].label.toLowerCase(), "usd", price)
     }
-    // const calcRatioInteger = (value) => {
-    //     return Math.ceil(calcRatio(Currencies[currencyId].label.toLowerCase(), "usd", value))
-    // }
 
     useEffect(() => {
         if (hData === undefined) {
@@ -308,6 +305,7 @@ const Auction = () => {
             )
         )
         dispatch(setCurrencyInfo(Currencies[currencyId].id))
+        dispatch(setCurrentRound(fnSelectedRoundData()?.id))
         navigate(ROUTES.payment)
     }
 

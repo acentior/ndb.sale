@@ -16,13 +16,13 @@ const BidsChart1 = ({ data, period }) => {
         let tTotal = []
         let tAmount = []
         let list = []
-        console.log(data)
+        // console.log(data)
         data?.getBidList.forEach((x) => list.push(x))
         list.sort((a, b) => {
             return a.placedAt - b.placedAt
         })
         var tmpData = getDataOnPeriod(list, period)
-        console.log(tmpData)
+        // console.log(tmpData)
         setZeroLabel(tmpData.zeroLabel)
         setStartDate(tmpData.fData[0].placedAt)
         tmpData.fData.forEach((ele) => {
@@ -32,7 +32,7 @@ const BidsChart1 = ({ data, period }) => {
 
         setTotal(tTotal)
         setAmount(tAmount)
-        console.log(tTotal)
+        // console.log(tTotal)
     }, [data, period])
 
     const option = {
