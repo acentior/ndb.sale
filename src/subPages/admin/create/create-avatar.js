@@ -26,7 +26,7 @@ const CreateAvatar = () => {
 
     //------- Avatar Data and Validation
     const [avatarItems, setAvatarItems] = useState({
-        hair: '',
+        hairStyle: '',
         hairColor: '',
         facialStyle: '',
         expression: '',

@@ -178,6 +178,10 @@ input.disabled {
     max-width: 600px;
 }
 
+div.modal {
+    z-index: 9999;
+}
+
 div.profile {
     display: flex;
     justify-content: center;
@@ -211,21 +215,6 @@ div.profile {
     }
 }
 
-div.image_div {
-    position: relative;
-    
-    div {
-        position: absolute;
-        svg {
-            width: 100%;
-            height: auto;
-            position: absolute;
-        }
-    }
-    img {
-        width: 100%;
-    }
-}
 
 div.searchBar {
     margin: 5px 0;

@@ -3,7 +3,6 @@ import { Tabs, TabList, Tab, TabPanel } from 'react-tabs';
 
 import Seo from "./../../components/seo";
 import LayoutWithMenu from "../../components/admin/LayoutWithMenu";
-import PaginationBar from "../../components/admin/PaginationBar";
 import SocialTable from '../../components/admin/setting/SocialTable';
 import GeoTable from "../../components/admin/setting/GeoTable";
 import KYCTabPanel from "../../components/admin/setting/KYCTabPanel";
@@ -62,7 +61,6 @@ const IndexPage = () => {
                             </TabPanel>
                             <TabPanel>
                                 <AvatarTabPanel />
-                                <PaginationBar />
                             </TabPanel>
                             <TabPanel>
                                 <TokenTabPanel />

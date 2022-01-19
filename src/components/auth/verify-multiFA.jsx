@@ -1,24 +1,18 @@
 import React, { useState, useReducer } from "react"
-import { Link, navigate } from "gatsby"
+import { Link } from "gatsby"
 import { Input } from "../common/FormControl"
-import AuthLayout from "../common/AuthLayout"
 import { useSignIn2FA } from "../../apollo/model/auth"
-import { getUser } from "../../utilities/auth"
 import CustomSpinner from "../common/custom-spinner"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons"
-import { ROUTES } from "../../utilities/routes"
 
-const OnetimePassword = () => {
+const VerifyMutliFA = ({ twoStep, tempToken, email, returnToSignIn }) => {
     const [code, setCode] = useReducer((old, action) => ({ ...old, ...action }), {
         app: "",
         phone: "",
         email: "",
     })
     const [codeError, setCodeError] = useState("")
-    const user = getUser()
-
-    if (!user.tempToken) navigate(ROUTES.signIn)
 
     const [signin2faMutation, signin2faMutationResults] = useSignIn2FA()
 
@@ -33,9 +27,9 @@ const OnetimePassword = () => {
         }
         if (!error)
             signin2faMutation(
-                user.email,
-                user.tempToken,
-                user.twoStep.map((step) => {
+                email,
+                tempToken,
+                twoStep.map((step) => {
                     return {
                         key: step,
                         value: code[step],
@@ -48,12 +42,12 @@ const OnetimePassword = () => {
     const webserviceError = signin2faMutationResults?.data?.confirm2FA?.status === "Failed"
 
     return (
-        <AuthLayout>
+        <>
             <h3 className="signup-head mb-5">Authenticate</h3>
             <form className="form">
-                {user.twoStep &&
-                    Array.isArray(user.twoStep) &&
-                    user.twoStep.map(
+                {twoStep &&
+                    Array.isArray(twoStep) &&
+                    twoStep.map(
                         (step) =>
                             step && (
                                 <div key={step}>
@@ -63,9 +57,7 @@ const OnetimePassword = () => {
                                             name="code"
                                             type="text"
                                             value={code[step]}
-                                            onChange={(e) =>
-                                                setCode({ [step]: e.target.value })
-                                            }
+                                            onChange={(e) => setCode({ [step]: e.target.value })}
                                             placeholder="Enter code"
                                         />
                                         {codeError && (
@@ -105,12 +97,12 @@ const OnetimePassword = () => {
             </form>
             <p className="text-white text-center">
                 Return to{" "}
-                <Link to="/app/signup" className="signup-link">
-                    Sign up
+                <Link to="#" className="signup-link" onClick={() => returnToSignIn()}>
+                    Sign in
                 </Link>
             </p>
-        </AuthLayout>
+        </>
     )
 }
 
-export default OnetimePassword
+export default VerifyMutliFA

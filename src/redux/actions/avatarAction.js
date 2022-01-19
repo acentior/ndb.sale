@@ -1,7 +1,7 @@
 import _ from 'lodash';
 import * as Query from '../../apollo/graghqls/querys/AvatarComponent';
 import * as Mutation from './../../apollo/graghqls/mutations/AvatarComponent';
-import { CREATE_AVATAR_COMPONENT, FETCH_DATA, FETCH_AVATAR_COMPONENTS } from "../actionTypes";
+import { CREATE_AVATAR_COMPONENT, FETCH_DATA, FETCH_AVATAR_COMPONENTS, UPDATE_DATUM } from "../actionTypes";
 import { client } from './../../apollo/client';
 import { showFailAlarm, showSuccessAlarm } from '../../components/admin/AlarmModal';
 
@@ -18,7 +18,7 @@ export const create_Avatar_Component = createData => async dispatch => {
             payload: data.createNewComponent
         });
     } catch(err) {
-        console.log(err.message);
+        // console.log(err.message);
         showFailAlarm('Action failed', 'Ops! Something went wrong!');
     }
 };
@@ -45,7 +45,7 @@ export const fetch_Avatar_Components = () => async dispatch => {
 
 export const create_New_Avatar = createData => async dispatch => {
     try {
-        const { data } = await client.mutate({
+        await client.mutate({
             mutation: Mutation.CREATE_NEW_AVATAR,
             variables: { ...createData }
         });
@@ -57,18 +57,37 @@ export const create_New_Avatar = createData => async dispatch => {
     }
 };
 
+export const update_Avatar_Profile = updateData => async dispatch => {
+    try {
+        await client.mutate({
+            mutation: Mutation.UPDATE_AVATAR_PROFILE,
+            variables: { ...updateData }
+        });
+        showSuccessAlarm('Avatar updated successfully');
+        
+        dispatch({
+            type: UPDATE_DATUM,
+            payload: updateData
+        });
+    } catch(err) {
+        // console.log(err.message);
+        showFailAlarm('Action failed', 'Ops! Something went wrong. Try again!');
+    }
+};
+
 export const fetch_Avatars = () => async dispatch => {
     try {
         const { data } = await client.query({
             query: Query.GET_AVATARS
         });
-        
+        const dataList = _.mapKeys(data.getAvatars, 'id');
         dispatch({
             type: FETCH_DATA,
-            payload: data.getAvatars
+            payload: dataList
         });
     } catch(err) {
         // console.log(err.message);
         showFailAlarm('Data Loading Error', 'Ops! Something went wrong. Try again!');
     }
 };
+

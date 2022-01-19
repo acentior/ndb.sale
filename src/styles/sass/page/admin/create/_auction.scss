@@ -136,15 +136,11 @@ main.create-auction-page {
                     }
                 }
 
-                div.image_div {
+                div.avatarImage_div {
                     justify-content: center;
                     align-items: center;
                     display: flex;
-                    height: 180px;
-                    img {
-                        width: 100px;
-                        height: 100px;
-                    }
+                    
                     @include mq('phone', max) {
                         height: 120px;
                     }
@@ -153,7 +149,7 @@ main.create-auction-page {
                     display: flex;
                     flex-direction: column;
                     justify-content: center;
-                    height: 180px;
+                    
                     div#select_avatar {
                         width: 80%;
                         .css-1s2u09g-control {
@@ -176,11 +172,9 @@ main.create-auction-page {
                         font-size: 14px;
                         font-weight: 500;
                     }
-                    img {
+                    .image_div {
                         width: 100px;
-                        height: 100px;
-                        display: block;
-                        margin: auto;
+                        margin-top: 30px;
                     }
                 }
                 @include mq('phone', max) {

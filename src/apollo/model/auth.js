@@ -1,78 +1,8 @@
 import * as GraphQL from "../graghqls/mutations/Auth"
 import { useMutation } from "@apollo/client"
 import { navigate } from "gatsby"
-import { setAuthToken, getUser, setUser } from "../../utilities/auth"
+import { setAuthToken } from "../../utilities/auth"
 import { ROUTES } from "../../utilities/routes"
-
-// Sign In
-
-export const useSigninMutation = () => {
-    const [mutation, mutationResults] = useMutation(GraphQL.SIGNIN, {
-        retry: 1,
-        onCompleted: (data) => {
-            if (data.signin.status === "Failed") {
-                if (data.signin.token === "Please set 2FA.") {
-                    setUser({
-                        ...getUser(),
-                        twoStep: []
-                    })
-                    navigate("/app/verify-email/1")
-                }
-                return
-            } else if (data.signin.status === "Success") {
-                setUser({
-                    ...getUser(),
-                    tempToken: data.signin.token,
-                    twoStep: data.signin.twoStep,
-                })
-                navigate("/app/onetime-pwd")
-            }
-        },
-    })
-
-    const signin = (email, password) => {
-        setUser({
-            ...getUser(),
-            tempToken: null,
-            email: email,
-        })
-        return mutation({
-            variables: {
-                email,
-                password,
-            },
-        })
-    }
-    return [signin, mutationResults]
-}
-
-// Sine Up
-
-export const useSignupMutation = () => {
-    const [mutation, mutationResults] = useMutation(GraphQL.SIGNUP, {
-        onCompleted: (data) => {
-            if (data?.signup === "Already verified")
-                navigate("/app/signin")
-            else
-                navigate("/app/verify-email")
-        },
-    })
-
-    const signup = (email, password, country) => {
-        setUser({
-            ...getUser(),
-            email: email,
-        })
-        return mutation({
-            variables: {
-                email,
-                password,
-                country,
-            },
-        })
-    }
-    return [signup, mutationResults]
-}
 
 // Signin with 2FA
 export const useSignIn2FA = () => {

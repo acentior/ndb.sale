@@ -1,14 +1,16 @@
+/* eslint-disable */
+
 import React, { useState, useEffect } from "react"
 import ReactEcharts from "echarts-for-react"
 import { getDataOnPeriod, numFormatter, getFormatedDateOnBids } from "../../utilities/number"
 
 const colors = ["#C4C4C4", "#23C865"]
 
-const BidsChart1 = ({ data ,period}) => {
+const BidsChart1 = ({ data, period }) => {
     const [total, setTotal] = useState([])
     const [amount, setAmount] = useState([])
-    const [zeroLabel, setZeroLabel]=useState('')
-    const [stDate, setStartDate]=useState(0)
+    const [zeroLabel, setZeroLabel] = useState("")
+    const [stDate, setStartDate] = useState(0)
 
     useEffect(() => {
         let tTotal = []
@@ -27,12 +29,11 @@ const BidsChart1 = ({ data ,period}) => {
             tTotal.push({ value: [new Date(ele.placedAt), ele.totalPrice] })
             tAmount.push({ value: [new Date(ele.placedAt), ele.tokenAmount] })
         })
-        
+
         setTotal(tTotal)
         setAmount(tAmount)
         console.log(tTotal)
-        
-    }, [data,period])
+    }, [data, period])
 
     const option = {
         color: colors,
@@ -41,7 +42,7 @@ const BidsChart1 = ({ data ,period}) => {
             axisPointer: {
                 type: "cross",
             },
-            position:'middle'
+            position: "middle",
         },
         grid: [
             {
@@ -71,41 +72,40 @@ const BidsChart1 = ({ data ,period}) => {
                     alignWithLabel: true,
                 },
                 show: false,
-                splitNumber:2,
-                axisPointer:{
-                    label:{
-                        show:false
-                    }
+                splitNumber: 2,
+                axisPointer: {
+                    label: {
+                        show: false,
+                    },
                 },
-                axisLabel:{
-                    margin:30
-                }
+                axisLabel: {
+                    margin: 30,
+                },
             },
             {
                 type: "time",
                 axisTick: {
                     alignWithLabel: true,
                 },
-                min:stDate,
+                min: stDate,
                 gridIndex: 1,
-                splitNumber:2,
-                axisPointer:{
-                    label:{
-                        formatter: function (value,index) {
-                        
-                            return getFormatedDateOnBids(value.value,period)
+                splitNumber: 2,
+                axisPointer: {
+                    label: {
+                        formatter: function (value, index) {
+                            return getFormatedDateOnBids(value.value, period)
                         },
-                        width:70,
-                        padding:[4,2,2,5]
-                    }
+                        width: 70,
+                        padding: [4, 2, 2, 5],
+                    },
                 },
-                axisLabel:{
-                    margin:12,
+                axisLabel: {
+                    margin: 12,
                 },
-                scale:true
-            }
+                scale: true,
+            },
         ],
-        
+
         yAxis: [
             {
                 type: "value",
@@ -114,50 +114,50 @@ const BidsChart1 = ({ data ,period}) => {
                     formatter: function (value) {
                         return numFormatter(value, 0)
                     },
-                    margin:30,
+                    margin: 30,
                 },
                 axisPointer: {
                     label: {
                         backgroundColor: "#23C865",
-                        color:"#fff",
-                        formatter: function (value,index) {
-                             return numFormatter(value.value, 0)
+                        color: "#fff",
+                        formatter: function (value, index) {
+                            return numFormatter(value.value, 0)
                         },
-                        width:50,
-                        padding:[4,2,2,30]
+                        width: 50,
+                        padding: [4, 2, 2, 30],
                     },
-                    margin:"10%",
+                    margin: "10%",
                 },
-                offset:20,
-                position:{
-                    align:'right'
-                }
+                offset: 20,
+                position: {
+                    align: "right",
+                },
             },
             {
                 type: "value",
                 min: 0,
                 axisLabel: {
-                    formatter: function (value,index) {
+                    formatter: function (value, index) {
                         return numFormatter(value, 0)
                     },
-                    margin:30
+                    margin: 30,
                 },
                 axisPointer: {
                     label: {
                         backgroundColor: "#fff",
-                        color:"#7a7a7a",
-                        width:70,
-                        padding:[4,2,2,10],
+                        color: "#7a7a7a",
+                        width: 70,
+                        padding: [4, 2, 2, 10],
                     },
-                    margin:"10%",
-                    position:{
-                        align:'right'
-                    }
+                    margin: "10%",
+                    position: {
+                        align: "right",
+                    },
                 },
-                offset:20,
+                offset: 20,
                 gridIndex: 1,
-                name:zeroLabel.toString(),
-                nameLocation:"start"
+                name: zeroLabel.toString(),
+                nameLocation: "start",
             },
         ],
         series: [
@@ -173,11 +173,10 @@ const BidsChart1 = ({ data ,period}) => {
                 name: "Volume",
                 type: "line",
                 smooth: "true",
-                
+
                 showSymbol: false,
                 data: total,
-            }
-            
+            },
         ],
     }
     return (

@@ -1,62 +1,86 @@
-import React, { useState } from "react"
-import { Link } from "gatsby"
+import React, { useReducer } from "react"
+import { Link, navigate } from "gatsby"
 import Select from "react-select"
 import validator from "validator"
 import AuthLayout from "../common/AuthLayout"
 import { FormInput } from "../common/FormControl"
 import CustomSpinner from "../common/custom-spinner"
-import { useSignupMutation } from "../../apollo/model/auth"
+import * as GraphQL from "../../apollo/graghqls/mutations/Auth"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons"
 import { countries, passwordValidatorOptions, social_links } from "../../utilities/staticData"
 import termsAndConditionsFile from "../../assets/files/NDB Coin Auction - Terms and Conditions.pdf"
 import PasswordEyeIcon from "../common/password-eye-icon"
+import { useMutation } from "@apollo/client"
+import { ROUTES } from "../../utilities/routes"
 
-const SingupPage = () => {
-    const [email, setEmail] = useState("")
-    const [pwd, setPwd] = useState("")
-    const [pwdConfirm, setPwdConfirm] = useState("")
-    const [agree, setAgree] = useState("")
-    const [country, setCountry] = useState(countries[0])
-    // password visibility feature
-    const [passwordVisible, setPasswordVisible] = useState(false)
-    const [passwordConfirmVisible, setPasswordConfirmVisible] = useState(false)
+const Singup = () => {
+    const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
+        email: "",
+        pwd: "",
+        pwdConfirm: "",
+        agree: "",
+        country: countries[0],
 
-    const [emailError, setEmailError] = useState("")
-    const [pwdError, setPwdError] = useState("")
-    const [pwdConfirmError, setPwdConfirmError] = useState("")
-    const [agreeError, setAgreeError] = useState("")
+        pwdVisible: false,
+        pwdConfirmVisible: false,
 
-    const [signupMutation, signupMutationResults] = useSignupMutation()
+        emailError: "",
+        pwdError: "",
+        pwdConfirmError: "",
+        agreeError: "",
+        result: "",
+    })
+
+    const {
+        email,
+        pwd,
+        pwdConfirm,
+        agree,
+        country,
+
+        pwdVisible,
+        pwdConfirmVisible,
+
+        emailError,
+        pwdError,
+        pwdConfirmError,
+        agreeError,
+        result,
+    } = state
+
+    const [signupMutation, { loading }] = useMutation(GraphQL.SIGNUP, {
+        onCompleted: (data) => {
+            setState({ result: data?.signup })
+            if (data?.signup === "Already verified")
+                navigate(ROUTES.signIn + "error.Already verified")
+            else navigate(ROUTES.verifyEmail + email)
+        },
+    })
 
     const signUserUp = (e) => {
         e.preventDefault()
-        setEmailError("")
-        setPwdError("")
-        setPwdConfirmError("")
-        setAgreeError("")
+        setState({ emailError: "", pwdError: "", pwdConfirmError: "", agreeError: "" })
         let error = false
         if (!email || !validator.isEmail(email)) {
-            setEmailError("Invalid email address")
+            setState({ emailError: "Invalid email address" })
             error = true
         }
         if (!pwd || !validator.isStrongPassword(pwd, passwordValidatorOptions)) {
-            setPwdError(
-                "Password must contain at least 8 characters, including UPPER/lowercase and numbers!"
-            )
+            setState({
+                pwdError:
+                    "Password must contain at least 8 characters, including UPPER/lowercase and numbers!",
+            })
             error = true
         }
         if (!agree) {
-            setAgreeError("Please agree to terms and conditions")
+            setState({ agreeError: "Please agree to terms and conditions" })
             error = true
         }
         if (!pwdConfirm || pwd !== pwdConfirm)
-            setPwdConfirmError("Password doest not match it's repeat!")
-        if (!error) signupMutation(email, pwd, country)
+            setState({ pwdConfirmError: "Password doest not match it's repeat!" })
+        if (!error) signupMutation({ variables: { email, password: pwd, country } })
     }
-
-    const pending = signupMutationResults.loading
-    const signupResult = signupMutationResults?.data?.signup
 
     return (
         <AuthLayout>
@@ -68,7 +92,7 @@ const SingupPage = () => {
                         type="text"
                         label="Email"
                         value={email}
-                        onChange={(e) => setEmail(e.target.value)}
+                        onChange={(e) => setState({ email: e.target.value })}
                         placeholder="Enter email"
                         error={emailError}
                     />
@@ -76,15 +100,15 @@ const SingupPage = () => {
                 <div className="row">
                     <div className="form-group col-md-6 mb-0 position-relative">
                         <FormInput
-                            type={passwordVisible ? "text" : "password"}
+                            type={pwdVisible ? "text" : "password"}
                             label="Password"
                             value={pwd}
-                            onChange={(e) => setPwd(e.target.value)}
+                            onChange={(e) => setState({ pwd: e.target.value })}
                             placeholder="Enter password"
                         />
                         <PasswordEyeIcon
-                            passwordVisible={passwordVisible}
-                            setPasswordVisible={setPasswordVisible}
+                            passwordVisible={pwdVisible}
+                            setPasswordVisible={(res) => setState({ pwdVisible: res })}
                             styles={{
                                 right: "18px",
                             }}
@@ -92,15 +116,15 @@ const SingupPage = () => {
                     </div>
                     <div className="form-group col-md-6 mb-0 position-relative">
                         <FormInput
-                            type={passwordConfirmVisible ? "text" : "password"}
+                            type={pwdConfirmVisible ? "text" : "password"}
                             label="Password confirmation"
                             value={pwdConfirm}
-                            onChange={(e) => setPwdConfirm(e.target.value)}
+                            onChange={(e) => setState({ pwdConfirm: e.target.value })}
                             placeholder="Enter password"
                         />
                         <PasswordEyeIcon
-                            passwordVisible={passwordConfirmVisible}
-                            setPasswordVisible={setPasswordConfirmVisible}
+                            passwordVisible={pwdConfirmVisible}
+                            setPasswordVisible={(res) => setState({ pwdConfirmVisible: res })}
                             styles={{
                                 right: "18px",
                             }}
@@ -123,7 +147,7 @@ const SingupPage = () => {
                         options={countries}
                         value={country}
                         id="signup-country-dropdown"
-                        onChange={(v) => setCountry(v)}
+                        onChange={(v) => setState({ country: v })}
                         placeholder="Choose country"
                         className="text-left"
                     />
@@ -134,7 +158,7 @@ const SingupPage = () => {
                             type="checkbox"
                             value={agree}
                             className="form-check-input"
-                            onChange={() => setAgree(!agree)}
+                            onChange={() => setState({ agree: !agree })}
                         />
                         <div className="keep-me-signed-in-text">
                             Agree to{" "}
@@ -150,9 +174,9 @@ const SingupPage = () => {
                     </label>
                 </div>
                 <div className="mt-3">
-                    {signupResult && signupResult !== "Success" && (
+                    {result.length > 0 && result !== "Success" && (
                         <span className="errorsapn">
-                            <FontAwesomeIcon icon={faExclamationCircle} /> {signupResult}
+                            <FontAwesomeIcon icon={faExclamationCircle} /> {result}
                         </span>
                     )}
                     {agreeError && (
@@ -163,12 +187,12 @@ const SingupPage = () => {
                     <button
                         type="submit"
                         className="btn-primary w-100 text-uppercase d-flex align-items-center justify-content-center py-2"
-                        disabled={pending}
+                        disabled={loading}
                     >
-                        <div className={`${pending ? "opacity-1" : "opacity-0"}`}>
+                        <div className={`${loading ? "opacity-1" : "opacity-0"}`}>
                             <CustomSpinner />
                         </div>
-                        <div className={`${pending ? "ms-3" : "pe-4"}`}>sign up with email</div>
+                        <div className={`${loading ? "ms-3" : "pe-4"}`}>sign up with email</div>
                     </button>
                 </div>
             </form>
@@ -191,4 +215,4 @@ const SingupPage = () => {
     )
 }
 
-export default SingupPage
+export default Singup

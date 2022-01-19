@@ -197,12 +197,6 @@
         height: 100vh;
         border: none;
         display: block;
-        a.close {
-            display: none;
-        }
-        p.subtitle {
-            text-align: center;
-        }
     }
     div.input_div {
         width: 80%;
@@ -213,6 +207,333 @@
             justify-content: space-between;
             &>div {
                 width: 49%;                       
+            }
+        }
+        div.upload {
+            height: 38px;
+            border: 1px solid #cccccc;
+            display: flex;
+            padding: 10px;
+            align-items: center;
+            justify-content: space-between;
+            p {
+                padding: 0;
+            }
+            p.file_name {
+                width: 80%;
+                font-size: 14px;
+                font-weight: 400;
+                white-space: nowrap;
+                overflow: hidden;
+                text-overflow: ellipsis;
+            }
+            p.upload_btn {
+                font-size: 24px;
+                svg {cursor: pointer;}
+            }
+        }
+        div.preview-icon {
+            div {
+                width: 120px;
+                height: 120px;
+                border: 1px dotted #cccccc;
+                margin: auto;
+                display: flex;
+                justify-content: center;
+                svg {
+                    width: 70%;
+                    height: auto;
+                }
+            }
+            @include mq('phone', max) {
+                margin-top: 20px;
+            }
+        }
+        p {
+            font-size: 12px;
+            font-weight: 600;
+            padding-bottom: 5px;
+            &.desc {
+                font-weight: 400;
+                word-wrap: break-word;
+            }
+        }
+        @include mq("laptop", max) {
+            width: 100%;
+        }  
+        @include mq("phone", max) {
+            div.div1 {
+                display: flex;
+                flex-direction: column;     
+                &>div {
+                    width: 100%; 
+                    margin: 0;
+                    margin-top: 20px;                     
+                }
+            }
+        }
+    }
+}
+
+.edit_avatar_modal {
+    width: 80%;
+    border: 1px solid #ffffff;   
+    padding: 24px;
+    position: relative;
+    margin-bottom: 20px;
+    min-height: 410px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+
+    @include mq("tablet", max) {
+        width: 90%;
+    }  
+    @include mq("phone", max) {
+        width: 100%;
+        height: 100vh;
+        overflow: auto;
+        border: none;
+        display: block;
+    }  
+    div.input_div {
+        width: 80%;
+        // padding: 20px 0;
+        margin: auto;
+        div.avatar_div {
+            display: flex;
+            div.name_div {
+                width: 29%;
+                padding-right: 25px;
+                input.black_input {
+                    height: 38px;
+                }
+            }
+            div.items_div {
+                width: 40%;
+            }
+            div.preview {
+                width: 20%;
+                img {
+                    display: block;
+                    margin: auto;
+                }   
+                &_mobile {
+                    display: none;
+                    img {
+                        display: block;
+                        margin: auto;
+                    } 
+                }
+            }
+            @include mq('phone', max) {
+                flex-direction: column;
+                div.name_div {
+                    width: 100%;
+                    margin-bottom: 30px;
+                    padding: 0 10%;
+                }
+                div.items_div {
+                    width: 100%;
+                    padding: 0 10%;
+                    button {
+                        display: block;
+                        width: 100%;
+                    }
+                }
+                div.preview {
+                    display: none;
+                    &_mobile {
+                        display: flex;
+                        flex-direction: column;
+                        align-items: center;
+                    }
+                }
+            }
+        }
+        div.stats_div {
+            width: 60%;
+            margin: auto;
+            &>div {
+                margin: 10px 0;
+                display: flex;
+                div.rating {
+                    display: flex;
+                    justify-content: center;
+                }
+            }
+            @include mq("phone", max) {
+                width: 100%;
+                margin: auto;
+                height: auto;
+                margin-bottom: 60px;
+            }
+            .MuiRating-iconEmpty {
+                color: #747474;
+            }
+        }
+        div.facts_div {
+            width: 80%;
+            margin: auto;
+            div.facts {
+                margin-bottom: 10px;
+                display: flex;
+                justify-content: space-between;
+                input.topic {
+                    width: 30%;
+                }
+                input.detail {
+                    width: 68.5%;
+                }
+            }
+            div.details {
+                position: relative;
+                margin-top: 2vh;
+                textarea {
+                    max-height: 150px;
+                    min-height: 55px;
+                    padding-bottom: 2vh;
+                }
+                span {
+                    position: absolute;
+                    bottom: 1vh;
+                    right: 1vh;
+                    font-size: 14px;
+                    color: dimgrey;
+                }
+            }
+            @include mq('phone', max) {
+                width: 100%;
+                div.facts {
+                    margin-bottom: 15px;
+                    flex-direction: column;
+                    input.topic {
+                        width: 100%;
+                        margin-bottom: 5px;
+                    }
+                    input.detail {
+                        width: 100%;
+                    }
+                }
+            }
+        }
+        div.preview_div {
+            width: 70%;
+            margin: auto;
+            border: 1px solid #ffffff;
+            padding: 2vh;
+            div.profile {
+                border: none;
+                height: 130px;
+                width: unset;
+            }
+            p.name {
+                font-size: 20px;
+                font-weight: 600;
+                padding-bottom: 5px;
+                text-align: center;
+            }
+            div.avatarStats {
+                margin-top: 20px; 
+                padding: 0 10%;
+                .col-sm-4 {
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                }
+                p {
+                    overflow: hidden;
+                    text-overflow: ellipsis;
+                }
+            }
+            div.facts {
+                margin-top: 2vh;
+                .col-4 {
+                    p {
+                        font-weight: 700;
+                    }                            
+                }
+            }
+            div.details {
+                margin-top: 2vh;
+            }
+            @include mq("phone", max) {
+                width: 100%;
+                border: none;
+                padding: 0;
+            }
+        }
+        p {
+            font-size: 14px;
+            font-weight: 400;
+            padding-bottom: 5px;
+            @include mq("laptop-wide", max) {
+                font-size: 12px;
+            }
+        }
+        @include mq("tablet", max) {
+            width: 100%;
+        }  
+        @include mq("phone", max) {
+            margin: auto;
+            height: auto;
+            margin-bottom: 60px;
+        }                                  
+    }
+    div.inform {
+        width: 80%;
+        margin: auto;
+        @include mq('phone', max) {
+            width: 100%;
+        }
+    }
+}
+
+.edit-userTier-modal {
+    width: 80%;
+    border: 1px solid #ffffff;   
+    padding: 24px;
+    position: relative;
+    margin-bottom: 20px;
+    height: 410px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    a.close {
+        position: absolute;
+        font-size: 25px;
+        top: 20px;
+        right: 20px;
+    }
+    p.subtitle {
+        font-size: 20px;
+        font-weight: 500;
+        margin-bottom: 10px;
+    }
+    @include mq("tablet", max) {
+        width: 90%;
+    }  
+    @include mq("phone", max) {
+        width: 100%;
+        height: 100vh;
+        border: none;
+        display: block;
+        a.close {
+            display: none;
+        }
+        p.subtitle {
+            text-align: center;
+        }
+    }  
+    div.input_div {
+        width: 80%;
+        margin: auto;
+        div.div1 {
+            display: flex;
+            flex-direction: row; 
+            justify-content: space-between;
+            &>div {
+                width: 32%;                       
             }
         }
         div.upload {

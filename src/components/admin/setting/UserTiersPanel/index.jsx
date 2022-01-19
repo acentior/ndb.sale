@@ -1,17 +1,23 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useState } from 'react';
 import _ from 'lodash';
 import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import TierComponent from './Tier_Component';
 import { device } from '../../../../utilities/device';
 import { get_User_Tiers } from '../../../../redux/actions/userTierAction';
+import Loading from './../../shared/Loading';
 
 const UserTiersPanel = () => {
     const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false);
     const tiers = useSelector(state => state.userTiers);
 
     useEffect(() => {
-        dispatch(get_User_Tiers());
+        (async function() {
+            setLoading(true);
+            await dispatch(get_User_Tiers());
+            setLoading(false);
+        })();
     }, [dispatch]);
 
     return (
@@ -21,11 +27,16 @@ const UserTiersPanel = () => {
                 <div className='threshold'>THRESHOLD</div>
                 <div className='edit'></div>
             </TableHead>
-            <TableBody className='custom_scrollbar'>
-                {_.map(tiers, (tier, index) => {
-                    return <TierComponent key={index} tier={tier} />
-                })}
-            </TableBody>
+            {loading? 
+                <Loading />:
+                (
+                    <TableBody className='custom_scrollbar'>
+                        {_.map(tiers, tier => {
+                            return <TierComponent key={tier.level} tier={tier} />
+                        })}
+                    </TableBody>
+                )
+            }            
         </>
     );
 };

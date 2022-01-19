@@ -1,11 +1,9 @@
 import React, { useCallback, useReducer, useState, useEffect } from "react"
-import { navigate } from "gatsby"
 import { Input } from "../common/FormControl"
 import Modal from "react-modal"
 import { CloseIcon } from "../../utilities/imgImport"
 import { useMutation } from "@apollo/client"
 import { REQUEST_2FA, DISABLE_2FA, CONFIRM_REQUEST_2FA } from "../../apollo/graghqls/mutations/Auth"
-import { ROUTES } from "../../utilities/routes"
 import CustomSpinner from "../common/custom-spinner"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons"
@@ -33,7 +31,7 @@ export default function TwoFactorModal({
     email,
     phone,
     twoStep,
-    updateUser,
+    onResult,
 }) {
     const [qrcode, setQRCode] = useState("")
     const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), initial)
@@ -53,22 +51,33 @@ export default function TwoFactorModal({
             setQRCode(data.request2FA)
             setState({ set_type: selected })
         },
+        onError: (error) => {
+            console.log("Error", error)
+            onResult(false)
+        },
     })
 
     // This will be only trigger on Profile page
     const [disable2FA] = useMutation(DISABLE_2FA, {
         onCompleted: (data) => {
-            updateUser()
+            onResult(true)
         },
     })
 
     const [confirmRequest2FA, { loading: confirmLoading }] = useMutation(CONFIRM_REQUEST_2FA, {
         onCompleted: (data) => {
             if (data.confirmRequest2FA === "Failed") {
-                navigate(ROUTES.verifyFailed)
+                setState(initial)
+                onResult(false)
             } else if (data.confirmRequest2FA === "Success") {
-                updateUser()
-                navigate(ROUTES.signIn)
+                onResult(true)
+                setState({
+                    result_code: "",
+                    set_type: -1,
+                    input_mobile: false,
+                    loading: false,
+                    error: false,
+                })
             }
         },
     })

@@ -1,0 +1,513 @@
+import React, { useState, useMemo } from "react";
+import { useSelector, useDispatch } from "react-redux";
+import _ from 'lodash';
+import Modal from 'react-modal';
+import { Icon } from "@iconify/react"
+import parse from 'html-react-parser'
+import styled from "styled-components"
+
+import Stepper from "../../../components/admin/Stepper"
+import { Alert, Rating } from "@mui/material"
+import { capitalizeFirstLetter } from "../../../utilities/string"
+import DressupModal from "../../../components/dress-up/dressup-modal"
+import { EmptyAvatar } from "../../../utilities/imgImport";
+import { update_Avatar_Profile } from './../../../redux/actions/avatarAction';
+
+const EditAvatarModal = ({isEditModalOpen, setIsEditModalOpen, avatar = {}}) => {
+    const dispatch = useDispatch();
+    const avatarComponents = useSelector(state => state.avatarComponents);
+    const { hairStyles, facialStyles, expressions, hats, others } = avatarComponents;
+
+    const [currentStep, setCurrentStep] = useState(1)
+    const [showError, setShowError] = useState(false)
+    const [isDressUpModalOpen, setIsDressUpModalOpen] = useState(false)
+    const [pending, setPending] = useState(false);
+
+    const avatarSet = _.mapKeys(avatar.avatarSet, 'groupId');
+
+    //------- Avatar Data and Validation
+    const InitialAvatarItems = {
+        hairStyle: avatarSet['hairStyle']?.compId,
+        hairColor: avatar.hairColor,
+        facialStyle: avatarSet['facialStyle']?.compId,
+        expression: avatarSet['expression']?.compId,
+        hat: avatarSet['hat']?.compId,
+        other: avatarSet['other']?.compId
+    };
+    const [avatarItems, setAvatarItems] = useState(InitialAvatarItems);
+    
+    const InitialAvatarName = {fname: avatar.fname, surname: avatar.surname};
+    const [avatarName, setAvatarName] = useState(InitialAvatarName);
+
+    const avatarDataError = useMemo(() => {
+        if(!avatarName.fname) return 'First Name is required';
+        if(!avatarName.surname) return 'Surname is required';
+        return '';
+    }, [avatarName]);
+
+    //-------- Stats Data and Validation
+    // Stats Data
+    const InitialSkills = avatar.skillSet.map(item => {
+        return {title: item.name, stars: item.rate};
+    });
+    const [skills, setSkills] = useState(InitialSkills);
+
+    // Stats Data Validation
+    const statsDataError = useMemo(() => {
+        for (let i = 0; i < skills.length; i++) {
+            if (!skills[i].title) return { index: i, item: "title", desc: "Input is required" }
+            if (!skills[i].stars) return { index: i, item: "stars", desc: "Rating is required" }
+        }
+        return {}
+    }, [skills])
+
+    //--------- Facts, Detail Data and Validation
+    // FactsDetail Data
+    const InitialFactsDetail = {
+        facts: avatar.factsSet.map(item => {
+            return {topic: item.topic, detail: item.topic};
+        }),
+        details: avatar.details
+    };
+    const [factsDetail, setFactsDetail] = useState(InitialFactsDetail);
+    // FactsDetail Validation
+    const factsDataError = useMemo(() => {
+        for (let i = 0; i < factsDetail.facts.length; i++) {
+            if (!factsDetail.facts[i].topic)
+                return { index: i, item: "topic", desc: "Topic is required" }
+            if (!factsDetail.facts[i].detail)
+                return { index: i, item: "detail", desc: "Detail is required" }
+        }
+        if (!factsDetail.details) return { item: "details", desc: "Details Data is required" }
+        return {};
+    }, [factsDetail])
+
+    const setAvatarData = () => {
+        if(avatarDataError) {
+            setShowError(true);
+            return;
+        }
+        setCurrentStep(2)
+        setShowError(false)
+    }
+
+    const setStatsData = () => {
+        if (statsDataError.desc) {
+            setShowError(true)
+            return
+        }
+        setCurrentStep(3)
+        setShowError(false)
+    }
+
+    const setFactsData = () => {
+        if (factsDataError.desc) {
+            setShowError(true)
+            return
+        }
+        setCurrentStep(4)
+        setShowError(false)
+    }
+
+    const handleSubmit = async () => {
+        const skillSet = skills.map(item => {
+            return { name: item.title, rate: item.stars };
+        });
+        const avatarSet = Object.keys(avatarItems).filter(item => {
+            return item !== 'hairColor';
+        }).map(item => {
+            return {groupId: item, compId: avatarItems[item]};
+        });
+        const factsSet = factsDetail.facts;
+
+        setPending(true);
+        await dispatch(update_Avatar_Profile({
+            id: avatar.id,
+            fname: avatarName.fname,
+            surname: avatarName.surname,
+            skillSet,
+            avatarSet,
+            factsSet,
+            details: factsDetail.details,
+            hairColor: avatarItems.hairColor
+        }));
+        setPending(false);
+    }
+
+    const closeModal = () => {
+        setAvatarItems(InitialAvatarItems);
+        setAvatarName(InitialAvatarName);
+        setFactsDetail(InitialFactsDetail);
+        setSkills(InitialSkills);
+        setCurrentStep(1);
+
+        setIsEditModalOpen(false);
+    };
+
+    return (
+        <Modal
+            isOpen={isEditModalOpen}
+            onRequestClose={closeModal}
+            ariaHideApp={false}
+            className="edit_avatar_modal"
+            overlayClassName="pwd-modal__overlay"
+        >
+            <div className="pwd-modal__header mb-3">
+                <p style={{fontSize: 22}}>Edit Avatar</p>
+                <div
+                    onClick={closeModal}
+                    onKeyDown={closeModal}
+                    role="button"
+                    tabIndex="0"
+                >
+                    <Icon icon="ep:close-bold" />
+                </div>
+            </div>
+            <Stepper currentStep={currentStep} texts={["Avatar", "Stats", "Facts"]} />
+            {currentStep === 1 && (
+                <>
+                    <div className="input_div">
+                        {showError ? (
+                            avatarDataError ? (
+                                <Alert severity="error">{avatarDataError}</Alert>
+                            ) : (
+                                <Alert severity="success">
+                                    Success! Please click Next Button
+                                </Alert>
+                            )
+                        ) : (
+                            ""
+                        )}
+                        <div className="avatar_div">
+                            <div className="preview_mobile mb-3">
+                                <div className="profile">
+                                    <div className="image_div">
+                                        <img src={EmptyAvatar} alt="back" />
+                                        {avatarItems.hairColor && (<>
+                                            <Hair hairColor={avatarItems.hairColor} style={{top: `${hairStyles[avatarItems.hairStyle]?.top}%`, left: `${hairStyles[avatarItems.hairStyle]?.left}%`, width: `${hairStyles[avatarItems.hairStyle]?.width}%`}}>
+                                                {parse(hairStyles[avatarItems.hairStyle]? hairStyles[avatarItems.hairStyle].svg: '')}
+                                            </Hair>
+                                            <div style={{top: `${expressions[avatarItems.expression]?.top}%`, left: `${expressions[avatarItems.expression]?.left}%`, width: `${expressions[avatarItems.expression]?.width}%`}}>
+                                                {parse(expressions[avatarItems.expression]? expressions[avatarItems.expression].svg: '')}
+                                            </div>
+                                            <div style={{top: `${facialStyles[avatarItems.facialStyle]?.top}%`, left: `${facialStyles[avatarItems.facialStyle]?.left}%`, width: `${facialStyles[avatarItems.facialStyle]?.width}%`}}>
+                                                {parse(facialStyles[avatarItems.facialStyle]? facialStyles[avatarItems.facialStyle].svg: '')}
+                                            </div>
+                                            <div style={{top: `${hats[avatarItems.hat]?.top}%`, left: `${hats[avatarItems.hat]?.left}%`, width: `${hats[avatarItems.hat]?.width}%`}}>
+                                                {parse(hats[avatarItems.hat]? hats[avatarItems.hat].svg: '')}
+                                            </div>
+                                            <div style={{top: `${others[avatarItems.other]?.top}%`, left: `${others[avatarItems.other]?.left}%`, width: `${others[avatarItems.other]?.width}%`}}>
+                                                {parse(others[avatarItems.other]? others[avatarItems.other].svg: '')}
+                                            </div>
+                                        </>)}
+                                    </div>
+                                </div>
+                            </div>
+                            <div className="name_div">
+                                <p>First Name</p>
+                                <input
+                                    className="black_input"
+                                    value={avatarName.fname}
+                                    onChange={(e) => setAvatarName({...avatarName, fname: e.target.value})}
+                                />
+                                <p className="mt-3">Surname</p>
+                                <input
+                                    className="black_input"
+                                    value={avatarName.surname}
+                                    onChange={(e) => setAvatarName({...avatarName, surname: e.target.value})}
+                                />
+                            </div>
+                            <div className="items_div">
+                                <p>Add Items</p>
+                                <button className="btn previous" onClick={() => setIsDressUpModalOpen(true)}>Add Avatar Items</button>
+                            </div>
+                            <div className="preview">
+                                <div className="profile">
+                                    <div className="image_div">
+                                        <img src={EmptyAvatar} alt="back" />
+                                        {avatarItems.hairColor && (<>
+                                            <Hair hairColor={avatarItems.hairColor} style={{top: `${hairStyles[avatarItems.hairStyle]?.top}%`, left: `${hairStyles[avatarItems.hairStyle]?.left}%`, width: `${hairStyles[avatarItems.hairStyle]?.width}%`}}>
+                                                {parse(hairStyles[avatarItems.hairStyle]? hairStyles[avatarItems.hairStyle].svg: '')}
+                                            </Hair>
+                                            <div style={{top: `${expressions[avatarItems.expression]?.top}%`, left: `${expressions[avatarItems.expression]?.left}%`, width: `${expressions[avatarItems.expression]?.width}%`}}>
+                                                {parse(expressions[avatarItems.expression]? expressions[avatarItems.expression].svg: '')}
+                                            </div>
+                                            <div style={{top: `${facialStyles[avatarItems.facialStyle]?.top}%`, left: `${facialStyles[avatarItems.facialStyle]?.left}%`, width: `${facialStyles[avatarItems.facialStyle]?.width}%`}}>
+                                                {parse(facialStyles[avatarItems.facialStyle]? facialStyles[avatarItems.facialStyle].svg: '')}
+                                            </div>
+                                            <div style={{top: `${hats[avatarItems.hat]?.top}%`, left: `${hats[avatarItems.hat]?.left}%`, width: `${hats[avatarItems.hat]?.width}%`}}>
+                                                {parse(hats[avatarItems.hat]? hats[avatarItems.hat].svg: '')}
+                                            </div>
+                                            <div style={{top: `${others[avatarItems.other]?.top}%`, left: `${others[avatarItems.other]?.left}%`, width: `${others[avatarItems.other]?.width}%`}}>
+                                                {parse(others[avatarItems.other]? others[avatarItems.other].svg: '')}
+                                            </div>
+                                        </>)}
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="button_div">
+                        <button className="btn previous" onClick={closeModal}>
+                            Cancel
+                        </button>
+                        <button className="btn next" onClick={setAvatarData}>
+                            Next
+                        </button>
+                    </div>
+                    <DressupModal isModalOpen={isDressUpModalOpen} setIsModalOpen={setIsDressUpModalOpen} setDressUpAvatarItems={setAvatarItems} />
+                </>
+            )}
+            {currentStep === 2 && (
+                <>
+                    <div className="input_div">
+                        <div className="stats_div">
+                            {showError ? (
+                                statsDataError.desc ? (
+                                    <Alert severity="error">{statsDataError.desc}</Alert>
+                                ) : (
+                                    <Alert severity="success">
+                                        Success! Please click Next Button
+                                    </Alert>
+                                )
+                            ) : (
+                                ""
+                            )}
+                            <p>Stats</p>
+                            {skills.map((stat, index) => {
+                                return (
+                                    <div key={index}>
+                                        <input
+                                            className={`black_input ${
+                                                showError &&
+                                                statsDataError.index === index &&
+                                                statsDataError.item === "title"
+                                                    ? "error"
+                                                    : ""
+                                            }`}
+                                            value={stat.title}
+                                            placeholder={`Stat${index + 1}`}
+                                            onChange={(e) => {
+                                                skills[index].title = e.target.value
+                                                setSkills([...skills])
+                                            }}
+                                        />
+                                        <div
+                                            className={`rating ${
+                                                showError &&
+                                                statsDataError.index === index &&
+                                                statsDataError.item === "stars"
+                                                    ? "error"
+                                                    : ""
+                                            }`}
+                                        >
+                                            <Rating
+                                                name="simple-controlled"
+                                                value={stat.stars}
+                                                onChange={(event, newValue) => {
+                                                    skills[index].stars = newValue
+                                                    setSkills([...skills])
+                                                }}
+                                                style={{ marginLeft: "5px" }}
+                                            />
+                                        </div>
+                                    </div>
+                                )
+                            })}
+                        </div>
+                    </div>
+                    <div className="button_div">
+                        <button className="btn previous" onClick={() => setCurrentStep(1)}>
+                            Previous
+                        </button>
+                        <button className="btn next" onClick={setStatsData}>
+                            Next
+                        </button>
+                    </div>
+                </>
+            )}
+            {currentStep === 3 && (
+                <>
+                    <div className="input_div">
+                        <div className="facts_div">
+                            {showError ? (
+                                factsDataError.desc ? (
+                                    <Alert severity="error">{factsDataError.desc}</Alert>
+                                ) : (
+                                    <Alert severity="success">
+                                        Success! Please click Next Button
+                                    </Alert>
+                                )
+                            ) : (
+                                ""
+                            )}
+                            <p>Fast facts</p>
+                            {factsDetail.facts.map((fact, index) => {
+                                return (
+                                    <div key={index} className="facts">
+                                        <input
+                                            className={`black_input topic ${
+                                                showError &&
+                                                factsDataError.index === index &&
+                                                factsDataError.item === "topic"
+                                                    ? "error"
+                                                    : ""
+                                            }`}
+                                            placeholder="Topic"
+                                            value={fact.topic}
+                                            onChange={(e) => {
+                                                factsDetail.facts[index].topic =
+                                                    e.target.value
+                                                setFactsDetail({ ...factsDetail })
+                                            }}
+                                        />
+                                        <input
+                                            className={`black_input detail ${
+                                                showError &&
+                                                factsDataError.index === index &&
+                                                factsDataError.item === "detail"
+                                                    ? "error"
+                                                    : ""
+                                            }`}
+                                            placeholder="Detail"
+                                            value={fact.detail}
+                                            onChange={(e) => {
+                                                factsDetail.facts[index].detail =
+                                                    e.target.value
+                                                setFactsDetail({ ...factsDetail })
+                                            }}
+                                        />
+                                    </div>
+                                )
+                            })}
+                            <div className="details">
+                                <p>Details</p>
+                                <textarea
+                                    className={`black_input ${
+                                        showError && factsDataError.item === "details"
+                                            ? "error"
+                                            : ""
+                                    }`}
+                                    name="details"
+                                    rows="3"
+                                    maxLength="300"
+                                    value={factsDetail.details}
+                                    onChange={(e) =>
+                                        setFactsDetail({
+                                            ...factsDetail,
+                                            details: e.target.value,
+                                        })
+                                    }
+                                />
+                                <span>{factsDetail.details.length}/300</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="button_div">
+                        <button className="btn previous" onClick={() => setCurrentStep(2)}>
+                            Previous
+                        </button>
+                        <button className="btn next" onClick={setFactsData}>
+                            Next
+                        </button>
+                    </div>
+                </>
+            )}
+            {currentStep === 4 && (
+                <>
+                    <div className="input_div">
+                        <div className="preview_div">
+                            <p className="name">
+                                {avatarName ? 
+                                    `${capitalizeFirstLetter(avatarName.fname)} ${capitalizeFirstLetter(avatarName.surname)}`:
+                                    "Nicolla Tesla"
+                                }
+                            </p>
+                            <div className="row avatarStats">
+                                <div className="col-sm-5">
+                                    <div className="profile">
+                                        <div className="image_div">
+                                            <img src={EmptyAvatar} alt="back" />
+                                            {avatarItems.hairColor && (<>
+                                                <Hair hairColor={avatarItems.hairColor} style={{top: `${hairStyles[avatarItems.hairStyle]?.top}%`, left: `${hairStyles[avatarItems.hairStyle]?.left}%`, width: `${hairStyles[avatarItems.hairStyle]?.width}%`}}>
+                                                    {parse(hairStyles[avatarItems.hairStyle]? hairStyles[avatarItems.hairStyle].svg: '')}
+                                                </Hair>
+                                                <div style={{top: `${expressions[avatarItems.expression]?.top}%`, left: `${expressions[avatarItems.expression]?.left}%`, width: `${expressions[avatarItems.expression]?.width}%`}}>
+                                                    {parse(expressions[avatarItems.expression]? expressions[avatarItems.expression].svg: '')}
+                                                </div>
+                                                <div style={{top: `${facialStyles[avatarItems.facialStyle]?.top}%`, left: `${facialStyles[avatarItems.facialStyle]?.left}%`, width: `${facialStyles[avatarItems.facialStyle]?.width}%`}}>
+                                                    {parse(facialStyles[avatarItems.facialStyle]? facialStyles[avatarItems.facialStyle].svg: '')}
+                                                </div>
+                                                <div style={{top: `${hats[avatarItems.hat]?.top}%`, left: `${hats[avatarItems.hat]?.left}%`, width: `${hats[avatarItems.hat]?.width}%`}}>
+                                                    {parse(hats[avatarItems.hat]? hats[avatarItems.hat].svg: '')}
+                                                </div>
+                                                <div style={{top: `${others[avatarItems.other]?.top}%`, left: `${others[avatarItems.other]?.left}%`, width: `${others[avatarItems.other]?.width}%`}}>
+                                                    {parse(others[avatarItems.other]? others[avatarItems.other].svg: '')}
+                                                </div>
+                                            </>)}
+                                        </div>
+                                    </div>
+                                </div>
+                                <div className="col-sm-7">
+                                    {skills.map((stat, index) => {
+                                        return (
+                                            <div key={index} className="row">
+                                                <div className="col-6">
+                                                    <p title={stat.title}>{stat.title}</p>
+                                                </div>
+                                                <div className="col-6">
+                                                    <Rating
+                                                        name="simple-controlled"
+                                                        value={stat.stars}
+                                                        readOnly
+                                                        emptyIcon=" "
+                                                        size="small"
+                                                    />
+                                                </div>
+                                            </div>
+                                        )
+                                    })}
+                                </div>
+                            </div>
+                            <div className="facts">
+                                {factsDetail.facts.map((fact, index) => {
+                                    return (
+                                        <div key={index} className="row">
+                                            <div className="col-4">
+                                                <p>{fact.topic}</p>
+                                            </div>
+                                            <div className="col-8">
+                                                <p>{fact.detail}</p>
+                                            </div>
+                                        </div>
+                                    )
+                                })}
+                            </div>
+                            <div className="details">
+                                <p>{factsDetail.details}</p>
+                            </div>
+                        </div>
+                    </div>
+                    <div className="button_div">
+                        <button className="btn previous" onClick={() => setCurrentStep(3)}>
+                            Previous
+                        </button>
+                        <button className="btn next" onClick={handleSubmit} disabled={pending}>
+                            {pending? 'Saving...': 'Save'}
+                        </button>
+                    </div>
+                </>
+            )}
+        </Modal>
+    )
+}
+
+export default EditAvatarModal;
+
+const Hair = styled.div`
+    svg>path {
+        fill: ${props => {
+            return props.hairColor? props.hairColor: '#626161';
+        }}
+    }
+`;

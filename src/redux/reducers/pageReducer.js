@@ -11,9 +11,9 @@ export const paginationReducer = (state = initialState, action) => {
     case PAGINATION_SET_LIMIT:
       return { ...state, limit: action.payload, page: 1 };
     case PAGINATION_SET_PAGE:
-      return { ...state, page: action.payload };
+      return { ...state, ...action.payload };
     case FETCH_DATA:
-      return { ...state, total: action.payload.length };
+      return { ...state, total: Object.keys(action.payload).length };
     default:
       return state;
   }

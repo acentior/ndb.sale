@@ -1,7 +1,6 @@
 import React, { useState } from "react";
 import { useSelector } from "react-redux";
 import Modal from "react-modal"
-import svgToDataURL from 'svg-to-dataurl';
 import parse from 'html-react-parser'
 import styled from "styled-components"
 import { DressupData } from "../../utilities/dressup-data"
@@ -31,30 +30,39 @@ export default function DressupModal({ isModalOpen, setIsModalOpen, setDressUpAv
 
     const saveAvatarItems = () => {
         setDressUpAvatarItems({
-            hairStyle: hairStyles[selectedHairStyle].compId,
-            facialStyle: facialStyles[selectedFacialStyle].compId,
-            expression: expressions[selectedExpression].compId,
-            hat: hats[selectedHat].compId,
-            other: others[selectedOther].compId,
+            hairStyle: hairStyles[selectedHairStyle]?.compId,
+            facialStyle: facialStyles[selectedFacialStyle]?.compId,
+            expression: expressions[selectedExpression]?.compId,
+            hat: hats[selectedHat]?.compId,
+            other: others[selectedOther]?.compId,
             hairColor: hairColors[selectedHairColor]
         });
         setIsModalOpen(false);
     }
+
+    const closeModal = () => {
+        setSelectedHairStyle(0);
+        setSelectedHairColor(0);
+        setSelectedFacialStyle(0);
+        setSelectedExpression(0);
+        setSelectedHat(0);
+        setSelectedOther(0);
+
+        setIsModalOpen(false);
+    };
     
     return (
         <Modal
             isOpen={isModalOpen}
-            onRequestClose={() => {
-                setIsModalOpen(false)
-            }}
+            onRequestClose={closeModal}
             ariaHideApp={false}
             className="dress-up-modal"
             overlayClassName="dress-up-modal__overlay"
         >
             <div className="dress-up-modal__header">
                 <div
-                    onClick={() => setIsModalOpen(false)}
-                    onKeyDown={() => setIsModalOpen(false)}
+                    onClick={closeModal}
+                    onKeyDown={closeModal}
                     role="button"
                     tabIndex="0"
                 >
@@ -75,20 +83,20 @@ export default function DressupModal({ isModalOpen, setIsModalOpen, setDressUpAv
                             <div className="image_div">
                                 <img src={EmptyAvatar} alt="back" />
                                 {loaded && (<>
-                                    <Hair hairColor={hairColors[selectedHairColor]} style={{top: `${hairStyles[selectedHairStyle].top}%`, left: `${hairStyles[selectedHairStyle].left}%`, width: `${hairStyles[selectedHairStyle].width}%`}}>
-                                        {parse(hairStyles[selectedHairStyle].svg)}
+                                    <Hair hairColor={hairColors[selectedHairColor]} style={{top: `${hairStyles[selectedHairStyle]?.top}%`, left: `${hairStyles[selectedHairStyle]?.left}%`, width: `${hairStyles[selectedHairStyle]?.width}%`}}>
+                                        {parse(hairStyles[selectedHairStyle]?.svg)}
                                     </Hair>
-                                    <div style={{top: `${expressions[selectedExpression].top}%`, left: `${expressions[selectedExpression].left}%`, width: `${expressions[selectedExpression].width}%`}}>
-                                        {parse(expressions[selectedExpression].svg)}
+                                    <div style={{top: `${expressions[selectedExpression]?.top}%`, left: `${expressions[selectedExpression]?.left}%`, width: `${expressions[selectedExpression]?.width}%`}}>
+                                        {parse(expressions[selectedExpression]?.svg)}
                                     </div>
-                                    <div style={{top: `${facialStyles[selectedFacialStyle].top}%`, left: `${facialStyles[selectedFacialStyle].left}%`, width: `${facialStyles[selectedFacialStyle].width}%`}}>
-                                        {parse(facialStyles[selectedFacialStyle].svg)}
+                                    <div style={{top: `${facialStyles[selectedFacialStyle]?.top}%`, left: `${facialStyles[selectedFacialStyle]?.left}%`, width: `${facialStyles[selectedFacialStyle]?.width}%`}}>
+                                        {parse(facialStyles[selectedFacialStyle]?.svg)}
                                     </div>
-                                    <div style={{top: `${hats[selectedHat].top}%`, left: `${hats[selectedHat].left}%`, width: `${hats[selectedHat].width}%`}}>
-                                        {parse(hats[selectedHat].svg)}
+                                    <div style={{top: `${hats[selectedHat]?.top}%`, left: `${hats[selectedHat]?.left}%`, width: `${hats[selectedHat]?.width}%`}}>
+                                        {parse(hats[selectedHat]?.svg)}
                                     </div>
-                                    <div style={{top: `${others[selectedOther].top}%`, left: `${others[selectedOther].left}%`, width: `${others[selectedOther].width}%`}}>
-                                        {parse(others[selectedOther].svg)}
+                                    <div style={{top: `${others[selectedOther]?.top}%`, left: `${others[selectedOther]?.left}%`, width: `${others[selectedOther]?.width}%`}}>
+                                        {parse(others[selectedOther]?.svg)}
                                     </div>
                                 </>)}
                             </div>
@@ -108,7 +116,7 @@ export default function DressupModal({ isModalOpen, setIsModalOpen, setDressUpAv
                                 </div>
                             ))}
                           </div>
-                        <div className="btn-save" onClick={saveAvatarItems}>save</div>
+                        <button className="btn-save" onClick={saveAvatarItems}>save</button>
                     </div>
                 </div>
                 <div className="col-sm-8 components">

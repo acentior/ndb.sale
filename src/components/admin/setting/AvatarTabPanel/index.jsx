@@ -1,32 +1,44 @@
 import React, { useEffect, useState } from 'react';
 import { useDispatch, useSelector } from 'react-redux';
-import _ from 'lodash';
 import AvatarComponent from './Avatar_Component';
 import Loading from './../../shared/Loading';
+import PaginationBar from './../../PaginationBar';
 import { fetch_Avatars } from './../../../../redux/actions/avatarAction';
+import { set_Page } from '../../../../redux/actions/paginationAction';
 
 
 const AvatarTabPanel = () => {
     const dispatch = useDispatch();
-    const { loaded, data } = useSelector(state => state.data);
+    const [loading, setLoading] = useState(false);
+    const { data } = useSelector(state => state);
     const { page, limit } = useSelector(state => state.pagination);
     const [pageData, setPageData] = useState([]);
     
     useEffect(() => {
-        dispatch(fetch_Avatars());
+        (async function() {
+            dispatch(set_Page(1));
+            setLoading(true);
+            await dispatch(fetch_Avatars());
+            setLoading(false);
+        })();
     }, [dispatch]);
 
     useEffect(() => {
-        setPageData(data.slice((page - 1) * limit, page * limit));
+        setPageData(Object.values(data).slice((page - 1) * limit, page * limit));
     }, [dispatch, data, page, limit]);
 
     return (
-        <div className='avatar_div custom_scrollbar'>
-            {loaded? 
-                pageData.map((avatar, index) => {
-                    return <AvatarComponent key={index} avatar={avatar} />
-                }):
-                <Loading />
+        <div>
+            {loading?
+                <Loading />: 
+                (
+                    <>
+                        {pageData.map(avatar => {
+                            return <AvatarComponent key={avatar.id} avatar={avatar} />
+                        })}
+                        <PaginationBar />
+                    </>
+                )                
             }
         </div>
     );

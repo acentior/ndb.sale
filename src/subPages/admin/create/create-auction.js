@@ -1,4 +1,5 @@
-import React, { useState, useMemo } from "react"
+import React, { useState, useMemo, useEffect } from "react";
+import { useSelector, useDispatch } from 'react-redux';
 import { Link } from "gatsby"
 import { Icon } from '@iconify/react';
 import validator from "validator";
@@ -14,8 +15,20 @@ import AdapterDateFns from '@mui/lab/AdapterDateFns';
 import LocalizationProvider from '@mui/lab/LocalizationProvider';
 import { MobileDateTimePicker   } from '@mui/lab';
 import Select from 'react-select';
+import { fetch_Avatars } from './../../../redux/actions/avatarAction';
+import AvatarImage from './../../../components/admin/shared/AvatarImage';
 
 const IndexPage = () => {
+    const dispatch = useDispatch();
+    const avatars = useSelector(state => state.data);
+    const Avatars = Object.values(avatars).map(item => {
+        return { value: item.id, label: item.surname };
+    });
+
+    useEffect(() => {
+        dispatch(fetch_Avatars());
+    }, [dispatch]);
+
     const [currentStep, setCurrentStep] = useState(1);
     const [showError, setShowError] = useState(false);
     const totalTokenAmount = 100000000;
@@ -43,7 +56,7 @@ const IndexPage = () => {
         if(!validator.isDate(new Date(roundData.endTime))) return {endTime: 'Round End Time is invalid'};
         if(Math.round((new Date(roundData.endTime) - new Date(roundData.startTime))) <= 0) return {endTime: 'Round End Time must be after Start Time'};
         return {};
-    }, [roundData]);    
+    }, [roundData]);
 
     //-------- Token Data and Validation
     // Token Data
@@ -61,19 +74,12 @@ const IndexPage = () => {
     }, [tokenData]);
 
     //--------- Avatar Data
-    const avatars = [
-        { value: 'tesla.svg', label: 'Tesla' },
-        { value: 'volta.svg', label: 'Volta' },
-        { value: 'meitner.svg', label: 'Meitner' },
-        { value: 'johnson.svg', label: 'Johnson' },
-        { value: 'fermi.svg', label: 'Fermi' },
-        { value: 'failla.svg', label: 'Failla' },
-        { value: 'curie.svg', label: 'Curie' },
-        { value: 'cruto.svg', label: 'Cruto' },
-    ];
-    const [avatar, setAuctionAvatar] = useState(avatars[0]);
+    const [avatar, setAuctionAvatar] = useState({});
     
-
+    const avatarError = useMemo(() => {
+        if(!avatar.label) return 'Please select a avatar';
+        return '';
+    }, [avatar]);
 
     const setIDAndTime = () => {
         if(Object.values(roundDataError)[0]) {
@@ -94,7 +100,12 @@ const IndexPage = () => {
     };
 
     const setAvatar = () => {
+        if(avatarError) {
+            setShowError(true);
+            return;
+        }
         setCurrentStep(4);
+        setShowError(false);
     };
 
     const handleSubmit = () => {
@@ -223,10 +234,11 @@ const IndexPage = () => {
                     {currentStep === 3 && (
                         <>
                             <div className="input_div">
-                                <div className="avatar_div">
+                            {showError? (avatarError? <Alert severity="error">{avatarError}</Alert>: <Alert severity="success">Success! Please click Next Button</Alert>): ''}
+                                <div className="avatar_div mt-4">
                                     <div className="row">
-                                        <div className="image_div col-sm-4">
-                                            <img src={`/avatars/${avatar.value}`} alt={avatar.value} />  
+                                        <div className="avatarImage_div col-sm-4">
+                                            <AvatarImage avatar={avatars[avatar?.value]} />
                                         </div>                                   
                                         <div className="select_div col-sm-8">
                                         <p>Avatar</p>
@@ -236,9 +248,9 @@ const IndexPage = () => {
                                             onChange={selected => {
                                                 setAuctionAvatar(selected);
                                             }}
-                                            options={avatars}
+                                            options={Avatars}
                                             styles={customSelectStyles}
-
+                                            placeholder="Select Avatar"
                                         />
                                         </div> 
                                     </div>                                                                      
@@ -285,7 +297,7 @@ const IndexPage = () => {
                                                 <p>{avatar.label}</p>
                                             </div>  
                                             <div className="item">
-                                                <img src={`/avatars/${avatar.value}`} alt={avatar.label} /> 
+                                                <AvatarImage avatar={avatars[avatar?.value]} />
                                             </div>  
                                         </div>
                                     </div>
@@ -294,7 +306,7 @@ const IndexPage = () => {
                                     <div className="row">
                                         <div className="col-sm-3 mb-4">
                                             <div className="item">
-                                                <img src={`/avatars/${avatar.value}`} alt={avatar.label} /> 
+                                                <AvatarImage avatar={avatars[avatar?.value]} />
                                             </div>  
                                             <div className="item text-center">
                                                 <p>Avatar</p>
@@ -305,7 +317,7 @@ const IndexPage = () => {
                                             <div className="item">
                                                 <p>Round ID</p>
                                                 <p>{roundData.roundId}</p>
-                                            </div>                                        
+                                            </div>
                                             <div className="item">
                                                 <p>Round Number</p>
                                                 <p>{roundData.roundNumber}</p>
@@ -313,13 +325,13 @@ const IndexPage = () => {
                                             <div className="item">
                                                 <p>Round Time</p>
                                                 <p>{secondsToDhms(duration / 1000)}</p>
-                                            </div>                                        
+                                            </div>
                                         </div>
                                         <div className="col-sm-5 col-6">
                                             <div className="item">
                                                 <p>Token Amount</p>
                                                 <p>{tokenData.tokenAmount}</p>
-                                            </div>  
+                                            </div>
                                             <div className="item">
                                                 <p>Reserved Price</p>
                                                 <p>{tokenData.ReservedPrice}</p>
@@ -365,5 +377,9 @@ const customSelectStyles = {
     input: provided => ({
         ...provided,
         color: 'white'
+    }),
+    placeholder: provided => ({
+        ...provided,
+        color: 'dimgrey'
     })
 };

@@ -5,7 +5,7 @@ import { errorsReducer } from "./errorReducer"
 import { avatarComponentsReducer } from "./avatarReducer"
 import { bidReducer } from "./bidReducer"
 import { userTierReducer } from "./settingReducer"
-import { dataReducer, pageDataReducer } from './dataReducer';
+import { dataReducer } from './dataReducer';
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -15,7 +15,6 @@ const rootReducer = combineReducers({
     userTiers: userTierReducer,
     placeBid: bidReducer,
     data: dataReducer,
-    pageData: pageDataReducer
 })
 
 export default rootReducer

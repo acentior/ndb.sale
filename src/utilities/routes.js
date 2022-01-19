@@ -3,6 +3,7 @@ export const ROUTES = {
     signUp: "/app/signup/",
     selectFigure: "/app/select-figure/",
     verifyFailed: "/app/verify-failed/",
+    verifyEmail: "/app/verify-email/",
     profile: "/app/profile/",
     changePassword: "/app/change-password/",
     forgotPassword: "/app/forgot-password/",

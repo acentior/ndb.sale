@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useState, useEffect } from "react"
 import ReactEcharts from "echarts-for-react"
 import { getDataOnPeriod, numFormatter, getFormatedDateOnBids } from "../../utilities/number"
@@ -8,7 +10,7 @@ const BidsChart2 = ({ data }) => {
     useEffect(() => {
         let ttotal = []
         let tamount = []
-       
+
         data?.getBidList.forEach((ele) => {
             ttotal.push(ele.totalPrice)
             tamount.push(ele.tokenAmount)
@@ -42,14 +44,14 @@ const BidsChart2 = ({ data }) => {
                 axisLabel: {
                     formatter: function (value) {
                         return numFormatter(value, 2)
-                    }
+                    },
                 },
-                axisPointer:{
-                    label:{
-                       padding:[4,25,2,25]
-                    }
-                }
-            }
+                axisPointer: {
+                    label: {
+                        padding: [4, 25, 2, 25],
+                    },
+                },
+            },
         ],
         yAxis: [
             {
@@ -61,19 +63,19 @@ const BidsChart2 = ({ data }) => {
                 axisPointer: {
                     label: {
                         backgroundColor: "#fff",
-                        color:"#7a7a7a",
-                        padding:[4,15,2,15],
+                        color: "#7a7a7a",
+                        padding: [4, 15, 2, 15],
                         formatter: function ({ value }) {
-                            return numFormatter(value,2)
+                            return numFormatter(value, 2)
                         },
                     },
-                    margin:"10%"
+                    margin: "10%",
                 },
                 axisLabel: {
                     formatter: function (value) {
                         return numFormatter(value, 2)
                     },
-                    margin:30
+                    margin: 30,
                 },
             },
         ],

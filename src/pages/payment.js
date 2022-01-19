@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useCallback, useReducer, useState } from "react"
 import { useDispatch, useSelector } from "react-redux"
 import ReactTooltip from "react-tooltip"
@@ -10,7 +12,7 @@ import { faQuestionCircle } from "@fortawesome/fontawesome-free-regular"
 import { EditIcon, ETH, BTC, DOGE, QRCode, Copy, CloseIcon } from "../utilities/imgImport"
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import ConnectWalletTab from "../components/profile/connect-wallet-tab"
-import { FOO_COINS, PAYMENT_FRACTION_TOOLTIP_CONTENT } from "../utilities/staticData"
+import { FOO_COINS, PAYMENT_FRACTION_TOOLTIP_CONTENT, Currencies } from "../utilities/staticData"
 import { setBidInfo } from "../redux/actions/bidAction"
 
 const { Option, SingleValue } = components
@@ -69,6 +71,7 @@ const CustomSingleValue = (props) => {
 const Payment = () => {
     const dispatch = useDispatch()
     const bidAmount = useSelector((state) => state?.placeBid)
+    const currencyId = useSelector((state) => state?.placeBid.currencyId)
 
     const [fooPayAmount, setFooPayAmount] = useState("")
     const [showEditPayAmountBox, setShowEditPayAmountBox] = useState(false)
@@ -138,7 +141,9 @@ const Payment = () => {
                             <TabList>
                                 {payment_types.map((item, index) => (
                                     <Tab
-                                        className={`payment-type__tab-list text-center ${index === 3 && "px-0"}`}
+                                        className={`payment-type__tab-list text-center ${
+                                            index === 3 && "px-0"
+                                        }`}
                                         key={index}
                                     >
                                         <label>{item.label}</label>
@@ -416,7 +421,7 @@ const Payment = () => {
                                 </div>
                             </TabPanel>
                             <TabPanel className="externalwallets-tab">
-                                <div className="payment-content" style={{ display: 'block' }}>
+                                <div className="payment-content" style={{ display: "block" }}>
                                     <ConnectWalletTab />
 
                                     <div className="mt-1 d-flex">
@@ -502,7 +507,7 @@ const Payment = () => {
                                     </div>
                                 )}
                                 {bidAmount.place_bid}
-                                <span> ETH</span>
+                                <span> {Currencies[currencyId].label}</span>
                             </div>
                         </div>
                         <p className="payment-expire">

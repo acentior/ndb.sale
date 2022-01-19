@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React, { useState, useEffect } from "react"
 import ReactEcharts from "echarts-for-react"
 import { numFormatter } from "../../utilities/number"
@@ -31,7 +33,6 @@ const RoundsChart1 = ({ data }) => {
             axisPointer: {
                 type: "cross",
             },
-            
         },
         grid: {
             left: 20,
@@ -53,12 +54,12 @@ const RoundsChart1 = ({ data }) => {
                 label: {
                     backgroundColor: "#8F8F8F",
                     formatter: function ({ value }) {
-                        if (value<1000){
+                        if (value < 1000) {
                             return value.toFixed(0)
                         }
                         return numFormatter(value, 0)
                     },
-                    padding:[4,25,2,25],
+                    padding: [4, 25, 2, 25],
                 },
             },
         },
@@ -74,19 +75,19 @@ const RoundsChart1 = ({ data }) => {
                     formatter: function ({ value }) {
                         return numFormatter(value, 2)
                     },
-                    padding:[4,15,2,15],
+                    padding: [4, 15, 2, 15],
                 },
             },
             axisLabel: {
                 formatter: function (value) {
                     return numFormatter(value, 2)
                 },
-                margin:17,
+                margin: 17,
             },
-            position:{
-                align:'right'
+            position: {
+                align: "right",
             },
-            offset:20
+            offset: 20,
         },
         series: [
             {

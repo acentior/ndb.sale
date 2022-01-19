@@ -19,7 +19,7 @@ import { ROUTES } from "../utilities/routes"
 import BidsChart2 from "./chart/BidsChart2"
 import ChanceChart from "./chart/ChanceChart"
 import { useQuery, useLazyQuery, useMutation } from "@apollo/client"
-import { setBidInfo } from "../redux/actions/bidAction"
+import { setBidInfo, setCurrencyInfo } from "../redux/actions/bidAction"
 import Loading from "./common/Loading"
 
 import { ChartIcon, Qmark, CloseIcon } from "../utilities/imgImport"
@@ -51,7 +51,7 @@ const options = [
 const Auction = () => {
     const dispatch = useDispatch()
     const size = useWindowSize()
-    const currencyId = useSelector((state) => state.placeBid.currencyId)
+    const currencyId = useSelector((state) => state?.placeBid.currencyId)
     const user = useSelector((state) => state.auth.user)
     const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
         tabIndex: 0,
@@ -298,16 +298,20 @@ const Auction = () => {
                 cryptoType: "BTC",
             },
         })
-        dispatch(setBidInfo(Math.max(fnSelectedRoundData()?.minPrice, price) * amount))
+        dispatch(
+            setBidInfo(
+                numberWithCommas(
+                    Number(
+                        calcPriceFromUsd(Math.max(fnSelectedRoundData()?.minPrice, price * amount))
+                    )
+                )
+            )
+        )
+        dispatch(setCurrencyInfo(Currencies[currencyId].id))
         navigate(ROUTES.payment)
     }
 
-    if (loading)
-        return (
-            <div className="auction-left col-lg-4">
-                <Loading />
-            </div>
-        )
+    if (loading) return <Loading />
     else
         return (
             <main className="auction-page">
@@ -317,7 +321,7 @@ const Auction = () => {
                         <div>
                             <h4>Round {roundData && roundData[0]?.round}</h4>
                             <p>
-                                Token Available <span>{roundData && roundData[0]?.token}</span>
+                                Token Available <span>{roundData && roundData[0]?.totalToken}</span>
                             </p>
                         </div>
                         <img
@@ -357,19 +361,19 @@ const Auction = () => {
                                             <TabPanel>
                                                 Token Available{" "}
                                                 <span className="fw-bold">
-                                                    {fnSelectedRoundData()?.token}
+                                                    {fnSelectedRoundData()?.totalToken}
                                                 </span>
                                             </TabPanel>
                                             <TabPanel>
                                                 Token Available{" "}
                                                 <span className="fw-bold">
-                                                    {fnSelectedRoundData()?.token}
+                                                    {fnSelectedRoundData()?.totalToken}
                                                 </span>
                                             </TabPanel>
                                             <TabPanel>
                                                 Token Available{" "}
                                                 <span className="fw-bold">
-                                                    {fnSelectedRoundData()?.token}
+                                                    {fnSelectedRoundData()?.totalToken}
                                                 </span>
                                             </TabPanel>
                                         </Tabs>
@@ -757,78 +761,8 @@ const Auction = () => {
                                                         Histogram
                                                     </button>
                                                 </div>
-
-                                                {/* {
-                                                    performance && (
-                                                        <div className="d-flex py-auto">
-                                                            <div className="px-auto">
-                                                                <label className="text-white">Max:&nbsp;&nbsp;</label>
-                                                                <span className="text-secondary">0.034</span>
-                                                            </div>
-                                                            <div className="px-2">
-                                                                <label className="text-white">Min:&nbsp;&nbsp;</label>
-                                                                <span className="text-secondary ">0.034</span>
-                                                            </div>
-                                                            <div className="px-2">
-                                                                <label className="text-white">Std:&nbsp;&nbsp;</label>
-                                                                <span className="text-secondary ">0.034</span>
-                                                            </div>
-                                                            <div className="px-2">
-                                                                <label className="text-white">Rnd:&nbsp;&nbsp;</label>
-                                                                <span className="text-secondary ">5</span>
-                                                            </div>
-                                                        </div>
-                                                    )
-                                                } */}
                                             </div>
                                         )}
-                                        {/* {selectLabel.value === "round_performance" && (
-                                            <div className="d-flex align-items-center pt-3 w-100 ">
-                                                <button
-                                                    className={`btn-small ${
-                                                        reser_price ? "" : "btn-disabled"
-                                                    }`}
-                                                    onClick={() => {
-                                                        if (!reser_price) {
-                                                            setReserPrice(true)
-                                                            setSoldPrice(true)
-                                                            setPerformance(false)
-                                                        }
-                                                    }}
-                                                >
-                                                    Reserved Price
-                                                </button>
-                                                <button
-                                                    className={`btn-small ${
-                                                        sold_price ? "" : "btn-disabled"
-                                                    }`}
-                                                    onClick={() => {
-                                                        if (!sold_price) {
-                                                            setReserPrice(true)
-                                                            setSoldPrice(true)
-                                                            setPerformance(false)
-                                                        }
-                                                    }}
-                                                >
-                                                    Price Sold
-                                                </button>
-                                                <button
-                                                    className={`btn-small ${
-                                                        performance ? "" : "btn-disabled"
-                                                    }`}
-                                                    onClick={() => {
-                                                        if (!performance) {
-                                                            setReserPrice(false)
-                                                            setSoldPrice(false)
-                                                            setPerformance(true)
-                                                        }
-                                                    }}
-                                                >
-                                                    Histogram
-                                                </button>
-                                            </div>
-                                            
-                                        )} */}
                                     </div>
                                 </div>
 

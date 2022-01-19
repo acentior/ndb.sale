@@ -27,6 +27,15 @@ export const GET_AVATARS = gql`
                 compId
             }
             hairColor
+            skillSet {
+                name
+                rate
+            }
+            factsSet {
+                topic
+                detail
+            }
+            details
         }
     }
 `;

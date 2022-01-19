@@ -1,13 +1,15 @@
+/* eslint-disable */
+
 import React, { useEffect, useState } from "react"
 import ReactEcharts from "echarts-for-react"
-var xPoint=0;
-var tmpdata=[]
+var xPoint = 0
+var tmpdata = []
 
 const RoundsChart2 = ({ data }) => {
     const [chart, setChart] = useState([])
     const [rnd, setRnd] = useState([])
 
-    const [display,setDisplay] = useState() 
+    const [display, setDisplay] = useState()
 
     const [loop, setLoop] = useState()
     useEffect(() => {
@@ -29,7 +31,7 @@ const RoundsChart2 = ({ data }) => {
         setRnd(trnd)
         setChart(rdata)
     }, [data])
-   
+
     // useEffect(
     //     () => {
     //       setLoop(
@@ -37,7 +39,7 @@ const RoundsChart2 = ({ data }) => {
     //           console.log("loading");
     //         }, 1000)
     //       );
-    
+
     //       return function cleanup() {
     //         console.log("cleaning up");
     //         clearInterval(loop);
@@ -45,22 +47,22 @@ const RoundsChart2 = ({ data }) => {
     //     },
     //     []
     //   );
-    
-    useEffect(()=>{
-        var clockId = setInterval(()=>{
-            console.log('------')
-        },1000)
-        return ()=>{
-            console.log('celadsf')
+
+    useEffect(() => {
+        var clockId = setInterval(() => {
+            console.log("------")
+        }, 1000)
+        return () => {
+            console.log("celadsf")
             clearInterval(clockId)
         }
-    },[])
+    }, [])
 
     const option = {
         tooltip: {
-            show:false,
+            show: false,
         },
-        
+
         grid: {
             left: 27,
             right: 10,
@@ -70,7 +72,7 @@ const RoundsChart2 = ({ data }) => {
         xAxis: {
             data: rnd,
             axisPointer: {
-                show:true,
+                show: true,
                 label: {
                     backgroundColor: "#eb5454",
                     formatter: function ({ value }) {
@@ -85,24 +87,24 @@ const RoundsChart2 = ({ data }) => {
                         // }
                         return value
                     },
-                    padding:[4,25,2,25],
+                    padding: [4, 25, 2, 25],
                 },
             },
-            axisLabel:{
-                margin:30
+            axisLabel: {
+                margin: 30,
             },
         },
         yAxis: {
-            axisPointer:{
-                show:false
+            axisPointer: {
+                show: false,
             },
-            offset:20,
-            axisLabel:{
-                margin:30
+            offset: 20,
+            axisLabel: {
+                margin: 30,
             },
-            position:{
-                align:'right'
-            }
+            position: {
+                align: "right",
+            },
         },
         series: [
             {
@@ -112,9 +114,9 @@ const RoundsChart2 = ({ data }) => {
         ],
     }
     return (
-        <div style={{position:'relative'}}>
-            <div style={{ position: 'relative' , top:'-20px'}}>
-                <div className="d-flex py-auto" style={{float:'right'}}>
+        <div style={{ position: "relative" }}>
+            <div style={{ position: "relative", top: "-20px" }}>
+                <div className="d-flex py-auto" style={{ float: "right" }}>
                     <div className="px-auto">
                         <label className="text-white">Max:&nbsp;&nbsp;</label>
                         <span className="text-secondary">0.034</span>

@@ -1,45 +1,31 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-import parse from 'html-react-parser';
+import React, { useState } from 'react';
 import styled from 'styled-components';
 import { Icon } from '@iconify/react';
 import { device } from '../../../../utilities/device';
-import { EmptyAvatar } from '../../../../utilities/imgImport';
+import AvatarImage from '../../shared/AvatarImage';
+import ShowAvatarModal from '../../shared/ShowAvatarModal';
+import EditAvatarModal from '../../editModals/EditAvatarModal';
 
 const AvatarComponent = ({avatar = {}}) => {
-    const { avatarComponents } = useSelector(state => state);
-    console.log(avatar)
+    const [isShowOpen, setIsShowOpen] = useState(false);
+    const [isEditOpen, setIsEditOpen] = useState(false);
+
     return (
         <>
             <Container className='component'>
                 <div className='image'>
-                    <div className='image_div'>
-                        <img src={EmptyAvatar} alt="back" />
-                        {avatar.avatarSet && avatar.avatarSet.map((item, index) => {
-                            if(item.groupId === 'hairStyle') {
-                                return (
-                                    <Hair key={index} hairColor={avatar.hairColor} style={{top: `${avatarComponents.hairStyles[item.compId].top}%`, left: `${avatarComponents.hairStyles[item.compId].left}%`, width: `${avatarComponents.hairStyles[item.compId].width}%`}}>
-                                        {parse(avatarComponents.hairStyles[item.compId].svg)}
-                                    </Hair>
-                                );
-                            } else {
-                                return (
-                                    <div key={index} style={{top: `${avatarComponents[`${item.groupId}s`][item.compId].top}%`, left: `${avatarComponents[`${item.groupId}s`][item.compId].left}%`, width: `${avatarComponents[`${item.groupId}s`][item.compId].width}%`}}>
-                                        {parse(avatarComponents[`${item.groupId}s`][item.compId].svg)}
-                                    </div>
-                                );
-                            }
-                        })}
-                    </div>
+                    <AvatarImage avatar={avatar} />
                 </div>
                 <div className='name'>
                     <p style={{textTransform: 'uppercase'}}>{avatar.surname}</p>
                 </div>
                 <div className='edit'>
-                    <p><span><Icon icon="akar-icons:eye" /></span></p>
-                    <p><span className='edit'><Icon icon="clarity:note-edit-line" /></span></p>
+                    <p><span><Icon icon="akar-icons:eye" onClick={() => setIsShowOpen(true)} /></span></p>
+                    <p><span className='edit'><Icon icon="clarity:note-edit-line" onClick={() => setIsEditOpen(true)}/></span></p>
                 </div>
             </Container>
+            <ShowAvatarModal isModalOpen={isShowOpen} setIsModalOpen={setIsShowOpen} avatar={avatar} />
+            <EditAvatarModal  isEditModalOpen={isEditOpen} setIsEditModalOpen={setIsEditOpen} avatar={avatar} />
         </>
     );
 };
@@ -108,13 +94,5 @@ const Container = styled.div`
         &>div.image {width: 25%}
         &>div.name {width: 65%}
         &>div.edit {width: 24%}
-    }
-`;
-
-const Hair = styled.div`
-    svg>path {
-        fill: ${props => {
-            return props.hairColor? props.hairColor: '#626161';
-        }}
     }
 `;

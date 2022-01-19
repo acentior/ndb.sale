@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 export const numberWithLength = (num, len) => {
     return `${num}`.padStart(len, "0")
 }
@@ -52,10 +54,8 @@ export const numberSign = (num) => {
 }
 export const numberWithCommas = (x, ch = ",") => {
     const n = Number(x)
-    if (n > 10)
-        return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ch)
-    else
-        return parseFloat(x)
+    if (n > 10) return n.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ch)
+    else return parseFloat(x)
 }
 
 export const formatBytes = (bytes, decimals = 0) => {
@@ -90,76 +90,101 @@ export const numFormatter = (value, fixed) => {
         ? (Math.abs(Number(value)) / 1.0e9).toFixed(fixed) + "B"
         : // Six Zeroes for Millions
         Math.abs(Number(value)) >= 1.0e6
-            ? (Math.abs(Number(value)) / 1.0e6).toFixed(fixed) + "M"
-            : // Three Zeroes for Thousands
-            Math.abs(Number(value)) >= 1.0e3
-                ? (Math.abs(Number(value)) / 1.0e3).toFixed(fixed) + "K"
-                : Math.abs(Number(value))
+        ? (Math.abs(Number(value)) / 1.0e6).toFixed(fixed) + "M"
+        : // Three Zeroes for Thousands
+        Math.abs(Number(value)) >= 1.0e3
+        ? (Math.abs(Number(value)) / 1.0e3).toFixed(fixed) + "K"
+        : Math.abs(Number(value))
 }
-
 
 ////////////////////////////////////////////
 
 export const getDataOnPeriod = (data, period) => {
     const now = new Date()
-    var fData = []  // filtered Data
+    var fData = [] // filtered Data
     var startDate = new Date()
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
-    var zeroLabel=''
-    if (period != 'ALL'){
-
+    const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+    ]
+    var zeroLabel = ""
+    if (period !== "ALL") {
         switch (period) {
-            case '1D':
-                startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()-1)
+            case "1D":
+                startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 1)
                 zeroLabel = "Today"
-                break;
-            case '5D' :
-                startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate()-5)
-                zeroLabel = 'Date '+ startDate.getDate()
-                break;
-            case '1M' :
+                break
+            case "5D":
+                startDate = new Date(now.getFullYear(), now.getMonth(), now.getDate() - 5)
+                zeroLabel = "Date " + startDate.getDate()
+                break
+            case "1M":
                 startDate = new Date(now.getFullYear(), now.getMonth())
                 zeroLabel = monthNames[startDate.getMonth()]
-                break;
-            case '3M' :
-                startDate = new Date(now.getFullYear(), now.getMonth()-2)
+                break
+            case "3M":
+                startDate = new Date(now.getFullYear(), now.getMonth() - 2)
                 zeroLabel = monthNames[startDate.getMonth()]
-                break;
-            case '6M' :
-                startDate = new Date(now.getFullYear(), now.getMonth()-5)
+                break
+            case "6M":
+                startDate = new Date(now.getFullYear(), now.getMonth() - 5)
                 zeroLabel = monthNames[startDate.getMonth()]
-                break;
-            case '1Y' :
-                startDate = new Date(now.getFullYear(), 0,1)
-                zeroLabel = startDate.getFullYear()-1+1 + 'Y'
-                break;
-            case 'default' :
-                break;
-
-            }
-        fData = data.filter(item=>item.placedAt > startDate)
-    }else {
+                break
+            case "1Y":
+                startDate = new Date(now.getFullYear(), 0, 1)
+                zeroLabel = startDate.getFullYear() - 1 + 1 + "Y"
+                break
+            case "default":
+                break
+        }
+        fData = data.filter((item) => item.placedAt > startDate)
+    } else {
         console.log(data)
-        var temp = data.sort((a,b)=> (a.placedAt-b.placedAt))
-        zeroLabel = 'ALL'
+        var temp = data.sort((a, b) => a.placedAt - b.placedAt)
+        zeroLabel = "ALL"
         fData = data
     }
     return {
-        fData, zeroLabel, startDate
+        fData,
+        zeroLabel,
+        startDate,
     }
 }
 
-export const getFormatedDateOnBids = (date,period)=>{
-    const monthNames = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"]
+export const getFormatedDateOnBids = (date, period) => {
+    const monthNames = [
+        "Jan",
+        "Feb",
+        "Mar",
+        "Apr",
+        "May",
+        "Jun",
+        "Jul",
+        "Aug",
+        "Sep",
+        "Oct",
+        "Nov",
+        "Dec",
+    ]
     var dateObj = new Date(date)
     var month = monthNames[dateObj.getMonth()]
     var day = dateObj.getDate()
     var year = dateObj.getFullYear()
     var hour = dateObj.getHours()
     var minute = dateObj.getMinutes()
-    if (period == '1M' || period == '6M' || period =="1Y"){
-        return month + ' '+ day+', '+year
-    }else if(period == '1D' || period =='5D'){
-        return month +' '+day+' '+hour+':'+minute
+    if (period === "1M" || period === "6M" || period === "1Y") {
+        return month + " " + day + ", " + year
+    } else if (period === "1D" || period === "5D") {
+        return month + " " + day + " " + hour + ":" + minute
     }
 }

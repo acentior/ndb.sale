@@ -132,7 +132,7 @@ const Menu = () => {
                                 >
                                     faq
                                 </Link>
-                                {user.role && user.role.includes("ROLE_ADMIN") ? (
+                                {user?.role && user?.role?.includes("ROLE_ADMIN") ? (
                                     <Link
                                         to={ROUTES.admin}
                                         className={`${

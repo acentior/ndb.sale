@@ -8,6 +8,7 @@ import { set_Page } from '../../redux/actions/paginationAction';
 export default function PaginationBar() {
   const dispatch = useDispatch();
   const { page, limit, total } = useSelector(state => state.pagination);
+  
   const setPage = (event, value) => {
     dispatch(set_Page(Number(value)));
   };

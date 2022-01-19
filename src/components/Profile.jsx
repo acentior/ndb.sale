@@ -1,74 +1,78 @@
-import React, { useEffect, useReducer, useState } from "react"
+import Select from "react-select"
+import Loading from "./common/Loading"
+import { Link, navigate } from "gatsby"
+import { useQuery } from "@apollo/client"
 import { useDispatch } from "react-redux"
 import Header from "../components/header"
-import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
-import { Link, navigate } from "gatsby"
-import Select from "react-select"
-import { Tesla, Bronze } from "../utilities/imgImport"
-import ProfileChangePasswordModal from "./profile/change-password-modal"
-import DeleteAccountModal from "./profile/delete-account-modal"
-import TwoFactorModal from "./profile/two-factor-modal"
-import SignOutTab from "./profile/sign-out-tab"
-import ConnectWalletTab from "./profile/connect-wallet-tab"
-import { profile_tabs } from "../utilities/staticData"
-import { GET_USER } from "../apollo/graghqls/querys/Auth"
-import { useQuery } from "@apollo/client"
-import NotificationSetting from "./profile/notification-setting-switch"
-import NotificationRecent from "./profile/notification-recent-switch"
-import Loading from "./common/Loading"
 import { ROUTES } from "../utilities/routes"
+import SignOutTab from "./profile/sign-out-tab"
+import { profile_tabs } from "../utilities/staticData"
+import { Tesla, Bronze } from "../utilities/imgImport"
+import TwoFactorModal from "./profile/two-factor-modal"
+import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
+import { GET_USER } from "../apollo/graghqls/querys/Auth"
+import ConnectWalletTab from "./profile/connect-wallet-tab"
+import React, { useEffect, useState } from "react"
+import DeleteAccountModal from "./profile/delete-account-modal"
 import { setCurrentAuthInfo } from "../redux/actions/authAction"
+import NotificationRecent from "./profile/notification-recent-switch"
+import NotificationSetting from "./profile/notification-setting-switch"
+import ProfileChangePasswordModal from "./profile/change-password-modal"
 
 const Profile = () => {
-    const dispatch = useDispatch()
-    // Queries and Mutations
-    const { data: user_data, refetch } = useQuery(GET_USER)
-    const user = user_data?.getUser
-
+    // Containers
+    const { data: userData, refetch } = useQuery(GET_USER, {
+        onCompleted: () => {
+            if (userData.getUser.avatar) {
+                const { prefix, name } = userData.getUser.avatar
+                if (prefix && name) {
+                    setDisplayName(prefix + "." + name)
+                    return setLoadingPage(false)
+                } else return navigate(ROUTES.selectFigure)
+            }
+            return navigate(ROUTES.selectFigure)
+        },
+        fetchPolicy: "network-only",
+    })
+    const user = userData?.getUser
     const twoStep = user?.security
         ? user.security.filter((f) => f.tfaEnabled).map((m) => m.authType)
         : []
 
-    useEffect(() => {
-        dispatch(setCurrentAuthInfo(user))
-    }, [dispatch, user])
-    // Containers
+    const dispatch = useDispatch()
+    const [tabIndex, setTabIndex] = useState(0)
+    const [displayName, setDisplayName] = useState("")
     const [loadingPage, setLoadingPage] = useState(true)
-    const displayName = user?.avatar ? user?.avatar?.prefix + "." + user?.avatar?.name : "none"
-    const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
-    const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] = useState(false)
     const [is2FAModalOpen, setIs2FAModalOpen] = useState(false)
-    const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
-        pwd: { value: "", error: "" },
-        pwd_confirm: { value: "", error: "" },
-        pwdModal: false,
-        tabIndex: 0,
-        profile_tab: profile_tabs[0],
-    })
+    const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
+    const [currentProfileTab, setCurrentProfileTab] = useState(profile_tabs[0])
+    const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] = useState(false)
 
-    const { tabIndex, profile_tab } = state
     // Methods
     const handleProfileTab = (value) => {
-        setState({ profile_tab: value })
-        setState({ tabIndex: value.index })
+        setCurrentProfileTab(value)
+        setTabIndex(value.index)
     }
 
     const getSecurityStatus = (key) => user?.userSecurity?.find((f) => f?.key === key)?.value
-    useEffect(() => {
-        if (user_data) {
-            if (user_data?.getUser) {
-                if (user_data.getUser?.avatar?.prefix && user_data.getUser?.avatar?.name) {
-                    return setLoadingPage(false)
-                } else {
-                    return navigate(ROUTES.selectFigure)
-                }
-            }
-        }
-    }, [user_data])
+
+    useEffect(() => dispatch(setCurrentAuthInfo(user)), [dispatch, user])
     if (loadingPage) return <Loading />
     else
         return (
             <main className="profile-page">
+                <TwoFactorModal
+                    is2FAModalOpen={is2FAModalOpen}
+                    setIs2FAModalOpen={setIs2FAModalOpen}
+                    email={user?.email}
+                    phone={user?.phone}
+                    twoStep={twoStep}
+                    onResult={(res) => {
+                        if (res) {
+                            refetch()
+                        }
+                    }}
+                />
                 <Header />
                 <section className="container position-relative h-100">
                     <div className="row mt-lg-2">
@@ -89,10 +93,7 @@ const Profile = () => {
                                     ></div>
                                 </div>
                             </div>
-                            <Tabs
-                                className="profile-tab"
-                                onSelect={(index) => setState({ tabIndex: index })}
-                            >
+                            <Tabs className="profile-tab" onSelect={(index) => setTabIndex(index)}>
                                 <TabList>
                                     {profile_tabs.map((item, idx) => (
                                         <Tab key={idx}>{item.label}</Tab>
@@ -100,7 +101,7 @@ const Profile = () => {
                                 </TabList>
                                 <Select
                                     options={profile_tabs}
-                                    value={profile_tab}
+                                    value={currentProfileTab}
                                     onChange={(v) => handleProfileTab(v)}
                                     className="profile-tab__select mb-3"
                                 />
@@ -357,14 +358,6 @@ const Profile = () => {
                 <DeleteAccountModal
                     isDeleteAccountModalOpen={isDeleteAccountModalOpen}
                     setIsDeleteAccountModalOpen={setIsDeleteAccountModalOpen}
-                />
-                <TwoFactorModal
-                    is2FAModalOpen={is2FAModalOpen}
-                    setIs2FAModalOpen={setIs2FAModalOpen}
-                    email={user?.email}
-                    phone={user?.phone}
-                    twoStep={twoStep}
-                    updateUser={() => refetch()}
                 />
             </main>
         )
