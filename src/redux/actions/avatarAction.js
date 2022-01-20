@@ -81,6 +81,7 @@ export const fetch_Avatars = () => async dispatch => {
             query: Query.GET_AVATARS
         });
         const dataList = _.mapKeys(data.getAvatars, 'id');
+        // console.log(data.getAvatars)
         dispatch({
             type: FETCH_DATA,
             payload: dataList

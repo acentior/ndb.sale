@@ -7,7 +7,7 @@ const LayoutWithMenu = ({children}) => {
         <>
             <Header />
             <section className="home">
-                <div className="container">
+                <div className="container custom_scrollbar">
                     <div className="row">
                         <div className="col-sm-2">
                             <LeftBar />                                                      

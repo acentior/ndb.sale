@@ -5,7 +5,7 @@ import { useQuery } from "@apollo/client"
 import { Link } from "gatsby"
 import { isBrowser } from "./../../utilities/auth"
 // Icons
-import { Bell, Logo } from "../../utilities/imgImport"
+import { Bell, Logo, NotificationBell } from "../../utilities/imgImport"
 import { User } from "../../utilities/user-data"
 
 import { useAuth } from "../../hooks/useAuth"
@@ -15,32 +15,27 @@ import CurrencyChoice from "./currency-choice"
 import { fetch_Avatar_Components } from "./../../redux/actions/avatarAction"
 import { GET_USER } from "../../apollo/graghqls/querys/Auth"
 import { setCurrentAuthInfo } from "../../redux/actions/authAction"
+import { GET_ALL_UNREAD_NOTIFICATIONS } from "../../apollo/graghqls/querys/Notification"
 
 const Menu = () => {
-    const dispatch = useDispatch()
-    const { user, isAuthenticated } = useSelector((state) => state.auth)
-    const { avatarComponents } = useSelector((state) => state)
-
+    // Webservice
     const { data: user_data } = useQuery(GET_USER)
-    const userInfo = user_data?.getUser
-    // Fetch avatarComponents Data from backend
-    useEffect(() => {
-        if (!avatarComponents.loaded) {
-            dispatch(fetch_Avatar_Components())
-        }
-        if (!isAuthenticated && userInfo) {
-            dispatch(setCurrentAuthInfo(userInfo))
-        }
-    }, [dispatch, userInfo, avatarComponents.loaded, isAuthenticated])
+    const { data: allUnReadNotifications } = useQuery(GET_ALL_UNREAD_NOTIFICATIONS, {
+        fetchPolicy: "network-only",
+        onCompleted: (response) => {
+            setNewNotification(response.getAllUnReadNotifications.length !== 0)
+        },
+    })
 
+    // Containers
     const auth = useAuth()
-
-    // State
-    const [isDressUPModalOpen, setIsDressUPModalOpen] = useState(false)
-
+    const dispatch = useDispatch()
+    const userInfo = user_data?.getUser
     const [active, setActive] = useState(false)
-
-    // Navigation Links
+    const { avatarComponents } = useSelector((state) => state)
+    const [newNotification, setNewNotification] = useState(false)
+    const [isDressUPModalOpen, setIsDressUPModalOpen] = useState(false)
+    const { user, isAuthenticated } = useSelector((state) => state.auth)
     const navigationLinks = [
         {
             label: "Home",
@@ -68,6 +63,16 @@ const Menu = () => {
         },
     ]
 
+    // Methods
+    useEffect(() => {
+        if (!avatarComponents.loaded) {
+            dispatch(fetch_Avatar_Components())
+        }
+        if (!isAuthenticated && userInfo) {
+            dispatch(setCurrentAuthInfo(userInfo))
+        }
+    }, [dispatch, userInfo, avatarComponents.loaded, isAuthenticated])
+
     useEffect(() => {
         const handleEscKeyPress = (event) => {
             if (event.key === "Escape" && active) {
@@ -78,6 +83,7 @@ const Menu = () => {
         return () => document.removeEventListener("keydown", handleEscKeyPress)
     })
 
+    // Render
     return (
         <nav className={active ? "menu menu--active" : "menu"}>
             <div className="px-4 d-flex align-items-center justify-content-between">
@@ -160,7 +166,10 @@ const Menu = () => {
                         ) : (
                             <ul className="d-flex align-items-center">
                                 <li className="scale-75">
-                                    <img src={Bell} alt="Bell Icon" />
+                                    <img
+                                        src={newNotification ? NotificationBell : Bell}
+                                        alt="Bell Icon"
+                                    />
                                 </li>
                                 <li className="px-sm-3 px-0 scale-75">
                                     <Link to={ROUTES.profile}>

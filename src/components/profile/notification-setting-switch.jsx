@@ -6,78 +6,104 @@ import { USER_NOTIFICATION_SETTING } from "../../apollo/graghqls/mutations/Notif
 import { GET_USER } from "../../apollo/graghqls/querys/Auth"
 
 import { COLOR_LOAD, COLOR_OFF, COLOR_ON } from "../../utilities/staticData"
+import CustomSpinner from "../common/custom-spinner"
 
 export default function NotificationSetting() {
+    //Webservice
     const { data: user_data, refetch } = useQuery(GET_USER)
-    const setting = user_data?.getUser.notifySetting
-
-    const { data: ntf_type_result } = useQuery(GET_NOTICATION_TYPES)
-
+    const { data: notificationTypes } = useQuery(GET_NOTICATION_TYPES, {
+        fetchPolicy: "network-only",
+        onCompleted: () => setLoadingSection(false),
+    })
     const [changeNotifySetting] = useMutation(USER_NOTIFICATION_SETTING, {
         onCompleted: (data) => {
-            resetLoading(data.changeNotifySetting)
             refetch()
         },
-        onError: (error) => {},
     })
 
+    // Containers
+    const [loadingSection, setLoadingSection] = useState(true)
+    const setting = user_data?.getUser.notifySetting
     const [tempSetting, setTempSetting] = useState([])
+    const notificationTypeList = notificationTypes?.getNotificationTypes
 
-    const ntfTypeList = ntf_type_result?.getNotificationTypes2
-
-    useEffect(() => {
-        setTempSetting(
-            ntfTypeList
-                ? ntfTypeList.map((n) => {
-                      return {
-                          type: n.nType,
-                          status: (setting & (1 << n.nType)) > 0, // calc from int
-                          loading: false,
-                      }
-                  })
-                : []
-        )
-    }, [setting, ntfTypeList])
-
+    // Methods
     const setChecked = (i) => {
         const cList = tempSetting.slice()
         cList[i].status = !cList[i].status
         cList[i].loading = true
         setTempSetting(cList)
+
         changeNotifySetting({
+            onCompleted: () => {
+                cList[i].status = !cList[i].status
+                cList[i].loading = false
+                setTempSetting(cList)
+            },
             variables: {
-                nType: cList[i].type,
+                nType: Number(cList[i].index),
                 status: cList[i].status,
             },
         })
     }
-
-    const resetLoading = (nType) => {
-        const cList = tempSetting.slice()
-        const idx = cList.findIndex((c) => c.type === nType)
-        cList[idx].loading = false
-        setTempSetting(cList)
+    const createBinaryString = (nMask) => {
+        for (
+            var nFlag = 0, nShifted = nMask, sMask = "";
+            nFlag < 32;
+            nFlag++, sMask += String(nShifted >>> 31), nShifted <<= 1
+        );
+        sMask = sMask.replace(/\B(?=(.{8})+(?!.))/g, " ")
+        return sMask
     }
+    useEffect(() => {
+        setTempSetting(
+            notificationTypeList
+                ? notificationTypeList.map((n) => {
+                      const settingBinaryString = createBinaryString(setting)
+                          .slice(35 - notificationTypeList?.length, 35)
+                          .split("")
+                          .reverse()
+                          .join("")
+                      return {
+                          index: n.index,
+                          type: n.type,
+                          status: Number(settingBinaryString[n.index]) !== 0,
+                          loading: false,
+                      }
+                  })
+                : []
+        )
+    }, [setting, notificationTypeList])
 
-    return (
-        <>
-            {ntfTypeList &&
-                ntfTypeList.map((ntf_type, i) => (
-                    <div className="notification-item" key={i}>
-                        <p>{ntf_type.tName}</p>
-                        <Switch
-                            onColor={tempSetting[i]?.loading ? COLOR_LOAD : COLOR_ON}
-                            offColor={tempSetting[i]?.loading ? COLOR_LOAD : COLOR_OFF}
-                            height={3}
-                            width={35}
-                            handleDiameter={12}
-                            onHandleColor={tempSetting[i]?.loading ? COLOR_LOAD : COLOR_ON}
-                            offHandleColor={tempSetting[i]?.loading ? COLOR_LOAD : COLOR_OFF}
-                            onChange={() => setChecked(i)}
-                            checked={tempSetting[i]?.status ? true : false}
-                        />
-                    </div>
-                ))}
-        </>
-    )
+    // Render
+    if (loadingSection)
+        return (
+            <div className="d-flex justify-content-center my-5">
+                <CustomSpinner />
+            </div>
+        )
+    else
+        return (
+            <>
+                {notificationTypeList &&
+                    notificationTypeList.map(({ type }, index) => (
+                        <div className="notification-item" key={index}>
+                            <p>{type}</p>
+                            <Switch
+                                onColor={tempSetting[index]?.loading ? COLOR_LOAD : COLOR_ON}
+                                offColor={tempSetting[index]?.loading ? COLOR_LOAD : COLOR_OFF}
+                                height={3}
+                                width={35}
+                                handleDiameter={12}
+                                onHandleColor={tempSetting[index]?.loading ? COLOR_LOAD : COLOR_ON}
+                                offHandleColor={
+                                    tempSetting[index]?.loading ? COLOR_LOAD : COLOR_OFF
+                                }
+                                onChange={() => setChecked(index)}
+                                checked={tempSetting[index]?.status ? true : false}
+                            />
+                        </div>
+                    ))}
+            </>
+        )
 }

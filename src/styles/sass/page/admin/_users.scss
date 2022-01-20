@@ -5,11 +5,14 @@ main.admin-users-page {
         }
     }
     .container {
+        max-height: 80vh;
+        overflow: auto;
         @include mq("laptop-wide", max) {
             max-width: 95%;
         }
         @include mq("phone", max) {
             max-width: 100%;
+            max-height: unset;
         }
         
         .row {
@@ -24,9 +27,6 @@ main.admin-users-page {
                     color: #ffffff;                
                 }
                 div.tabs_container {
-                    overflow-y: auto;
-                    max-height: 80vh;
-                    overflow-x: hidden;
                     @include mq('phone', max) {
                         max-height: unset;
                     }

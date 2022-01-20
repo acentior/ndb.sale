@@ -3,7 +3,7 @@ import { gql } from '@apollo/client';
 export const CREATE_AUCTION = gql`
     mutation CreateAuction(
         $round: Int!
-        $startedAt: String!
+        $startedAt: Float!
         $duration: Float!
         $totalToken: Float!
         $minPrice: Float!
@@ -15,7 +15,7 @@ export const CREATE_AUCTION = gql`
             startedAt: $startedAt
             duration: $duration
             totalToken: $totalToken
-                minPrice: $minPrice
+            minPrice: $minPrice
             avatar: $avatar
             token: $token
         ) {

@@ -1,4 +1,9 @@
 .verify-page {
+    .btn-primary:disabled {
+        background-color: hsl(0, 0%, 12%) !important;
+        border: 1px solid gray !important;
+        color: grey;
+    }
     section {
         @extend %set-height2;
         overflow: auto;
@@ -45,11 +50,85 @@
             white-space: pre;
         }
     }
+    .verifiers {
+        .input-name {
+            width: 250px;
+        }
+        .us-citizen-radio_buttons {
+            margin-top: 5px;
+            display: flex;
+            justify-content: center;
+            /* Create a custom radio button */
+            .checkmark {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 24px;
+                width: 24px;
+                background-color: #1e1e1e;
+                border-radius: 50%;
+                border: 2px #626161 solid;
+            }
+
+            /* When the radio button is checked, add a blue background */
+            .container input:checked ~ .checkmark {
+                background-color: #23c865;
+                border: none;
+            }
+
+            /* Create the indicator (the dot/circle - hidden when not checked) */
+            .checkmark:after {
+                content: "";
+                position: absolute;
+                display: none;
+            }
+
+            /* Show the indicator (dot/circle) when checked */
+            .container input:checked ~ .checkmark:after {
+                display: block;
+            }
+
+            /* Style the indicator (dot/circle) */
+            .container .checkmark:after {
+                top: 6px;
+                left: 6px;
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background: #1e1e1e;
+            }
+            /* The container */
+            .container {
+                width: 140px;
+                display: block;
+                position: relative;
+                padding-left: 35px;
+                margin-bottom: 12px;
+                cursor: pointer;
+                font-size: 14px;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+
+            /* Hide the browser's default radio button */
+            .container input {
+                position: absolute;
+                opacity: 0;
+                cursor: pointer;
+            }
+        }
+    }
     .left-circle::before {
-        content: "Identity document";
+        content: "Company Identity";
     }
     .right-circle::before {
-        content: "Selfie";
+        content: "Shareholder";
+    }
+    .date-picker {
+        border: 0;
+        font-size: 13px;
     }
     h5 {
         font-weight: 500;

@@ -5,11 +5,14 @@ main.admin-airdrop-page {
         }
     }
     .container {
+        max-height: 80vh;
+        overflow: auto;
         @include mq("laptop-wide", max) {
             max-width: 95%;
         }
         @include mq("phone", max) {
             max-width: 100%;
+            max-height: unset;
         }
         .row {
             .col-sm-10 {

@@ -4,18 +4,15 @@ import { GET_NOTIFICATIONS } from "../../apollo/graghqls/querys/Notification"
 import { SET_NOTIFICATION_READ_FLAG } from "../../apollo/graghqls/mutations/Notification"
 import CustomSpinner from "../common/custom-spinner"
 
-const NOTIFICATION_PAGE_LIMIT = 8
-
 export default function NotificationRecent() {
+    const [loadingSection, setLoadingSection] = useState(true)
     const [last, setLast] = useState(null)
 
     const [NTList, setNTList] = useState([])
 
     const { data: ntf_list, loading } = useQuery(GET_NOTIFICATIONS, {
-        variables: {
-            stamp: last?.timeStamp,
-            limit: NOTIFICATION_PAGE_LIMIT,
-        },
+        onCompleted: () => setLoadingSection(false),
+        fetchPolicy: "network-only",
     })
 
     const tempList = ntf_list?.getNotifications
@@ -38,7 +35,6 @@ export default function NotificationRecent() {
             ids[index] = { ...ids[index], pending: false, read: true }
             setNTList(ids)
         },
-        onError: (error) => {},
     })
 
     const setRead = (item) => {
@@ -47,46 +43,64 @@ export default function NotificationRecent() {
         let index = ids.findIndex((el) => el.timeStamp === item.timeStamp)
         ids[index] = { ...ids[index], pending: true }
         setNTList(ids)
+        console.log(item)
         setNotificationReadFlag({
             variables: {
-                stamp: item.timeStamp,
+                id: item.id,
             },
         })
     }
-
-    return (
-        <>
-            <div className="recent-notification-wrapper">
-                {NTList &&
-                    NTList.map((item, idx) => (
-                        <div
-                            className="recent-item"
-                            key={idx}
-                            tabIndex={0}
-                            role="button"
-                            onClick={() => setRead(item)}
-                            onKeyDown={() => setRead(item)}
-                        >
+    if (loadingSection)
+        return (
+            <div className="d-flex justify-content-center mt-5">
+                <CustomSpinner />
+            </div>
+        )
+    else
+        return (
+            <>
+                <div className="recent-notification-wrapper pe-3">
+                    {NTList.length ? (
+                        NTList.map((item, idx) => (
                             <div
-                                className={`status ${
-                                    item?.pending ? "pending" : item?.read ? "deactive" : "active"
-                                }`}
-                            ></div>
-                            <p>{item?.msg}</p>
+                                className="recent-item"
+                                key={idx}
+                                tabIndex={0}
+                                role="button"
+                                onClick={() => setRead(item)}
+                                onKeyDown={() => setRead(item)}
+                            >
+                                <div
+                                    className={`status ${
+                                        item?.pending
+                                            ? "pending"
+                                            : item?.read
+                                            ? "deactive"
+                                            : "active"
+                                    }`}
+                                ></div>
+                                <p>{item?.msg}</p>
+                            </div>
+                        ))
+                    ) : (
+                        <div className="text-light fw-500 text-center text-uppercase py-3">
+                            no notification yet
                         </div>
-                    ))}
-            </div>
-            <div className="w-100 d-flex flex-column align-items-center justify-content-center py-2">
-                <button
-                    className="btn-primary d-flex align-items-center justify-content-center py-2"
-                    onClick={(e) => loadMore()}
-                >
-                    <div className={`${loading ? "opacity-1" : "opacity-0"}`}>
-                        <CustomSpinner />
+                    )}
+                </div>
+                {/* {NTList.length && (
+                    <div className="w-100 d-flex flex-column align-items-center justify-content-center py-2">
+                        <button
+                            className="btn-primary d-flex align-items-center justify-content-center py-2"
+                            onClick={(e) => loadMore()}
+                        >
+                            <div className={`${loading ? "opacity-1" : "opacity-0"}`}>
+                                <CustomSpinner />
+                            </div>
+                            <div className={`${loading ? "ms-3" : "pe-4"}`}>Load More</div>
+                        </button>
                     </div>
-                    <div className={`${loading ? "ms-3" : "pe-4"}`}>Load More</div>
-                </button>
-            </div>
-        </>
-    )
+                )} */}
+            </>
+        )
 }

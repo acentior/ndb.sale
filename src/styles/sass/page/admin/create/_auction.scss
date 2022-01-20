@@ -185,6 +185,7 @@ main.create-auction-page {
                         display: block;
                     }
                 }
+                
                 @include mq('phone', min) {
                     div.for_desktop {
                         display: block;

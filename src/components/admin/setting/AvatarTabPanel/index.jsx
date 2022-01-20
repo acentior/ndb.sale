@@ -16,10 +16,10 @@ const AvatarTabPanel = () => {
     
     useEffect(() => {
         (async function() {
-            dispatch(set_Page(1));
             setLoading(true);
             await dispatch(fetch_Avatars());
             setLoading(false);
+            dispatch(set_Page(1));
         })();
     }, [dispatch]);
 

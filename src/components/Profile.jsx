@@ -18,6 +18,7 @@ import { setCurrentAuthInfo } from "../redux/actions/authAction"
 import NotificationRecent from "./profile/notification-recent-switch"
 import NotificationSetting from "./profile/notification-setting-switch"
 import ProfileChangePasswordModal from "./profile/change-password-modal"
+import TierDetailsTab from "./profile/tier-details-tab"
 
 const Profile = () => {
     // Containers
@@ -199,9 +200,19 @@ const Profile = () => {
                                                                 <p className="security-name">
                                                                     KYC/KYB Verificatoin
                                                                 </p>
-                                                                <p className="txt-green security-link">
-                                                                    Verified
-                                                                </p>
+                                                                {user?.verify.kybVerified &&
+                                                                user?.verify.kycVerified ? (
+                                                                    <p className="txt-green">
+                                                                        verified
+                                                                    </p>
+                                                                ) : (
+                                                                    <Link
+                                                                        to={ROUTES.verifyCompany}
+                                                                        className="security-link"
+                                                                    >
+                                                                        setup
+                                                                    </Link>
+                                                                )}
                                                             </div>
                                                         </div>
 
@@ -246,60 +257,7 @@ const Profile = () => {
                                             </div>
                                         </TabPanel>
                                         <TabPanel>
-                                            <div className="tier-details">
-                                                <div className="row w-100 mx-auto">
-                                                    <div className="col-6 br">Tier</div>
-                                                    <div className="col-6 text-end text-sm-start d-flex align-items-center justify-content-end justify-content-sm-start">
-                                                        <img
-                                                            src={Bronze}
-                                                            alt="brozne"
-                                                            className="me-3"
-                                                        />
-                                                        Bronze
-                                                    </div>
-                                                </div>
-                                                <div className="row w-100 mx-auto">
-                                                    <div className="col-6 br">
-                                                        Point to next tier
-                                                    </div>
-                                                    <div className="col-6 text-end text-sm-start">
-                                                        500
-                                                    </div>
-                                                </div>
-                                                <div className="row w-100 mx-auto pt-5">
-                                                    <h4>
-                                                        <span className="txt-green">G</span>
-                                                        ain Points
-                                                    </h4>
-                                                    <div className="col-6 d-flex align-items-center br">
-                                                        <div className="status me-2 active"></div>
-                                                        KYC/AML completion
-                                                    </div>
-                                                    <div className="col-6 text-end text-sm-start">
-                                                        500
-                                                    </div>
-                                                </div>
-
-                                                <div className="row mx-0">
-                                                    <div className="col-6 d-flex align-items-center br">
-                                                        <div className="status me-2 deactive"></div>
-                                                        Wallet balance
-                                                    </div>
-                                                    <div className="col-6 text-end text-sm-start">
-                                                        500
-                                                    </div>
-                                                </div>
-
-                                                <div className="row mx-0">
-                                                    <div className="col-6 d-flex align-items-center br">
-                                                        <div className="status me-2 active"></div>
-                                                        Auction participation
-                                                    </div>
-                                                    <div className="col-6 text-end text-sm-start">
-                                                        50
-                                                    </div>
-                                                </div>
-                                            </div>
+                                            <TierDetailsTab />
                                         </TabPanel>
                                     </Tabs>
                                     <div className="verify-delete mt-3 pb-5">

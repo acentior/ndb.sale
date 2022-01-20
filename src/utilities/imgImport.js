@@ -58,6 +58,7 @@ import photoIcon from "../images/photo-icon.svg"
 import selfieImg from "../images/selfie-img.svg"
 
 import bell from "../images/icons/bell.svg"
+import notificationBell from "../images/icons/notification-bell.svg"
 import downArrow from "../images/icons/down-arrow.svg"
 
 //dressup
@@ -170,6 +171,7 @@ import successImage from "./../images/success.svg";
 
 export const Logo = logo
 export const Bell = bell
+export const NotificationBell = notificationBell
 export const DownArrow = downArrow
 export const Hero1 = hero1
 export const Hero2 = hero2

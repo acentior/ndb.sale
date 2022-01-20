@@ -1,30 +1,38 @@
 import { gql } from "@apollo/client"
 
 export const GET_NOTICATION_TYPES = gql`
-query {
-    getNotificationTypes2 {
-        nType
-        tName
-        broadcast
+    {
+        getNotificationTypes {
+            type
+            index
+        }
     }
-}
 `
 
 export const GET_NOTIFICATIONS = gql`
-query getNotifications (
-    $stamp: Float
-    $limit: Int!
-) {
-    getNotifications(
-        stamp: $stamp
-        limit: $limit
-    ) {
-        userId
-        timeStamp
-        nType
-        read
-        title
-        msg
+    {
+        getNotifications {
+            id
+            userId
+            timeStamp
+            nType
+            read
+            title
+            msg
+        }
     }
-}
+`
+
+export const GET_ALL_UNREAD_NOTIFICATIONS = gql`
+    {
+        getAllUnReadNotifications {
+            id
+            userId
+            timeStamp
+            nType
+            read
+            title
+            msg
+        }
+    }
 `

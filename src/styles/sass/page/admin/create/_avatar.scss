@@ -6,7 +6,7 @@ main.create-avatar-page {
         @include mq("phone", max) {
             max-width: 100%;
         }
-    }       
+    }
     section.home {
         div.container {
             display: flex;

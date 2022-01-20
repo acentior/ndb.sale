@@ -10,7 +10,7 @@ export const create_Auction = createData => async dispatch => {
         });
         showSuccessAlarm('Auction created successfully');
     } catch(err) {
-        console.log(err.message);
+        console.log(err);
         showFailAlarm('Action failed', 'Ops! Something went wrong!');
     }
 };

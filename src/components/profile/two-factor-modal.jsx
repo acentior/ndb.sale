@@ -80,6 +80,10 @@ export default function TwoFactorModal({
                 })
             }
         },
+        onError: (error) => {
+            console.log("Error", error)
+            onResult(false)
+        },
     })
 
     const sendRequest2FA = (i, mobile = "") => {

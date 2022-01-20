@@ -1,0 +1,293 @@
+.verify-company {
+    &_container {
+        padding: 50px 10px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        height: calc(100vh - 100px);
+    }
+    .btn-primary:disabled {
+        background-color: hsl(0, 0%, 12%) !important;
+        border: 1px solid gray !important;
+        color: grey;
+    }
+    section {
+        @extend %set-height2;
+        overflow: auto;
+        .trees-img {
+            display: block;
+        }
+    }
+    .step {
+        &-bar {
+            display: flex;
+            position: relative;
+            justify-content: space-between;
+            align-items: center;
+            max-width: 500px;
+            width: 65%;
+            height: 3px;
+            margin: 0 auto;
+            margin-bottom: 40px;
+            background-color: white;
+        }
+        &-progress {
+            position: absolute;
+            height: 100%;
+            width: 0;
+            background-color: $green;
+        }
+    }
+    .left-circle,
+    .right-circle {
+        width: 12px;
+        height: 12px;
+        border-radius: 50%;
+        position: relative;
+        &::before {
+            position: absolute;
+            top: 20px;
+            left: 50%;
+            font-family: "Montserrat";
+            font-size: 16px;
+            line-height: 30px;
+            color: #929292;
+            transform: translateX(-50%);
+            text-align: center;
+            white-space: pre;
+        }
+    }
+    .verifiers {
+        .input-name {
+            width: 365px;
+        }
+        .us-citizen-radio_title {
+            margin-bottom: 5px;
+        }
+        .us-citizen-radio_buttons {
+            display: flex;
+            justify-content: center;
+            /* Create a custom radio button */
+            .checkmark {
+                position: absolute;
+                top: 0;
+                left: 0;
+                height: 23.5px;
+                width: 23.5px;
+                background-color: #1e1e1e;
+                border-radius: 50%;
+                border: 2px #626161 solid;
+            }
+            /* When the radio button is checked, add a blue background */
+            .container input:checked ~ .checkmark {
+                background-color: #23c865;
+                border: none;
+            }
+            /* Create the indicator (the dot/circle - hidden when not checked) */
+            .checkmark:after {
+                content: "";
+                position: absolute;
+                display: none;
+            }
+            /* Show the indicator (dot/circle) when checked */
+            .container input:checked ~ .checkmark:after {
+                display: block;
+            }
+            /* Style the indicator (dot/circle) */
+            .container .checkmark:after {
+                top: 6px;
+                left: 6px;
+                width: 12px;
+                height: 12px;
+                border-radius: 50%;
+                background: #1e1e1e;
+            }
+            /* The container */
+            .container {
+                width: 140px;
+                display: block;
+                position: relative;
+                padding-left: 35px;
+                margin-bottom: 12px;
+                cursor: pointer;
+                font-size: 14px;
+                -webkit-user-select: none;
+                -moz-user-select: none;
+                -ms-user-select: none;
+                user-select: none;
+            }
+            /* Hide the browser's default radio button */
+            .container input {
+                position: absolute;
+                opacity: 0;
+                cursor: pointer;
+            }
+        }
+    }
+    .left-circle::before {
+        content: "Company Identity";
+    }
+    .right-circle::before {
+        content: "Shareholder";
+    }
+    .date-picker {
+        border: 0;
+        font-size: 13px;
+    }
+    h5 {
+        font-weight: 500;
+        font-size: 20px;
+        line-height: 30px;
+        text-transform: uppercase;
+        margin-bottom: 24px;
+        @include mq("phone", max) {
+            font-size: 18px;
+        }
+    }
+    .css-1s2u09g-control,
+    .css-1pahdxg-control {
+        border-radius: unset;
+        .css-319lph-ValueContainer {
+            justify-content: start;
+            padding-top: 0 !important;
+            padding-bottom: 0 !important;
+            .css-qc6sy-singleValue {
+                font-family: "Montserrat";
+                font-size: 13px;
+            }
+            @include mq("phone", max) {
+                padding: 8px;
+            }
+        }
+        .css-1hb7zxy-IndicatorsContainer {
+            .css-1okebmr-indicatorSeparator {
+                display: none;
+            }
+        }
+        .css-6j8wv5-Input {
+            input {
+                color: transparent !important;
+            }
+        }
+    }
+    .verify {
+        &-step0 {
+            max-width: 646px;
+            margin: 0 auto;
+            .pre-wrap {
+                margin-top: 60px;
+                font-size: 18px;
+                line-height: 30px;
+                @include mq("phone", max) {
+                    margin-top: 40px;
+                    font-size: 14px;
+                }
+            }
+            .form {
+                &-group {
+                    margin-top: 72px;
+                    @include mq("phone", max) {
+                        margin-top: 24px;
+                    }
+                }
+                &-check {
+                    display: flex;
+                    &-input {
+                        flex-shrink: 0;
+                        width: 20px;
+                        height: 20px;
+                        background-color: $black;
+                        border: 1px solid white;
+                        border-radius: unset;
+                    }
+                    &-label {
+                        font-weight: 400;
+                        font-size: 18px;
+                        line-height: 30px;
+                        @include mq("phone", max) {
+                            font-size: 13px;
+                        }
+                    }
+                }
+            }
+        }
+        &-step1 {
+            width: 365px;
+            margin: 0 auto;
+        }
+        &-step2 {
+            height: 100%;
+            margin: auto;
+            .add-another {
+                height: 36px;
+                font-size: 12px;
+                margin: 12px 8px;
+                width: 365px;
+            }
+        }
+        &-step3 {
+            max-width: 800px;
+            margin: auto;
+            &_title {
+                font-weight: 700;
+                font-size: 25px;
+            }
+            .link {
+                color: #23c865;
+            }
+        }
+    }
+    .btn-link {
+        @include mq("phone", max) {
+            display: none;
+        }
+    }
+    .btn-group {
+        display: flex;
+        justify-content: center;
+        margin: 50px 0;
+        .btn-primary,
+        .btn-green,
+        .btn-ready {
+            padding: 14px;
+            font-size: 20px;
+            line-height: 24px;
+            width: 196px;
+            @include mq("phone", max) {
+                padding: 10px;
+                font-size: 15px;
+                font-weight: bold;
+                line-height: 19px;
+                width: 150px;
+            }
+        }
+        .btn-complete {
+            width: 400px;
+        }
+        .btn-ready,
+        .btn-upload,
+        .btn-complete,
+        .btn-take {
+            background-color: $green;
+            text-transform: uppercase;
+            border: unset;
+            font-weight: bold;
+        }
+        .btn-green,
+        .btn-take {
+            display: none;
+        }
+        @include mq("phone", max) {
+            .btn-take {
+                display: block;
+            }
+            .btn-green {
+                display: inline-block;
+            }
+            .btn-next,
+            .btn-ready {
+                display: none;
+            }
+        }
+    }
+}

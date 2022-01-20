@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import { Link } from "gatsby"
 import { Icon } from '@iconify/react';
 import validator from "validator";
+import NumberFormat from "react-number-format";
 
 import Seo from "../../../components/seo"
 import Stepper from "../../../components/admin/Stepper";
@@ -17,6 +18,7 @@ import { MobileDateTimePicker   } from '@mui/lab';
 import Select from 'react-select';
 import { fetch_Avatars } from './../../../redux/actions/avatarAction';
 import AvatarImage from './../../../components/admin/shared/AvatarImage';
+import { create_Auction } from "../../../redux/actions/auctionAction";
 
 const IndexPage = () => {
     const dispatch = useDispatch();
@@ -31,12 +33,13 @@ const IndexPage = () => {
 
     const [currentStep, setCurrentStep] = useState(1);
     const [showError, setShowError] = useState(false);
+    const [pending, setPending] = useState(false);
     const totalTokenAmount = 100000000;
     const prevReservedPrice = 5000;
 
     //------- Round Data and Validation
     // Round Data
-    const initialRoundData = { roundId: '', roundNumber: '', startTime: Date.now(), endTime: Date.now() };
+    const initialRoundData = { roundNumber: '', startTime: Date.now(), endTime: Date.now() };
     const [roundData, setRoundData] = useState(initialRoundData);
     const duration = useMemo(() => {
         if(!roundData.startTime || !roundData.endTime) return '';
@@ -47,9 +50,7 @@ const IndexPage = () => {
     // Round Data Validation
     let roundDataError = {};
     roundDataError = useMemo(() => {
-        if(!roundData.roundId) return {roundId: 'Round ID is required'};
         if(!roundData.roundNumber) return {roundNumber: 'Round Number is required'};
-        if(!validator.isNumeric(roundData.roundNumber)) return {roundNumber: 'Round Number must be number'};
         if(!roundData.startTime) return {startTime: 'Round Start Time is required'};
         if(!validator.isDate(new Date(roundData.startTime))) return {startTime: 'Round Start Time is invalid'};        
         if(!roundData.endTime) return {endTime: 'Round End Time is required'};
@@ -60,7 +61,7 @@ const IndexPage = () => {
 
     //-------- Token Data and Validation
     // Token Data
-    const initialTokenData = { tokenAmount: '', ReservedPrice: '', totalTokenAmount: '', prevReservedPrice: '' };
+    const initialTokenData = { tokenAmount: '', ReservedPrice: '' };
     const [tokenData, setTokenData] = useState(initialTokenData);
 
     // Token Data Validation
@@ -75,11 +76,13 @@ const IndexPage = () => {
 
     //--------- Avatar Data
     const [avatar, setAuctionAvatar] = useState({});
-    
+    const [avatarToken, setAvatarToken] = useState('');
+
     const avatarError = useMemo(() => {
-        if(!avatar.label) return 'Please select a avatar';
-        return '';
-    }, [avatar]);
+        if(!avatar.label) return {avatar: 'Please select a avatar'};
+        if(!avatarToken) return {avatarToken: 'Avatar Token is required'};
+        return {};
+    }, [avatar, avatarToken]);
 
     const setIDAndTime = () => {
         if(Object.values(roundDataError)[0]) {
@@ -100,7 +103,7 @@ const IndexPage = () => {
     };
 
     const setAvatar = () => {
-        if(avatarError) {
+        if(Object.values(avatarError)[0]) {
             setShowError(true);
             return;
         }
@@ -108,8 +111,22 @@ const IndexPage = () => {
         setShowError(false);
     };
 
-    const handleSubmit = () => {
-        alert('Created Auction Successfully')
+    const handleSubmit = async () => {
+        setPending(true);
+        const createData = {
+            round: Number(roundData.roundNumber),
+            startedAt: Number(roundData.startTime),
+            duration: Number(duration),
+            totalToken: Number(tokenData.tokenAmount),
+            minPrice: Number(tokenData.ReservedPrice),
+            avatar: avatars[avatar.value]?.avatarSet.map(item => {
+                return {groupId: item.groupId, compId: item.compId};
+            }),
+            token: Number(avatarToken),
+        };
+        await dispatch(create_Auction(createData));
+        // console.log(createData)
+        setPending(false);
     };
 
     return (
@@ -127,18 +144,21 @@ const IndexPage = () => {
                                 <div className="div1">
                                     <div>
                                         <p>Round ID</p>
-                                        <input className={`black_input ${showError && roundDataError.roundId? 'error': ''}`}
-                                            value={roundData.roundId} 
-                                            onChange={e => setRoundData({...roundData, roundId: e.target.value})}
-                                        />
+                                        <input className="black_input disabled" placeholder="Auto-Generated" disabled />
                                     </div>
                                     <div>
                                         <p>Round Number</p>
-                                        <input  className={`black_input ${showError && roundDataError.roundNumber? 'error': ''}`}
-                                            value={roundData.roundNumber} 
-                                            onChange={e => setRoundData({...roundData, roundNumber: e.target.value})}
+                                        <NumberFormat className={`black_input ${showError && roundDataError.roundNumber? 'error': ''}`}
+                                            placeholder='Enter number'
+                                            thousandSeparator={true}
+                                            allowNegative={false}
+                                            value={roundData.roundNumber}
+                                            onValueChange={({ value }) => {
+                                                setRoundData({...roundData, roundNumber: value});
+                                            }}
+                                            isAllowed={({floatValue}) => Number.isInteger(floatValue)}
                                         />
-                                    </div>                                    
+                                    </div>
                                 </div>
                                 <div className="div2 mt-4">
                                     <LocalizationProvider dateAdapter={AdapterDateFns}>
@@ -234,24 +254,36 @@ const IndexPage = () => {
                     {currentStep === 3 && (
                         <>
                             <div className="input_div">
-                            {showError? (avatarError? <Alert severity="error">{avatarError}</Alert>: <Alert severity="success">Success! Please click Next Button</Alert>): ''}
+                            {showError? (Object.values(avatarError)[0]? <Alert severity="error">{Object.values(avatarError)[0]}</Alert>: <Alert severity="success">Success! Please click Next Button</Alert>): ''}
                                 <div className="avatar_div mt-4">
                                     <div className="row">
                                         <div className="avatarImage_div col-sm-4">
                                             <AvatarImage avatar={avatars[avatar?.value]} />
                                         </div>                                   
-                                        <div className="select_div col-sm-8">
-                                        <p>Avatar</p>
-                                        <Select
-                                            id="select_avatar"
-                                            value={avatar}
-                                            onChange={selected => {
-                                                setAuctionAvatar(selected);
-                                            }}
-                                            options={Avatars}
-                                            styles={customSelectStyles}
-                                            placeholder="Select Avatar"
-                                        />
+                                        <div className="select_div col-sm-4">
+                                            <p>Avatar</p>
+                                            <Select
+                                                id="select_avatar"
+                                                value={avatar}
+                                                onChange={selected => {
+                                                    setAuctionAvatar(selected);
+                                                }}
+                                                options={Avatars}
+                                                styles={customSelectStyles}
+                                                placeholder="Select Avatar"
+                                            />
+                                        </div> 
+                                        <div className="select_div col-sm-4">
+                                            <p>Avatar Token</p>
+                                            <NumberFormat className={`black_input ${showError && avatarError.avatarToken? 'error': ''}`}
+                                                placeholder='Enter number'
+                                                thousandSeparator={true}
+                                                allowNegative={false}
+                                                value={avatarToken}
+                                                onValueChange={({ value }) => {
+                                                    setAvatarToken(value);
+                                                }}
+                                            />
                                         </div> 
                                     </div>                                                                      
                                 </div>
@@ -270,7 +302,7 @@ const IndexPage = () => {
                                         <div className="col-sm-4 col-6">
                                             <div className="item">
                                                 <p>Round ID</p>
-                                                <p>{roundData.roundId}</p>
+                                                <p>********</p>
                                             </div>                                        
                                             <div className="item">
                                                 <p>Round Number</p>
@@ -289,6 +321,10 @@ const IndexPage = () => {
                                             <div className="item">
                                                 <p>Reserved Price</p>
                                                 <p>{tokenData.ReservedPrice}</p>
+                                            </div>  
+                                            <div className="item">
+                                                <p>Avatar Token</p>
+                                                <p>{avatarToken}</p>
                                             </div>  
                                         </div>
                                         <div className="col-sm-3">
@@ -342,7 +378,7 @@ const IndexPage = () => {
                             </div>
                             <div className="button_div">
                                 <button className="btn previous" onClick={() => setCurrentStep(3)}>Previous</button>
-                                <button className="btn next" onClick={handleSubmit}>Save</button>
+                                <button className="btn next" onClick={handleSubmit} disabled={pending}>{pending? 'Saving...': 'Save'}</button>
                             </div>
                         </>
                     )}

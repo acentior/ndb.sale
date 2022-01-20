@@ -5,11 +5,14 @@ main.admin-setting-page {
         }
     }
     .container {
+        max-height: 80vh;
+        overflow: auto;
         @include mq("laptop-wide", max) {
             max-width: 95%;
         }
         @include mq("phone", max) {
             max-width: 100%;
+            max-height: unset;
         }
         .row {
             .col-sm-10 {
@@ -23,9 +26,6 @@ main.admin-setting-page {
                     color: #ffffff;
                 }
                 div.tabs_container {
-                    // overflow-y: auto;
-                    // overflow-x: hidden;
-                    // max-height: 80vh;
                     @include mq('phone', max) {
                         max-height: unset;
                     }

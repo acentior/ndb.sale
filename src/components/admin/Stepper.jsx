@@ -65,6 +65,16 @@ const StepLine = styled.div`
     };
     margin-bottom: 7px;
     transition: 0.3s;
+    background-color: ${props => {
+            if(props.step <= 1) {
+                return "dimgrey";
+            } else if(props.step === 2) {
+                return "#ffffff";
+            } else {
+                return "#23c865"
+            }
+        }
+    };
 `;
 
 const StandBy = styled.span`
