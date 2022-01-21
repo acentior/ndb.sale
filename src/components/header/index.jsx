@@ -187,7 +187,7 @@ const Menu = () => {
                             </ul>
                         )}
                     </div>
-                    <CurrencyChoice classNames="d-sm-block d-none" />
+                    <CurrencyChoice classNames="d-sm-block" />
                     <button
                         type="button"
                         className="menu__toggler"
