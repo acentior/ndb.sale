@@ -40,7 +40,7 @@ const ShowAvatarModal = ({isModalOpen, setIsModalOpen, avatar = {}}) => {
                             </div>
                         </div>
                         <div className="col-sm-7">
-                            {avatar.skillSet.map((item, index) => {
+                            {avatar.skillSet?.map((item, index) => {
                                 return (
                                     <div key={index} className="row">
                                         <div className="col-6">
@@ -61,7 +61,7 @@ const ShowAvatarModal = ({isModalOpen, setIsModalOpen, avatar = {}}) => {
                         </div>
                     </div>
                     <div className="facts">
-                        {avatar.factsSet.map((item, index) => {
+                        {avatar.factsSet?.map((item, index) => {
                             return (
                                 <div key={index} className="row">
                                     <div className="col-4">

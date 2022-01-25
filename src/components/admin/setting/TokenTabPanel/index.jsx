@@ -1,20 +1,36 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { device } from '../../../../utilities/device';
 import TokenDataRow from './TokenDataRow';
 import { width } from './columnWidth';
-import { DAI, ETH, BTC, BCH, USDC } from '../../../../utilities/imgImport';
+import Loading from './../../shared/Loading';
+import PaginationBar from './../../PaginationBar';
 import SearchBar from '../../shared/SearchBar';
-
-const tokens = [
-    {name: 'Ethereum', symbol: 'ETH', network: 'ERC20', address: '0x4206931337dc273a6', svg: ETH},
-    {name: 'Bitcoin', symbol: 'BTC', network: 'ERC20', address: '0x4206931337dc273a6', svg: BTC},
-    {name: 'Bitcoin Cash', symbol: 'BCH', network: 'ERC20', address: '0x4206931337dc273a6', svg: BCH},
-    {name: 'Dai', symbol: 'DAI', network: 'ERC20', address: '0x4206931337dc273a6', svg: DAI},
-    {name: 'USD Coin', symbol: 'USDC', network: 'ERC20', address: '0x4206931337dc273a6', svg: USDC},
-];
+import { set_Page } from './../../../../redux/actions/paginationAction';
+import { get_Tokens } from './../../../../redux/actions/tokenAction';
 
 const TokenTable = () => {
+    const dispatch = useDispatch();
+    const { data } = useSelector(state => state);
+    const { page, limit } = useSelector(state => state.pagination);
+
+    const [loading, setLoading] = useState(false);
+    const [pageData, setPageData] = useState([]);
+
+    useEffect(() => {
+        (async function() {
+            dispatch(set_Page(1));
+            setLoading(true);
+            await dispatch(get_Tokens());
+            setLoading(false);
+        })();
+    }, [dispatch]);
+
+    useEffect(() => {
+        setPageData(Object.values(data).slice((page - 1) * limit, page * limit));
+    }, [dispatch, data, page, limit]);
+
     return (
         <>
             <TableHead>
@@ -28,11 +44,17 @@ const TokenTable = () => {
             <TableHeadForMobile>
                 <div className='name'>Token Data</div>
             </TableHeadForMobile>
-            <TableBody className='custom_scrollbar'>
-                {tokens.map((datum, index) => {
-                    return <TokenDataRow key={index} datum={datum} index={index} />
-                })}
-            </TableBody>
+            {loading?
+                <Loading />:
+                <>
+                    <TableBody className='custom_scrollbar'>
+                        {pageData.map(datum => {
+                            return <TokenDataRow key={datum.id} datum={datum} />
+                        })}
+                    </TableBody>
+                    <PaginationBar />
+                </>
+            }            
         </>
     )
 };

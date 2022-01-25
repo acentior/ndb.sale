@@ -1,26 +1,34 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
+import { fetch_KYC_Settings } from '../../../../redux/actions/kycSettingAction';
 import KYCComponent from './KYC_Component';
-
-const contents = {
-    withdraw: "threshold: 1,000",
-    deposit: "not required",
-    bid: "threshold: 2,000",
-    direct_purchase: "required",
-}
+import Loading from './../../shared/Loading';
 
 const KYCTabPanel = () => {
-    return (
+    const dispatch = useDispatch();
+    const { kycSettings } = useSelector(state => state);
+    const KYC = kycSettings['KYC'];
+
+    const [loading, setLoading] = useState(false);
+
+    useEffect(() => {
+        (async function() {
+            setLoading(true);
+            await dispatch(fetch_KYC_Settings());
+            setLoading(false);
+        })();
+    }, [dispatch]);
+
+    return loading?
+    <Loading />: 
+    (
         <>
-            <KYCComponent icon="fe:upload" topic="Withdraw" content={contents.withdraw} />
-            <KYCComponent icon="fe:download" topic="Deposit" content={contents.deposit} />
-            <KYCComponent icon="uil:university" topic="Bid" content={contents.bid} />
-            <KYCComponent
-                icon="grommet-icons:basket"
-                topic="Direct purchase round"
-                content={contents.direct_purchase}
-            />
+            <KYCComponent icon="fe:upload" prop = 'withdraw' topic="Withdraw" thresholds={KYC} />
+            <KYCComponent icon="fe:download" prop = 'deposit' topic="Deposit" thresholds={KYC} />
+            <KYCComponent icon="uil:university" prop = 'bid' topic="Bid" thresholds={KYC} />
+            <KYCComponent icon="grommet-icons:basket" prop = 'direct' topic="Direct purchase round" thresholds={KYC} />
         </>
     )
-}
+};
 
-export default KYCTabPanel
+export default KYCTabPanel;

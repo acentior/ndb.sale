@@ -1,27 +1,60 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { device } from '../../../../utilities/device';
 import RoundDataRow from './RoundDataRow';
 import { width } from './columnWidth';
+import PaginationBar from './../../PaginationBar';
+import Loading from './../../shared/Loading';
+import { set_Page } from '../../../../redux/actions/paginationAction';
+import { get_Auctions } from '../../../../redux/actions/auctionAction';
 
-const RoundsTable = ({data}) => {
+const RoundsTable = () => {
+    const dispatch = useDispatch();
+    const { data } = useSelector(state => state);
+    const { page, limit } = useSelector(state => state.pagination);
+
+    const [loading, setLoading] = useState(false);
+    const [pageData, setPageData] = useState([]);
+
+    useEffect(() => {
+        (async function() {
+            dispatch(set_Page(1));
+            setLoading(true);
+            await dispatch(get_Auctions());
+            setLoading(false);
+        })();
+    }, [dispatch]);
+
+    useEffect(() => {
+        setPageData(Object.values(data).slice((page - 1) * limit, page * limit));
+    }, [dispatch, data, page, limit]);
+
     return (
         <>
             <TableHead>
                 <div className='round'>Round</div>
                 <div className='time'>Time</div>
-                <div className='amount'>Amount</div>
-                <div className='price'>Price</div>
-                <div className='per_token'>Per Token</div>
+                <div className='token'>Token</div>
+                <div className='price'>Min Price</div>
+                <div className='sold'>Sold</div>
+                <div className='stats'>Stats</div>
+                <div className='round_status'>Status</div>
             </TableHead>
             <TableHeadForMobile>
                 <div className='name'>Rounds Data</div>
             </TableHeadForMobile>
-            <TableBody>
-                {data.map((datum, index) => {
-                    return <RoundDataRow key={index} datum={datum} index={index} />
-                })}
-            </TableBody>
+            {loading?
+                <Loading />:
+                <>
+                    <TableBody>
+                        {pageData.map(datum => {
+                            return <RoundDataRow key={datum.id} datum={datum} />
+                        })}
+                    </TableBody>
+                    <PaginationBar />
+                </>
+            }            
         </>
     )
 };
@@ -42,9 +75,11 @@ const TableHead = styled.div`
     }
     &>div.round {width: ${width.round}; padding-left: 16px;}
     &>div.time {width: ${width.time};}
-    &>div.amount {width: ${width.amount};}
+    &>div.token {width: ${width.token};}
     &>div.price {width: ${width.price};}
-    &>div.per_token {width: ${width.per_token};}
+    &>div.sold {width: ${width.sold};}
+    &>div.stats {width: ${width.stats};}
+    &>div.round_status {width: ${width.round_status};}
 
     @media screen and (max-width: ${device['phone']}){
         display: none;

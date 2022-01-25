@@ -50,6 +50,12 @@ input[type="number"]::-webkit-outer-spin-button {
 .border-transparent {
     border-color: transparent !important;
 }
+.border-cyan {
+    border-color: cyan !important;
+}
+.border-grey {
+    border-color: grey !important;
+}
 .overflow-x-auto {
     overflow-x: auto !important;
     white-space: nowrap;
@@ -161,4 +167,32 @@ input[type="number"]::-webkit-outer-spin-button {
 .lh-25px {
     line-height: 25px !important;
 }
+.noselect {
+    -webkit-touch-callout: none; /* iOS Safari */
+    -webkit-user-select: none; /* Safari */
+    -khtml-user-select: none; /* Konqueror HTML */
+    -moz-user-select: none; /* Old versions of Firefox */
+    -ms-user-select: none; /* Internet Explorer/Edge */
+    user-select: none; /* Non-prefixed version, currently
+                                    supported by Chrome, Edge, Opera and Firefox */
+}
 // End: New Font Sizes
+
+//Begin: Backgourn Color
+.bg-green {
+    background: $green;
+}
+.bg-red {
+    background: #e8503a;
+}
+.bg-gray {
+    background: $grey;
+}
+.mt-1 {
+    margin-top: 1px !important;
+}
+//End: Background Color
+
+.scale-70 {
+    transform: scale(0.7, 0.7);
+}

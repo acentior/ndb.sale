@@ -1,43 +1,60 @@
-import React, { useState, useMemo } from "react"
+import React, { useState, useMemo, useEffect } from "react";
+import { useSelector, useDispatch } from "react-redux";
 import { Link } from "gatsby"
 import { Icon } from '@iconify/react';
 import validator from "validator";
-import Modal from 'react-modal';
 import names from 'random-names-generator';
 
 import Seo from "../../../components/seo"
 import Stepper from "../../../components/admin/Stepper";
 import LayoutForCreate from "../../../components/admin/LayoutForCreate";
 
-import {Alert, Rating} from '@mui/material';
+import { Alert } from '@mui/material';
 import Select from 'react-select';
 import { countryList } from "../../../utilities/countryAlpha2";
-import { capitalizeFirstLetter } from "../../../utilities/string";
 
-import { figures } from './../../../utilities/staticData';
 import PaginationBar from "../../../components/admin/PaginationBar";
-import { showFailAlarm, showSuccessAlarm } from "../../../components/admin/AlarmModal";
+import { fetch_Avatars } from './../../../redux/actions/avatarAction';
+import { set_Page } from "../../../redux/actions/paginationAction";
+import AvatarImage from "../../../components/admin/shared/AvatarImage";
+import ShowAvatarModal from "../../../components/admin/shared/ShowAvatarModal";
+import { create_New_User } from "../../../redux/actions/userAction";
 
 const Countries = countryList.map(item => {
     return {label: item.name, value: item["alpha-2"]};
 });
 
 const Roles = [
-    {label: 'USER', value: 'user'},
-    {label: 'ADMIN', value: 'admin'}
+    {label: 'USER', value: 'ROLE_USER'},
+    {label: 'ADMIN', value: 'ROLE_ADMIN'}
 ];
 
 const IndexPage = () => {
+    const dispatch = useDispatch();
+    const avatars = useSelector(state => state.data);
+    const { page, limit } = useSelector(state => state.pagination);
+
+    useEffect(() => {
+        dispatch(set_Page(1, 8));
+        dispatch(fetch_Avatars());
+    }, [dispatch]);
+
     const [currentStep, setCurrentStep] = useState(1);
     const [showError, setShowError] = useState(false);
-    const [modalIsOpen, setModalIsOpen] = useState(false);
+    const [isShowAvatarOpen, setIsShowAvatarOpen] = useState(false);
+    const [pending, setPending] = useState(false);
+    const [avatarsPerPage, setAvatarsPerPage] = useState([]);
+
+    useEffect(() => {
+        setAvatarsPerPage(Object.values(avatars).slice((page - 1) * limit, page * limit));
+    }, [avatars, page, limit]);
 
     //------- Round Data and Validation
     // Round Data
     const initialDetails = {
         email: '',
         country: {},
-        role: {}
+        role: Roles[0]
     };
     const [details, setDetails] = useState(initialDetails);
 
@@ -68,8 +85,9 @@ const IndexPage = () => {
     }, [userName]);
 
     const selectAvatar = item => {
+        setAvatar({})
         setAvatar(item);
-        setModalIsOpen(true);
+        setIsShowAvatarOpen(true);
     };
 
     const setUserDetails = () => {
@@ -99,9 +117,17 @@ const IndexPage = () => {
         setShowError(false);
     };
 
-    const handleSubmit = () => {
-        // showSuccessAlarm('User created successfully');
-        showFailAlarm('Action failed', 'Ops! Something went wrong. Try again!');
+    const handleSubmit = async () => {
+        setPending(true);
+        const createData = {
+            email: details.email,
+            country: details.country.value,
+            role: details.role.value,
+            avatarName: avatar.surname,
+            shortName: `${avatar.surname}.${userName}`,
+        };
+        await dispatch(create_New_User(createData));
+        setPending(false);
     };
 
     return (
@@ -172,16 +198,16 @@ const IndexPage = () => {
                                 <div className="avatar_div">
                                     <input className="black_input" placeholder="Search" />
                                     <div className="avatars mt-3">
-                                        {figures.map((item, index) => {
+                                        {avatarsPerPage.map((item, index) => {
                                             return (
                                                 <div className={`avatar ${avatar.id === item.id? 'avatar--selected': ''}`}
                                                     key={index} onClick={() => selectAvatar(item)} onKeyDown={() => selectAvatar(item)} role="button" tabIndex={0}
                                                 >
                                                     <div className="image">
-                                                        <img src={item.avatar} alt="Avatar" />
+                                                        <AvatarImage avatar={item} />
                                                     </div>
-                                                    <p title={item.lastname}>
-                                                        {item.lastname}
+                                                    <p title={item.surname}>
+                                                        {item.surname}
                                                     </p>
                                                 </div>
                                             )
@@ -205,7 +231,7 @@ const IndexPage = () => {
                                 <div className="display-name">
                                     <div className="d-flex align-items-end justify-content-start">
                                         <h5 className="random-display mb-0 fw-bold me-4">
-                                            {avatar.lastname}.
+                                            {avatar.surname}.
                                         </h5>
                                         <div>
                                             <p className="form-label">Your display name</p>
@@ -247,8 +273,8 @@ const IndexPage = () => {
                                         <div className="col-sm-4 col-6">
                                             <div className="item">
                                                 <p>Display Name</p>
-                                                <p>{userName}</p>
-                                            </div>                                        
+                                                <p>{avatar.surname}.{userName}</p>
+                                            </div>
                                             <div className="item">
                                                 <p>Country</p>
                                                 <p>{details.country.label}</p>
@@ -271,11 +297,11 @@ const IndexPage = () => {
                                         <div className="col-sm-3">
                                             <div className="item">
                                                 <p>Avatar</p>
-                                                <p>{avatar.lastname}</p>
+                                                <p>{avatar.surname}</p>
                                             </div>  
                                             <div className="item">
-                                                <img src={avatar.avatar} alt={avatar.label} /> 
-                                            </div>  
+                                                <AvatarImage avatar={avatar} />
+                                            </div>
                                         </div>
                                     </div>
                                 </div>                                
@@ -283,17 +309,17 @@ const IndexPage = () => {
                                     <div className="row">
                                         <div className="col-sm-3 mb-4">
                                             <div className="item">
-                                                <img src={avatar.avatar} alt={avatar.label} /> 
+                                                <AvatarImage avatar={avatar} />
                                             </div>  
                                             <div className="item text-center">
                                                 <p>Avatar</p>
-                                                <p>{avatar.lastname}</p>
+                                                <p>{avatar.surname}</p>
                                             </div>                                              
                                         </div>
                                         <div className="col-sm-4 col-6 mb-4">
                                             <div className="item">
                                                 <p>Display Name</p>
-                                                <p>{userName}</p>
+                                                <p>{avatar.surname}.{userName}</p>
                                             </div>                                        
                                             <div className="item">
                                                 <p>Country</p>
@@ -319,102 +345,11 @@ const IndexPage = () => {
                             </div>
                             <div className="button_div">
                                 <button className="btn previous" onClick={() => setCurrentStep(3)}>Previous</button>
-                                <button className="btn next" onClick={handleSubmit}>Save</button>
+                                <button className="btn next" onClick={handleSubmit} disabled={pending}>{pending? 'Saving. . .': 'Save'}</button>
                             </div>
                         </>
                     )}
-                    <Modal
-                        isOpen={modalIsOpen}
-                        onRequestClose={() => setModalIsOpen(false)}
-                        ariaHideApp={false}
-                        className="show-avatar-modal"
-                        overlayClassName="pwd-modal__overlay"
-                    >
-                        <div className="pwd-modal__header">
-                            <p></p>
-                            <div
-                                onClick={() => setModalIsOpen(false)}
-                                onKeyDown={() => setModalIsOpen(false)}
-                                role="button"
-                                tabIndex="0"
-                            >
-                                <Icon icon="ep:close-bold" />
-                            </div>
-                        </div>
-                        {Object.keys(avatar).length !== 0 && (
-                            <div className="preview_div">
-                                <p className="name">
-                                    {avatar ? 
-                                        `${capitalizeFirstLetter(avatar.firstname)} ${capitalizeFirstLetter(avatar.lastname)}`:
-                                        "Nicolla Tesla"
-                                    }
-                                </p>
-                                <div className="row avatarStats">
-                                    <div className="col-sm-5">
-                                        <div className="profile">
-                                            <div className="image_div">
-                                                <img src={avatar?.avatar} alt="back" />
-                                                {/* {avatarItems.hairColor && (<>
-                                                    <Hair hairColor={avatarItems.hairColor} style={{top: `${hairStyles[avatarItems.hairStyle].top}%`, left: `${hairStyles[avatarItems.hairStyle].left}%`, width: `${hairStyles[avatarItems.hairStyle].width}%`}}>
-                                                        {parse(hairStyles[avatarItems.hairStyle].svg)}
-                                                    </Hair>
-                                                    <div style={{top: `${expressions[avatarItems.expression].top}%`, left: `${expressions[avatarItems.expression].left}%`, width: `${expressions[avatarItems.expression].width}%`}}>
-                                                        {parse(expressions[avatarItems.expression].svg)}
-                                                    </div>
-                                                    <div style={{top: `${facialStyles[avatarItems.facialStyle].top}%`, left: `${facialStyles[avatarItems.facialStyle].left}%`, width: `${facialStyles[avatarItems.facialStyle].width}%`}}>
-                                                        {parse(facialStyles[avatarItems.facialStyle].svg)}
-                                                    </div>
-                                                    <div style={{top: `${hats[avatarItems.hat].top}%`, left: `${hats[avatarItems.hat].left}%`, width: `${hats[avatarItems.hat].width}%`}}>
-                                                        {parse(hats[avatarItems.hat].svg)}
-                                                    </div>
-                                                    <div style={{top: `${others[avatarItems.other].top}%`, left: `${others[avatarItems.other].left}%`, width: `${others[avatarItems.other].width}%`}}>
-                                                        {parse(others[avatarItems.other].svg)}
-                                                    </div>
-                                                </>)} */}
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div className="col-sm-7">
-                                        {avatar.stars.map((star, index) => {
-                                            return (
-                                                <div key={index} className="row">
-                                                    <div className="col-6">
-                                                        <p title={star.type}>{star.type}</p>
-                                                    </div>
-                                                    <div className="col-6">
-                                                        <Rating
-                                                            name="simple-controlled"
-                                                            value={star.rates}
-                                                            readOnly
-                                                            emptyIcon=" "
-                                                            size="small"
-                                                        />
-                                                    </div>
-                                                </div>
-                                            );
-                                        })}
-                                    </div>
-                                </div>
-                                <div className="facts">
-                                    {avatar.abilities.map((item, index) => {
-                                        return (
-                                            <div key={index} className="row">
-                                                <div className="col-4">
-                                                    <p>{item.title}</p>
-                                                </div>
-                                                <div className="col-8">
-                                                    <p>{item.text}</p>
-                                                </div>
-                                            </div>
-                                        )
-                                    })}
-                                </div>
-                                <div className="details">
-                                    <p>{avatar.intro}</p>
-                                </div>
-                            </div>
-                        )}
-                    </Modal>
+                    <ShowAvatarModal isModalOpen={isShowAvatarOpen} setIsModalOpen={setIsShowAvatarOpen} avatar={avatar} />
                 </LayoutForCreate>
             </main>
         </>

@@ -41,6 +41,17 @@ export const GET_BIDLIST_BY_ROUND = gql`
     }
 `
 
+export const GET_BID_LIST_BY_USER = gql`
+    query GetBidListByUser {
+        getBidListByUser {
+            roundId
+            tokenAmount
+            placedAt
+            status
+        }
+    }
+`
+
 export const GET_BID_LIST = gql`
     query GetBidList {
         getBidList {

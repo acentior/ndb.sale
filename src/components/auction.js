@@ -19,7 +19,7 @@ import { ROUTES } from "../utilities/routes"
 import BidsChart2 from "./chart/BidsChart2"
 import ChanceChart from "./chart/ChanceChart"
 import { useQuery, useLazyQuery, useMutation } from "@apollo/client"
-import { setBidInfo, setCurrencyInfo, setCurrentRound } from "../redux/actions/bidAction"
+import { setBidInfo, setCurrentRound } from "../redux/actions/bidAction"
 import Loading from "./common/Loading"
 
 import { ChartIcon, Qmark, CloseIcon } from "../utilities/imgImport"
@@ -53,15 +53,12 @@ const Auction = () => {
     const size = useWindowSize()
     const currencyId = useSelector((state) => state?.placeBid.currencyId)
     const user = useSelector((state) => state.auth.user)
-    const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
-        tabIndex: 0,
-        amount: 1,
-        price: 1,
-        isBid: false,
-        bidModal: false,
-        show_chart: false,
-        selectLabel: options[0],
-    })
+
+    //Get Auctions
+    const { data } = useQuery(GET_AUCTION)
+    const roundData = data?.getAuctions?.filter(
+        (item) => (item.status === 2 || item.status === 0) && item
+    )
 
     // set chart type
     const [pricce, setPrice] = useState(true)
@@ -75,17 +72,10 @@ const Auction = () => {
     const [fnAverateMinBid, setfnAverateMinBid] = useState(0)
     const [auctionLoaded, setActionLoaded] = useState(false)
 
-    const { tabIndex, amount, price, isBid, bidModal, show_chart, selectLabel } = state
     const [selectedData, setSelectedData] = useState(1)
-    const { data } = useQuery(GET_AUCTION)
-
-    const roundData = data?.getAuctions?.filter(
-        (item) => (item.status === 2 || item.status === 0) && item
-    )
-
+    const [period, setPeriod] = useState("1M")
     ////////////////////////
 
-    const [period, setPeriod] = useState("1M")
     useEffect(() => {
         if (!auctionLoaded && roundData) {
             setActionLoaded(true)
@@ -119,6 +109,19 @@ const Auction = () => {
         }
     }, [roundData])
 
+    console.log(roundData && roundData[0]?.minPrice)
+
+    const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
+        tabIndex: 0,
+        amount: 1,
+        price: roundData && roundData[0]?.minPrice,
+        isBid: false,
+        bidModal: false,
+        show_chart: false,
+        selectLabel: options[0],
+    })
+    const { tabIndex, amount, price, isBid, bidModal, show_chart, selectLabel } = state
+
     // get round based data
     const [loadRoundMByNumber, { data: roundM, error: mFetched }] =
         useLazyQuery(GET_AUCTION_BY_NUMBER)
@@ -142,6 +145,7 @@ const Auction = () => {
 
     const loading = useMemo(() => {
         if (
+            roundData &&
             !!(mFetched || roundM) &&
             !!(hFetched || roundH) &&
             !!(lFetched || roundL) &&
@@ -158,6 +162,7 @@ const Auction = () => {
             return true
         }
     }, [
+        roundData,
         mFetched,
         hFetched,
         lFetched,
@@ -289,7 +294,7 @@ const Auction = () => {
         PlaceBid({
             variables: {
                 roundId: fnSelectedRoundData()?.id,
-                tokenAmount: amount,
+                tokenAmount: amount * amount,
                 tokenPrice: Math.max(fnSelectedRoundData()?.minPrice, price),
                 payment: 1,
                 cryptoType: "BTC",
@@ -297,18 +302,15 @@ const Auction = () => {
         })
         dispatch(
             setBidInfo(
-                numberWithCommas(
-                    Number(
-                        calcPriceFromUsd(Math.max(fnSelectedRoundData()?.minPrice, price * amount))
-                    )
-                )
+                numberWithCommas(Number(Math.max(fnSelectedRoundData()?.minPrice, price * amount)))
             )
         )
-        dispatch(setCurrencyInfo(Currencies[currencyId].id))
         dispatch(setCurrentRound(fnSelectedRoundData()?.id))
         navigate(ROUTES.payment)
     }
-
+    console.log("amount: ", amount)
+    console.log("price: ", price)
+    console.log("total: ", price * amount)
     if (loading) return <Loading />
     else
         return (
@@ -339,43 +341,43 @@ const Auction = () => {
                         >
                             <div className="d-flex">
                                 <div className="w-100">
-                                    {roundM?.getAuctionByNumber && (
-                                        <Tabs
-                                            className="round-tab"
-                                            selectedIndex={selectedData}
-                                            onSelect={(index) => {
-                                                if (index !== selectedData) {
-                                                    setState({ price: 1, amount: 1 })
-                                                    setSelectedData(index)
-                                                }
-                                            }}
-                                        >
-                                            <TabList>
-                                                <Tab>Round {roundL?.getAuctionByNumber?.round}</Tab>
-                                                <Tab>Round {roundM?.getAuctionByNumber?.round}</Tab>
-                                                <Tab>Round {roundH?.getAuctionByNumber?.round}</Tab>
-                                            </TabList>
+                                    {/* {roundM?.getAuctionByNumber && ( */}
+                                    <Tabs
+                                        className="round-tab"
+                                        selectedIndex={selectedData}
+                                        onSelect={(index) => {
+                                            if (index !== selectedData) {
+                                                setState({ price: 1, amount: 1 })
+                                                setSelectedData(index)
+                                            }
+                                        }}
+                                    >
+                                        <TabList>
+                                            <Tab>Round {roundL?.getAuctionByNumber?.round}</Tab>
+                                            <Tab>Round {roundM?.getAuctionByNumber?.round}</Tab>
+                                            <Tab>Round {roundH?.getAuctionByNumber?.round}</Tab>
+                                        </TabList>
 
-                                            <TabPanel>
-                                                Token Available{" "}
-                                                <span className="fw-bold">
-                                                    {fnSelectedRoundData()?.totalToken}
-                                                </span>
-                                            </TabPanel>
-                                            <TabPanel>
-                                                Token Available{" "}
-                                                <span className="fw-bold">
-                                                    {fnSelectedRoundData()?.totalToken}
-                                                </span>
-                                            </TabPanel>
-                                            <TabPanel>
-                                                Token Available{" "}
-                                                <span className="fw-bold">
-                                                    {fnSelectedRoundData()?.totalToken}
-                                                </span>
-                                            </TabPanel>
-                                        </Tabs>
-                                    )}
+                                        <TabPanel>
+                                            Token Available{" "}
+                                            <span className="fw-bold">
+                                                {fnSelectedRoundData()?.totalToken}
+                                            </span>
+                                        </TabPanel>
+                                        <TabPanel>
+                                            Token Available{" "}
+                                            <span className="fw-bold">
+                                                {fnSelectedRoundData()?.totalToken}
+                                            </span>
+                                        </TabPanel>
+                                        <TabPanel>
+                                            Token Available{" "}
+                                            <span className="fw-bold">
+                                                {fnSelectedRoundData()?.totalToken}
+                                            </span>
+                                        </TabPanel>
+                                    </Tabs>
+                                    {/* )} */}
                                     <Tabs
                                         className="statistics-tab"
                                         selectedIndex={tabIndex}
@@ -472,10 +474,7 @@ const Auction = () => {
                                     />
                                 </div>
                             </div>
-                            <div
-                                className="position-absolute"
-                                style={{ bottom: "20%", width: "calc(100% - 24px)" }}
-                            >
+                            <div className="auction-left__bottom">
                                 {isInbetween(
                                     fnSelectedRoundData()?.startedAt,
                                     fnSelectedRoundData()?.endedAt
@@ -550,12 +549,12 @@ const Auction = () => {
                                 <div className="d-flex align-items-center mb-4">
                                     <input
                                         type="number"
-                                        value={amount || 1}
+                                        value={Math.max(1, amount)}
                                         onChange={(e) => setState({ amount: e.target.value })}
                                         className="range-input"
                                     />
                                     <Slider
-                                        value={amount || 1}
+                                        value={Math.max(1, amount)}
                                         onChange={(value) => setState({ amount: value })}
                                         min={1}
                                         max={fnSelectedRoundData()?.token}

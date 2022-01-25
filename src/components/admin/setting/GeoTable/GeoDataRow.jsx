@@ -5,7 +5,7 @@ import { device } from "../../../../utilities/device"
 import { width } from "./columnWidth"
 import DeleteConfirmModal from "../../DeleteConfirmModal"
 
-const GeoDataRow = ({ datum, index }) => {
+const GeoDataRow = ({ datum }) => {
     const [show, setShow] = useState(false)
     const [isConfirmOpen, setIsConfirmOpen] = useState(false)
 
@@ -23,7 +23,7 @@ const GeoDataRow = ({ datum, index }) => {
                 </div>
                 <div className="note">
                     <Main>
-                        <p>{datum.alpha2}</p>
+                        <p>{datum.countryCode}</p>
                     </Main>
                 </div>
                 <div className="edit">
@@ -67,7 +67,7 @@ const GeoDataRow = ({ datum, index }) => {
                                                 : "ant-design:caret-down-filled"
                                         }
                                         data-bs-toggle="collapse"
-                                        data-bs-target={`#id${index}`}
+                                        data-bs-target={`#id${datum.id}`}
                                         onClick={() => setShow(!show)}
                                     />
                                 </span>
@@ -75,13 +75,13 @@ const GeoDataRow = ({ datum, index }) => {
                         </div>
                     </UnitRowForMobile>
                 </div>
-                <div id={`id${index}`} className="collapse">
+                <div id={`id${datum.id}`} className="collapse">
                     <UnitRowForMobile>
                         <div className="left">
                             <p style={{ color: "dimgrey" }}>Alpha-2</p>
                         </div>
                         <div className="right">
-                            <p>{datum.alpha2}</p>
+                            <p>{datum.countryCode}</p>
                         </div>
                     </UnitRowForMobile>
                 </div>

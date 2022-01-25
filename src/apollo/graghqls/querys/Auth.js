@@ -2,7 +2,7 @@ import { gql } from "@apollo/client"
 
 export const GET_USER = gql`
     query getUser {
-        getUser{
+        getUser {
             id
             regDate
             updateDate
@@ -19,7 +19,7 @@ export const GET_USER = gql`
             provider
             providerId
             notifySetting
-            avatar{
+            avatar {
                 id
                 regDate
                 updateDate
@@ -29,7 +29,7 @@ export const GET_USER = gql`
                 prefix
                 name
             }
-            security{
+            security {
                 id
                 regDate
                 updateDate
@@ -37,7 +37,7 @@ export const GET_USER = gql`
                 authType
                 tfaEnabled
             }
-            verify{
+            verify {
                 id
                 regDate
                 updateDate
@@ -48,6 +48,35 @@ export const GET_USER = gql`
                 amlVerified
                 kybVerified
             }
+        }
+    }
+`
+
+export const GET_AVATAR_COMPONENT = gql`
+    {
+        getAvatarComponent(groupId: "expression", compId: 3) {
+            groupId
+            compId
+            tierLevel
+            price
+            limited
+            purchased
+            svg
+            width
+            top
+            left
+        }
+    }
+`
+
+export const GET_BALANCES = gql`
+    {
+        getBalances {
+            tokenName
+            tokenSymbol
+            symbol
+            free
+            hold
         }
     }
 `

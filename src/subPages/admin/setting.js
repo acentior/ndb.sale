@@ -20,14 +20,6 @@ const socials = [
     {social: 'Apple'},
 ];
 
-const geos = [
-    {country: 'Iran', alpha2: 'IR'},    
-    {country: 'USA', alpha2: 'US'},    
-    {country: 'North Korea', alpha2: 'KP'},    
-    {country: 'Syria', alpha2: 'SY'},    
-    {country: 'Ukraine', alpha2: 'UA'},
-];
-
 const IndexPage = () => {
 
     return (
@@ -51,7 +43,7 @@ const IndexPage = () => {
                                 <SocialTable data={socials} />
                             </TabPanel>
                             <TabPanel>
-                                <GeoTable data={geos} />
+                                <GeoTable />
                             </TabPanel>
                             <TabPanel>
                                 <KYCTabPanel />

@@ -1,20 +1,54 @@
-import React, { useState } from 'react';
+import React, { useState, useMemo } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
 import { Icon } from '@iconify/react';
 import NumberFormat from 'react-number-format';
 import Modal from 'react-modal';
+import { Alert } from '@mui/material';
 import Select from 'react-select';
 import { device } from '../../../../utilities/device';
+import { update_KYC_Setting } from '../../../../redux/actions/kycSettingAction';
 
 const requirementsList = [
-    { value: "threshold", label: "Threshold" },
     { value: "required", label: "Required" },
     { value: "not_required", label: "Not required" },
 ];
 
-const AMLComponent = ({icon, topic, content}) => {
+const AMLComponent = ({icon, prop, topic, thresholds = {}}) => {
+    const dispatch = useDispatch();
+
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [requirement, setRequirement] = useState({item: {}, content: ''});
+    const [showError, setShowError] = useState(false);
+    const [pending, setPending] = useState(false);
+
+    const InitialRequirement = thresholds[prop]? requirementsList[0]: requirementsList[1];
+    const [requirement, setRequirement] = useState(InitialRequirement);
+
+    const [threshold, setThreshold] = useState(!thresholds[prop]? '': thresholds[prop]);
+    const thresholdError = useMemo(() => {
+        if(requirement.value === 'required' && !threshold) return 'Threshold is required';
+        return '';
+    }, [requirement, threshold]);
+
+    const handleSubmit = async () => {
+        if(thresholdError) {
+            setShowError(true);
+            return;
+        }
+        setPending(true);
+        const updateData = { ...thresholds, [prop]: Number(threshold) };
+        await dispatch(update_KYC_Setting(updateData));
+        setPending(false);
+        setShowError(false)
+    };
+
+    const closeModal = () => {
+        setShowError(false);
+        setThreshold('');
+        setRequirement(InitialRequirement);
+        setModalIsOpen(false);
+    };
+
     return (
         <>
             <Container className='component'>
@@ -24,16 +58,18 @@ const AMLComponent = ({icon, topic, content}) => {
                 <div className='topic'>
                     <p>{topic}</p>
                 </div>
-                <div className='content'>
-                    <p>{content}</p>
+                <div className='thresholds'>
+                    <p>
+                        {!thresholds[prop]? 'NOT REQUIRED': 'THRESHOLD: ' + thresholds[prop]}
+                    </p>
                 </div>
                 <div className='edit'>
-                    <p><span><Icon icon="clarity:note-edit-line" onClick={() => setModalIsOpen(true)} /></span></p>
+                    <p><span><Icon icon="clarity:note-edit-line" onClick={() => setModalIsOpen(true)}/></span></p>
                 </div>
             </Container>
             <Modal
                 isOpen={modalIsOpen}
-                onRequestClose={() => setModalIsOpen(false)}
+                onRequestClose={closeModal}
                 ariaHideApp={false}
                 className="kyc-aml-modal"
                 overlayClassName="pwd-modal__overlay"
@@ -41,8 +77,8 @@ const AMLComponent = ({icon, topic, content}) => {
                 <div className="pwd-modal__header">
                     <p>AML {topic}</p>
                     <div
-                        onClick={() => setModalIsOpen(false)}
-                        onKeyDown={() => setModalIsOpen(false)}
+                        onClick={closeModal}
+                        onKeyDown={closeModal}
                         role="button"
                         tabIndex="0"
                     >
@@ -51,12 +87,25 @@ const AMLComponent = ({icon, topic, content}) => {
                 </div>
                 <form className="form" onSubmit={(e) => e.preventDefault()}>
                     <div className='input_div'>
+                        {showError ? (
+                            thresholdError ? (
+                                <Alert severity="error">{thresholdError}</Alert>
+                            ) : (
+                                <Alert severity="success">
+                                    Success! Please click Next Button
+                                </Alert>
+                            )
+                        ) : (
+                            ""
+                        )}
+                    </div>
+                    <div className='input_div'>
                         <div className='input'>
                             <p style={{fontSize: 12}}>Requirement</p>
                             <Select
-                                value={requirement.item}
-                                onChange={(selected) => {
-                                    setRequirement({...requirement, item: selected})
+                                value={requirement}
+                                onChange={selected => {
+                                    setRequirement(selected); setThreshold('');
                                 }}
                                 options={requirementsList}
                                 styles={customSelectStyles}
@@ -64,30 +113,32 @@ const AMLComponent = ({icon, topic, content}) => {
                             />
                         </div>  
                         <div className='input'>
-                            <p className={requirement.item.value === 'not_required'? 'disabled': ''} style={{fontSize: 12}}>Threshold</p>
-                            <NumberFormat className={`black_input ${requirement.item.value === 'not_required'? 'disabled': ''}`}
-                                disabled={requirement.item.value === 'not_required'? true: false}
+                            <p className={requirement.value === 'not_required'? 'disabled': ''} style={{fontSize: 12}}>Threshold</p>
+                            <NumberFormat className={`black_input ${requirement.value === 'not_required'? 'disabled': ''}`}
+                                disabled={requirement.value === 'not_required'? true: false}
                                 placeholder='Enter number'
                                 thousandSeparator={true}
                                 allowNegative={false}
+                                value={threshold}
+                                onValueChange={({value}) => setThreshold(value)}
                             />
                         </div>  
-                    </div>                                    
+                    </div>
                     <div className="pwd-modal__footer mt-4">
                         <button
                             className="btn previous"
-                            onClick={() => setModalIsOpen(false)}
+                            onClick={closeModal}
                         >
                             Cancel
                         </button>
-                        <button className='btn next'>
-                            Save
+                        <button className='btn next' onClick={handleSubmit} disabled={pending}>
+                            {pending? 'Saving. . .': 'Save'}
                         </button>
                     </div>
                 </form>
             </Modal>
-        </>
-    )
+        </>        
+    );
 };
 
 export default AMLComponent;
@@ -110,7 +161,7 @@ const Container = styled.div`
     &>div.topic {
         width: 50%;
     }
-    &>div.content {
+    &>div.thresholds {
         width: 35%;
     }
     &>div.edit {
@@ -136,7 +187,7 @@ const Container = styled.div`
             }
         }
         &>div.topic {width: 50%}
-        &>div.content {width: 30%}
+        &>div.thresholds {width: 30%}
         &>div.edit {
             width: 10%
             p span {
@@ -149,7 +200,7 @@ const Container = styled.div`
         border-right: 1px solid #464646;
         &>div.icon {width: 17%;}
         &>div.topic {display: none;}
-        &>div.content {width: 65%}
+        &>div.thresholds {width: 65%}
         &>div.edit {width: 18%}
     }
 `;
@@ -178,4 +229,4 @@ const customSelectStyles = {
         ...provided,
         color: 'white'
     })
-};
+}

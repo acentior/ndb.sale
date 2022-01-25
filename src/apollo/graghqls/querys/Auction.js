@@ -27,14 +27,6 @@ export const GET_AUCTION_BY_NUMBER = gql`
             endedAt
             totalToken
             minPrice
-            avatar {
-                id
-                regDate
-                updateDate
-                deleted
-                groupId
-                compId
-            }
             token
             sold
             stats {
@@ -51,6 +43,26 @@ export const GET_AUCTION_BY_STATUS = gql`
         getAuctionByStatus(status: $status) {
             number
             token
+            status
+        }
+    }
+`
+export const GET_AUCTIONS = gql`
+    query {
+        getAuctions {
+            id
+            round
+            startedAt
+            endedAt
+            totalToken
+            minPrice
+            token
+            sold
+            stats {
+                qty
+                win
+                fail
+            }
             status
         }
     }

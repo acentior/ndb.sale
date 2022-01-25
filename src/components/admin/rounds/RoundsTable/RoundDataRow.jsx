@@ -4,7 +4,14 @@ import { Icon } from '@iconify/react';
 import { device } from '../../../../utilities/device';
 import { width } from './columnWidth';
 
-const RoundDataRow = ({datum, index}) => {
+const Status = {
+    '0': 'pending',
+    '1': 'countdown',
+    '2': 'started',
+    '3': 'ended',
+};
+
+const RoundDataRow = ({ datum }) => {
     const [show, setShow] = useState(false);
 
     return (
@@ -12,31 +19,49 @@ const RoundDataRow = ({datum, index}) => {
             <DataRow>
                 <div className='round'>
                     <Main>
-                        <p className='first'>{datum.round_id}</p>
-                        <p className='second'>{datum.round_nr}</p>
+                        <p className='first'>Round {datum.round}</p>
+                        <p className='second'>Id: {datum.id}</p>
                     </Main>
                 </div>
                 <div className='time'>
                     <Main>
-                        <p className='first'>{datum.time}</p>
-                        <p className='second'>{datum.start_date}</p>
+                        <p>Start: {new Date(datum.startedAt).toISOString()}</p>
+                        <p>End: {new Date(datum.endedAt).toISOString()}</p>
                     </Main>
                 </div>
-                <div className='amount'>
+                <div className='token'>
                     <Main>
-                        <p className='first'>{datum.amount}</p>
-                        <p className='second'>{datum.percentage}</p>
+                        <p className='first'>Total: {datum.totalToken}</p>
+                        <p className='second'>Avatar: {datum.token}</p>
                     </Main>
                 </div>
                 <div className='price'>
                     <Main>
-                        <p className='first'>{datum.price}</p>
-                        <p className='second'>{datum.reserve_price}</p>
+                        <p className='first'>{datum.minPrice}</p>
                     </Main>
                 </div>
-                <div className='per_token'>
+                <div className='sold'>
                     <Main>
-                        <p>{datum.avg_price}</p>
+                        <p>{datum.sold}</p>
+                    </Main>
+                </div>
+                <div className='stats'>
+                    <Main>
+                        <p className='second'>QTY: {datum.stats?.qty}</p>
+                        <p className='second'>Win: {datum.stats?.win}</p>
+                        <p className='second'>Fail: {datum.stats?.fail}</p>
+                    </Main>
+                </div>
+                <div className='round_status'>
+                    <Main>
+                        <p className={`
+                            ${Status[datum.status] === 'pending'? 'pending': ''}
+                            ${Status[datum.status] === 'countdown'? 'countdown': ''}
+                            ${Status[datum.status] === 'started'? 'started': ''}
+                            ${Status[datum.status] === 'ended'? 'ended': ''}
+                        `} style={{textTransform: 'uppercase'}}>
+                            {Status[datum.status]}
+                        </p>
                     </Main>
                 </div>
             </DataRow>
@@ -44,50 +69,83 @@ const RoundDataRow = ({datum, index}) => {
                 <div>
                     <UnitRowForMobile>
                         <div className='left'>
-                            <p style={{fontSize: 16, fontWeight: 700, color: 'white'}}>{datum.round_id}</p>
-                            <p style={{color: 'dimgrey'}}>Voltapancake</p>
+                            <p style={{fontSize: 16, fontWeight: 700, color: 'white'}}>Round {datum.round}</p>
+                            <p className={`
+                                ${Status[datum.status] === 'pending'? 'pending': ''}
+                                ${Status[datum.status] === 'countdown'? 'countdown': ''}
+                                ${Status[datum.status] === 'started'? 'started': ''}
+                                ${Status[datum.status] === 'ended'? 'ended': ''}
+                            `} style={{textTransform: 'uppercase'}}>
+                                {Status[datum.status]}
+                            </p>
                         </div>
                         <div className='right'>
-                            <p style={{fontSize: 16, fontWeight: 600}}>{datum.round_nr}</p>
+                            <p style={{fontSize: 16, fontWeight: 700, color: 'white'}}>Id: {datum.id}</p>
                         </div>
                         <div className='right'>
                             <p style={{fontSize: 16}}>
-                                <span><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} data-bs-toggle="collapse" data-bs-target={`#id${index}`} onClick={() => setShow(!show)} /></span>
+                                <span><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} data-bs-toggle="collapse" data-bs-target={`#id${datum.id}`} onClick={() => setShow(!show)} /></span>
                             </p>
                         </div>
                     </UnitRowForMobile>
                 </div>
-                <div id={`id${index}`} className="collapse">
+                <div id={`id${datum.id}`} className="collapse">
                     <UnitRowForMobile>
                         <div className='left'>
-                            <p>Time</p>
+                            <p>Start Time</p>
                         </div>
                         <div className='right'>
-                            <p>{datum.time}</p>
+                            <p>{new Date(datum.startedAt).toISOString()}</p>
                         </div>
                     </UnitRowForMobile>
                     <UnitRowForMobile>
                         <div className='left'>
-                            <p>Amount</p>
+                            <p>End Time</p>
                         </div>
                         <div className='right'>
-                            <p>{datum.amount}</p>
+                            <p>{new Date(datum.endedAt).toISOString()}</p>
                         </div>
                     </UnitRowForMobile>
                     <UnitRowForMobile>
                         <div className='left'>
-                            <p>Total</p>
+                            <p>Total Token</p>
                         </div>
                         <div className='right'>
-                            <p>30 000 $</p>
+                            <p>{datum.token}</p>
                         </div>
                     </UnitRowForMobile>
                     <UnitRowForMobile>
                         <div className='left'>
-                            <p>Per Token</p>
+                            <p>Avatar Token</p>
                         </div>
                         <div className='right'>
-                            <p>{datum.avg_price}</p>
+                            <p>{datum.token}</p>
+                        </div>
+                    </UnitRowForMobile>
+                    <UnitRowForMobile>
+                        <div className='left'>
+                            <p>Min Price</p>
+                        </div>
+                        <div className='right'>
+                            <p>{datum.minPrice}</p>
+                        </div>
+                    </UnitRowForMobile>
+                    <UnitRowForMobile>
+                        <div className='left'>
+                            <p>Sold</p>
+                        </div>
+                        <div className='right'>
+                            <p>{datum.sold}</p>
+                        </div>
+                    </UnitRowForMobile>
+                    <UnitRowForMobile>
+                        <div className='left'>
+                            <p>Status</p>
+                        </div>
+                        <div className='right'>
+                            <p>QTY: {datum.stats?.qty}</p>
+                            <p>Win: {datum.stats?.win}</p>
+                            <p>Fail: {datum.stats?.fail}</p>
                         </div>
                     </UnitRowForMobile>
                 </div>
@@ -112,9 +170,18 @@ const DataRow = styled.div`
 
     &>div.round {width: ${width.round}; padding-left: 16px;}
     &>div.time {width: ${width.time};}
-    &>div.amount {width: ${width.amount};}
+    &>div.token {width: ${width.token};}
     &>div.price {width: ${width.price};}
-    &>div.per_token {width: ${width.per_token};}
+    &>div.sold {width: ${width.sold};}
+    &>div.stats {width: ${width.stats};}
+    &>div.round_status {width: ${width.round_status};}
+
+    p {
+        &.pending {color: #f32d2d}
+        &.countdown {color: white}
+        &.started {color: #23c865}
+        &.ended {color: dimgray}
+    }
 
     @media screen and (max-width: ${device['phone']}){
         display: none;
@@ -147,11 +214,17 @@ const UnitRowForMobile = styled.div`
     display: flex;
     justify-content: space-between;
     &>div.left {
-        width: 60%;
+        width: 40%;
     }
     &>div.right {
         p {
-            text-align: right;       
+            text-align: right;
         }
+    }
+    p {
+        &.pending {color: #f32d2d!important}
+        &.countdown {color: white!important}
+        &.started {color: #23c865!important}
+        &.ended {color: dimgray!important}
     }
 `;

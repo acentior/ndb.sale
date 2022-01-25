@@ -1,0 +1,79 @@
+main.create-geo-page {
+    .container {
+        @include mq("laptop-wide", max) {
+            max-width: 95%;
+        }
+        @include mq("phone", max) {
+            max-width: 100%;
+        }
+    }       
+    section.home {
+        div.container {
+            display: flex;
+            height: 80vh;
+            justify-content: center;
+            align-items: center;
+            @include mq('phone', max) {
+                height: auto;
+                overflow: auto;
+            }
+        }
+        div.createDiv {
+            width: 80%;
+            border: 1px solid #ffffff;   
+            padding: 24px;
+            position: relative;
+            margin-bottom: 20px;
+            height: 300px;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            a.close {
+                position: absolute;
+                font-size: 25px;
+                top: 20px;
+                right: 20px;
+            }
+            p.subtitle {
+                font-size: 20px;
+                font-weight: 500;
+                margin-bottom: 10px;
+            }
+            @include mq("tablet", max) {
+                width: 90%;
+            }  
+            @include mq("phone", max) {
+                width: 100%;
+                height: 100vh;
+                border: none;
+                display: block;
+                a.close {
+                    display: none;
+                }
+                p.subtitle {
+                    text-align: center;
+                }
+            }  
+            div.input_div {
+                width: 60%;
+                margin: auto;
+                padding: 20px 0;
+                p {
+                    font-size: 12px;
+                    font-weight: 600;
+                    padding-bottom: 5px;
+                    &.desc {
+                        font-weight: 400;
+                        word-wrap: break-word;
+                    }
+                }
+                @include mq("laptop", max) {
+                    width: 80%;
+                }
+                @include mq("tablet", max) {
+                    width: 100%;
+                }
+            }
+        }
+    }
+}

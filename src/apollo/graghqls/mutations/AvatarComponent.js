@@ -81,3 +81,20 @@ export const UPDATE_AVATAR_PROFILE = gql`
         ) 
     }
 `;
+
+export const UPDATE_AVATARSET = gql`
+    mutation updateAvatarSet(
+        $components: [AvatarSetInput]
+    ) {
+        updateAvatarSet(
+            components:  $components
+        ) {
+            id
+            regDate
+            updateDate
+            deleted
+            groupId
+            compId
+        }
+    }
+`;

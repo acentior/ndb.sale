@@ -5,9 +5,12 @@
     padding: 22px;
     background-color: $black;
     z-index: 9999;
-    .user-avatar {
-        width: 56px;
-        height: 51px;
+    .image_div {
+        width: 50px;
+    }
+    .header-right-side {
+        margin-bottom: -10px;
+        margin-top: 5px;
     }
     .user-dropdown {
         position: relative;

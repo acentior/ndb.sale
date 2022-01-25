@@ -23,9 +23,7 @@ main.admin-rounds-page {
                         padding: 3px 0;
                         overflow: hidden;
                         text-overflow: ellipsis;
-                        &:hover {
-                            overflow: visible;
-                        }
+                        
                         @include mq('laptop-wide', max) {
                             font-size: 14px;
                         }

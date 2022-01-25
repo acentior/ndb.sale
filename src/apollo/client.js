@@ -49,6 +49,17 @@ const authLink = setContext((_, { headers }) => {
     }
 });
 
+const defaultOptions = {
+    watchQuery: {
+      fetchPolicy: 'no-cache',
+      errorPolicy: 'ignore',
+    },
+    query: {
+      fetchPolicy: 'no-cache',
+      errorPolicy: 'all',
+    },
+};
+
 export const client = new ApolloClient({
     link: authLink.concat(splitLink),
     fetch: fetch,
@@ -56,6 +67,7 @@ export const client = new ApolloClient({
         "Access-Control-Allow-Origin": "*",
         mode: "no-cors",
     },
-    cache: new InMemoryCache()
+    cache: new InMemoryCache(),
+    defaultOptions: defaultOptions,
 });
 

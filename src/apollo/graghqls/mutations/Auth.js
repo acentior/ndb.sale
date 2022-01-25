@@ -66,6 +66,36 @@ export const SET_AVATAR = gql`
     }
 `
 
+export const GET_AVATARS = gql`
+    {
+        getAvatars {
+            id
+            deleted
+            fname
+            surname
+            skillSet {
+                id
+                name
+                rate
+            }
+            avatarSet {
+                id
+                deleted
+                groupId
+                compId
+            }
+            hairColor
+            factsSet {
+                id
+                deleted
+                topic
+                detail
+            }
+            details
+        }
+    }
+`
+
 export const CHANGE_PASSWORD = gql`
     mutation changePassword($newPassword: String!) {
         changePassword(newPassword: $newPassword)

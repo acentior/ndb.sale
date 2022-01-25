@@ -18,6 +18,7 @@ const CreateAvatar = lazy(() => import("./../../subPages/admin/create/create-ava
 const CustomizeAvatar = lazy(() => import("./../../subPages/admin/create/customize-avatar"));
 const CreateEmail = lazy(() => import("./../../subPages/admin/create/create-email"));
 const CreateToken = lazy(() => import("./../../subPages/admin/create/create-token"));
+const CreateGeoLocation = lazy(() => import("./../../subPages/admin/create/create-geo-location"));
 const NotFound = lazy(() => import("./../404"));
 
 const App = () => {
@@ -44,6 +45,7 @@ const App = () => {
                             <CustomizeAvatar path="/create/customize-avatar" />
                             <CreateEmail path="/create/email" />
                             <CreateToken path="/create/token" />
+                            <CreateGeoLocation path="/create/geo-location" />
                             <NotFound default />
                         </Router>
                     </Suspense>

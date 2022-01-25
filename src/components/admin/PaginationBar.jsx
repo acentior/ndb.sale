@@ -10,7 +10,7 @@ export default function PaginationBar() {
   const { page, limit, total } = useSelector(state => state.pagination);
   
   const setPage = (event, value) => {
-    dispatch(set_Page(Number(value)));
+    dispatch(set_Page(Number(value), limit));
   };
 
   return (

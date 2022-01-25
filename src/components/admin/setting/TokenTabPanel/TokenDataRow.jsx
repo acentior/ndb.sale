@@ -1,18 +1,26 @@
 import React, { useState } from 'react';
+import { useDispatch } from 'react-redux';
 import styled from 'styled-components';
+import svgToDataURL  from 'svg-to-dataurl';
 import { Icon } from '@iconify/react';
 import { device } from '../../../../utilities/device';
 import { width } from './columnWidth';
 import DeleteConfirmModal from '../../DeleteConfirmModal';
-import EditTokenModal from '../../editModals/EditTokenModal';
+// import EditTokenModal from '../../editModals/EditTokenModal';
+import { delete_Token } from './../../../../redux/actions/tokenAction'
 
-const TokenDataRow = ({datum, index}) => {
+const TokenDataRow = ({ datum = {} }) => {
+    const dispatch = useDispatch();
+
     const [show, setShow] = useState(false);
     const [isConfirmOpen, setIsConfirmOpen] = useState(false);
-    const [isEditOpen, setIsEditOpen] = useState(false);
+    // const [isEditOpen, setIsEditOpen] = useState(false);
+    const [deletePending, setDeletePending] = useState(false);
 
-    const deleteToken = () => {
-        console.log('delete token' + index);
+    const deleteToken = async () => {
+        setDeletePending(true);
+        await dispatch(delete_Token(datum.id));
+        setDeletePending(false);
         setIsConfirmOpen(false);
     };
 
@@ -21,17 +29,17 @@ const TokenDataRow = ({datum, index}) => {
             <DataRow>
                 <div className='image'>
                     <Main>
-                        <img src={datum.svg} alt="token" />
+                        <img src={svgToDataURL(datum.symbol)} alt="token" />
                     </Main>
                 </div>
                 <div className='name'>
                     <Main>
-                        <p style={{fontSize: 16, fontWeight: '700'}}>{datum.name}</p>
+                        <p style={{fontSize: 16, fontWeight: '700'}}>{datum.tokenName}</p>
                     </Main>
                 </div>
                 <div className='symbol'>
                     <Main>
-                        <p>{datum.symbol}</p>
+                        <p>{datum.tokenSymbol}</p>
                     </Main>
                 </div>
                 <div className='network'>
@@ -47,7 +55,7 @@ const TokenDataRow = ({datum, index}) => {
                 <div className='edit'>
                     <Main>
                         <p>
-                            <span className='edit'><Icon icon="clarity:note-edit-line" onClick={() => setIsEditOpen(true)} /></span>
+                            {/* <span className='edit'><Icon icon="clarity:note-edit-line" onClick={() => setIsEditOpen(true)} /></span> */}
                             <span className='delete'><Icon icon="akar-icons:trash-can" onClick={() => setIsConfirmOpen(true)} /></span>
                         </p>
                     </Main>
@@ -57,16 +65,16 @@ const TokenDataRow = ({datum, index}) => {
                 <div>
                     <UnitRowForMobile>
                         <div className='left' style={{width: '10%'}}>
-                            <img src={datum.svg} alt="token" />
+                            <img src={svgToDataURL(datum.symbol)} alt="token" />
                         </div>
                         <div className='left' style={{width: '60%'}}>
-                            <p className='text-white' style={{fontSize: 16, fontWeight: '700'}}>{datum.name}</p>
+                            <p className='text-white' style={{fontSize: 16, fontWeight: '700'}}>{datum.tokenName}</p>
                         </div>
-                        <div className='right'>
+                        {/* <div className='right'>
                             <p>
                                 <span className='edit'><Icon icon="clarity:note-edit-line" onClick={() => setIsEditOpen(true)} /></span>
                             </p>
-                        </div>
+                        </div> */}
                         <div className='right'>
                             <p>
                                 <span className='delete'><Icon icon="akar-icons:trash-can" onClick={() => setIsConfirmOpen(true)} /></span>
@@ -74,18 +82,18 @@ const TokenDataRow = ({datum, index}) => {
                         </div>
                         <div className='right'>
                             <p>
-                                <span style={{fontSize: 16}}><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} data-bs-toggle="collapse" data-bs-target={`#id${index}`} onClick={() => setShow(!show)} /></span>
+                                <span style={{fontSize: 16}}><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} data-bs-toggle="collapse" data-bs-target={`#id${datum.id}`} onClick={() => setShow(!show)} /></span>
                             </p>
                         </div>
                     </UnitRowForMobile>
                 </div>
-                <div id={`id${index}`} className='collapse'>
+                <div id={`id${datum.id}`} className='collapse'>
                     <UnitRowForMobile>
                         <div className='left'>
                             <p style={{color: 'dimgrey'}}>Symbol</p>
                         </div>
                         <div className='right'>
-                            <p>{datum.symbol}</p>
+                            <p>{datum.tokenSymbol}</p>
                         </div>
                     </UnitRowForMobile>
                     <UnitRowForMobile>
@@ -106,8 +114,14 @@ const TokenDataRow = ({datum, index}) => {
                     </UnitRowForMobile>
                 </div>
             </DataRowForMobile>
-            <EditTokenModal isModalOpen={isEditOpen} setIsModalOpen={setIsEditOpen} datum={datum} />
-            <DeleteConfirmModal isModalOpen={isConfirmOpen} setIsModalOpen={setIsConfirmOpen} confirmData={datum.name} doAction={deleteToken} />
+            {/* <EditTokenModal isModalOpen={isEditOpen} setIsModalOpen={setIsEditOpen} datum={datum} /> */}
+            <DeleteConfirmModal
+                isModalOpen={isConfirmOpen}
+                setIsModalOpen={setIsConfirmOpen}
+                confirmData={datum.tokenName}
+                doAction={deleteToken}
+                pending={deletePending}
+            />
         </>
     );
 };
@@ -185,7 +199,7 @@ const UnitRowForMobile = styled.div`
     display: flex;
     justify-content: space-between;
     &>div.left {
-        width: 70%;
+        width: 40%;
     }
     &>div.right {
         p {

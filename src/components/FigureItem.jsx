@@ -1,4 +1,5 @@
 import React from "react"
+import AvatarImage from "./admin/shared/AvatarImage"
 
 const FigureItem = ({ figure, onFigureSelect, active }) => {
     return (
@@ -10,9 +11,11 @@ const FigureItem = ({ figure, onFigureSelect, active }) => {
             tabIndex="0"
         >
             <div className="figure-item__avatar">
-                <img src={figure.avatar} className="w-100" alt="figure item" />
+                <div className="mt-3 w-100">
+                    <AvatarImage avatar={figure.avatar} />
+                </div>
             </div>
-            <p className="figure-item__name">{figure.lastname}</p>
+            <p className="figure-item__name text-center">{figure.lastname}</p>
         </div>
     )
 }

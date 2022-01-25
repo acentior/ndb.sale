@@ -3,7 +3,7 @@ import * as Query from './../../apollo/graghqls/querys/UserTier';
 import * as Mutation from './../../apollo/graghqls/mutations/UserTierMutation';
 import { client } from '../../apollo/client';
 import { showFailAlarm, showSuccessAlarm } from '../../components/admin/AlarmModal';
-import { GET_USER_TIERS, UPDATE_USER_TIER, DELETE_USER_TIER, CREATE_USER_TIER } from '../actionTypes';
+import * as types from '../actionTypes';
 
 export const create_New_UserTier = createData => async dispatch => {
     try {
@@ -15,7 +15,7 @@ export const create_New_UserTier = createData => async dispatch => {
             showSuccessAlarm('User Tier created successfully');
         }
         dispatch({
-            type: CREATE_USER_TIER,
+            type: types.CREATE_USER_TIER,
             payload: data.addNewUserTier
         });
     } catch(err) {
@@ -31,7 +31,7 @@ export const get_User_Tiers = () => async dispatch => {
         });
         const dataList = _.mapKeys(data.getUserTiers, 'level');
         dispatch({
-            type: GET_USER_TIERS,
+            type: types.GET_USER_TIERS,
             payload: dataList
         })
     } catch(err) {
@@ -48,7 +48,7 @@ export const update_User_Tier = updateData => async dispatch => {
 
         showSuccessAlarm('User Tier updated successfully');
         dispatch({
-            type: UPDATE_USER_TIER,
+            type: types.UPDATE_USER_TIER,
             payload: data.updateUserTier
         });
     } catch(err) {
@@ -66,7 +66,7 @@ export const delete_User_Tier = level => async dispatch => {
 
         showSuccessAlarm('User Tier deleted successfully');
         dispatch({
-            type: DELETE_USER_TIER,
+            type: types.DELETE_USER_TIER,
             payload: level
         });
     } catch(err) {

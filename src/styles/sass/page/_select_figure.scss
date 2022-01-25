@@ -27,9 +27,22 @@
                 padding: 4px 16px;
                 margin-bottom: 16px;
             }
+            &-items-section {
+                overflow: auto;
+                max-height: 400px;
+                &::-webkit-scrollbar {
+                    height: 0;
+                    width: 6px;
+                }
+                &::-webkit-scrollbar-thumb {
+                    background-color: #ffffff;
+                }
+                &::-webkit-scrollbar-track {
+                    background-color: #464646;
+                }
+            }
             .figure-item {
                 border: 1px solid rgba(255, 255, 255, 0.5);
-                text-align: center;
                 cursor: pointer;
                 &__avatar {
                     padding: 30px 10px;

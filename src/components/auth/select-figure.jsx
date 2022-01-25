@@ -7,14 +7,15 @@ import names from "random-names-generator"
 import StarRatings from "react-star-ratings"
 import { ROUTES } from "../../utilities/routes"
 import React, { useState } from "react"
-import { figures } from "../../utilities/staticData"
 import CustomSpinner from "../common/custom-spinner"
 import { useMutation, useQuery } from "@apollo/client"
-import { CloseIcon, Trees } from "../../utilities/imgImport"
+import { CloseIcon, Tesla, Trees } from "../../utilities/imgImport"
 import { GET_USER } from "../../apollo/graghqls/querys/Auth"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { SET_AVATAR } from "../../apollo/graghqls/mutations/Auth"
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons"
+import { GET_AVATARS } from "../../apollo/graghqls/querys/AvatarComponent"
+import AvatarImage from "../admin/shared/AvatarImage"
 
 const SelectFigure = () => {
     // Containers
@@ -24,31 +25,66 @@ const SelectFigure = () => {
     const [selectedId, setSelectId] = useState(0)
     const [modalIsOpen, setIsOpen] = useState(false)
     const [searchValue, setSearchValue] = useState("")
-    const [loadingPage, setLoadingPage] = useState(true)
+    const [userDataLoading, setUserDataLoading] = useState(true)
+    const [avatarsLoading, setAvatarsLoading] = useState(true)
+    const [figuresArray, setFiguresArray] = useState([])
     const { data: userData } = useQuery(GET_USER, {
         onCompleted: () => {
             if (userData.getUser.avatar) return navigate(ROUTES.profile)
-            return setLoadingPage(false)
+            return setUserDataLoading(false)
         },
         fetchPolicy: "network-only",
     })
-    const [randomName, setRandomName] = useState(figures[selectedId].lastname)
+    const [randomName, setRandomName] = useState(figuresArray[selectedId]?.lastname)
 
     // Queries and Mutations
+    const { data: avatars } = useQuery(GET_AVATARS, {
+        onCompleted: () => {
+            setFiguresArray(
+                avatars.getAvatars?.map((item, index) => {
+                    return {
+                        id: index,
+                        avatar: {
+                            avatarSet: item.avatarSet,
+                        },
+                        firstname: item.fname,
+                        lastname: item.surname,
+                        stars: item.skillSet.map((skill) => {
+                            return {
+                                type: skill.name,
+                                rates: skill.rate,
+                            }
+                        }),
+                        abilities: item.factsSet.map((fact) => {
+                            return {
+                                title: fact.topic,
+                                text: fact.detail,
+                            }
+                        }),
+                        intro: item.details,
+                    }
+                })
+            )
+            return setAvatarsLoading(false)
+        },
+        fetchPolicy: "network-only",
+    })
     const [setAvatar] = useMutation(SET_AVATAR, {
         errorPolicy: "ignore",
         onCompleted: (data) => {
             setPending(false)
             if (data?.setAvatar === "Success") navigate(ROUTES.profile)
-            else setError(`${figures[selectedId].lastname}.${randomName} Already Exists`)
+            else setError(`${figuresArray[selectedId].lastname}.${randomName} Already Exists`)
         },
     })
+
+    const loadingPage = avatarsLoading || userDataLoading
 
     // Methods
     const handleFigure = (id) => {
         setSelectId(id)
         setIsOpen(true)
-        setRandomName(figures[id].lastname)
+        setRandomName(figuresArray[id].lastname)
     }
     const closeModal = () => {
         setIsOpen(false)
@@ -60,11 +96,12 @@ const SelectFigure = () => {
         setError("")
         setAvatar({
             variables: {
-                prefix: figures[selectedId].lastname,
+                prefix: figuresArray[selectedId].lastname,
                 name: randomName,
             },
         })
     }
+
     if (loadingPage) return <Loading />
     else
         return (
@@ -82,8 +119,8 @@ const SelectFigure = () => {
                                     value={searchValue}
                                     onChange={(e) => setSearchValue(e.target.value)}
                                 />
-                                <div className="row">
-                                    {figures
+                                <div className="row figure-select-items-section">
+                                    {figuresArray
                                         .filter((item) =>
                                             (item.firstname + item.lastname)
                                                 .toLowerCase()
@@ -110,21 +147,22 @@ const SelectFigure = () => {
                                 <div className="figure-intro__box">
                                     {!selected && (
                                         <p className="figure-name">
-                                            {figures[selectedId].firstname +
+                                            {figuresArray[selectedId].firstname +
                                                 " " +
-                                                figures[selectedId].lastname}
+                                                figuresArray[selectedId].lastname}
                                         </p>
                                     )}
                                     <div className="figure-intro__box--body">
                                         {!selected ? (
                                             <>
                                                 <div className="d-flex justify-content-around">
-                                                    <img
-                                                        src={figures[selectedId].avatar}
-                                                        alt="figure avatar"
-                                                    />
+                                                    <div className="mt-3 scale-70">
+                                                        <AvatarImage
+                                                            avatar={figuresArray[selectedId].avatar}
+                                                        />
+                                                    </div>
                                                     <div className="stars">
-                                                        {figures[selectedId].stars.map(
+                                                        {figuresArray[selectedId].stars.map(
                                                             (item, idx) => (
                                                                 <div
                                                                     className="row align-items-center"
@@ -151,7 +189,7 @@ const SelectFigure = () => {
                                                     </div>
                                                 </div>
                                                 <div className="mt-5 mb-4">
-                                                    {figures[selectedId].abilities.map(
+                                                    {figuresArray[selectedId].abilities.map(
                                                         (item, idx) => (
                                                             <div className="row mb-1" key={idx}>
                                                                 <div className="col-4">
@@ -166,7 +204,7 @@ const SelectFigure = () => {
                                                         )
                                                     )}
                                                 </div>
-                                                <p>{figures[selectedId].intro}</p>
+                                                <p>{figuresArray[selectedId].intro}</p>
                                             </>
                                         ) : (
                                             <>
@@ -189,7 +227,7 @@ const SelectFigure = () => {
                                                     <div className="d-flex align-items-end flex-column">
                                                         <div className="d-flex align-items-end justify-content-start">
                                                             <h3 className="random-display mb-0 fw-bold me-4">
-                                                                {figures[selectedId].lastname}.
+                                                                {figuresArray[selectedId].lastname}.
                                                             </h3>
                                                             <div className="random-generate">
                                                                 <p className="form-label">
@@ -273,7 +311,9 @@ const SelectFigure = () => {
                 >
                     <div className="figure-intro__box">
                         <p className="mobile-figure-header">
-                            {figures[selectedId].firstname + " " + figures[selectedId].lastname}
+                            {figuresArray[selectedId].firstname +
+                                " " +
+                                figuresArray[selectedId].lastname}
 
                             <div
                                 onClick={() => closeModal()}
@@ -289,7 +329,7 @@ const SelectFigure = () => {
                             {!selected ? (
                                 <>
                                     <div className="stars">
-                                        {figures[selectedId].stars.map((item, idx) => (
+                                        {figuresArray[selectedId].stars.map((item, idx) => (
                                             <div className="row align-items-center" key={idx}>
                                                 <div className="col-6">
                                                     <p className="ability">{item.type}</p>
@@ -306,7 +346,7 @@ const SelectFigure = () => {
                                         ))}
                                     </div>
                                     <div className="my-4">
-                                        {figures[selectedId].abilities.map((item, idx) => (
+                                        {figuresArray[selectedId].abilities.map((item, idx) => (
                                             <div className="row mb-1" key={idx}>
                                                 <div className="col-5">
                                                     <p className="fw-bold">{item.title}</p>
@@ -317,7 +357,7 @@ const SelectFigure = () => {
                                             </div>
                                         ))}
                                     </div>
-                                    <p>{figures[selectedId].intro}</p>
+                                    <p>{figuresArray[selectedId].intro}</p>
                                 </>
                             ) : (
                                 <>

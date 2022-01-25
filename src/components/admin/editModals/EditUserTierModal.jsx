@@ -161,7 +161,7 @@ const IndexPage = ({ isModalOpen, setIsModalOpen, tier = {} }) => {
             {currentStep === 2 && (
                 <>
                     <div className="input_div row">
-                        <div className="col-lg-6">
+                        <div className="col-sm-6">
                             {showError? (tokenIconError? <Alert severity="error">{tokenIconError}</Alert>: <Alert severity="success">Success! Please click Next Button</Alert>): ''}
                             {error? <Alert severity="error">{error}</Alert>: ''}
                             <div>
@@ -179,7 +179,7 @@ const IndexPage = ({ isModalOpen, setIsModalOpen, tier = {} }) => {
                                 </div>
                             </div>
                         </div>
-                        <div className="col-lg-6">
+                        <div className="col-sm-6">
                             <div className="preview-icon">
                                 <div>
                                     {parse(svgFile.svg)}
@@ -225,7 +225,7 @@ const IndexPage = ({ isModalOpen, setIsModalOpen, tier = {} }) => {
                     </div>
                     <div className="button_div">
                         <button className="btn previous" onClick={() => setCurrentStep(2)}>Previous</button>
-                        <button className="btn next" onClick={handleSubmit} disabled={pending}>{pending? 'Saving...': 'Save'}</button>
+                        <button className="btn next" onClick={handleSubmit} disabled={pending}>{pending? 'Saving. . .': 'Save'}</button>
                     </div>
                 </>
             )}

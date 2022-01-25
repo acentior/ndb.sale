@@ -8,6 +8,7 @@ export const GET_AVATAR_COMPONENTS = gql`
             tierLevel
             price
             limited
+            purchased
             svg
             width
             top

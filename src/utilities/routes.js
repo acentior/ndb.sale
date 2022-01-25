@@ -5,6 +5,7 @@ export const ROUTES = {
     verifyFailed: "/app/verify-failed/",
     verifyEmail: "/app/verify-email/",
     verifyCompany: "/app/verify-company/",
+    verifyId: "/app/verify-id/",
     profile: "/app/profile/",
     changePassword: "/app/change-password/",
     forgotPassword: "/app/forgot-password/",

@@ -10,7 +10,7 @@ const RoundsChart1 = ({ data }) => {
     useEffect(() => {
         let ttotal = []
         let tsold = []
-        console.log(data.getAuctions)
+        // console.log(data.getAuctions)
         data?.getAuctions.forEach((ele) => {
             ttotal.push([ele.totalToken, ele.minPrice * ele.totalToken])
             tsold.push([ele.minPrice, ele.sold])

@@ -1,10 +1,10 @@
-import React, { useState } from "react"
-import styled from "styled-components"
-import { Icon } from "@iconify/react"
-import Modal from "react-modal"
-import { device } from "../../../../utilities/device"
-import { width } from "./columnWidth"
-import DeleteConfirmModal from "../../DeleteConfirmModal"
+import React, { useState } from "react";
+import styled from "styled-components";
+import { Icon } from "@iconify/react";
+import Modal from "react-modal";
+import { device } from "../../../../utilities/device";
+import { width } from "./columnWidth";
+import DeleteConfirmModal from "../../DeleteConfirmModal";
 
 const UserDataRow = ({ datum, index }) => {
     const [show, setShow] = useState(false)

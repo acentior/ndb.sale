@@ -1,7 +1,5 @@
 .history-page {
     background-color: $black;
-    margin-bottom: 1rem;
-    margin-top: -1rem;
     .menu {
         border-bottom: 2px solid #464646;
     }
@@ -821,10 +819,9 @@
 }
 
 .wallet-transaction-table {
-    .green-bullet {
+    .bullet {
         width: 10px;
         height: 10px;
-        background-color: $green;
         border-radius: 100%;
     }
 }

@@ -1,3 +1,5 @@
+/* eslint-disable */
+
 import React from "react"
 import { useState } from "react"
 import { Tab, TabList, TabPanel, Tabs } from "react-tabs"

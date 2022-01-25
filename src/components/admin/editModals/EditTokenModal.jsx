@@ -13,12 +13,13 @@ const EditTokenModal = ({isModalOpen, setIsModalOpen, datum}) => {
 
     //------- Token Details and Validation
     // Token Details
-    const [details, setDetails] = useState({
-        name: '',
-        address: '',
-        symbol: '',
-        network: ''
-    });
+    const InitialDetails = {
+        name: datum.tokenName,
+        address: datum.address,
+        symbol: datum.tokenSymbol,
+        network: datum.network
+    };
+    const [details, setDetails] = useState(InitialDetails);
 
     // Token Details Data Validation
     const detailsError = useMemo(() => {
@@ -31,12 +32,12 @@ const EditTokenModal = ({isModalOpen, setIsModalOpen, datum}) => {
 
     //-------- Token Icon and Validation
     // Token Icon
-    const initialIconData = {filename: '', svg: ''};
+    const initialIconData = {filename: '', svg: datum.symbol};
     const [svgFile, setSvgFile] = useState(initialIconData);
 
     // Token Icon Validation
     const tokenIconError = useMemo(() => {
-        if(!svgFile.filename) return 'Please upload the Token Icon';
+        if(!svgFile.svg) return 'Please upload the Token Icon';
         return '';
     }, [svgFile]);
 
@@ -83,10 +84,16 @@ const EditTokenModal = ({isModalOpen, setIsModalOpen, datum}) => {
         alert('Token added successfully')
     };
 
+    const closeModal = () => {
+        setDetails(InitialDetails);
+        setSvgFile(initialIconData);
+        setIsModalOpen(false);
+    };
+
     return (
         <Modal
             isOpen={isModalOpen}
-            onRequestClose={() => setIsModalOpen(false)}
+            onRequestClose={closeModal}
             ariaHideApp={false}
             className="edit-token-modal"
             overlayClassName="pwd-modal__overlay"
@@ -94,8 +101,8 @@ const EditTokenModal = ({isModalOpen, setIsModalOpen, datum}) => {
             <div className="pwd-modal__header mb-3">
                 <p style={{fontSize: 22}}>Edit Token</p>
                 <div
-                    onClick={() => setIsModalOpen(false)}
-                    onKeyDown={() => setIsModalOpen(false)}
+                    onClick={closeModal}
+                    onKeyDown={closeModal}
                     role="button"
                     tabIndex="0"
                 >
@@ -141,7 +148,7 @@ const EditTokenModal = ({isModalOpen, setIsModalOpen, datum}) => {
                         </div>
                     </div>                                    
                     <div className="button_div">
-                        <button className="btn previous" onClick={() => setIsModalOpen(false)}>Cancel</button>
+                        <button className="btn previous" onClick={closeModal}>Cancel</button>
                         <button className="btn next" onClick={setTokenDetailsData}>Next</button>
                     </div>
                 </>

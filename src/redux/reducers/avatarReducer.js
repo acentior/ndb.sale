@@ -1,4 +1,4 @@
-import { CREATE_AVATAR_COMPONENT, FETCH_AVATAR_COMPONENTS } from "../actionTypes";
+import * as types from "../actionTypes";
 
 const InitialAvatarComponents = {
     loaded: false,
@@ -11,11 +11,10 @@ const InitialAvatarComponents = {
 
 export const avatarComponentsReducer = (state = InitialAvatarComponents, action) => {
     switch(action.type) {
-        case CREATE_AVATAR_COMPONENT:
-            console.log(action.payload)
+        case types.CREATE_AVATAR_COMPONENT:
             state[`${action.payload.groupId}s`] = { ...state[`${action.payload.groupId}s`], [action.payload.compId]: action.payload };
             return { ...state };
-        case FETCH_AVATAR_COMPONENTS:
+        case types.FETCH_AVATAR_COMPONENTS:
             state.hairStyles = { ...state.hairStyles, ...action.payload.hairStyles };
             state.facialStyles = { ...state.facialStyles, ...action.payload.facialStyles };
             state.expressions = { ...state.expressions, ...action.payload.expressions };

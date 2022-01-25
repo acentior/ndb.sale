@@ -4,7 +4,7 @@ import { Icon } from '@iconify/react';
 import styled from 'styled-components';
 import { device } from '../../utilities/device';
 
-const DeleteConfirmModal = ({isModalOpen, setIsModalOpen, confirmData = '', doAction}) => {
+const DeleteConfirmModal = ({isModalOpen, setIsModalOpen, confirmData = '', doAction, pending = false}) => {
     const [input, setInput] = useState('');
     const confirmed = useMemo(() => {
         if(input === confirmData) return true;
@@ -54,9 +54,9 @@ const DeleteConfirmModal = ({isModalOpen, setIsModalOpen, confirmData = '', doAc
                     <button
                         className={`btn ${confirmed? 'green': ''}`}
                         onClick={doAction}
-                        disabled = {!confirmed}
+                        disabled = {!confirmed || pending}
                     >
-                        Yes
+                        {pending? 'Deleting...': 'Yes'}
                     </button>
                     <button
                         className="btn"

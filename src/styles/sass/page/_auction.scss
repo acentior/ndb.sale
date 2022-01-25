@@ -51,6 +51,7 @@
                 }
             }
         }
+
         .timeframe-bar {
             margin-top: 50px;
             background: linear-gradient(270deg, #23c865 0%, #23c865 35.94%, #e8503a 57.81%);
@@ -237,6 +238,15 @@
                         line-height: 20px;
                         padding: 14px 35px;
                     }
+                }
+            }
+            &__bottom {
+                position: absolute;
+                width: calc(100% - 24px);
+                bottom: 20%;
+                @include mq("phone", max) {
+                    position: relative;
+                    bottom: unset;
                 }
             }
         }

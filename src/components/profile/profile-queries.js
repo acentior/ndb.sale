@@ -33,3 +33,14 @@ export const GET_TASK_SETTING = gql`
         }
     }
 `
+
+export const GET_USER_TIERS = gql`
+    {
+        getUserTiers {
+            level
+            name
+            point
+            svg
+        }
+    }
+`

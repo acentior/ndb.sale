@@ -111,11 +111,12 @@ main.create-user-page {
                         font-size: 14px;
                         font-weight: 500;
                     }
-                    img {
-                        width: 100px;
-                        height: 100px;
-                        display: block;
-                        margin: auto;
+                    div.image_div {
+                        width: 60%;
+                        margin: 20px auto;
+                        @include mq('phone', max) {
+                            width: 40%;
+                        }
                     }
                 }
                 @include mq('phone', max) {
@@ -161,12 +162,12 @@ main.create-user-page {
                             }
                         }
                         div.image {
-                            padding: 15% 0;
-                            img {
-                                width: 80%;
+                            padding: 35% 0;
+                            display: flex;
+                            justify-content: center;
+                            div.image_div {
+                                width: 70%;
                                 height: auto;
-                                display: block;
-                                margin: auto;
                             }
                         }
                         p {

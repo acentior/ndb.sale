@@ -1,4 +1,4 @@
-import Select from "react-select"
+import Select, { useStateManager } from "react-select"
 import Loading from "./common/Loading"
 import { Link, navigate } from "gatsby"
 import { useQuery } from "@apollo/client"
@@ -7,7 +7,7 @@ import Header from "../components/header"
 import { ROUTES } from "../utilities/routes"
 import SignOutTab from "./profile/sign-out-tab"
 import { profile_tabs } from "../utilities/staticData"
-import { Tesla, Bronze } from "../utilities/imgImport"
+import { Bronze } from "../utilities/imgImport"
 import TwoFactorModal from "./profile/two-factor-modal"
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
 import { GET_USER } from "../apollo/graghqls/querys/Auth"
@@ -19,35 +19,50 @@ import NotificationRecent from "./profile/notification-recent-switch"
 import NotificationSetting from "./profile/notification-setting-switch"
 import ProfileChangePasswordModal from "./profile/change-password-modal"
 import TierDetailsTab from "./profile/tier-details-tab"
-
+import Avatar from "../components/dress-up/avatar"
+import { GET_USER_TIERS } from "./profile/profile-queries"
 const Profile = () => {
-    // Containers
+    const dispatch = useDispatch()
+    const [userDataLoading, setUserDataLoading] = useState(true)
+    const [userTiersLoading, setUserTiersLoading] = useState(true)
+    const [tabIndex, setTabIndex] = useState(0)
+    const [displayName, setDisplayName] = useState("")
+    const [userTiersData, setUserTiersData] = useState(null)
+    const [is2FAModalOpen, setIs2FAModalOpen] = useState(false)
+    const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
+    const [currentProfileTab, setCurrentProfileTab] = useState(profile_tabs[0])
+    const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] = useState(false)
+    // Webservice
     const { data: userData, refetch } = useQuery(GET_USER, {
-        onCompleted: () => {
+        onCompleted: (res) => {
             if (userData.getUser.avatar) {
                 const { prefix, name } = userData.getUser.avatar
                 if (prefix && name) {
                     setDisplayName(prefix + "." + name)
-                    return setLoadingPage(false)
+                    return setUserDataLoading(false)
                 } else return navigate(ROUTES.selectFigure)
             }
             return navigate(ROUTES.selectFigure)
         },
         fetchPolicy: "network-only",
     })
+    const { data: userTiers } = useQuery(GET_USER_TIERS, {
+        fetchPolicy: "network-only",
+        onCompleted: () => {
+            setUserTiersData(userTiers.getUserTiers)
+            return setUserTiersLoading(false)
+        },
+    })
+
+    const loadingPage = userDataLoading || userTiersLoading
+    // Containers
     const user = userData?.getUser
     const twoStep = user?.security
         ? user.security.filter((f) => f.tfaEnabled).map((m) => m.authType)
         : []
 
-    const dispatch = useDispatch()
-    const [tabIndex, setTabIndex] = useState(0)
-    const [displayName, setDisplayName] = useState("")
-    const [loadingPage, setLoadingPage] = useState(true)
-    const [is2FAModalOpen, setIs2FAModalOpen] = useState(false)
-    const [isPasswordModalOpen, setIsPasswordModalOpen] = useState(false)
-    const [currentProfileTab, setCurrentProfileTab] = useState(profile_tabs[0])
-    const [isDeleteAccountModalOpen, setIsDeleteAccountModalOpen] = useState(false)
+    const currentTier = userTiersData?.filter((item) => item?.level === user?.tierLevel)
+    const nextTier = userTiersData?.filter((item) => item?.level === user?.tierLevel + 1)
 
     // Methods
     const handleProfileTab = (value) => {
@@ -55,7 +70,44 @@ const Profile = () => {
         setTabIndex(value.index)
     }
 
-    const getSecurityStatus = (key) => user?.userSecurity?.find((f) => f?.key === key)?.value
+    const getSecurityStatus = (key) =>
+        user?.security?.find((f) => f?.authType === key && f?.tfaEnabled)
+
+    const Tfa_Config = ({ title, method }) => {
+        const config = !!getSecurityStatus(method)
+
+        return (
+            <>
+                <div className={`status ${config ? "active" : "deactive"}`}></div>
+                <div className="security-item">
+                    <p className="security-name">{title}</p>
+
+                    {!config && (
+                        <p
+                            className="txt-green security-link"
+                            onClick={() => setIs2FAModalOpen(true)}
+                            onKeyDown={() => setIs2FAModalOpen(true)}
+                            role="presentation"
+                        >
+                            setup
+                        </p>
+                    )}
+                </div>
+                {config && (
+                    <div className="security-item-disable">
+                        <p
+                            className="txt-red security-link"
+                            onClick={() => setIs2FAModalOpen(true)}
+                            onKeyDown={() => setIs2FAModalOpen(true)}
+                            role="presentation"
+                        >
+                            disable
+                        </p>
+                    </div>
+                )}
+            </>
+        )
+    }
 
     useEffect(() => dispatch(setCurrentAuthInfo(user)), [dispatch, user])
     if (loadingPage) return <Loading />
@@ -76,20 +128,37 @@ const Profile = () => {
                 />
                 <Header />
                 <section className="container position-relative h-100">
-                    <div className="row mt-lg-2">
+                    <div className="row">
                         <div className="col-lg-3 profile-page__left border-end border-white">
                             <div className="user-info">
-                                <img className="user-info__avatar" src={Tesla} alt="tesla" />
+                                <div className="my-5 user-info__avatar">
+                                    <Avatar />
+                                </div>
                                 <p className="user-info__name">
-                                    <img src={Bronze} alt="bronze" className="me-3" />
+                                    {currentTier?.length > 0 ? (
+                                        <div
+                                            className="me-3"
+                                            dangerouslySetInnerHTML={{
+                                                __html: currentTier[0]?.svg,
+                                            }}
+                                        />
+                                    ) : (
+                                        <></>
+                                    )}
                                     {displayName}
                                 </p>
-                                <p className="silver-cnt">500p to Silver</p>
+                                <p className="silver-cnt">
+                                    {nextTier.length > 0 &&
+                                        nextTier[0].point -
+                                            user.tierPoint +
+                                            "p to " +
+                                            nextTier[0].name}
+                                </p>
                                 <div className="timeframe-bar mt-1">
                                     <div
                                         className="timeleft"
                                         style={{
-                                            width: "25%",
+                                            width: `${(user.tierPoint / nextTier[0].point) * 100}%`,
                                         }}
                                     ></div>
                                 </div>
@@ -155,50 +224,26 @@ const Profile = () => {
                                                     </div>
                                                 </div>
                                                 <div className="account-security">
-                                                    <h4>
-                                                        Increase your account security&nbsp;
-                                                        <span className="txt-green">
-                                                            {user && user?.security.length}
-                                                        </span>
-                                                        /4
-                                                    </h4>
+                                                    <h4>Increase your account security</h4>
                                                     <div className="row w-100 mx-auto">
                                                         <div className="col-sm-6 br">
-                                                            <div
-                                                                className={`status ${
-                                                                    getSecurityStatus("2FA")
-                                                                        ? "active"
-                                                                        : "deactive"
-                                                                }`}
-                                                            ></div>
-                                                            <div className="security-item">
-                                                                <p className="security-name">2FA</p>
-                                                                <p
-                                                                    className="txt-green security-link"
-                                                                    onClick={() =>
-                                                                        setIs2FAModalOpen(true)
-                                                                    }
-                                                                    onKeyDown={() =>
-                                                                        setIs2FAModalOpen(true)
-                                                                    }
-                                                                    role="presentation"
-                                                                >
-                                                                    setup
-                                                                </p>
-                                                            </div>
+                                                            <Tfa_Config
+                                                                title="2FA Email"
+                                                                method="email"
+                                                            />
                                                         </div>
 
                                                         <div className="col-sm-6">
                                                             <div
                                                                 className={`status ${
-                                                                    getSecurityStatus("KYC")
+                                                                    user?.verify?.kycVerified
                                                                         ? "active"
                                                                         : "deactive"
                                                                 }`}
                                                             ></div>
                                                             <div className="security-item">
                                                                 <p className="security-name">
-                                                                    KYC/KYB Verificatoin
+                                                                    KYC Verificatoin
                                                                 </p>
                                                                 {user?.verify.kybVerified &&
                                                                 user?.verify.kycVerified ? (
@@ -207,7 +252,7 @@ const Profile = () => {
                                                                     </p>
                                                                 ) : (
                                                                     <Link
-                                                                        to={ROUTES.verifyCompany}
+                                                                        to={ROUTES.verifyId}
                                                                         className="security-link"
                                                                     >
                                                                         setup
@@ -217,40 +262,17 @@ const Profile = () => {
                                                         </div>
 
                                                         <div className="col-sm-6 br">
-                                                            <div
-                                                                className={`status ${
-                                                                    getSecurityStatus("mobile")
-                                                                        ? "active"
-                                                                        : "deactive"
-                                                                }`}
-                                                            ></div>
-                                                            <div className="security-item">
-                                                                <p className="security-name">
-                                                                    Mobile Verification
-                                                                </p>
-                                                                <p className="txt-cyan security-link">
-                                                                    Setup
-                                                                </p>
-                                                            </div>
+                                                            <Tfa_Config
+                                                                title="2FA Mobile"
+                                                                method="phone"
+                                                            />
                                                         </div>
 
                                                         <div className="col-sm-6">
-                                                            <div
-                                                                className={`status ${
-                                                                    getSecurityStatus("AML")
-                                                                        ? "active"
-                                                                        : "deactive"
-                                                                }`}
-                                                            ></div>
-                                                            <div className="security-item">
-                                                                <p className="security-name">
-                                                                    AML Identity Verificatoin more
-                                                                    than 100k CHF withdraw
-                                                                </p>
-                                                                <p className="txt-cyan security-link">
-                                                                    Setup
-                                                                </p>
-                                                            </div>
+                                                            <Tfa_Config
+                                                                title="2FA Authentication app"
+                                                                method="app"
+                                                            />
                                                         </div>
                                                     </div>
                                                 </div>

@@ -1,19 +1,23 @@
-import React, { useState, useMemo } from "react"
+import React, { useState, useMemo } from "react";
+import { useDispatch } from "react-redux";
 import { Link } from "gatsby"
 import { Icon } from '@iconify/react';
 import parse from 'html-react-parser';
+import Alert from '@mui/material/Alert';
 
 import Seo from "../../../components/seo"
 import Stepper2 from "../../../components/admin/Stepper2";
 import LayoutForCreate from "../../../components/admin/LayoutForCreate";
-
-import Alert from '@mui/material/Alert';
+import { create_Token } from "../../../redux/actions/tokenAction";
 
 
 const IndexPage = () => {
+    const dispatch = useDispatch();
+
     const [currentStep, setCurrentStep] = useState(1);
     const [showError, setShowError] = useState(false);
     const [error, setError] = useState('');
+    const [pending, setPending] = useState(false);
 
     //------- Token Details and Validation
     // Token Details
@@ -83,13 +87,22 @@ const IndexPage = () => {
         setShowError(false);
     };
 
-    const handleSubmit = () => {
-        alert('Token added successfully')
+    const handleSubmit = async () => {
+        setPending(true);
+        const createData = {
+            tokenName: details.name,
+            tokenSymbol: details.symbol,
+            network: details.network,
+            address: details.address,
+            symbol: svgFile.svg
+        };
+        await dispatch(create_Token(createData));
+        setPending(false);
     };
 
     return (
         <>
-            <Seo title="Create Email" />
+            <Seo title="Create Token" />
             <main className="create-token-page">
                 <LayoutForCreate>
                     <Link className="close" to="/admin"><Icon icon="codicon:chrome-close" /></Link>
@@ -209,7 +222,7 @@ const IndexPage = () => {
                             </div>
                             <div className="button_div">
                                 <button className="btn previous" onClick={() => setCurrentStep(2)}>Previous</button>
-                                <button className="btn next" onClick={handleSubmit}>Add Token</button>
+                                <button className="btn next" onClick={handleSubmit} disabled={pending}>{pending? 'Saving. . .': 'Save'}</button>
                             </div>
                         </>
                     )}

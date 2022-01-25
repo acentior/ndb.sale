@@ -26,7 +26,6 @@ import failla from "../images/avatars/failla.svg"
 import curie from "../images/avatars/curie.svg"
 
 import editIcon from "../images/edit.svg"
-import qrCode from "../images/qr-code.png"
 
 import eth from "../images/eth.svg"
 import btc from "../images/btc.svg"
@@ -166,8 +165,23 @@ import walletQRCode from "../images/wallet-qr-code.svg"
 import destinationWallet from "../images/destination-wallet.svg"
 import equity from "../images/icons/equity.svg"
 
-import failImage from "./../images/fail.svg";
-import successImage from "./../images/success.svg";
+import failImage from "./../images/fail.svg"
+import successImage from "./../images/success.svg"
+
+import cryptoCoin from "../images/payment/cryptocoin.svg"
+import credit from "../images/payment/credit.svg"
+import ndbWallet from "../images/payment/ndb-wallet.svg"
+import externalWallet from "../images/payment/external-wallet.svg"
+import paypal from "../images/payment/paypal.svg"
+import paypalBrand from "../images/payment/paypal-brand.svg"
+
+import verifyIdStep1 from "../images/verify-id/verify-id-step-1.svg"
+import verifyIdStep2 from "../images/verify-id/verify-id-step-2.svg"
+import verifyIdStep3 from "../images/verify-id/verify-id-step-3.svg"
+import verifyIdStep4 from "../images/verify-id/verify-id-step-4.svg"
+import verifyIdStep5 from "../images/verify-id/verify-id-step-5.svg"
+import verifyIdStep6 from "../images/verify-id/verify-id-step-6.svg"
+import verifyIdStep7 from "../images/verify-id/verify-id-step-7.svg"
 
 export const Logo = logo
 export const Bell = bell
@@ -200,7 +214,6 @@ export const Failla = failla
 export const Curie = curie
 
 export const EditIcon = editIcon
-export const QRCode = qrCode
 export const ETH = eth
 export const BTC = btc
 export const BCH = bch
@@ -334,5 +347,20 @@ export const WalletQRCode = walletQRCode
 export const DestinationWallet = destinationWallet
 export const Equity = equity
 
-export const FailImage = failImage;
-export const SuccesImage = successImage;
+export const FailImage = failImage
+export const SuccesImage = successImage
+
+export const CryptoCoin = cryptoCoin
+export const Credit = credit
+export const NdbWallet = ndbWallet
+export const ExternalWallet = externalWallet
+export const Paypal = paypal
+export const PaypalBrand = paypalBrand
+
+export const VerifyIdStep1 = verifyIdStep1
+export const VerifyIdStep2 = verifyIdStep2
+export const VerifyIdStep3 = verifyIdStep3
+export const VerifyIdStep4 = verifyIdStep4
+export const VerifyIdStep5 = verifyIdStep5
+export const VerifyIdStep6 = verifyIdStep6
+export const VerifyIdStep7 = verifyIdStep7

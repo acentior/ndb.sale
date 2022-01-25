@@ -5,7 +5,7 @@ main.admin-setting-page {
         }
     }
     .container {
-        max-height: 80vh;
+        max-height: 85vh;
         overflow: auto;
         @include mq("laptop-wide", max) {
             max-width: 95%;

@@ -6,6 +6,7 @@ import { avatarComponentsReducer } from "./avatarReducer"
 import { bidReducer } from "./bidReducer"
 import { userTierReducer } from "./settingReducer"
 import { dataReducer } from './dataReducer';
+import { kycSettingsReducer } from "./settingReducer"
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -14,6 +15,7 @@ const rootReducer = combineReducers({
     pagination: paginationReducer,
     userTiers: userTierReducer,
     placeBid: bidReducer,
+    kycSettings: kycSettingsReducer,
     data: dataReducer,
 })
 

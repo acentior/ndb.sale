@@ -81,8 +81,6 @@
     "styled-components": "^5.3.3",
     "subscriptions-transport-ws": "^0.11.0",
     "svg-to-dataurl": "^1.0.0",
-    "swr": "^1.1.2",
-    "unfetch": "^4.2.0",
     "util": "^0.12.4",
     "validator": "^13.7.0",
     "wagmi": "^0.1.3"

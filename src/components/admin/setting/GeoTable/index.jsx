@@ -1,10 +1,32 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { device } from '../../../../utilities/device';
 import GoeDataRow from './GeoDataRow';
 import { width } from './columnWidth';
+import Loading from './../../shared/Loading';
+import PaginationBar from '../../PaginationBar';
+import { get_Disallowed_Countries } from '../../../../redux/actions/geoLocationAction';
 
-const GeoTable = ({data}) => {
+const GeoTable = () => {
+    const dispatch = useDispatch();
+    const [loading, setLoading] = useState(false);
+    const { data } = useSelector(state => state);
+    const { page, limit } = useSelector(state => state.pagination);
+    const [pageData, setPageData] = useState([]);
+
+    useEffect(() => {
+        (async function() {
+            setLoading(true);
+            await dispatch(get_Disallowed_Countries());
+            setLoading(false);
+        })();
+    }, []);
+
+    useEffect(() => {
+        setPageData(Object.values(data).slice((page - 1) * limit, page * limit));
+    }, [dispatch, data, page, limit]);
+
     return (
         <>
             <TableHead>
@@ -15,11 +37,17 @@ const GeoTable = ({data}) => {
             <TableHeadForMobile>
                 <div className='name'>GEO Data</div>
             </TableHeadForMobile>
-            <TableBody>
-                {data.map((datum, index) => {
-                    return <GoeDataRow key={index} datum={datum} index={index} />
-                })}
-            </TableBody>
+            {loading? 
+                <Loading />:
+                <>
+                    <TableBody>
+                        {pageData.map((datum) => {
+                            return <GoeDataRow key={datum.id} datum={datum} />
+                        })}
+                    </TableBody>
+                    <PaginationBar />
+                </>
+            }
         </>
     )
 };

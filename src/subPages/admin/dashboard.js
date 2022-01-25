@@ -50,6 +50,10 @@ const IndexPage = () => {
                             <Icon icon="ic:outline-generating-tokens" />
                             Token
                         </Link>
+                        <Link className="select-item" to="/admin/create/geo-location">
+                            <Icon icon="wpf:geo-fence" />
+                            Geo location
+                        </Link>
                     </div> 
                 </LayoutWithMenu>
             </main>

@@ -57,7 +57,11 @@ export default function ConnectWalletTab() {
                     </div>
                 </>
             )}
-            {connectError && <div>{connectError?.message ?? "Failed to connect"}</div>}
+            {connectError && (
+                <div className="py-2" style={{ color: "#e8503a" }}>
+                    {connectError?.message ?? "Failed to connect"}
+                </div>
+            )}
         </div>
     )
 }

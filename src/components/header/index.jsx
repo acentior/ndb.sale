@@ -1,35 +1,47 @@
+/* eslint-disable */
+
 import React, { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
-import { useQuery } from "@apollo/client"
+import { useQuery, useMutation } from "@apollo/client"
 // Libraries
 import { Link } from "gatsby"
 import { isBrowser } from "./../../utilities/auth"
 // Icons
 import { Bell, Logo, NotificationBell } from "../../utilities/imgImport"
-import { User } from "../../utilities/user-data"
 
 import { useAuth } from "../../hooks/useAuth"
-import DressupModal from "../dressup/dressup-modal"
+import DressupModal from "../dress-up/dressup-user-modal"
 import { ROUTES } from "../../utilities/routes"
 import CurrencyChoice from "./currency-choice"
 import { fetch_Avatar_Components } from "./../../redux/actions/avatarAction"
 import { GET_USER } from "../../apollo/graghqls/querys/Auth"
-import { setCurrentAuthInfo } from "../../redux/actions/authAction"
+import { setCurrentAuthInfo, getAuthInfo } from "../../redux/actions/authAction"
 import { GET_ALL_UNREAD_NOTIFICATIONS } from "../../apollo/graghqls/querys/Notification"
+import { UPDATE_AVATARSET } from "../../apollo/graghqls/mutations/AvatarComponent"
+import Avatar from "../dress-up/avatar"
 
 const Menu = () => {
+    const dispatch = useDispatch()
     // Webservice
     const { data: user_data } = useQuery(GET_USER)
     const { data: allUnReadNotifications } = useQuery(GET_ALL_UNREAD_NOTIFICATIONS, {
         fetchPolicy: "network-only",
         onCompleted: (response) => {
-            setNewNotification(response.getAllUnReadNotifications.length !== 0)
+            if (!response.getAllUnReadNotifications) return
+            setNewNotification(response.getAllUnReadNotifications?.length !== 0)
+        },
+    })
+    const [updateAvatarSet] = useMutation(UPDATE_AVATARSET, {
+        onCompleted: (data) => {
+            dispatch(getAuthInfo())
+        },
+        onError: (err) => {
+            console.log("received Mutation data", err)
         },
     })
 
     // Containers
     const auth = useAuth()
-    const dispatch = useDispatch()
     const userInfo = user_data?.getUser
     const [active, setActive] = useState(false)
     const { avatarComponents } = useSelector((state) => state)
@@ -82,7 +94,6 @@ const Menu = () => {
         document.addEventListener("keydown", handleEscKeyPress)
         return () => document.removeEventListener("keydown", handleEscKeyPress)
     })
-
     // Render
     return (
         <nav className={active ? "menu menu--active" : "menu"}>
@@ -96,16 +107,9 @@ const Menu = () => {
                             window.location.pathname === ROUTES.faq ||
                             window.location.pathname === ROUTES.wallet ||
                             window.location.pathname === ROUTES.auction ||
+                            window.location.pathname === ROUTES.payment ||
                             window.location.pathname.includes(ROUTES.admin)) && (
                             <div className="d-none d-sm-flex justify-content-between gap-5">
-                                <Link
-                                    to={ROUTES.auction}
-                                    className={`${
-                                        window.location.pathname === ROUTES.auction && "txt-green"
-                                    }`}
-                                >
-                                    sale
-                                </Link>
                                 <Link
                                     to={ROUTES.wallet}
                                     className={`${
@@ -113,6 +117,16 @@ const Menu = () => {
                                     }`}
                                 >
                                     wallet
+                                </Link>
+                                <Link
+                                    to={ROUTES.auction}
+                                    className={`${
+                                        (window.location.pathname === ROUTES.auction ||
+                                            window.location.pathname === ROUTES.payment) &&
+                                        "txt-green"
+                                    }`}
+                                >
+                                    sale
                                 </Link>
                                 <Link
                                     to={ROUTES.profile}
@@ -154,7 +168,7 @@ const Menu = () => {
                             </div>
                         )}
                 </div>
-                <div className="d-flex align-items-center">
+                <div className="d-flex align-items-center header-right-side">
                     <div>
                         {!auth?.isLoggedIn() ? (
                             <Link
@@ -173,21 +187,24 @@ const Menu = () => {
                                 </li>
                                 <li className="px-sm-3 px-0 scale-75">
                                     <Link to={ROUTES.profile}>
-                                        <img
-                                            src={User.avatar}
-                                            className="user-avatar"
-                                            alt="Tesla Icon"
-                                        />
+                                        <Avatar className="user-avatar" />
                                     </Link>
                                 </li>
                                 <DressupModal
                                     setIsModalOpen={setIsDressUPModalOpen}
                                     isModalOpen={isDressUPModalOpen}
+                                    onSave={(res) => {
+                                        updateAvatarSet({
+                                            variables: {
+                                                components: res,
+                                            },
+                                        })
+                                    }}
                                 />
                             </ul>
                         )}
                     </div>
-                    <CurrencyChoice classNames="d-sm-block" />
+                    <CurrencyChoice classNames="d-sm-block d-none" />
                     <button
                         type="button"
                         className="menu__toggler"

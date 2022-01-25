@@ -1,7 +1,9 @@
 export const width = {
-    round: '30%',
-    time: '15%',
-    amount: '15%',
-    price: '15%',
-    per_token: '25%',
+    round: '15%',
+    time: '30%',
+    token: '15%',
+    price: '10%',
+    sold: '10%',
+    stats: '7%',
+    round_status: '13%'
 };

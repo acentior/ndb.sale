@@ -122,28 +122,28 @@ const ChanceChart = ({ data }) => {
                     <div>
                         <input
                             type="checkbox"
-                            class="btn-check"
+                            className="btn-check"
                             id="btn-wins-outlined"
-                            autocomplete="off"
+                            autoComplete="off"
                             onClick={() => {
                                 setWinFlag(!winFlag)
                             }}
                         />
-                        <label class="_btn _btn-wins-outlined" for="btn-wins-outlined">
+                        <label className="_btn _btn-wins-outlined" htmlFor="btn-wins-outlined">
                             Win Rate
                         </label>
                     </div>
                     <div>
                         <input
                             type="checkbox"
-                            class="btn-check"
+                            className="btn-check"
                             id="btn-fails-outlined"
-                            autocomplete="off"
+                            autoComplete="off"
                             onClick={() => {
                                 setFailFlag(!failFlag)
                             }}
                         />
-                        <label class="_btn _btn-fails-outlined" for="btn-fails-outlined">
+                        <label className="_btn _btn-fails-outlined" htmlFor="btn-fails-outlined">
                             Fail Rate
                         </label>
                     </div>

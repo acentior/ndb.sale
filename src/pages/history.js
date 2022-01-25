@@ -1,10 +1,11 @@
+/* eslint-disable */
+
 import React, { useReducer, useCallback, useState } from "react"
+import { useQuery } from "@apollo/client"
 import Header from "../components/header"
 import Select, { components } from "react-select"
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
-import { numberWithCommas } from "../utilities/number"
-import { BTC, DOGE, ETH, NDB, Airdrop, Address, Copy2, CloseIcon } from "../utilities/imgImport"
-import { Link } from "gatsby"
+import { BTC, DOGE, ETH, Airdrop, Address, Copy2, CloseIcon } from "../utilities/imgImport"
 import Modal from "react-modal"
 import { CopyToClipboard } from "react-copy-to-clipboard"
 import { Input } from "../components/common/FormControl"
@@ -17,6 +18,8 @@ import Transactions from "../components/wallet/transactions-tab"
 import ReferralTab from "../components/wallet/referral-tab"
 import StakeTab from "../components/wallet/stake-tab"
 import BidActivityTab from "../components/wallet/bid-activity-tab"
+import { GET_BID_LIST_BY_USER } from "../apollo/graghqls/querys/Bid"
+import InternalWallet from "../components/wallet/internal-wallet"
 
 const transactions = [
     {
@@ -81,71 +84,6 @@ const transactions = [
     },
 ]
 
-const my_assets = [
-    {
-        icon: NDB,
-        abbr: "NDB",
-        name: "NDB Token",
-        amount: 12.0865,
-        price: 282004.43,
-    },
-    {
-        icon: ETH,
-        abbr: "ETH",
-        name: "Ethereum",
-        amount: 12.0865,
-        price: 282004.43,
-    },
-    {
-        icon: BTC,
-        abbr: "BTC",
-        name: "Bitcoin",
-        amount: 12.0865,
-        price: 282004.43,
-    },
-    {
-        icon: NDB,
-        abbr: "NDB",
-        name: "NDB Token",
-        amount: 12.0865,
-        price: 282004.43,
-    },
-    {
-        icon: ETH,
-        abbr: "ETH",
-        name: "Ethereum",
-        amount: 12.0865,
-        price: 282004.43,
-    },
-    {
-        icon: BTC,
-        abbr: "BTC",
-        name: "Bitcoin",
-        amount: 12.0865,
-        price: 282004.43,
-    },
-    {
-        icon: NDB,
-        abbr: "NDB",
-        name: "NDB Token",
-        amount: 12.0865,
-        price: 282004.43,
-    },
-    {
-        icon: ETH,
-        abbr: "ETH",
-        name: "Ethereum",
-        amount: 12.0865,
-        price: 282004.43,
-    },
-    {
-        icon: BTC,
-        abbr: "BTC",
-        name: "Bitcoin",
-        amount: 12.0865,
-        price: 282004.43,
-    },
-]
 const airdrops = [
     {
         icon: Airdrop,
@@ -224,6 +162,9 @@ const SelectedValue = (props) => {
 }
 
 const History = () => {
+    const size = useWindowSize()
+    const { data: bidList } = useQuery(GET_BID_LIST_BY_USER)
+
     const [hideValues, setHideValues] = useState(false)
     const [btcEquityValue, setBtcEquityValue] = useState("12.003.877")
     const [dollarEquityValue, setDollarEquityValue] = useState("282,004.43")
@@ -232,7 +173,7 @@ const History = () => {
     const obscureValueString = "****"
     const [btcOrUsd, setBtcOrUsd] = useState("USD")
     const copyText = "kjY602GgjsKP23mhs09oOp63bd3n34fsla"
-    const size = useWindowSize()
+
     const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
         amount: "",
         detail_show: false,
@@ -367,7 +308,8 @@ const History = () => {
                                 <div className="btn-group d-flex justify-content-between mt-3 align-items-center">
                                     <div className="col-sm-6 pe-2">
                                         <button
-                                            className="btn btn-outline-light rounded-0 col-12 text-uppercase fw-bold py-2 h4"
+                                            disabled
+                                            className="btn btn-outline-secondary rounded-0 col-12 text-uppercase fw-bold py-2 h4"
                                             onClick={() => {
                                                 setTransactionType(TRANSACTION_TYPES.deposit)
                                                 setShowDepositAndWidthdrawModal(true)
@@ -396,34 +338,10 @@ const History = () => {
                                     )}
                                 </div>
                             </div>
-                            <table className="my-3">
-                                <tbody>
-                                    {my_assets.map((item, idx) => (
-                                        <tr key={idx}>
-                                            <td className="d-flex align-items-center ps-2">
-                                                <img
-                                                    src={item.icon}
-                                                    alt="coin icon"
-                                                    className="me-2"
-                                                />
-                                                <div>
-                                                    <p className="coin-abbr text-light">
-                                                        {item.name}
-                                                    </p>
-                                                </div>
-                                            </td>
-                                            <td>
-                                                <p className="coin-price fw-bold">
-                                                    {item.amount} {item.abbr}
-                                                </p>
-                                                <p className="coin-percent">
-                                                    {numberWithCommas(item.price)}$
-                                                </p>
-                                            </td>
-                                        </tr>
-                                    ))}
-                                </tbody>
-                            </table>
+
+                            <div>
+                                <InternalWallet />
+                            </div>
                         </div>
                     </div>
                     <div className="section-history__right col-lg-8 col-md-7">
@@ -517,7 +435,7 @@ const History = () => {
                                 <Transactions />
                             </TabPanel>
                             <TabPanel>
-                                <BidActivityTab />
+                                <BidActivityTab bids={bidList?.getBidListByUser} />
                             </TabPanel>
                         </Tabs>
                     </div>
