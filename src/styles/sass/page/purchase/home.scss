@@ -6,6 +6,18 @@ main.purchase-page {
         @media screen and (max-width: 768px) {
             height: 100vh;
         }
+        @media screen and (max-width: 575px) {
+            .btn-desktop {
+                display: none !important;
+            }
+        }
+        @media screen and (min-width: 576px) {
+            .btn-mobile {
+                display: none !important;
+            }
+        }
+        
+        
         div.container {
             width: 100%;
             div.row {
@@ -27,7 +39,6 @@ main.purchase-page {
                     p.text {
                         margin-left: 5vw;
                         font-size: 24px;
-                        font-weight: 600;
                     }
                     button.btn-green {
                         display: block;
@@ -41,13 +52,13 @@ main.purchase-page {
                         padding: 0 20px;
 
                         h4.title1 {
-                            font-size: 36px;
+                            font-size: 24px;
                         }
                         h3.title2 {
                             font-size: 48px;
                         }
                         p.text {
-                            font-size: 20px;
+                            font-size: 16px;
                             margin-right: 5vw;
                         }
                         button.btn-green {

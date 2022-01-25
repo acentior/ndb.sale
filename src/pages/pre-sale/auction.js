@@ -152,8 +152,8 @@ const Auction = () => {
             <Header />
             <section className="container">
                 <div className="row">
-                    <div className="auction-left col-md-5">
-                        <p className="title">Next round starts In</p>
+                    <div className="auction-left col-md-4">
+                        <p className="title">Exclusive pre sale</p>
                         <div className="timebar">
                             <div className="progress">
                                 <span className="time" style={{ left: percentage * 0.8 + "%" }}>
@@ -191,7 +191,7 @@ const Auction = () => {
                             </table>
                         </div>
                     </div>
-                    <div className="auction-right col-md-7">
+                    <div className="auction-right col-md-8">
                         <p className="title">Exclusive pre round</p>
                         <div className="tokenDiv">
                             {showSelect ? (

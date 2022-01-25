@@ -3,6 +3,7 @@ main.purchaseAuction-page {
         border-bottom: 2px solid #464646;
     }
     section.container {
+        max-width: 100%;
         table {
             tbody {
                 tr {
@@ -45,7 +46,6 @@ main.purchaseAuction-page {
             }
             div.table-container {
                 width: 100%;
-                padding: 0 10%;
             }
         }
         div.auction-right {
@@ -57,7 +57,7 @@ main.purchaseAuction-page {
 
             &>div.tokenDiv {
                 width: 100%;
-                height: 420px;
+                min-height: 444px;
                 border: 1px solid #464646;
                 padding: 12px 39px;
                 div.buy_token {
@@ -320,7 +320,6 @@ div.timebar {
     &>div.progress {
         height: 12px;
         border-radius: 0;
-        margin: 0 10%;
         overflow: visible;
     }
     & span.time {
