@@ -31,7 +31,7 @@ main.purchaseAuction-page {
             }
             @media screen and (max-width: 768px) {
                 font-size: 14px;
-                display: none;
+                // display: none;
             }
         }
         p.title {
@@ -56,7 +56,7 @@ main.purchaseAuction-page {
             padding: 1vw 0;
             @media screen and (max-width: 768px) {
                 border: none;
-                height: auto;
+                // height: auto;
             }
             div.table-container {
                 width: 100%;
@@ -95,11 +95,26 @@ main.purchaseAuction-page {
                             color: white;
                             text-align: center;
                         }
+                        
                         @media screen and (max-width: 768px) {
                             &>div.price {
                                 width: 60%;
                             }
                         }
+                        @media screen and (max-width: 768px) {
+                            flex-direction: column;
+                            margin-top: 30px;
+                            p.title{
+                                width: 100%;
+                                margin: 0;
+                                margin-bottom: 5%;
+                                font-size: 24px;
+                            }
+                            &>div.price {
+                                width: 100%;
+                            }
+                        }
+                        
                     }
                 }
 
@@ -169,6 +184,10 @@ main.purchaseAuction-page {
                 button.ndb_button {
                     margin-top: 40px;
                     margin-bottom: 20px;
+                    @media screen and (max-width: 768px) {
+                        margin-top: 25px;
+                    margin-bottom: 20px;
+                    }
                 }
             }
 
@@ -178,7 +197,37 @@ main.purchaseAuction-page {
                     padding: 0 10px;
                     height: auto;
                 }
-            }            
+            }
+            @media screen and (max-width: 768px) {
+                &>div.tokenDiv {
+                    position: absolute;
+                    width: 95%;
+                    left: 50%;
+                    top: 50%;
+                    transform: translate(-50%,-50%);
+                    z-index: 99;
+                    background: #171717;
+                    padding: 40px 10px 0;
+                   &>div.buy_token{
+                        p.title:first-child {
+                        @media screen and (max-width: 768px) {
+                            font-size: 22px;
+                            text-align: center;
+                            line-height: 1;
+                            height: auto;    
+                        }
+                        }
+                        p.title {
+                            @media screen and (max-width: 768px) {
+                                font-size: 18px;
+                                text-align: center;
+                                line-height: 1;
+                                height: auto;        
+                            }
+                        }
+                   }
+                }
+            }           
         }
     }
 }
@@ -257,6 +306,17 @@ div.slider-container {
         border-color: #23c865;
         background-color: #23c865;
         margin-top: -10px;
+    }
+    @media screen and (max-width: 768px) {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 30px;
+        &>input {
+           width: 100%;
+           margin: 0!important;
+           line-height: 32px;
+           font-size: 18px;
+        }
     }
 }
 
