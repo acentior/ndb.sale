@@ -154,7 +154,7 @@ const Auction = () => {
             <section className="container">
                 <div className="row">
                     <div className="auction-left col-md-4">
-                        <p className="title">Pre-SALE ends in</p>
+                        <p className="title-sale-ends">Pre-SALE ends in</p>
                         <div className="timebar">
                             <div className="progress">
                                 <span className="time" style={{ left: percentage * 0.8 + "%" }}>
@@ -280,6 +280,7 @@ const Auction = () => {
                                 </div>
                             )}
                         </div>
+                        <p className="mt-2">NDB tokens will be delivered within 30 days of purchase</p>
                     </div>
                 </div>
 

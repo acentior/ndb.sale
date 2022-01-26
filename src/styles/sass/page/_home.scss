@@ -177,12 +177,12 @@
 }
 .token {
     &-left {
-        font-weight: 900;
-        font-size: 30px;
-        line-height: 44px;
-        text-align: left;
-        font-weight: bold;
+        font-size: 24px;
+        line-height: 29px;
+        letter-spacing: 0.01em;
         font-variant: small-caps;
+        color: #FFFFFF;
+        opacity: 0.4;
         @include mq("tablet", max) {
             font-size: 28px;
             line-height: 35px;

@@ -12,8 +12,8 @@ const Home = () => {
                 <Header />
                 <section className="home-section">
                     <div className="container">
-                        <div className="row flex-row-reverse">
-                            <div className="col-sm-7 d-flex flex-column justify-content-center desctription">
+                        <div className="row flex-row-reverse justify-content-around">
+                            <div className="col-sm-7 d-flex flex-column justify-content-center align-items-start description">
                                 <h4 className="title1 txt-green">ExcluSive pre-sale of</h4>
                                 <h3 className="title2">NDB TOKEN</h3>
                                 <p className="text">
@@ -21,7 +21,7 @@ const Home = () => {
                                     anyone else at the fixed price before the auction starts.
                                 </p>
                                 {/* Desktop View Button */}
-                                <div className="btn-desktop mt-2">
+                                <div className="btn-desktop mt-4">
                                     <div>
                                         <button
                                             className="btn-green"
@@ -37,11 +37,8 @@ const Home = () => {
                             </div>
                             <div className="col-sm-5 d-flex justify-content-center align-items-center imageDiv">
                                 <div className="hero-image">
-                                    <div
-                                        className="position-absolute"
-                                        style={{ top: "50%", transform: "translateY(-50%)" }}
-                                    >
-                                        <p className="token-left text-uppercase mt-4">
+                                    <div>
+                                        <p className="text-left text-light text-uppercase mt-4">
                                             7 days Left
                                         </p>
                                         <p className="token-value mt-2 mt-sm-0">
@@ -58,7 +55,7 @@ const Home = () => {
                         <div className="btn-mobile">
                             <div className="">
                                 <button
-                                    className="btn btn-green"
+                                    className="btn-green"
                                     onClick={() => {
                                         navigate("/pre-sale/auction")
                                     }}
@@ -66,7 +63,7 @@ const Home = () => {
                                     Buy
                                 </button>
                             </div>
-                            "<div className="text-decoration-underline">Learn more</div>
+                            "<div className="text-decoration-underline text-center text-light">Learn more</div>
                         </div>
                     </div>
                 </section>
