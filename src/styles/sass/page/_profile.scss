@@ -739,13 +739,17 @@
     }
 
     &__header {
-        display: flex;
-        justify-content: end;
         font-weight: bold;
         font-size: 18px;
         line-height: 22px;
+        height: 22px;
         text-transform: uppercase;
         color: white;
+        position: relative;
+        div.close {
+            position: absolute;
+            right: 0;
+        }
     }
     &-avatar-name {
         font-weight: 600;

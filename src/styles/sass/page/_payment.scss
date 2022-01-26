@@ -1,11 +1,15 @@
 .payment-page {
     .payment-wrapper {
         padding-top: 100px;
+        padding-left: 60px;
+        padding-right: 60px;
         @include mq("tablet", max) {
             padding-top: 75px;
         }
         @include mq("phone", max) {
             padding-top: 65px;
+            padding-left: 0;
+            padding-right: 0;
         }
     }
     & > section {
@@ -38,8 +42,6 @@
         display: none;
     }
     .payment-type__tab {
-        padding: 0 60px;
-        padding-right: 20px;
         @include mq("tablet", max) {
             padding: 0;
         }
@@ -74,9 +76,7 @@
                 font-size: 18px;
                 line-height: 22px;
                 margin-bottom: 0;
-                @include mq("phone", max) {
-                    text-transform: uppercase;
-                }
+                text-transform: uppercase;
             }
         }
         &-list {
@@ -244,16 +244,17 @@
             }
             .qr-code {
                 text-align: center;
-                svg {
-                    width: 115.95px;
-                    height: 115.95px;
+                width: 110px;
+                height: 110px;
+                img {
+                    width: 100%;
+                    height: auto;
                 }
                 @include mq("phone", max) {
-                    margin-top: 23px;
-                    svg {
-                        width: 132px;
-                        height: 132px;
-                    }
+                    width: 130px;
+                    height: 130px;
+                    margin: auto;
+                    margin-top: 20px;
                 }
             }
         }

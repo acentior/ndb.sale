@@ -7,6 +7,7 @@ import { width } from './columnWidth';
 import Loading from './../../shared/Loading';
 import PaginationBar from '../../PaginationBar';
 import { get_Disallowed_Countries } from '../../../../redux/actions/geoLocationAction';
+import { set_Page } from '../../../../redux/actions/paginationAction';
 
 const GeoTable = () => {
     const dispatch = useDispatch();
@@ -17,6 +18,7 @@ const GeoTable = () => {
 
     useEffect(() => {
         (async function() {
+            dispatch(set_Page(1, 5));
             setLoading(true);
             await dispatch(get_Disallowed_Countries());
             setLoading(false);

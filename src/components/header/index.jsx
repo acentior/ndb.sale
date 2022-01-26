@@ -8,6 +8,7 @@ import { Link } from "gatsby"
 import { isBrowser } from "./../../utilities/auth"
 // Icons
 import { Bell, Logo, NotificationBell } from "../../utilities/imgImport"
+import Loading from "../common/FadeLoading"
 
 import { useAuth } from "../../hooks/useAuth"
 import DressupModal from "../dress-up/dressup-user-modal"
@@ -31,7 +32,7 @@ const Menu = () => {
             setNewNotification(response.getAllUnReadNotifications?.length !== 0)
         },
     })
-    const [updateAvatarSet] = useMutation(UPDATE_AVATARSET, {
+    const [updateAvatarSet, { loading }] = useMutation(UPDATE_AVATARSET, {
         onCompleted: (data) => {
             dispatch(getAuthInfo())
         },
@@ -95,147 +96,151 @@ const Menu = () => {
         return () => document.removeEventListener("keydown", handleEscKeyPress)
     })
     // Render
-    return (
-        <nav className={active ? "menu menu--active" : "menu"}>
-            <div className="px-4 d-flex align-items-center justify-content-between">
-                <div className="d-flex align-items-end gap-5 text-white text-uppercase fw-bold">
-                    <Link to="/" className="menu__logo d-flex" title="Logo">
-                        <img src={Logo} alt="NDB Brand Logo" />
-                    </Link>
-                    {isBrowser &&
-                        (window.location.pathname === ROUTES.profile ||
-                            window.location.pathname === ROUTES.faq ||
-                            window.location.pathname === ROUTES.wallet ||
-                            window.location.pathname === ROUTES.auction ||
-                            window.location.pathname === ROUTES.payment ||
-                            window.location.pathname.includes(ROUTES.admin)) && (
-                            <div className="d-none d-sm-flex justify-content-between gap-5">
-                                <Link
-                                    to={ROUTES.wallet}
-                                    className={`${
-                                        window.location.pathname === ROUTES.wallet && "txt-green"
-                                    }`}
-                                >
-                                    wallet
-                                </Link>
-                                <Link
-                                    to={ROUTES.auction}
-                                    className={`${
-                                        (window.location.pathname === ROUTES.auction ||
-                                            window.location.pathname === ROUTES.payment) &&
-                                        "txt-green"
-                                    }`}
-                                >
-                                    sale
-                                </Link>
-                                <Link
-                                    to={ROUTES.profile}
-                                    className={`${
-                                        window.location.pathname === ROUTES.profile && "txt-green"
-                                    }`}
-                                >
-                                    profile
-                                </Link>
-                                <div
-                                    onClick={() => setIsDressUPModalOpen(true)}
-                                    onKeyDown={() => setIsDressUPModalOpen(true)}
-                                    className="cursor-pointer hover:text-green"
-                                    role="presentation"
-                                >
-                                    dressup
-                                </div>
-                                <Link
-                                    to={ROUTES.faq}
-                                    className={`${
-                                        window.location.pathname === ROUTES.faq && "txt-green"
-                                    }`}
-                                >
-                                    faq
-                                </Link>
-                                {user?.role && user?.role?.includes("ROLE_ADMIN") ? (
+    if (loading) return <Loading />
+    else
+        return (
+            <nav className={active ? "menu menu--active" : "menu"}>
+                <div className="px-4 d-flex align-items-center justify-content-between">
+                    <div className="d-flex align-items-end gap-5 text-white text-uppercase fw-bold">
+                        <Link to="/" className="menu__logo d-flex" title="Logo">
+                            <img src={Logo} alt="NDB Brand Logo" />
+                        </Link>
+                        {isBrowser &&
+                            (window.location.pathname === ROUTES.profile ||
+                                window.location.pathname === ROUTES.faq ||
+                                window.location.pathname === ROUTES.wallet ||
+                                window.location.pathname === ROUTES.auction ||
+                                window.location.pathname === ROUTES.payment ||
+                                window.location.pathname.includes(ROUTES.admin)) && (
+                                <div className="d-none d-sm-flex justify-content-between gap-5">
                                     <Link
-                                        to={ROUTES.admin}
+                                        to={ROUTES.wallet}
                                         className={`${
-                                            window.location.pathname.includes(ROUTES.admin) &&
+                                            window.location.pathname === ROUTES.wallet &&
                                             "txt-green"
                                         }`}
                                     >
-                                        admin
+                                        wallet
                                     </Link>
-                                ) : (
-                                    ""
-                                )}
-                            </div>
-                        )}
-                </div>
-                <div className="d-flex align-items-center header-right-side">
-                    <div>
-                        {!auth?.isLoggedIn() ? (
-                            <Link
-                                className="btn-primary text-uppercase d-inline-block sign-in"
-                                to="/app/signin"
-                            >
-                                Sign In
-                            </Link>
-                        ) : (
-                            <ul className="d-flex align-items-center">
-                                <li className="scale-75">
-                                    <img
-                                        src={newNotification ? NotificationBell : Bell}
-                                        alt="Bell Icon"
-                                    />
-                                </li>
-                                <li className="px-sm-3 px-0 scale-75">
-                                    <Link to={ROUTES.profile}>
-                                        <Avatar className="user-avatar" />
-                                    </Link>
-                                </li>
-                                <DressupModal
-                                    setIsModalOpen={setIsDressUPModalOpen}
-                                    isModalOpen={isDressUPModalOpen}
-                                    onSave={(res) => {
-                                        updateAvatarSet({
-                                            variables: {
-                                                components: res,
-                                            },
-                                        })
-                                    }}
-                                />
-                            </ul>
-                        )}
-                    </div>
-                    <CurrencyChoice classNames="d-sm-block d-none" />
-                    <button
-                        type="button"
-                        className="menu__toggler"
-                        onClick={() => setActive(!active)}
-                    >
-                        <span />
-                        <span />
-                        <span />
-                    </button>
-                </div>
-
-                <div className="menu__content">
-                    <div className="content d-md-flex align-items-center">
-                        <ul className="content__section menu__items">
-                            {navigationLinks.map((link) => (
-                                <li className="menu__item" key={link.label}>
-                                    <a
-                                        href={link.url}
-                                        className="d-inline-block"
-                                        onClick={() => setActive(false)}
+                                    <Link
+                                        to={ROUTES.auction}
+                                        className={`${
+                                            (window.location.pathname === ROUTES.auction ||
+                                                window.location.pathname === ROUTES.payment) &&
+                                            "txt-green"
+                                        }`}
                                     >
-                                        {link.label}
-                                    </a>
-                                </li>
-                            ))}
-                        </ul>
+                                        sale
+                                    </Link>
+                                    <Link
+                                        to={ROUTES.profile}
+                                        className={`${
+                                            window.location.pathname === ROUTES.profile &&
+                                            "txt-green"
+                                        }`}
+                                    >
+                                        profile
+                                    </Link>
+                                    <div
+                                        onClick={() => setIsDressUPModalOpen(true)}
+                                        onKeyDown={() => setIsDressUPModalOpen(true)}
+                                        className="cursor-pointer hover:text-green"
+                                        role="presentation"
+                                    >
+                                        dressup
+                                    </div>
+                                    <Link
+                                        to={ROUTES.faq}
+                                        className={`${
+                                            window.location.pathname === ROUTES.faq && "txt-green"
+                                        }`}
+                                    >
+                                        faq
+                                    </Link>
+                                    {user?.role && user?.role?.includes("ROLE_ADMIN") ? (
+                                        <Link
+                                            to={ROUTES.admin}
+                                            className={`${
+                                                window.location.pathname.includes(ROUTES.admin) &&
+                                                "txt-green"
+                                            }`}
+                                        >
+                                            admin
+                                        </Link>
+                                    ) : (
+                                        ""
+                                    )}
+                                </div>
+                            )}
+                    </div>
+                    <div className="d-flex align-items-center header-right-side">
+                        <div>
+                            {!auth?.isLoggedIn() ? (
+                                <Link
+                                    className="btn-primary text-uppercase d-inline-block sign-in"
+                                    to="/app/signin"
+                                >
+                                    Sign In
+                                </Link>
+                            ) : (
+                                <ul className="d-flex align-items-center">
+                                    <li className="scale-75">
+                                        <img
+                                            src={newNotification ? NotificationBell : Bell}
+                                            alt="Bell Icon"
+                                        />
+                                    </li>
+                                    <li className="px-sm-3 px-0 scale-75">
+                                        <Link to={ROUTES.profile}>
+                                            <Avatar className="user-avatar" />
+                                        </Link>
+                                    </li>
+                                    <DressupModal
+                                        setIsModalOpen={setIsDressUPModalOpen}
+                                        isModalOpen={isDressUPModalOpen}
+                                        onSave={(res) => {
+                                            updateAvatarSet({
+                                                variables: {
+                                                    components: res,
+                                                },
+                                            })
+                                        }}
+                                    />
+                                </ul>
+                            )}
+                        </div>
+                        <CurrencyChoice classNames="d-sm-block d-none" />
+                        <button
+                            type="button"
+                            className="menu__toggler"
+                            onClick={() => setActive(!active)}
+                        >
+                            <span />
+                            <span />
+                            <span />
+                        </button>
+                    </div>
+
+                    <div className="menu__content">
+                        <div className="content d-md-flex align-items-center">
+                            <ul className="content__section menu__items">
+                                {navigationLinks.map((link) => (
+                                    <li className="menu__item" key={link.label}>
+                                        <a
+                                            href={link.url}
+                                            className="d-inline-block"
+                                            onClick={() => setActive(false)}
+                                        >
+                                            {link.label}
+                                        </a>
+                                    </li>
+                                ))}
+                            </ul>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </nav>
-    )
+            </nav>
+        )
 }
 
 export default Menu

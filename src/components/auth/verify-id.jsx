@@ -1,9 +1,5 @@
-import React, { useReducer, useCallback, useRef } from "react"
+import React, { useReducer, useRef } from "react"
 import useFileUpload from "react-use-file-upload"
-import Modal from "react-modal"
-import Webcam from "react-webcam"
-import { formatBytes } from "../../utilities/number"
-import { PhotoIcon, QRCode, SelfieImg, CloseIcon } from "../../utilities/imgImport"
 import SimpleHeader from "../header/simple-header"
 import PrimaryStep from "../verify-identity/primary-step"
 import StepOne from "../verify-identity/step-one"
@@ -13,61 +9,103 @@ import StepFour from "../verify-identity/step-four"
 import StepFive from "../verify-identity/step-five"
 import StepSix from "../verify-identity/step-six"
 import StepSeven from "../verify-identity/step-seven"
+import { useState } from "react"
+import { countries } from "../../utilities/staticData"
+import { VERIFY_KYC_MUTATION } from "../../apollo/graghqls/mutations/Auth"
+import { useMutation } from "@apollo/client"
 
 const VerificationPage = () => {
-    const inputRef = useRef()
-    const webcamRef = useRef(null)
-
-    const { files, handleDragDropEvent, setFiles, removeFile } = useFileUpload()
-    const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
-        agree: false,
-        accept: false,
-        step: -1, // --> initial value: -1;
-        phoneModal: false,
-        file: null,
-        fileOpen: false,
-        selfieModal: false,
-        selfieImg: "",
+    // WebService
+    const [verify] = useMutation(VERIFY_KYC_MUTATION, {
+        errorPolicy: "ignore",
+        onCompleted: (data) => {
+            console.log(data)
+        },
+        onerror: (error) => {
+            console.log(error)
+        },
     })
-    const { step, phoneModal, file, fileOpen, selfieModal, selfieImg } = state
+    // Containers
 
-    const capture = useCallback(() => {
-        setState({ selfieImg: webcamRef.current.getScreenshot() })
-    }, [webcamRef])
+    // 0
+    const [accept, setAccept] = useState(false)
 
-    console.log(selfieImg)
+    // 1
+    const [country, setCountry] = useState(countries[0])
+    const {
+        files: stepOneFiles,
+        handleDragDropEvent: stepOneHandleDragDropEvent,
+        setFiles: stepOneSetFiles,
+        removeFile: stepOneRemoveFile,
+    } = useFileUpload()
 
-    const FileList = ({ data }) => {
-        return (
-            <li className="file-item">
-                <div className="file-item__info">
-                    <div
-                        onClick={() => {
-                            setState({ fileOpen: true })
-                            setState({ file: data })
-                        }}
-                        onKeyDown={() => setState({ fileOpen: true })}
-                        role="presentation"
-                    >
-                        <img className="mb-2" src={PhotoIcon} alt="file img" />
-                        <div>
-                            <p className="file-name">{data.name}</p>
-                            <p className="file-size">{formatBytes(data.size)}</p>
-                        </div>
-                    </div>
-                    <p
-                        className="remove-file"
-                        onClick={() => removeFile(data.name)}
-                        onKeyDown={() => removeFile(data.name)}
-                        role="presentation"
-                    >
-                        <span></span>
-                    </p>
-                </div>
-                <p className="file-item__name">{data.name}</p>
-            </li>
-        )
+    // 2
+    const [name, setName] = useState("")
+    const [surname, setSurname] = useState("")
+    const [dob, setDob] = useState("")
+
+    // 3
+    const [stepThreeCountry, setStepThreeCountry] = useState(countries[0])
+    const {
+        files: stepThreeFiles,
+        handleDragDropEvent: stepThreeHandleDragDropEvent,
+        setFiles: stepThreeSetFiles,
+        removeFile: stepThreeRemoveFile,
+    } = useFileUpload()
+
+    // 4
+    const [address, setAddress] = useState("")
+
+    // 5
+    const {
+        files: stepFourFiles,
+        handleDragDropEvent: stepFourHandleDragDropEvent,
+        setFiles: stepFourSetFiles,
+        removeFile: stepFourRemoveFile,
+    } = useFileUpload()
+
+    // 6
+    const [selfieImage, setSelfieImage] = useState()
+
+    const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
+        step: -1, // --> initial value: -1;
+    })
+    const { step } = state
+
+    // Methods
+    const getBase64 = (file) => {
+        return new Promise((resolve, reject) => {
+            const reader = new FileReader()
+            reader.readAsDataURL(file)
+            reader.onload = () => resolve(reader.result)
+            reader.onerror = (error) => reject(error)
+        })
     }
+    const submitKYCData = async () => {
+        // let's first turn the images into base64
+        const imageStep1 = await getBase64(stepOneFiles[0])
+        console.log(imageStep1)
+        const imageStep3 = await getBase64(stepThreeFiles[0])
+        console.log(imageStep3)
+        const imageStep4 = await getBase64(stepFourFiles[0])
+        console.log(imageStep4)
+        verify({
+            variables: {
+                country: country,
+                email: "mreskini30@gmail.com",
+                faceProof: selfieImage,
+                documentProof: imageStep4,
+                addressProof: imageStep3,
+                fullAddress: address,
+                consentProof: imageStep1,
+                fname: "Mohammad",
+                mname: "",
+                lname: "Eskini",
+                dob: dob,
+            },
+        })
+    }
+
     return (
         <main className="verify-page">
             <SimpleHeader />
@@ -90,231 +128,78 @@ const VerificationPage = () => {
                             </div>
                         </div>
                     )} */}
-                    {step === -1 && <PrimaryStep step={step} setState={setState} />}
-                    {step === 0 && <StepOne step={step} setState={setState} />}
-                    {step === 1 && <StepTwo step={step} setState={setState} />}
-                    {/*
-                        // <div className="verify-step2">
-                        //     <h5 className="text-center">Identity document</h5>
-                        //     <div className="d-flex flex-wrap justify-content-center my-0 my-xxl-5">
-                        //         <div className="upload-doc me-lg-5">
-                        //             <div className="mb-3">
-                        //                 <div
-                        //                     className={`file-upload ${
-                        //                         files.length > 0 && "uploaded"
-                        //                     }`}
-                        //                     onDragEnter={handleDragDropEvent}
-                        //                     onDragOver={handleDragDropEvent}
-                        //                     onDrop={(e) => {
-                        //                         handleDragDropEvent(e)
-                        //                         setFiles(e, "a")
-                        //                     }}
-                        //                     role="presentation"
-                        //                 >
-                        //                     <div className="new-doc">
-                        //                         <img src={NewDoc} alt="new doc" />
-                        //                     </div>
-                        //                     <p className="file-browse">
-                        //                         Drag & drop files here or{" "}
-                        //                         <span
-                        //                             onClick={() => inputRef.current.click()}
-                        //                             onKeyDown={() => inputRef.current.click()}
-                        //                             role="presentation"
-                        //                         >
-                        //                             browse
-                        //                         </span>
-                        //                     </p>
-
-                        //                     <input
-                        //                         ref={inputRef}
-                        //                         type="file"
-                        //                         multiple
-                        //                         style={{ display: "none" }}
-                        //                         onChange={(e) => setFiles(e, "a")}
-                        //                     />
-                        //                 </div>
-                        //             </div>
-                        //             <ul className="file-list">
-                        //                 {files?.map((item, idx) => (
-                        //                     <FileList key={idx} data={item} />
-                        //                 ))}
-                        //             </ul>
-                        //         </div>
-                        //         {files.length > 0 && (
-                        //             <div className="uploaded-list">
-                        //                 <p className="uploaded-list__text">You uploaded:</p>
-                        //                 <ul className="file-list">
-                        //                     {files?.map((item, idx) => (
-                        //                         <FileList key={idx} data={item} />
-                        //                     ))}
-                        //                 </ul>
-
-                        //                 <button
-                        //                     className="btn-add"
-                        //                     onClick={() => inputRef.current.click()}
-                        //                 >
-                        //                     <span></span>Add more files
-                        //                 </button>
-                        //             </div>
-                        //         )}
-                        //         <div className="upload-rule">
-                        //             <p>Take a photo of your document. </p>
-                        //             <p>The photo should be:</p>
-                        //             <ul>
-                        //                 <li>
-                        //                     <strong>bright and clear</strong> (good quality);
-                        //                 </li>
-                        //                 <li>
-                        //                     <strong>uncut</strong> (all corners of the document
-                        //                     should be visible).
-                        //                 </li>
-                        //             </ul>
-                        //             <div className="upload-rule__img">
-                        //                 <img src={Pass} alt="pass" />
-                        //                 <img className="mx-3" src={Unpass1} alt="pass" />
-                        //                 <img src={Unpass2} alt="pass" />
-                        //             </div>
-                        //         </div>
-                        //     </div>
-                        // </div>
-                    */}
-                    {step === 2 && <StepThree step={step} setState={setState} />}
-                    {step === 3 && <StepFour step={step} setState={setState} />}
-                    {step === 4 && <StepFive step={step} setState={setState} />}
-                    {step === 5 && <StepSix step={step} setState={setState} />}
+                    {step === -1 && (
+                        <PrimaryStep
+                            accept={accept}
+                            setAccept={setAccept}
+                            step={step}
+                            setState={setState}
+                        />
+                    )}
+                    {step === 0 && (
+                        <StepOne
+                            country={country}
+                            setCountry={setCountry}
+                            step={step}
+                            setState={setState}
+                            files={stepOneFiles}
+                            setFiles={stepOneSetFiles}
+                            handleDragDropEvent={stepOneHandleDragDropEvent}
+                            removeFile={stepOneRemoveFile}
+                        />
+                    )}
+                    {step === 1 && (
+                        <StepTwo
+                            name={name}
+                            setName={setName}
+                            dob={dob}
+                            setDob={setDob}
+                            step={step}
+                            setState={setState}
+                        />
+                    )}
+                    {step === 2 && (
+                        <StepThree
+                            country={stepThreeCountry}
+                            setCountry={setStepThreeCountry}
+                            step={step}
+                            setState={setState}
+                            files={stepThreeFiles}
+                            setFiles={stepThreeSetFiles}
+                            handleDragDropEvent={stepThreeHandleDragDropEvent}
+                            removeFile={stepThreeRemoveFile}
+                        />
+                    )}
+                    {step === 3 && (
+                        <StepFour
+                            address={address}
+                            setAddress={setAddress}
+                            step={step}
+                            setState={setState}
+                        />
+                    )}
+                    {step === 4 && (
+                        <StepFive
+                            step={step}
+                            setState={setState}
+                            files={stepFourFiles}
+                            setFiles={stepFourSetFiles}
+                            handleDragDropEvent={stepFourHandleDragDropEvent}
+                            removeFile={stepFourRemoveFile}
+                        />
+                    )}
+                    {step === 5 && (
+                        <StepSix
+                            step={step}
+                            setState={setState}
+                            selfieImage={selfieImage}
+                            setSelfieImage={setSelfieImage}
+                            submitKYCData={submitKYCData}
+                        />
+                    )}
                     {step === 6 && <StepSeven step={step} setState={setState} />}
-                    {/* {step === 6 && (
-                        <div className="verify-step4">
-                            <div className="selfie-modal__body">
-                                <div className="selfie-content">
-                                    <Webcam
-                                        audio={false}
-                                        ref={webcamRef}
-                                        screenshotFormat="image/jpeg"
-                                        style={{
-                                            width: "100%",
-                                            height: "100%",
-                                        }}
-                                    />
-                                </div>
-                                <div className="btn-group">
-                                    <button
-                                        className="btn-primary me-3"
-                                        onClick={() => setState({ selfieImg: "" })}
-                                    >
-                                        Retake
-                                    </button>
-                                    <button className="btn-primary btn-green" onClick={capture}>
-                                        Upload
-                                    </button>
-                                </div>
-                            </div>
-                        </div>
-                    )} */}
                 </div>
             </section>
-            <Modal
-                isOpen={phoneModal}
-                onRequestClose={() => setState({ phoneModal: false })}
-                ariaHideApp={false}
-                className="phone-modal"
-                overlayClassName="phone-modal__overlay"
-            >
-                <div className="phone-modal__header">
-                    <div
-                        onClick={() => setState({ phoneModal: false })}
-                        onKeyDown={() => setState({ phoneModal: false })}
-                        role="button"
-                        tabIndex="0"
-                    >
-                        <img width="14px" height="14px" src={CloseIcon} alt="close" />
-                    </div>
-                </div>
-                <h4 className="mt-4">Continue verification on your phone</h4>
-                <p className="my-5">Copy a link to your mobile phone</p>
-                <button className="btn-green">Copy Link</button>
-                <p className="my-5">Or scan the QR code with your phone</p>
-                <img src={QRCode} alt="qr code" />
-            </Modal>
-            <Modal
-                isOpen={fileOpen}
-                onRequestClose={() => setState({ fileOpen: false })}
-                ariaHideApp={false}
-                className="file-modal"
-                overlayClassName="file-modal__overlay"
-            >
-                <div className="phone-modal__header">
-                    <div
-                        onClick={() => setState({ fileOpen: false })}
-                        onKeyDown={() => setState({ fileOpen: false })}
-                        role="button"
-                        tabIndex="0"
-                    >
-                        <img width="14px" height="14px" src={CloseIcon} alt="close" />
-                    </div>
-                </div>
-                {file && (
-                    <div className="file-modal__body">
-                        <img src={URL.createObjectURL(file)} alt="file" />
-                        <p>{file.name}</p>
-                    </div>
-                )}
-                <button
-                    className="btn-primary"
-                    onClick={() => {
-                        removeFile(file.name)
-                        setState({ fileOpen: false })
-                    }}
-                    onKeyDown={() => {
-                        removeFile(file.name)
-                        setState({ fileOpen: false })
-                    }}
-                >
-                    Delete
-                </button>
-            </Modal>
-            <Modal
-                isOpen={selfieModal}
-                onRequestClose={() => setState({ selfieModal: false })}
-                ariaHideApp={false}
-                className="selfie-modal"
-                overlayClassName="phone-modal__overlay"
-            >
-                <div className="phone-modal__header">
-                    <div
-                        onClick={() => setState({ selfieModal: false })}
-                        onKeyDown={() => setState({ selfieModal: false })}
-                        role="button"
-                        tabIndex="0"
-                    >
-                        <img width="14px" height="14px" src={CloseIcon} alt="close" />
-                    </div>
-                </div>
-                <div className="selfie-modal__body">
-                    <div className="selfie-content">
-                        <Webcam
-                            audio={false}
-                            ref={webcamRef}
-                            screenshotFormat="image/jpeg"
-                            style={{
-                                width: "100%",
-                                height: "100%",
-                            }}
-                        />
-                    </div>
-                    <div className="btn-group">
-                        <button
-                            className="btn-primary me-3"
-                            onClick={() => setState({ selfieImg: "" })}
-                        >
-                            Retake
-                        </button>
-                        <button className="btn-primary btn-green" onClick={capture}>
-                            Upload
-                        </button>
-                    </div>
-                </div>
-            </Modal>
         </main>
     )
 }

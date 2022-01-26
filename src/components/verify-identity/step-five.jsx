@@ -1,7 +1,20 @@
 import React from "react"
 import { NewDoc, Pass, Unpass1, Unpass2, VerifyIdStep5 } from "../../utilities/imgImport"
 
-export default function StepOne({ step, setState }) {
+export default function StepOne({
+    step,
+    setState,
+    files,
+    setFiles,
+    handleDragDropEvent,
+    removeFile,
+}) {
+    // Methods
+    const onUserDropFile = (e) => {
+        handleDragDropEvent(e)
+        setFiles(e, "w")
+    }
+
     // Render
     return (
         <div className="col-sm-12 col-10 mx-auto mt-3 mt-sm-0">
@@ -20,7 +33,7 @@ export default function StepOne({ step, setState }) {
                             upload its photo along with your face.
                         </p>
                         <p className="my-3 fw-bold text-uppercase">i & ndb</p>
-                        <div className="requirements">
+                        <div className="requirements mt-0">
                             <p className="fs-14px">Photo requirements:</p>
                             <p className="d-flex align-items-center gap-2 ms-2 item">
                                 <div className="small-white-dot"></div>
@@ -41,20 +54,41 @@ export default function StepOne({ step, setState }) {
                         </div>
                     </div>
                     <div className="col-md-6 col-12">
-                        <div className="d-flex flex-wrap justify-content-center my-0">
+                        <div className="my-0">
                             <div className="upload-doc">
-                                <div className="my-5 mb-sm-3 mt-sm-0">
-                                    <div className="file-upload py-3 px-5">
-                                        <div className="new-doc">
-                                            <img src={NewDoc} className="w-50" alt="new doc" />
+                                <div className="my-5 mb-sm-3 mt-sm-0" id="file-upload-wrapper">
+                                    <label
+                                        htmlFor="file-upload-input"
+                                        className="file-upload cursor-pointer"
+                                        onDragEnter={handleDragDropEvent}
+                                        onDragOver={handleDragDropEvent}
+                                        onDrop={onUserDropFile}
+                                    >
+                                        <input
+                                            type="file"
+                                            id="file-upload-input"
+                                            className="d-none"
+                                            onChange={(e) => setFiles(e, "w")}
+                                        />
+                                        <div className="py-3 px-0">
+                                            <div className="new-doc mx-auto">
+                                                <img src={NewDoc} className="w-50" alt="new doc" />
+                                            </div>
+                                            {files[0] ? (
+                                                <p className="mt-30px">
+                                                    {files[0].name}{" "}
+                                                    <span className="txt-green fw-bold">
+                                                        selected
+                                                    </span>
+                                                </p>
+                                            ) : (
+                                                <p className="file-browse">
+                                                    Drag & drop files here or{" "}
+                                                    <span className="fw-bold">browse</span>
+                                                </p>
+                                            )}
                                         </div>
-                                        <p className="file-browse">
-                                            Drag & drop files here or{" "}
-                                            <span className="fw-bold">browse</span>
-                                        </p>
-
-                                        <input type="file" multiple style={{ display: "none" }} />
-                                    </div>
+                                    </label>
                                 </div>
                             </div>
                         </div>

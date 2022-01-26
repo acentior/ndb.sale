@@ -34,8 +34,8 @@ const Auction = () => {
         minutes: 0,
         seconds: 0,
     })
-    const [amount, setAmount] = useState(0)
-    const [price, setPrice] = useState(0)
+    const [amount, setAmount] = useState(1)
+    const [price, setPrice] = useState(10)
     const distanceToDate = getSecTomorrow()
     const percentage = (distanceToDate / duration) * 100
     const [modalIsOpen, setModalIsOpen] = useState(false)
@@ -91,8 +91,8 @@ const Auction = () => {
                         {amount >= 100000
                             ? modalDesc.sign[2]
                             : amount >= 2000
-                                ? modalDesc.sign[1]
-                                : modalDesc.sign[0]}
+                            ? modalDesc.sign[1]
+                            : modalDesc.sign[0]}
                     </p>
                     <div className="btnDiv">
                         <Link to="/signup">
@@ -111,8 +111,8 @@ const Auction = () => {
                         {amount >= 100000
                             ? modalDesc.verify[1]
                             : amount >= 2000
-                                ? modalDesc.verify[0]
-                                : ""}
+                            ? modalDesc.verify[0]
+                            : ""}
                     </p>
                     <div className="btnDiv">
                         <Link to="#">
@@ -126,12 +126,13 @@ const Auction = () => {
                             </p>
                         </Link>
                         <Link
-                            to={`${amount >= 100000
+                            to={`${
+                                amount >= 100000
                                     ? "/aml_verify"
                                     : amount >= 2000
-                                        ? "/kyc_verify"
-                                        : ""
-                                }`}
+                                    ? "/kyc_verify"
+                                    : ""
+                            }`}
                         >
                             <p className="greenbtn">Verify</p>
                         </Link>
@@ -153,7 +154,7 @@ const Auction = () => {
             <section className="container">
                 <div className="row">
                     <div className="auction-left col-md-4">
-                        <p className="title">Exclusive pre sale</p>
+                        <p className="title">Pre-SALE ends in</p>
                         <div className="timebar">
                             <div className="progress">
                                 <span className="time" style={{ left: percentage * 0.8 + "%" }}>
@@ -192,7 +193,7 @@ const Auction = () => {
                         </div>
                     </div>
                     <div className="auction-right col-md-8">
-                        <p className="title">Exclusive pre round</p>
+                        <p className="title">Exclusive pre sale</p>
                         <div className="tokenDiv">
                             {showSelect ? (
                                 <div className="select_wallet">
@@ -246,7 +247,7 @@ const Auction = () => {
                             ) : (
                                 <div className="buy_token">
                                     <p className="title">
-                                        <span className="txt-green">100 USD</span> per token
+                                        <span className="txt-green">10 USD</span> per token
                                     </p>
                                     <p className="title" style={{ margin: "5px 0" }}>
                                         amount of Token
@@ -258,20 +259,20 @@ const Auction = () => {
                                             value={amount}
                                             onChange={(e) => setAmount(e.target.value)}
                                             className="range-input"
-                                            min={0}
-                                            max={100000}
+                                            min={1}
+                                            max={10}
                                         />
                                         <Slider
                                             value={amount}
                                             onChange={(value) => setAmount(value)}
-                                            min={0}
-                                            max={100000}
+                                            min={1}
+                                            max={10}
                                             step={1}
                                         />
                                     </div>
                                     <div className="total-price">
                                         <p className="title">total price</p>
-                                        <div className="price">{price}</div>
+                                        <div className="price">{price * amount}</div>
                                     </div>
                                     <button className="ndb_button w-100" onClick={handleBuyToken}>
                                         BUY

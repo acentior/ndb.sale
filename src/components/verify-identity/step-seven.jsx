@@ -1,7 +1,9 @@
+import { Link } from "gatsby"
 import React from "react"
 import { VerifyIdStep7 } from "../../utilities/imgImport"
+import { ROUTES } from "../../utilities/routes"
 
-export default function StepSeven({ step, setState }) {
+export default function StepSeven() {
     // Render
     return (
         <div className="col-sm-12 col-11 mx-auto mt-3 mt-sm-0">
@@ -27,12 +29,12 @@ export default function StepSeven({ step, setState }) {
                     </p>
                 </div>
                 <div className="d-flex justify-content-center gap-3 mt-5 col-md-12">
-                    <button
+                    <Link
+                        to={ROUTES.profile}
                         className="btn btn-success rounded-0 px-3 py-2 text-uppercase fw-500 text-light col-md-6 col-12"
-                        onClick={() => setState({ step: step + 1 })}
                     >
-                        complete
-                    </button>
+                        Back to Profile
+                    </Link>
                 </div>
             </div>
         </div>

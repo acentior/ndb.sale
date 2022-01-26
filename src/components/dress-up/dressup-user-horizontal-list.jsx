@@ -129,7 +129,7 @@ export default function DressupHorizontalList({
                                                       }%`,
                                                   }}
                                               >
-                                                  {parse(hairStyles[hairStyle]?.svg ?? 0)}
+                                                  {parse(hairStyles[hairStyle]?.svg ?? "")}
                                               </Hair>
                                           </>
                                       )}

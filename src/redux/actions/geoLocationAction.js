@@ -33,6 +33,25 @@ export const get_Disallowed_Countries = () => async dispatch => {
             });
         }
     } catch(err) {
-        // console.log(err.message);
+        console.log(err.message);
+    }
+};
+
+export const make_Allow_Country = locationId => async dispatch => {
+    try {
+        const { data } = await client.mutate({
+            mutation: Mutation.MAKE_ALLOW,
+            variables: { locationId }
+        });
+        if(data.makeAllow) {
+            showSuccessAlarm('Geo Location deleted successfully');
+            dispatch({
+                type: types.DELETE_DATUM,
+                payload: locationId
+            });
+        }
+    } catch(err) {
+        console.log(err.message);
+        showFailAlarm('Action failed', 'Ops! Something went wrong!');
     }
 };

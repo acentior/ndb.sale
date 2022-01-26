@@ -230,7 +230,7 @@
                         border: 1px dashed #828282;
                         height: 100%;
                         @include mq("phone") {
-                            padding: 55px 90px;
+                            padding: 15px 55px;
                         }
                         .new-doc {
                             display: flex;

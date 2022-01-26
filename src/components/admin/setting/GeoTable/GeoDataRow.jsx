@@ -1,16 +1,24 @@
 import React, { useState } from "react"
+import { useDispatch } from "react-redux";
 import styled from "styled-components"
 import { Icon } from "@iconify/react"
 import { device } from "../../../../utilities/device"
 import { width } from "./columnWidth"
 import DeleteConfirmModal from "../../DeleteConfirmModal"
+import { make_Allow_Country } from "../../../../redux/actions/geoLocationAction";
 
 const GeoDataRow = ({ datum }) => {
+    const dispatch = useDispatch();
+
     const [show, setShow] = useState(false)
     const [isConfirmOpen, setIsConfirmOpen] = useState(false)
+    const [deletePending, setDeletePending] = useState(false);
 
-    const deleteCountry = () => {
-        setIsConfirmOpen(false)
+    const deleteCountry = async () => {
+        setDeletePending(true);
+        await dispatch(make_Allow_Country(datum.id));
+        setDeletePending(false);
+        setIsConfirmOpen(false);
     }
 
     return (
@@ -91,6 +99,7 @@ const GeoDataRow = ({ datum }) => {
                 setIsModalOpen={setIsConfirmOpen}
                 confirmData={datum.country}
                 doAction={deleteCountry}
+                pending={deletePending}
             />
         </>
     )

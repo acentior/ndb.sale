@@ -16,3 +16,13 @@ export const ADD_DISALLOWED = gql`
         }
     }
 `;
+
+export const MAKE_ALLOW = gql`
+    mutation MakeAllow(
+        $locationId: Int!
+    ) {
+        makeAllow(
+            locationId: $locationId
+        )
+    }
+`;

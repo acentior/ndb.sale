@@ -20,7 +20,7 @@ const TokenTable = () => {
 
     useEffect(() => {
         (async function() {
-            dispatch(set_Page(1));
+            dispatch(set_Page(1, 5));
             setLoading(true);
             await dispatch(get_Tokens());
             setLoading(false);

@@ -3,7 +3,17 @@ import React, { useState } from "react"
 import { countries } from "../../utilities/staticData"
 import { NewDoc, Pass, Unpass1, Unpass2, VerifyIdStep1 } from "../../utilities/imgImport"
 
-export default function StepOne({ step, setState }) {
+export default function StepOne({
+    step,
+    setState,
+    country,
+    setCountry,
+    files,
+    setFiles,
+    handleDragDropEvent,
+    removeFile,
+}) {
+    const [file, setFile] = useState(null)
     // Containers
     const docTypes = [
         {
@@ -19,8 +29,13 @@ export default function StepOne({ step, setState }) {
             value: "driver_license",
         },
     ]
-    const [country, setCountry] = useState(countries[0])
     const [docType, setDocType] = useState(docTypes[0])
+
+    // Methods
+    const onUserDropFile = (e) => {
+        handleDragDropEvent(e)
+        setFiles(e, "w")
+    }
 
     // Render
     return (
@@ -70,20 +85,42 @@ export default function StepOne({ step, setState }) {
                         </div>
                     </div>
                     <div className="col-md-6 col-12">
-                        <div className="d-flex flex-wrap justify-content-center my-0 mt-xxl-5">
+                        <div className="my-0 mt-xxl-5">
                             <div className="upload-doc">
-                                <div className="my-5 mb-sm-3 mt-sm-0">
-                                    <div className="file-upload py-3 px-5">
-                                        <div className="new-doc">
-                                            <img src={NewDoc} className="w-50" alt="new doc" />
+                                <div className="my-5 mb-sm-3 mt-sm-0" id="file-upload-wrapper">
+                                    <label
+                                        htmlFor="file-upload-input"
+                                        className="file-upload cursor-pointer"
+                                        onDragEnter={handleDragDropEvent}
+                                        onDragOver={handleDragDropEvent}
+                                        onDrop={onUserDropFile}
+                                    >
+                                        <input
+                                            type="file"
+                                            id="file-upload-input"
+                                            className="d-none"
+                                            onChange={(e) => setFiles(e, "w")}
+                                            // onChange={onFileChange}
+                                        />
+                                        <div className="py-3 px-0">
+                                            <div className="new-doc mx-auto">
+                                                <img src={NewDoc} className="w-50" alt="new doc" />
+                                            </div>
+                                            {files[0] ? (
+                                                <p className="mt-30px">
+                                                    {files[0].name}{" "}
+                                                    <span className="txt-green fw-bold">
+                                                        selected
+                                                    </span>
+                                                </p>
+                                            ) : (
+                                                <p className="file-browse">
+                                                    Drag & drop files here or{" "}
+                                                    <span className="fw-bold">browse</span>
+                                                </p>
+                                            )}
                                         </div>
-                                        <p className="file-browse">
-                                            Drag & drop files here or{" "}
-                                            <span className="fw-bold">browse</span>
-                                        </p>
-
-                                        <input type="file" multiple style={{ display: "none" }} />
-                                    </div>
+                                    </label>
                                 </div>
                             </div>
                         </div>
@@ -103,6 +140,7 @@ export default function StepOne({ step, setState }) {
                         back
                     </button>
                     <button
+                        disabled={files.length === 0}
                         className="btn btn-success rounded-0 px-5 py-2 text-uppercase fw-500 text-light col-sm-3 col-6"
                         onClick={() => setState({ step: step + 1 })}
                     >

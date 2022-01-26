@@ -48,41 +48,6 @@
             font-variant: small-caps;
             text-align: center;
         }
-        .token {
-            &-left {
-                font-weight: 900;
-                font-size: 30px;
-                line-height: 44px;
-                text-align: left;
-                font-weight: bold;
-                font-variant: small-caps;
-                @include mq("tablet", max) {
-                    font-size: 28px;
-                    line-height: 35px;
-                }
-                @include mq("phone", max) {
-                    font-size: 20px;
-                    line-height: 25px;
-                    text-align: center;
-                }
-            }
-            &-value {
-                font-weight: bold;
-                font-size: 100px;
-                line-height: 122px;
-                text-align: left;
-                font-variant: small-caps;
-                @include mq("tablet", max) {
-                    font-size: 78px;
-                    line-height: 96px;
-                }
-                @include mq("phone", max) {
-                    font-size: 60px;
-                    line-height: 72px;
-                    text-align: center;
-                }
-            }
-        }
         .btn-green {
             padding: 8px 52px;
             margin: 50px 0 24px;
@@ -203,10 +168,45 @@
     transition: opacity 50ms;
 }
 
-.ReactModal__Overlay--after-open{
+.ReactModal__Overlay--after-open {
     opacity: 1;
 }
 
-.ReactModal__Overlay--before-close{
+.ReactModal__Overlay--before-close {
     opacity: 0;
+}
+.token {
+    &-left {
+        font-weight: 900;
+        font-size: 30px;
+        line-height: 44px;
+        text-align: left;
+        font-weight: bold;
+        font-variant: small-caps;
+        @include mq("tablet", max) {
+            font-size: 28px;
+            line-height: 35px;
+        }
+        @include mq("phone", max) {
+            font-size: 20px;
+            line-height: 25px;
+            text-align: center;
+        }
+    }
+    &-value {
+        font-weight: bold;
+        font-size: 100px;
+        line-height: 122px;
+        text-align: left;
+        font-variant: small-caps;
+        @include mq("tablet", max) {
+            font-size: 78px;
+            line-height: 96px;
+        }
+        @include mq("phone", max) {
+            font-size: 60px;
+            line-height: 72px;
+            text-align: center;
+        }
+    }
 }

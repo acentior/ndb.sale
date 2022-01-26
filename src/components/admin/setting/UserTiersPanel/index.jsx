@@ -27,7 +27,7 @@ const UserTiersPanel = () => {
                 <div className='threshold'>THRESHOLD</div>
                 <div className='edit'></div>
             </TableHead>
-            {loading? 
+            {loading?
                 <Loading />:
                 (
                     <TableBody className='custom_scrollbar'>

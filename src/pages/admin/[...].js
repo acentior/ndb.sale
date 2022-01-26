@@ -54,7 +54,7 @@ const App = () => {
             </>
         );
     // } else {
-    //     alert('You are not permitted to this section');
+    //     navigate('/');
     //     return null;
     // }
 };

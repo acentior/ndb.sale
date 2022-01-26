@@ -65,6 +65,7 @@ export default function DressupModal({ isModalOpen, setIsModalOpen, setDressUpAv
                     onKeyDown={closeModal}
                     role="button"
                     tabIndex="0"
+                    className="close"
                 >
                     <img
                         width="14px"

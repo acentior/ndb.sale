@@ -1,7 +1,19 @@
 import React from "react"
+import { useState } from "react"
 import { VerifyIdStep4 } from "../../utilities/imgImport"
 
-export default function StepFour({ step, setState }) {
+export default function StepFour({ step, setState, address, setAddress }) {
+    const [addressError, setAddressError] = useState(false)
+
+    const onNextButtonClick = (e) => {
+        e.preventDefault()
+        let error = false
+        if (!address) {
+            error = true
+            setAddressError("Please fill out the address field")
+        }
+        if (!error) return setState({ step: step + 1 })
+    }
     // Render
     return (
         <div className="col-sm-12 col-12 mx-auto mt-3 mt-sm-0">
@@ -25,9 +37,12 @@ export default function StepFour({ step, setState }) {
                         <p className="form-label mt-4">Address</p>
                         <input
                             type="text"
+                            value={address}
+                            onChange={(e) => setAddress(e.target.value)}
                             className="form-control"
                             placeholder="17th floor, Street name, city"
                         />
+                        <div className="text-danger mt-2">{addressError}</div>
                     </div>
                 </div>
                 <div className="d-flex justify-content-center gap-3 mt-5 col-md-12">
@@ -39,7 +54,7 @@ export default function StepFour({ step, setState }) {
                     </button>
                     <button
                         className="btn btn-success rounded-0 px-5 py-2 text-uppercase fw-500 text-light col-sm-3 col-6"
-                        onClick={() => setState({ step: step + 1 })}
+                        onClick={onNextButtonClick}
                     >
                         confirm
                     </button>

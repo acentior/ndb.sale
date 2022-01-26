@@ -119,3 +119,33 @@ export const CONFIRM_DELETE_ACCOUNT = gql`
         confirmDeleteAccount(text: $text)
     }
 `
+export const VERIFY_KYC_MUTATION = gql`
+    mutation verifyKYC(
+        $country: String
+        $email: String
+        $faceProof: String
+        $documentProof: String
+        $addressProof: String
+        $fullAddress: String
+        $consentProof: String
+        $fname: String
+        $mname: String
+        $lname: String
+        $dob: String
+    ) {
+        verifyKYC(
+            shuftiRequest: {
+                country: $country
+                email: $email
+                face: { proof: $faceProof }
+                document: { proof: $documentProof }
+                address: { proof: $addressProof, full_address: $fullAddress }
+                consent: { proof: $consentProof }
+                background_checks: {
+                    name: { first_name: $fname, middle_name: $mname, last_name: $lname }
+                    dob: $dob
+                }
+            }
+        )
+    }
+`

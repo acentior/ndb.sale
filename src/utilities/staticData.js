@@ -1169,19 +1169,19 @@ export const Currencies = [
         id: 1,
         label: "EUR",
         value: "EUR",
-        symbol: "£",
+        symbol: "€",
     },
     {
         id: 2,
         label: "GBP",
         value: "GBP",
-        symbol: "€",
+        symbol: "£",
     },
     {
         id: 3,
         label: "INR",
         value: "INR",
-        symbol: "¥",
+        symbol: "₹",
     },
     {
         id: 4,

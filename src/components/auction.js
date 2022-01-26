@@ -76,6 +76,17 @@ const Auction = () => {
     const [period, setPeriod] = useState("1M")
     ////////////////////////
 
+    const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
+        tabIndex: 0,
+        amount: 1,
+        price: 1,
+        isBid: false,
+        bidModal: false,
+        show_chart: false,
+        selectLabel: options[0],
+    })
+    const { tabIndex, amount, price, isBid, bidModal, show_chart, selectLabel } = state
+
     useEffect(() => {
         if (!auctionLoaded && roundData) {
             setActionLoaded(true)
@@ -106,21 +117,11 @@ const Auction = () => {
             loadBidLByNumber({
                 variables: { round: roundData && roundData[0].round - 1 },
             })
+            if (roundData[0]?.minPrice) {
+                setState({ price: roundData[0]?.minPrice })
+            }
         }
     }, [roundData])
-
-    console.log(roundData && roundData[0]?.minPrice)
-
-    const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
-        tabIndex: 0,
-        amount: 1,
-        price: roundData && roundData[0]?.minPrice,
-        isBid: false,
-        bidModal: false,
-        show_chart: false,
-        selectLabel: options[0],
-    })
-    const { tabIndex, amount, price, isBid, bidModal, show_chart, selectLabel } = state
 
     // get round based data
     const [loadRoundMByNumber, { data: roundM, error: mFetched }] =
@@ -308,9 +309,7 @@ const Auction = () => {
         dispatch(setCurrentRound(fnSelectedRoundData()?.id))
         navigate(ROUTES.payment)
     }
-    console.log("amount: ", amount)
-    console.log("price: ", price)
-    console.log("total: ", price * amount)
+
     if (loading) return <Loading />
     else
         return (
@@ -447,7 +446,7 @@ const Auction = () => {
                                         </TabPanel>
                                     </Tabs>
                                 </div>
-                                <div className="d-none d-md-block mt-5">
+                                <div className="d-none d-md-block section-auction__tooltip">
                                     <ReactTooltip
                                         place="right"
                                         type="light"

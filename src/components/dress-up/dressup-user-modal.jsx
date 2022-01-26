@@ -1,5 +1,6 @@
-import React, { useState, useReducer } from "react"
+import React, { useState, useEffect, useReducer } from "react"
 import { useSelector } from "react-redux"
+import _ from "lodash"
 import Modal from "react-modal"
 import parse from "html-react-parser"
 import styled from "styled-components"
@@ -19,6 +20,7 @@ const init = {
 
 export default function DressupModal({ isModalOpen, setIsModalOpen, onSave }) {
     const avatarComponents = useSelector((state) => state.avatarComponents)
+    const selected = useSelector((state) => state.auth?.user?.avatar?.selected)
 
     let { loaded, hairStyles, facialStyles, expressions, hats, others } = avatarComponents
     // Convert the mapKey Object to the array.
@@ -32,6 +34,22 @@ export default function DressupModal({ isModalOpen, setIsModalOpen, onSave }) {
 
     const [selectedTab, setSelectedTab] = useState(0)
 
+    useEffect(() => {
+        if (!isModalOpen) return
+        const avatar = JSON.parse(selected ?? "[]")
+        const avatarSet = _.mapKeys(avatar, "groupId")
+
+        const newState = Object.keys(init).map((key) => {
+            const index = Object.values(avatarComponents[key] ?? {}).findIndex(
+                (i) => i?.compId === avatarSet?.[key.slice(0, -1)]?.compId
+            )
+            return { key, index, updatable: index >= 0 }
+        })
+
+        const s = _.mapKeys(newState, "key")
+        setState(s)
+    }, [isModalOpen, selected])
+
     const saveAvatarItems = () => {
         const avatarSets = Object.keys(avatarComponents)
             .filter((key) => state[key]?.updatable ?? false)
@@ -43,7 +61,6 @@ export default function DressupModal({ isModalOpen, setIsModalOpen, onSave }) {
                     compId: Object.values(avatarComponents[key])[index]?.compId ?? 0,
                 }
             })
-
         if (!!avatarSets.length) onSave(avatarSets)
         setIsModalOpen(false)
     }
@@ -69,7 +86,7 @@ export default function DressupModal({ isModalOpen, setIsModalOpen, onSave }) {
             overlayClassName="dress-up-modal__overlay"
         >
             <div className="dress-up-modal__header">
-                <div onClick={closeModal} onKeyDown={closeModal} role="button" tabIndex="0">
+                <div onClick={closeModal} onKeyDown={closeModal} role="button" tabIndex="0" className="close">
                     <img
                         width="14px"
                         height="14px"
