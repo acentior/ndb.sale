@@ -1,4 +1,7 @@
 main.purchase-page {
+    .menu {
+        background:black;
+    }
     .home-section {
         height: 100vh;
         background-color:black ;
@@ -73,7 +76,7 @@ main.purchase-page {
                             font-size: 22px;
                         }
                     }
-                    @media screen and (max-width: 768px) {
+                    @media screen and (max-width: 575px) {
                         max-width:350px;
                         text-align: center;
                         align-items: center !important;
@@ -113,14 +116,21 @@ main.purchase-page {
                             
                         }
                     }
-                    @media screen and (max-width: 768px){
+                    .text-left {
+                        font-size: 24px;
+                        line-height: 29px;
+                        font-variant: small-caps;
+                        color: #FFFFFF;
+                    }
+                    @media screen and (max-width: 575px){
                         div.hero-image {
                             width: 100%;
-                            height:200px;
-                            justify-content:start;
-
+                            height: 206px;
+                            justify-content: start;
+                            background-position: -53px 61px;
+                            background-image: radial-gradient(37.36% 30.86% at 38.06% 59.62%, rgba(0, 0, 0, 0) 0%, #000000 100%), url("../../images/green-coin-mobile.svg");
                             .text-left {
-                                font-weight: bold;
+                            font-weight: bold;
                             font-size: 24px;
                             line-height: 29px;
                             font-variant: small-caps;
