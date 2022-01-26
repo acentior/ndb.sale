@@ -138,7 +138,11 @@ export const VERIFY_KYC_MUTATION = gql`
                 country: $country
                 email: $email
                 face: { proof: $faceProof }
-                document: { proof: $documentProof }
+                document: {
+                    proof: $documentProof
+                    name: { first_name: $fname, last_name: $lname }
+                    dob: $dob
+                }
                 address: { proof: $addressProof, full_address: $fullAddress }
                 consent: { proof: $consentProof }
                 background_checks: {
