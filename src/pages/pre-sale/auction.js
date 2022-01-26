@@ -5,7 +5,7 @@ import Slider from "rc-slider"
 import Modal from "react-modal"
 import { Link } from "gatsby"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faTimes, faArrowLeft } from "@fortawesome/free-solid-svg-icons"
+import { faTimes, faArrowLeft,faWindowClose } from "@fortawesome/free-solid-svg-icons"
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs"
 import Header from "../../components/header"
 import { getSecTomorrow, numberWithLength } from "../../utilities/number"
@@ -42,6 +42,7 @@ const Auction = () => {
     const [showSelect, setShowSelect] = useState(false)
     const [tabIndex, setTabIndex] = useState(2)
     const [walletAddress, setWalletAddress] = useState("")
+    const [show, setShow] = useState(false)
 
     const paymentDisabled = useMemo(() => {
         if (tabIndex === 0) {
@@ -164,7 +165,7 @@ const Auction = () => {
                                 </span>
                                 <span
                                     className="pointer"
-                                    style={{ left: percentage * 0.8 + 9 + "%" }}
+                                    style={{ left: percentage + "%" }}
                                 ></span>
                                 <div
                                     className="progress-bar"
@@ -174,7 +175,9 @@ const Auction = () => {
                                             "linear-gradient(270deg, #941605 60%, #de4934 86.3%)",
                                         transform: "rotate(-180deg)",
                                     }}
-                                ></div>
+                                >
+                                    
+                                </div>
                             </div>
                         </div>
                         <div className="table-container">
@@ -191,10 +194,120 @@ const Auction = () => {
                                 </tbody>
                             </table>
                         </div>
+                        <div className="d-block d-md-none px-2 mt-auto w-100 mb-5">
+                            <button className="ndb_button w-100" onClick={()=> setShow(true)}>
+                                        BUY
+                                    </button>
+                        </div>
                     </div>
                     <div className="auction-right col-md-8">
-                        <p className="title">Exclusive pre sale</p>
-                        <div className="tokenDiv">
+                        <p className="title d-none d-md-block">Exclusive pre sale</p>
+                        {show && <div className="tokenDiv d-block d-md-none">
+                        <FontAwesomeIcon
+                                            icon={faWindowClose}
+                                            className="text-white"
+                                            onClick={()=> setShow(false)}
+                                            role="button"
+                                            style={{
+                                                position:'absolute',
+                                                top:'5px',
+                                                right:'5px'
+                                        }}
+                         />
+                            {showSelect ? (
+                                <div className="select_wallet">
+                                    <p className="title">
+                                        Select wallet destination
+                                        <FontAwesomeIcon
+                                            icon={faArrowLeft}
+                                            className="text-white"
+                                            onClick={closeSelectWallet}
+                                            role="button"
+                                        />
+                                    </p>
+                                    <div className="select_div">
+                                        <Tabs
+                                            className="wallet-type__tab"
+                                            selectedIndex={tabIndex}
+                                            onSelect={(index) => setTabIndex(index)}
+                                        >
+                                            <TabList>
+                                                <Tab className="wallet-type__tab-list">
+                                                    NDB WALLET
+                                                </Tab>
+                                                <Tab className="wallet-type__tab-list">
+                                                    OTHER WALLET
+                                                </Tab>
+                                            </TabList>
+
+                                            <TabPanel>
+                                                <></>
+                                            </TabPanel>
+                                            <TabPanel>
+                                                <input
+                                                    className="black_input"
+                                                    placeholder="Paste Wallet Address"
+                                                    value={walletAddress}
+                                                    onChange={(e) =>
+                                                        setWalletAddress(e.target.value)
+                                                    }
+                                                />
+                                            </TabPanel>
+                                        </Tabs>
+                                    </div>
+                                    <button
+                                        className="ndb_button w-100"
+                                        onClick={() => alert("ok")}
+                                        disabled={paymentDisabled}
+                                    >
+                                        GO TO PAYMENT
+                                    </button>
+                                </div>
+                            ) : (
+                                <div className="buy_token">
+                                    <p className="title">
+                                        <span className="txt-green">10 USD</span> per token
+                                    </p>
+                                    <p className="title" style={{ margin: "5px 0" }}>
+                                        amount of Token
+                                    </p>
+                                    <div className="slider-container">
+                                        <span className="max d-none">Maximum 10</span>
+                                        <input
+                                            type="number"
+                                            value={amount}
+                                            onChange={(e) => setAmount(e.target.value)}
+                                            className="range-input"
+                                            min={1}
+                                            max={10}
+                                            style={{ marginRight: "30px" }}
+                                        />
+                                        <Slider
+                                            value={amount}
+                                            onChange={(value) => setAmount(value)}
+                                            min={1}
+                                            max={10}
+                                            step={1}
+                                            className="d-none"
+                                        />
+                                    </div>
+                                    <div className="total-price">
+                                        <p className="title">total price</p>
+                                        <div className="price">{price * amount}</div>
+                                    </div>
+                                    <p style={{
+                                        margin: '51px 40px 25px',
+                                        display: 'block',
+                                        textAlign: 'center',
+                                    }}>NDB tokens will be delivered within 30 days of purchase</p>
+                                    <button className="ndb_button w-100" onClick={handleBuyToken}>
+                                        BUY
+                                    </button>
+                                </div>
+                            )}
+                        </div>}
+                        
+                        <div className="tokenDiv d-none d-md-block ">
                             {showSelect ? (
                                 <div className="select_wallet">
                                     <p className="title">
@@ -261,6 +374,7 @@ const Auction = () => {
                                             className="range-input"
                                             min={1}
                                             max={10}
+                                            style={{ marginRight: "30px" }}
                                         />
                                         <Slider
                                             value={amount}
@@ -280,7 +394,7 @@ const Auction = () => {
                                 </div>
                             )}
                         </div>
-                        <p className="mt-2">NDB tokens will be delivered within 30 days of purchase</p>
+                        <p className="mt-2 d-none d-md-block">NDB tokens will be delivered within 30 days of purchase</p>
                     </div>
                 </div>
 

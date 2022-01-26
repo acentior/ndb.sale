@@ -1,145 +1,160 @@
 main.purchase-page {
-    .menu {
-        background:black;
+  .menu {
+    background: black;
+  }
+  .home-section {
+    height: 100vh;
+    background-color: black;
+    display: flex;
+    align-items: center;
+    @media screen and (max-width: 768px) {
+      height: 100vh;
+      background: radial-gradient(
+        37.36% 30.86% at 38.06% 59.62%,
+        rgba(0, 0, 0, 0) 0%,
+        #000000 100%
+      );
     }
-    .home-section {
-        height: 100vh;
-        background-color:black ;
-        display: flex;
-        align-items: center;
-        @media screen and (max-width: 768px) {
-            height: 100vh;
-            background: radial-gradient(37.36% 30.86% at 38.06% 59.62%, rgba(0, 0, 0, 0) 0%, #000000 100%);
+    @media screen and (max-width: 575px) {
+      align-items: center;
+      .btn-desktop {
+        display: none !important;
+      }
+      .btn-mobile {
+        margin: 0px 5vw;
+      }
+    }
+    @media screen and (min-width: 576px) {
+      .btn-mobile {
+        display: none !important;
+      }
+      .btn-desktop {
+        margin-left: 5vw;
+      }
+    }
+
+    div.container {
+      width: 100%;
+      div.row {
+        .col-sm-7 {
+          max-width: 498px;
+          h4.title1 {
+            font-size: 24px;
+            font-weight: 600;
+            text-transform: uppercase;
+            margin-bottom: 1.5vw;
+          }
+          h3.title2 {
+            margin-left: 5vw;
+            margin-bottom: 1vw;
+            font-style: italic;
+            font-weight: 800;
+            text-transform: uppercase;
+          }
+          p.text {
+            font-size: 16px;
+          }
+          button.btn-green {
+            display: block;
+            margin: auto;
+            width: 320px;
+            padding: 10px;
+            font-size: 30px;
+            font-weight: 700;
+          }
+          @media screen and (max-width: 1480px) {
+            h4.title1 {
+              font-size: 24px;
+            }
+            h3.title2 {
+              font-size: 48px;
+            }
+            p.text {
+              font-size: 16px;
+              margin-right: 5vw;
+            }
+            button.btn-green {
+              width: 250px;
+              font-size: 22px;
+            }
+          }
+          @media screen and (max-width: 575px) {
+            // max-width:350px;
+            text-align: center;
+            align-items: center !important;
+            padding: 20px;
+            padding-bottom: 0;
+            h4.title1 {
+              font-size: 22px;
+              margin: 10px 0px;
+            }
+            h3.title2 {
+              font-size: 50px;
+              margin: 10px 0px;
+            }
+            p.text {
+              // max-width:290px;
+              font-size: 16px;
+              margin: 10px 25px;
+              text-align: left;
+            }
+            button.btn-green {
+              margin-top: 20px;
+              width: 200px;
+              padding: 7px;
+              font-size: 16px;
+            }
+          }
         }
-        @media screen and (max-width: 575px) {
-            .btn-desktop {
-                display: none !important;
-            }
-            .btn-mobile {
-                margin: 0px 5vw;
-            }
-        
-        }
-        @media screen and (min-width: 576px) {
-            .btn-mobile {
-                display: none !important;
-            }
-            .btn-desktop {
-                margin-left: 5vw;
-            }
-        }
-        
-        
-        div.container {
+        .col-sm-5 {
+          div.hero-image {
             width: 100%;
-            div.row {
-                .col-sm-7 {
-                    max-width: 498px;
-                    h4.title1 {
-                        font-size: 24px;
-                        font-weight: 600;
-                        text-transform: uppercase;
-                        margin-bottom: 1.5vw;
-                    }
-                    h3.title2 {
-                        margin-left: 5vw;
-                        margin-bottom: 1vw;
-                        font-style: italic;
-                        font-weight: 800;
-                        text-transform: uppercase;
-                    }
-                    p.text {
-                        font-size: 16px;
-                    }
-                    button.btn-green {
-                        display: block;
-                        margin: auto;
-                        width: 320px;
-                        padding: 10px;
-                        font-size: 30px;
-                        font-weight: 700;
-                    }
-                    @media screen and (max-width: 1480px) {
-                        
-                        h4.title1 {
-                            font-size: 24px;
-                        }
-                        h3.title2 {
-                            font-size: 48px;
-                        }
-                        p.text {
-                            font-size: 16px;
-                            margin-right: 5vw;
-                        }
-                        button.btn-green {
-                            width: 250px;
-                            font-size: 22px;
-                        }
-                    }
-                    @media screen and (max-width: 575px) {
-                        max-width:350px;
-                        text-align: center;
-                        align-items: center !important;
-                        h4.title1 {
-                            font-size: 24px;
-                            margin: 10px 0px
-                        }
-                        h3.title2 {
-                            font-size: 48px;
-                            margin: 10px 0px
-                        }
-                        p.text {
-                            max-width:290px;
-                            font-size: 12px;
-                            margin: 10px 0px
-                        }
-                        button.btn-green {
-                            margin-top: 20px;
-                            width: 200px;
-                            padding: 7px;
-                            font-size: 16px;
-                        }
-                    }
-                }
-                .col-sm-5 {
-                    div.hero-image {
-                        width: 100%;
-                        height:530px;
-                        display: flex;
-                        justify-content:center;
-                        align-items: center;
-                        background-image: url("../../images/green-coin.svg");
-                        background-repeat: no-repeat;
-                        background-size: contain;
-                        img {
-                            width: 100%;
-                            
-                        }
-                    }
-                    .text-left {
-                        font-size: 24px;
-                        line-height: 29px;
-                        font-variant: small-caps;
-                        color: #FFFFFF;
-                    }
-                    @media screen and (max-width: 575px){
-                        div.hero-image {
-                            width: 100%;
-                            height: 206px;
-                            justify-content: start;
-                            background-position: -53px 61px;
-                            background-image: radial-gradient(37.36% 30.86% at 38.06% 59.62%, rgba(0, 0, 0, 0) 0%, #000000 100%), url("../../images/green-coin-mobile.svg");
-                            .text-left {
-                            font-weight: bold;
-                            font-size: 24px;
-                            line-height: 29px;
-                            font-variant: small-caps;
-                            color: #FFFFFF;
-                            }
-                        }
-                    }
-                }
+            height: 530px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-image: url("../../images/green-coin.svg");
+            background-repeat: no-repeat;
+            background-size: contain;
+            img {
+              width: 100%;
             }
+          }
+          .text-left {
+            font-size: 24px;
+            line-height: 29px;
+            font-variant: small-caps;
+            color: #ffffff;
+          }
+          @media screen and (max-width: 575px) {
+            padding: 20px;
+            padding-top: 0;
+            div.hero-image {
+              margin: 5px;
+              width: 100%;
+              height: auto;
+              justify-content: start;
+              background-position: -53px 61px;
+              background-image: radial-gradient(
+                  37.36% 30.86% at 38.06% 59.62%,
+                  rgba(0, 0, 0, 0) 0%,
+                  #000000 100%
+                ),
+                url("../../images/green-coin-mobile.svg");
+              div {
+                width: 100%;
+                .text-left {
+                  font-weight: bold;
+                  font-size: 24px;
+                  line-height: 29px;
+                  font-variant: small-caps;
+                  color: #ffffff;
+                }
+              }
+            }
+          }
         }
+      }
     }
+  }
 }
