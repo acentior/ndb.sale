@@ -604,9 +604,7 @@ const Auction = () => {
                                         )}
                                         readOnly
                                     />
-                                    <h3 className="symbol-label">
-                                        {Currencies[currencyId].symbol}
-                                    </h3>
+                                    <h3 className="symbol-label">{Currencies[currencyId].label}</h3>
                                 </div>
                                 <div className="mt-3 mb-2">
                                     <p>Audited by Cyberunit</p>
@@ -920,13 +918,24 @@ const Auction = () => {
                             <span className="range-label">Total price</span>
                             <input
                                 className="total-input"
-                                type="number"
-                                value={calcPriceFromUsd(price * amount || 1)}
+                                type="text"
+                                value={numberWithCommas(
+                                    Number(
+                                        calcPriceFromUsd(
+                                            Math.max(
+                                                fnSelectedRoundData()?.minPrice,
+                                                price * amount
+                                            )
+                                        ),
+                                        ","
+                                    )
+                                )}
                                 readOnly
                             />
+                            <h3 className="symbol-label">{Currencies[currencyId].label}</h3>
                         </div>
                         <button
-                            className="btn-primary text-uppercase w-100"
+                            className="btn-primary text-uppercase w-100 mt-4"
                             onClick={() => {
                                 setState({ bidModal: false })
                                 bidMutation()
@@ -955,8 +964,15 @@ const Auction = () => {
                         <h4 className="range-label">Total price</h4>
                         <input
                             className="total-input"
-                            type="number"
-                            value={price * amount || 1}
+                            type="text"
+                            value={numberWithCommas(
+                                Number(
+                                    calcPriceFromUsd(
+                                        Math.max(fnSelectedRoundData()?.minPrice, price * amount)
+                                    ),
+                                    ","
+                                )
+                            )}
                             readOnly
                         />
                         <button

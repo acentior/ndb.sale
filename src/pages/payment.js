@@ -358,7 +358,7 @@ const Payment = () => {
                                             </div>
                                         </div>
                                         <div className="mt-3 d-flex">
-                                            <p className="d-flex flex-row">
+                                            <div className="d-flex flex-row">
                                                 <CheckBox
                                                     type="checkbox"
                                                     name="allow_fraction"
@@ -388,7 +388,7 @@ const Payment = () => {
                                                     icon={faQuestionCircle}
                                                     className="fa-2x ms-2 cursor-pointer"
                                                 />
-                                            </p>
+                                            </div>
                                             <p className="payment-expire my-auto">
                                                 payment expires in{" "}
                                                 <span className="txt-green">10 minutes</span>
