@@ -63,7 +63,7 @@ const Home = () => {
                                     Buy
                                 </button>
                             </div>
-                            "
+                            
                             <div className="text-decoration-underline text-center text-light">
                                 Learn more
                             </div>
