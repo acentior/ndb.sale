@@ -11,6 +11,9 @@
     .header-right-side {
         margin-bottom: -10px;
         margin-top: 5px;
+        @include mq("tablet", max) {
+            margin-left: 12px;
+        }
     }
     .user-dropdown {
         position: relative;
