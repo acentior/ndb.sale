@@ -69,8 +69,8 @@ main.purchaseAuction-page {
             margin-bottom: 20px;
 
             & > div.tokenDiv {
-                width: 100%;
-                min-height: 444px;
+                width: 683px;
+                min-height: 460px;
                 border: 1px solid #464646;
                 padding: 12px 39px;
                 div.buy_token {
@@ -99,7 +99,7 @@ main.purchaseAuction-page {
                         p.title {
                             width: 40%;
                             margin: 0;
-                            margin-right: 10%;
+                            // margin-right: 10%;
                         }
                         & > div.price {
                             background: #1e1e1e;
