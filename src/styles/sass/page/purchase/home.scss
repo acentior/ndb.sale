@@ -82,7 +82,8 @@ main.purchase-page {
                         // max-width:350px;
                         text-align: center;
                         align-items: center !important;
-                        padding: 0 20px;
+                        padding: 10px 20px;
+                        margin-top: 20px;
                         h4.title1 {
                             font-size: 22px;
                             margin: 10px 0px;
@@ -126,7 +127,7 @@ main.purchase-page {
                         color: #ffffff;
                     }
                     @media screen and (max-width: 575px) {
-                        padding: 0 20px;
+                        padding: 10px 20px;
                         div.hero-image {
                             width: 100%;
                             height: 200px;

@@ -164,6 +164,11 @@ const Auction = () => {
                         <p className="title-sale-ends">Pre-SALE ends in</p>
                         <div className="timebar">
                             <div className="progress">
+                                <span className="time time-md" style={{ left: percentage * 0.8 + "%" }}>
+                                    {numberWithLength(curTime.hours, 2)} :{" "}
+                                    {numberWithLength(curTime.minutes, 2)} :{" "}
+                                    {numberWithLength(curTime.seconds, 2)}
+                                </span>
                                 <span className="time" style={{ left: percentage * 0.8 + "%" }}>
                                     {numberWithLength(curTime.hours, 2)} :{" "}
                                     {numberWithLength(curTime.minutes, 2)} :{" "}
@@ -205,21 +210,12 @@ const Auction = () => {
                         <p className="title d-none d-md-block">Exclusive pre sale</p>
                         {show && (
                             <div className="tokenDiv d-block d-md-none">
-                                <FontAwesomeIcon
-                                    icon={faWindowClose}
-                                    className="text-white"
-                                    onClick={() => setShow(false)}
-                                    role="button"
-                                    style={{
-                                        position: "absolute",
-                                        top: "5px",
-                                        right: "5px",
-                                    }}
-                                />
+                                
                                 {showSelect ? (
                                     <div className="select_wallet">
                                         <p className="title">
                                             Select wallet destination
+                                            
                                             <FontAwesomeIcon
                                                 icon={faArrowLeft}
                                                 className="text-white"
@@ -261,6 +257,12 @@ const Auction = () => {
                                     <div className="buy_token">
                                         <p className="title">
                                             <span className="txt-green">10 USD</span> per token
+                                            <FontAwesomeIcon
+                                                icon={faArrowLeft}
+                                                className="text-white"
+                                                onClick={() => setShow(false)}
+                                                role="button"
+                                            />
                                         </p>
                                         <p className="title" style={{ margin: "5px 0" }}>
                                             amount of Token
