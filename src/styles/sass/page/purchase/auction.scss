@@ -76,7 +76,7 @@ main.purchaseAuction-page {
                 div.buy_token {
                     p.title {
                         position: relative;
-                        text-align: center;
+                        text-align: left;
                         svg {
                             position: absolute;
                             font-size: 20px;
@@ -95,6 +95,7 @@ main.purchaseAuction-page {
                         flex-direction: row;
                         align-items: center;
                         margin-top: 70px;
+                        gap:10px;
                         p.title {
                             width: 40%;
                             margin: 0;
