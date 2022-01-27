@@ -1,11 +1,13 @@
 .menu {
     padding: 22px 0;
-    position: fixed;
+    position: sticky;
     top: 0;
     width: 100%;
     z-index: 100;
+    height: 100px;
     @include mq("tablet", max) {
         padding: 9px 0;
+        height: 75px;
     }
     @include mq("phone", max) {
         padding: 15px 0;

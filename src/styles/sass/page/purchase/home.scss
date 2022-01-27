@@ -3,12 +3,12 @@ main.purchase-page {
         background: black;
     }
     .home-section {
-        height: 100vh;
+        height: calc(100% - 100px);
         background-color: black;
         display: flex;
         align-items: center;
         @media screen and (max-width: 768px) {
-            height: 100vh;
+            height: calc(100% - 75px);
             background: radial-gradient(
                 37.36% 30.86% at 38.06% 59.62%,
                 rgba(0, 0, 0, 0) 0%,
