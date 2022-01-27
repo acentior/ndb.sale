@@ -543,7 +543,7 @@
         display: flex;
         justify-content: space-between;
         .coin-address {
-            width: calc(100% - 139.95px);
+            width: 100%;
             @include mq("phone", max) {
                 display: block;
                 width: 100%;

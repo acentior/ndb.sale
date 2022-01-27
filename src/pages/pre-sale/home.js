@@ -38,13 +38,13 @@ const Home = () => {
                             <div className="col-sm-5 d-flex justify-content-center align-items-center imageDiv">
                                 <div className="hero-image">
                                     <div>
-                                        <p className="text-left text-light text-uppercase mt-4">
+                                        <p className="text-left text-light text-uppercase mt-4 fw-bold">
                                             7 days Left
                                         </p>
-                                        <p className="token-value mt-2 mt-sm-0">
+                                        <p className="token-value mt-sm-2 mt-sm-0">
                                             {numberWithCommas(604800, " ")}
                                         </p>
-                                        <p className="token-left text-uppercase text-end">
+                                        <p className="token-left text-uppercase text-end fw-bold">
                                             TokenS Left
                                         </p>
                                     </div>
@@ -63,7 +63,10 @@ const Home = () => {
                                     Buy
                                 </button>
                             </div>
-                            "<div className="text-decoration-underline text-center text-light">Learn more</div>
+                            "
+                            <div className="text-decoration-underline text-center text-light">
+                                Learn more
+                            </div>
                         </div>
                     </div>
                 </section>

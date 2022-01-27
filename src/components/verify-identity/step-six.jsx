@@ -24,28 +24,25 @@ export default function StepSix({
     }
     // Render
     const [loading, setLoading] = useState(true)
-    if (loading) {
-        return (
-            <>
+
+    return (
+        <>
+            <div className={`${!loading && "d-none"}`}>
                 <Loading />
-                <img
-                    className="d-none"
-                    src={VerifyIdStep6}
-                    alt="step indicator"
-                    onLoad={() => setLoading(false)}
-                />
-            </>
-        )
-    } else
-        return (
-            <div className="col-sm-12 col-11 mx-auto mt-3 mt-sm-0">
+            </div>
+            <div className={`col-sm-12 col-11 mx-auto mt-3 mt-sm-0 ${loading && "d-none"}`}>
                 <h4 className="text-center  mt-5 mt-sm-2 mb-4">Verify your identity</h4>
                 <div className="text-center">
                     <div className="d-block d-sm-none">
                         <div className="txt-green text-uppercase fw-bold fs-18px mb-3">step 4</div>
                         <div className="text-light fs-14px fw-bold">Face verification</div>
                     </div>
-                    <img className="d-sm-block d-none" src={VerifyIdStep6} alt="step indicator" />
+                    <img
+                        className="d-sm-block d-none"
+                        src={VerifyIdStep6}
+                        onLoad={() => setLoading(false)}
+                        alt="step indicator"
+                    />
                 </div>
                 <div className="my-sm-5 verify-step1">
                     <div className="text-center mt-3 mt-sm-0">
@@ -120,5 +117,6 @@ export default function StepSix({
                     </div>
                 </div>
             </div>
-        )
+        </>
+    )
 }

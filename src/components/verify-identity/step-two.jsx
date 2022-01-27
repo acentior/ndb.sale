@@ -46,21 +46,13 @@ export default function StepTwo({
     // Render
 
     const [loading, setLoading] = useState(true)
-    if (loading) {
-        return (
-            <>
+
+    return (
+        <>
+            <div className={`${!loading && "d-none"}`}>
                 <Loading />
-                <img
-                    className="d-none"
-                    src={VerifyIdStep2}
-                    alt="step indicator"
-                    onLoad={() => setLoading(false)}
-                />
-            </>
-        )
-    } else
-        return (
-            <div className="col-12 mx-auto mt-3 mt-sm-0">
+            </div>
+            <div className={`col-12 mx-auto mt-3 mt-sm-0 ${loading && "d-none"}`}>
                 <h4 className="text-center  mt-5 mt-sm-2 mb-4">Verify your identity</h4>
                 <div className="text-center">
                     <div className="d-block d-sm-none">
@@ -69,7 +61,12 @@ export default function StepTwo({
                             Confirm your ID information
                         </div>
                     </div>
-                    <img className="d-sm-block d-none" src={VerifyIdStep2} alt="step indicator" />
+                    <img
+                        className="d-sm-block d-none"
+                        src={VerifyIdStep2}
+                        onLoad={() => setLoading(false)}
+                        alt="step indicator"
+                    />
                 </div>
                 <div className="my-sm-5 verify-step1">
                     <div className="mt-5 text-light fs-25px fw-bold text-center d-sm-block d-none">
@@ -128,5 +125,6 @@ export default function StepTwo({
                     </div>
                 </div>
             </div>
-        )
+        </>
+    )
 }

@@ -14,5 +14,7 @@ export const ROUTES = {
     home: "/",
     faq: "/faq/",
     wallet: "/history/",
-    admin: "/admin"
+    admin: "/admin",
+    presale_auction: "/pre-sale/auction",
+    presale_home: "/pre-sale/home",
 }

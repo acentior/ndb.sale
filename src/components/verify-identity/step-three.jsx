@@ -59,21 +59,13 @@ export default function StepThree({
 
     // Render
     const [loading, setLoading] = useState(true)
-    if (loading) {
-        return (
-            <>
+
+    return (
+        <>
+            <div className={`${!loading && "d-none"}`}>
                 <Loading />
-                <img
-                    className="d-none"
-                    src={VerifyIdStep3}
-                    alt="step indicator"
-                    onLoad={() => setLoading(false)}
-                />
-            </>
-        )
-    } else
-        return (
-            <div className="col-sm-12 col-10 mx-auto mt-3 mt-sm-0">
+            </div>
+            <div className={`col-sm-12 col-10 mx-auto mt-3 mt-sm-0 ${loading && "d-none"}`}>
                 <h4 className="text-center  mt-5 mt-sm-2 mb-4">Verify your identity</h4>
                 <div className="text-center">
                     <div className="d-block d-sm-none">
@@ -81,7 +73,12 @@ export default function StepThree({
                         <div className="text-light fs-14px">Confirm your address information</div>
                         <div className="text-light fs-12px">Make edits if needed</div>
                     </div>
-                    <img className="d-sm-block d-none" src={VerifyIdStep3} alt="step indicator" />
+                    <img
+                        className="d-sm-block d-none"
+                        src={VerifyIdStep3}
+                        onLoad={() => setLoading(false)}
+                        alt="step indicator"
+                    />
                 </div>
                 <div className="my-sm-5 verify-step1">
                     <div className="col-12 d-flex flex-sm-row flex-column gap-sm-5 gap-0">
@@ -121,7 +118,7 @@ export default function StepThree({
                             </div>
                         </div>
                         <div className="col-md-6 col-12">
-                            <div className="my-0 mt-xxl-5">
+                            <div className="my-0 mt-lg-4">
                                 <div className="upload-doc">
                                     <div className="my-5 mb-sm-3 mt-sm-0" id="file-upload-wrapper">
                                         <label
@@ -188,5 +185,6 @@ export default function StepThree({
                     </div>
                 </div>
             </div>
-        )
+        </>
+    )
 }

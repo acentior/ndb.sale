@@ -21,7 +21,7 @@ main.purchaseAuction-page {
                 }
             }
         }
-        p.title-sale-ends { 
+        p.title-sale-ends {
             font-size: 26px;
             font-weight: 700;
             margin: 16px 0;
@@ -44,7 +44,6 @@ main.purchaseAuction-page {
             }
             @media screen and (max-width: 768px) {
                 font-size: 14px;
-                
             }
         }
         div.auction-left {
@@ -69,7 +68,7 @@ main.purchaseAuction-page {
             padding: 1vw 3vw;
             margin-bottom: 20px;
 
-            &>div.tokenDiv {
+            & > div.tokenDiv {
                 width: 100%;
                 min-height: 444px;
                 border: 1px solid #464646;
@@ -85,7 +84,7 @@ main.purchaseAuction-page {
                             margin: 0;
                             margin-right: 10%;
                         }
-                        &>div.price {
+                        & > div.price {
                             background: #1e1e1e;
                             border: 1px solid #ffffff;
                             width: 40%;
@@ -95,26 +94,30 @@ main.purchaseAuction-page {
                             color: white;
                             text-align: center;
                         }
-                        
+                        .symbol-label {
+                            color: $green;
+                            font-size: 30px;
+                            font-weight: 600;
+                            margin-bottom: 0;
+                        }
                         @media screen and (max-width: 768px) {
-                            &>div.price {
+                            & > div.price {
                                 width: 60%;
                             }
                         }
                         @media screen and (max-width: 768px) {
                             flex-direction: column;
                             margin-top: 30px;
-                            p.title{
+                            p.title {
                                 width: 100%;
                                 margin: 0;
                                 margin-bottom: 5%;
                                 font-size: 24px;
                             }
-                            &>div.price {
+                            & > div.price {
                                 width: 100%;
                             }
                         }
-                        
                     }
                 }
 
@@ -127,16 +130,17 @@ main.purchaseAuction-page {
                             font-size: 20px;
                             left: 0;
                             top: 12px;
-                            @media screen and (max-width: 768px) {
-                                font-size: 12px;
-                                top: 6px;
+                            @include mq("tablet", max) {
+                                display: none;
                             }
                         }
                     }
                     div.select_div {
-                        height: 208px;
+                        height: 250px;
                         padding-top: 25px;
-                        
+                        @include mq("phone", max) {
+                            height: auto;
+                        }
                         .wallet-type__tab {
                             .react-tabs__tab-list {
                                 display: flex;
@@ -145,7 +149,7 @@ main.purchaseAuction-page {
                                 .wallet-type__tab-list {
                                     font-size: 26px;
                                     font-weight: 700;
-                                    width: 47%;
+                                    width: calc(50% - 4px);
                                     height: 53px;
                                     line-height: 53px;
                                     border: 1px solid white;
@@ -161,8 +165,54 @@ main.purchaseAuction-page {
                                     color: #ffffff;
                                 }
                             }
+                            text-align: center;
+                            .col-sm-6 {
+                                margin-bottom: 8px;
+                                @include mq("phone") {
+                                    &:nth-child(1),
+                                    &:nth-child(3) {
+                                        padding-right: 4px;
+                                    }
+                                    &:nth-child(2),
+                                    &:nth-child(4) {
+                                        padding-left: 4px;
+                                    }
+                                }
+                            }
+                            .wallet-item {
+                                cursor: pointer;
+                                width: 100%;
+                                height: 100%;
+                                padding: 5px;
+                                border: 1.5px solid #525252;
+                                text-align: center;
+                                img {
+                                    margin-bottom: 12px;
+                                    width: 34px;
+                                    height: 34px;
+                                    @include mq("phone", max) {
+                                        width: 32px;
+                                        height: 32px;
+                                    }
+                                }
+                                p {
+                                    font-weight: 500;
+                                    font-size: 13.2009px;
+                                    line-height: 16px;
+                                    color: white;
+                                }
+                                &.inactive {
+                                    border-color: grey;
+                                    p {
+                                        color: #8f8f8f;
+                                    }
+                                    img {
+                                        opacity: 0.5;
+                                    }
+                                }
+                            }
                         }
-                        
+
                         input.black_input {
                             color: #ffffff;
                             background-color: #1e1e1e;
@@ -186,48 +236,48 @@ main.purchaseAuction-page {
                     margin-bottom: 20px;
                     @media screen and (max-width: 768px) {
                         margin-top: 25px;
-                    margin-bottom: 20px;
+                        margin-bottom: 20px;
                     }
                 }
             }
 
             @media screen and (max-width: 768px) {
                 height: auto;
-                &>div.tokenDiv {
+                & > div.tokenDiv {
                     padding: 0 10px;
                     height: auto;
                 }
             }
             @media screen and (max-width: 768px) {
-                &>div.tokenDiv {
+                & > div.tokenDiv {
                     position: absolute;
                     width: 95%;
                     left: 50%;
                     top: 50%;
-                    transform: translate(-50%,-50%);
-                    z-index: 99;
+                    transform: translate(-50%, -50%);
+                    z-index: 100;
                     background: #171717;
                     padding: 40px 10px 0;
-                   &>div.buy_token{
+                    & > div.buy_token {
                         p.title:first-child {
-                        @media screen and (max-width: 768px) {
-                            font-size: 22px;
-                            text-align: center;
-                            line-height: 1;
-                            height: auto;    
-                        }
+                            @media screen and (max-width: 768px) {
+                                font-size: 22px;
+                                text-align: center;
+                                line-height: 1;
+                                height: auto;
+                            }
                         }
                         p.title {
                             @media screen and (max-width: 768px) {
                                 font-size: 18px;
                                 text-align: center;
                                 line-height: 1;
-                                height: auto;        
+                                height: auto;
                             }
                         }
-                   }
+                    }
                 }
-            }           
+            }
         }
     }
 }
@@ -257,14 +307,14 @@ div.slider-container {
     position: relative;
     display: flex;
     align-items: center;
-    &>span.max {
+    & > span.max {
         position: absolute;
         font-weight: 500;
         font-size: 14px;
         top: 30px;
         right: 0px;
     }
-    &>input {
+    & > input {
         padding: 8px 10px;
         background: #1e1e1e;
         border: 1px solid #ffffff;
@@ -275,9 +325,8 @@ div.slider-container {
         color: white;
         text-align: center;
         margin-right: 14px;
-    
     }
-    &>div.rc-slider {
+    & > div.rc-slider {
         position: relative;
         height: 14px;
         padding: 5px 0;
@@ -292,7 +341,7 @@ div.slider-container {
         width: 100%;
         background-color: #e9e9e9;
         height: 4px;
-        border-radius: 6px;    
+        border-radius: 6px;
     }
     & div.rc-slider-track {
         height: 5px;
@@ -311,11 +360,11 @@ div.slider-container {
         flex-direction: column;
         gap: 10px;
         margin-top: 30px;
-        &>input {
-           width: 100%;
-           margin: 0!important;
-           line-height: 32px;
-           font-size: 18px;
+        & > input {
+            width: 100%;
+            margin: 0 !important;
+            line-height: 32px;
+            font-size: 18px;
         }
     }
 }
@@ -391,7 +440,7 @@ div.timebar {
     margin-top: 60px;
     margin-bottom: 40px;
     position: relative;
-    &>div.progress {
+    & > div.progress {
         height: 12px;
         border-radius: 0;
         overflow: visible;
@@ -408,8 +457,9 @@ div.timebar {
     }
     & span.pointer {
         position: absolute;
-        height: 25px;        
+        height: 25px;
         top: -13px;
+        background: #de4934;
         border: 2px solid #de4934;
     }
 }

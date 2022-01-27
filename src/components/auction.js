@@ -310,6 +310,13 @@ const Auction = () => {
         navigate(ROUTES.payment)
     }
 
+    useEffect(() => {
+        setState({
+            price: fnSelectedRoundData()?.minPrice,
+            amount: 1,
+        })
+    }, [selectedData])
+
     if (loading) return <Loading />
     else
         return (
@@ -344,12 +351,7 @@ const Auction = () => {
                                     <Tabs
                                         className="round-tab"
                                         selectedIndex={selectedData}
-                                        onSelect={(index) => {
-                                            if (index !== selectedData) {
-                                                setState({ price: 1, amount: 1 })
-                                                setSelectedData(index)
-                                            }
-                                        }}
+                                        onSelect={(index) => setSelectedData(index)}
                                     >
                                         <TabList>
                                             <Tab>Round {roundL?.getAuctionByNumber?.round}</Tab>

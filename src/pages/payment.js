@@ -364,7 +364,7 @@ const Payment = () => {
                                                     name="allow_fraction"
                                                     value={allow_fraction}
                                                     onChange={handleAllowFraction}
-                                                    className="text-uppercase"
+                                                    className="text-uppercase mt-2"
                                                 ></CheckBox>
                                                 <div className="allow-text">
                                                     Do you allow fraction of order compleation?

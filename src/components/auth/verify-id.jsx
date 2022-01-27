@@ -1,8 +1,7 @@
-import React, { useReducer, useState } from "react"
+import React, { useReducer, useState, lazy } from "react"
 import useFileUpload from "react-use-file-upload"
 import SimpleHeader from "../header/simple-header"
 import PrimaryStep from "../verify-identity/primary-step"
-import StepOne from "../verify-identity/step-one"
 import StepTwo from "../verify-identity/step-two"
 import StepThree from "../verify-identity/step-three"
 import StepFour from "../verify-identity/step-four"
@@ -14,12 +13,14 @@ import { VERIFY_KYC_MUTATION } from "../../apollo/graghqls/mutations/Auth"
 import { useMutation, useQuery } from "@apollo/client"
 import { GET_USER } from "../../apollo/graghqls/querys/Auth"
 import Loading from "../common/Loading"
+import { Suspense } from "react"
+const StepOne = lazy(() => import("../verify-identity/step-one"))
 
 const VerificationPage = () => {
     // WebService
     useQuery(GET_USER, {
         onCompleted: (res) => {
-            console.log(res.getUser.email)
+            setUserEmail(res.getUser?.email)
             setLoadingData(false)
         },
         fetchPolicy: "network-only",
@@ -103,86 +104,88 @@ const VerificationPage = () => {
     if (loadingData) return <Loading />
     else
         return (
-            <main className="verify-page">
-                <SimpleHeader />
-                <section className="d-flex justify-content-center align-items-start align-items-xl-center">
-                    <div>
-                        {step === -1 && (
-                            <PrimaryStep
-                                accept={accept}
-                                setAccept={setAccept}
-                                step={step}
-                                setState={setState}
-                            />
-                        )}
-                        {step === 0 && (
-                            <StepOne
-                                country={country}
-                                setCountry={setCountry}
-                                step={step}
-                                setState={setState}
-                                files={stepOneFiles}
-                                setFiles={stepOneSetFiles}
-                                handleDragDropEvent={stepOneHandleDragDropEvent}
-                                removeFile={stepOneRemoveFile}
-                            />
-                        )}
-                        {step === 1 && (
-                            <StepTwo
-                                firstName={firstName}
-                                setFirstName={setFirstName}
-                                surname={surname}
-                                setSurname={setSurname}
-                                dob={dob}
-                                setDob={setDob}
-                                step={step}
-                                setState={setState}
-                            />
-                        )}
-                        {step === 2 && (
-                            <StepThree
-                                country={stepThreeCountry}
-                                setCountry={setStepThreeCountry}
-                                step={step}
-                                setState={setState}
-                                files={stepThreeFiles}
-                                setFiles={stepThreeSetFiles}
-                                handleDragDropEvent={stepThreeHandleDragDropEvent}
-                                removeFile={stepThreeRemoveFile}
-                            />
-                        )}
-                        {step === 3 && (
-                            <StepFour
-                                address={address}
-                                setAddress={setAddress}
-                                step={step}
-                                setState={setState}
-                            />
-                        )}
-                        {step === 4 && (
-                            <StepFive
-                                step={step}
-                                setState={setState}
-                                files={stepFourFiles}
-                                setFiles={stepFourSetFiles}
-                                handleDragDropEvent={stepFourHandleDragDropEvent}
-                                removeFile={stepFourRemoveFile}
-                            />
-                        )}
-                        {step === 5 && (
-                            <StepSix
-                                step={step}
-                                setState={setState}
-                                selfieImage={selfieImage}
-                                setSelfieImage={setSelfieImage}
-                                submitting={submitting}
-                                submitKYCData={submitKYCData}
-                            />
-                        )}
-                        {step === 6 && <StepSeven step={step} setState={setState} />}
-                    </div>
-                </section>
-            </main>
+            <Suspense fallback={<Loading />}>
+                <main className="verify-page">
+                    <SimpleHeader />
+                    <section className="d-flex justify-content-center align-items-start align-items-xl-center">
+                        <div>
+                            {step === -1 && (
+                                <PrimaryStep
+                                    accept={accept}
+                                    setAccept={setAccept}
+                                    step={step}
+                                    setState={setState}
+                                />
+                            )}
+                            {step === 0 && (
+                                <StepOne
+                                    country={country}
+                                    setCountry={setCountry}
+                                    step={step}
+                                    setState={setState}
+                                    files={stepOneFiles}
+                                    setFiles={stepOneSetFiles}
+                                    handleDragDropEvent={stepOneHandleDragDropEvent}
+                                    removeFile={stepOneRemoveFile}
+                                />
+                            )}
+                            {step === 1 && (
+                                <StepTwo
+                                    firstName={firstName}
+                                    setFirstName={setFirstName}
+                                    surname={surname}
+                                    setSurname={setSurname}
+                                    dob={dob}
+                                    setDob={setDob}
+                                    step={step}
+                                    setState={setState}
+                                />
+                            )}
+                            {step === 2 && (
+                                <StepThree
+                                    country={stepThreeCountry}
+                                    setCountry={setStepThreeCountry}
+                                    step={step}
+                                    setState={setState}
+                                    files={stepThreeFiles}
+                                    setFiles={stepThreeSetFiles}
+                                    handleDragDropEvent={stepThreeHandleDragDropEvent}
+                                    removeFile={stepThreeRemoveFile}
+                                />
+                            )}
+                            {step === 3 && (
+                                <StepFour
+                                    address={address}
+                                    setAddress={setAddress}
+                                    step={step}
+                                    setState={setState}
+                                />
+                            )}
+                            {step === 4 && (
+                                <StepFive
+                                    step={step}
+                                    setState={setState}
+                                    files={stepFourFiles}
+                                    setFiles={stepFourSetFiles}
+                                    handleDragDropEvent={stepFourHandleDragDropEvent}
+                                    removeFile={stepFourRemoveFile}
+                                />
+                            )}
+                            {step === 5 && (
+                                <StepSix
+                                    step={step}
+                                    setState={setState}
+                                    selfieImage={selfieImage}
+                                    setSelfieImage={setSelfieImage}
+                                    submitting={submitting}
+                                    submitKYCData={submitKYCData}
+                                />
+                            )}
+                            {step === 6 && <StepSeven step={step} setState={setState} />}
+                        </div>
+                    </section>
+                </main>
+            </Suspense>
         )
 }
 

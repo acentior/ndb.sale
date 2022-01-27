@@ -1,4 +1,15 @@
 .verify-page {
+    overflow-y: auto !important;
+    &::-webkit-scrollbar {
+        height: 0px !important;
+        width: 5px;
+    }
+    &::-webkit-scrollbar-track {
+        background: #666666 !important;
+    }
+    &::-webkit-scrollbar-thumb {
+        background: #ffffff !important;
+    }
     .btn-primary:disabled {
         background-color: hsl(0, 0%, 12%) !important;
         border: 1px solid gray !important;
@@ -6,7 +17,6 @@
     }
     section {
         @extend %set-height2;
-        overflow: auto;
     }
     .step {
         &-bar {

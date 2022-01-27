@@ -7,26 +7,22 @@ import Loading from "../common/Loading"
 export default function StepSeven() {
     // Render
     const [loading, setLoading] = useState(true)
-    if (loading) {
-        return (
-            <>
+    return (
+        <>
+            <div className={`${!loading && "d-none"}`}>
                 <Loading />
-                <img
-                    className="d-none"
-                    src={VerifyIdStep7}
-                    alt="step indicator"
-                    onLoad={() => setLoading(false)}
-                />
-            </>
-        )
-    } else
-        return (
-            <div className="col-sm-12 col-11 mx-auto mt-3 mt-sm-0">
+            </div>
+            <div className={`col-sm-12 col-11 mx-auto mt-3 mt-sm-0 ${loading && "d-none"}`}>
                 <h4 className="text-center  mt-5 mt-sm-2 mb-4">Verify your identity</h4>
                 <div className="text-center">
-                    <img className="d-sm-block d-none" src={VerifyIdStep7} alt="step indicator" />
+                    <img
+                        className="d-sm-block d-none"
+                        src={VerifyIdStep7}
+                        onLoad={() => setLoading(false)}
+                        alt="step indicator"
+                    />
                 </div>
-                <div className="my-sm-5 verify-step1">
+                <div className="my-sm-5 py-sm-5 verify-step1">
                     <div className="text-sm-start text-center">
                         <p className="fs-25px fw-bold text-light d-sm-block d-none my-sm-0 my-5">
                             Thank you, your verification has been successfully submitted.
@@ -54,5 +50,6 @@ export default function StepSeven() {
                     </div>
                 </div>
             </div>
-        )
+        </>
+    )
 }
