@@ -74,6 +74,22 @@ main.purchaseAuction-page {
                 border: 1px solid #464646;
                 padding: 12px 39px;
                 div.buy_token {
+                    p.title {
+                        position: relative;
+                        text-align: center;
+                        svg {
+                            position: absolute;
+                            font-size: 20px;
+                            left: -5px;
+                            top: 50%;
+                            transform: translateY(-50%);
+                            @include mq("tablet", max) {
+                                // display: none;
+                                font-size: 14px;
+                                left: 0;
+                            }
+                        }
+                    }
                     div.total-price {
                         display: flex;
                         flex-direction: row;
@@ -128,10 +144,13 @@ main.purchaseAuction-page {
                         svg {
                             position: absolute;
                             font-size: 20px;
-                            left: 0;
-                            top: 12px;
+                            left: -5px;
+                            top: 50%;
+                            transform: translateY(-50%);
                             @include mq("tablet", max) {
-                                display: none;
+                                // display: none;
+                                font-size: 14px;
+                                left: 0;
                             }
                         }
                     }
@@ -147,7 +166,7 @@ main.purchaseAuction-page {
                                 justify-content: space-between;
                                 border: none;
                                 .wallet-type__tab-list {
-                                    font-size: 26px;
+                                    font-size: 22px;
                                     font-weight: 700;
                                     width: calc(50% - 4px);
                                     height: 53px;
@@ -156,7 +175,7 @@ main.purchaseAuction-page {
                                     text-align: center;
                                     cursor: pointer;
                                     @media screen and (max-width: 768px) {
-                                        font-size: 15px;
+                                        font-size: 14px;
                                     }
                                 }
                                 .react-tabs__tab--selected {
@@ -257,7 +276,7 @@ main.purchaseAuction-page {
                     transform: translate(-50%, -50%);
                     z-index: 100;
                     background: #171717;
-                    padding: 40px 10px 0;
+                    //padding: 40px 10px 0;
                     & > div.buy_token {
                         p.title:first-child {
                             @media screen and (max-width: 768px) {
@@ -444,17 +463,24 @@ div.timebar {
         height: 12px;
         border-radius: 0;
         overflow: visible;
+        &:hover span.time.time-md{
+            display:block
+        }
     }
     & span.time {
         position: absolute;
         font-weight: 700;
         font-size: 18px;
         top: -50px;
+        display: none;
+        transition:all 0.3s ease-in-out;
         @media screen and (max-width: 768px) {
             font-size: 12px;
             top: -40px;
+            display: block;
         }
     }
+    
     & span.pointer {
         position: absolute;
         height: 25px;
