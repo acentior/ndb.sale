@@ -85,9 +85,11 @@ export const UPDATE_AVATAR_PROFILE = gql`
 export const UPDATE_AVATARSET = gql`
     mutation updateAvatarSet(
         $components: [AvatarSetInput]
+        $hairColor: String
     ) {
         updateAvatarSet(
             components:  $components
+            hairColor: $hairColor
         ) {
             id
             regDate

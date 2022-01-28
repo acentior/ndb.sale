@@ -1,15 +1,17 @@
 import { Link, navigate } from "gatsby"
 import React, { useReducer, useCallback, useState } from "react"
-import { DatePicker } from "@mui/lab"
+import { MobileDatePicker } from "@mui/lab"
 import { Icon } from "@iconify/react"
 import AdapterDateFns from "@mui/lab/AdapterDateFns"
 import LocalizationProvider from "@mui/lab/LocalizationProvider"
-import Header from "../header"
+import SimpleHeader from "../header/simple-header"
 import { Input } from "../common/FormControl"
-import MInput from "@mui/material/Input"
+import TextField from "@mui/material/TextField"
 import { Trees } from "../../utilities/imgImport"
 import { ROUTES } from "../../utilities/routes"
 import PrivacyPolicy from "../verify-identity/privacy-policy"
+import languageDropdown from "react-lang-dropdown"
+import languages from "../../assets/lang/languages.json"
 
 const content = `
 I declare that i am at least 16 years of age; I agree to the collection, processing or storage of my personal information, including biometic data, by NDB for the purpose(s) of identiy verification; that the information I provide is true and accurate to the best of my knowledge; and I shall be fully responsible in case I provide wrong information or any of the documents I use are fake, forged, counterfeit etc.
@@ -81,17 +83,17 @@ const Verifier = ({ isFirst }) => {
 }
 
 const VerifyCompany = () => {
+    const [language, LanguageDropdown] = languageDropdown.useDropdown(languages)
     const [state, setState] = useReducer((old, action) => ({ ...old, ...action }), {
         step: -1,
         file: null,
         fileOpen: false,
         business_name: "",
-        dateOpen: false,
         incop_date: new Date(),
         register_num: "",
         verifiers: ["1"],
     })
-    const { step, business_name, dateOpen, incop_date, verifiers } = state
+    const { step, business_name, incop_date, verifiers } = state
 
     const [agree, setAgree] = useState(false)
 
@@ -102,11 +104,11 @@ const VerifyCompany = () => {
 
     return (
         <main className="verify-company">
-            <Header />
+            <SimpleHeader />
             <section>
                 <div className="container verify-company_container">
                     <div className="header">
-                        <h4 className="text-center mt-2 mb-4">Verify Company</h4>
+                        <h4 className="text-center mt-2 mb-4">{language.content.verify_company}</h4>
                         {step !== -1 && step <= 2 && (
                             <div className="d-flex mt-4">
                                 <div className="step-bar">
@@ -126,11 +128,16 @@ const VerifyCompany = () => {
                     </div>
                     {step === -1 && (
                         <div className="verify-step0">
+                            <LanguageDropdown />
                             <p className="pre-wrap">
-                                <b>Identity verificaton Consent</b>
-                                {content}
+                                <b>{language.content?.subtitle}</b>
+                                {language.content?.content}
                             </p>
-                            <PrivacyPolicy agree={agree} setAgree={(res) => setAgree(res)} />
+                            <PrivacyPolicy
+                                agree={agree}
+                                setAgree={(res) => setAgree(res)}
+                                lang={language.content}
+                            />
                         </div>
                     )}
                     {step === 0 && (
@@ -145,22 +152,13 @@ const VerifyCompany = () => {
                             />
                             <p className="form-label mt-3">Incoporation Date</p>
                             <LocalizationProvider dateAdapter={AdapterDateFns}>
-                                <DatePicker
-                                    label="Incoporation Date"
+                                <MobileDatePicker
+                                    inputFormat="yyyy-MM-dd"
                                     value={incop_date}
-                                    open={dateOpen}
-                                    onOpen={() => setState({ dateOpen: true })}
-                                    onClose={() => setState({ dateOpen: false })}
                                     onChange={(newValue) => {
                                         setState({ incop_date: newValue })
                                     }}
-                                    renderInput={({ params }) => (
-                                        <MInput
-                                            {...params}
-                                            className="form-control date-picker"
-                                            onClick={(e) => setState({ dateOpen: true })}
-                                        />
-                                    )}
+                                    renderInput={(params) => <TextField {...params} />}
                                 />
                             </LocalizationProvider>
                         </div>

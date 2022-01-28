@@ -2,6 +2,10 @@ import React from "react"
 import { useState } from "react"
 import { VerifyIdStep2 } from "../../utilities/imgImport"
 import Loading from "../common/Loading"
+import AdapterDateFns from "@mui/lab/AdapterDateFns"
+import LocalizationProvider from "@mui/lab/LocalizationProvider"
+import TextField from "@mui/material/TextField"
+import { MobileDatePicker } from "@mui/lab"
 
 export default function StepTwo({
     step,
@@ -13,19 +17,12 @@ export default function StepTwo({
     surname,
     setSurname,
 }) {
-    // Containers
-    const dateValidationRegex = /^\d{4}-(0[1-9]|1[0-2])-(0[1-9]|[12][0-9]|3[01])$/
-    const [dateError, setDateError] = useState("")
     const [firstNameError, setFirstNameError] = useState("")
     const [surnameError, setSurnameError] = useState("")
-
-    // Methods
-    const validateDateFormat = (date) => String(date).search(dateValidationRegex) !== -1
 
     const onNextButtonClick = (e) => {
         e.preventDefault()
         setFirstNameError("")
-        setDateError("")
         setSurnameError("")
         let error = false
         if (!firstName) {
@@ -35,10 +32,6 @@ export default function StepTwo({
         if (!surname) {
             error = true
             setSurnameError("Please fill out the surname field")
-        }
-        if (!validateDateFormat(dob)) {
-            error = true
-            setDateError("Invalid date format!")
         }
         if (!error) return setState({ step: step + 1 })
     }
@@ -86,7 +79,7 @@ export default function StepTwo({
                             <div className="text-danger mt-2">{firstNameError}</div>
                         </div>
                         <div>
-                            <p className="form-label mt-4">Surname Name</p>
+                            <p className="form-label mt-4">Last Name</p>
                             <input
                                 type="text"
                                 className="form-control"
@@ -98,14 +91,16 @@ export default function StepTwo({
                         </div>
                         <div>
                             <p className="form-label mt-4">Date of birth (YYYY-MM-DD)</p>
-                            <input
-                                type="text"
-                                onChange={(e) => setDob(e.target.value)}
-                                value={dob}
-                                className="form-control"
-                                placeholder="1985-05-13"
-                            />
-                            <div className="text-danger mt-2">{dateError}</div>
+                            <LocalizationProvider dateAdapter={AdapterDateFns}>
+                                <MobileDatePicker
+                                    inputFormat="yyyy-MM-dd"
+                                    value={dob}
+                                    onChange={(newValue) => {
+                                        setDob({ incop_date: newValue })
+                                    }}
+                                    renderInput={(params) => <TextField {...params} />}
+                                />
+                            </LocalizationProvider>
                         </div>
                     </div>
 

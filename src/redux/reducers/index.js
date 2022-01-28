@@ -1,12 +1,12 @@
-import { combineReducers } from "redux"
-import { authReducer } from "./authReducer"
-import { paginationReducer } from "./pageReducer"
-import { errorsReducer } from "./errorReducer"
-import { avatarComponentsReducer } from "./avatarReducer"
-import { bidReducer } from "./bidReducer"
-import { userTierReducer } from "./settingReducer"
+import { combineReducers } from "redux";
+import { authReducer } from "./authReducer";
+import { paginationReducer } from "./pageReducer";
+import { errorsReducer } from "./errorReducer";
+import { avatarComponentsReducer } from "./avatarReducer";
+import { bidReducer } from "./bidReducer";
+import { tasksReducer, userTierReducer } from "./settingReducer";
 import { dataReducer } from './dataReducer';
-import { kycSettingsReducer } from "./settingReducer"
+import { kycSettingsReducer } from "./settingReducer";
 
 const rootReducer = combineReducers({
     auth: authReducer,
@@ -16,6 +16,7 @@ const rootReducer = combineReducers({
     userTiers: userTierReducer,
     placeBid: bidReducer,
     kycSettings: kycSettingsReducer,
+    tasks: tasksReducer,
     data: dataReducer,
 })
 

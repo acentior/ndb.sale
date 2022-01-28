@@ -11,13 +11,13 @@ import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
 import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons"
 
 const ForgetPassword = () => {
-    // Authentication
-    if (auth?.isLoggedIn()) navigate("/app/profile")
-
     // Containers
     const auth = useAuth()
     const [email, setEmail] = useState("")
     const [emailError, setEmailError] = useState("")
+
+    // Authentication
+    if (auth?.isLoggedIn()) navigate("/app/profile")
 
     // Webservice
     const [forgotPwdMutation, forgotPwdMutationResults] = useForgotPassword()

@@ -1,4 +1,5 @@
 import * as types from "../actionTypes";
+import _ from 'lodash';
 
 export const userTierReducer = (state = {}, action) => {
     switch(action.type) {
@@ -26,6 +27,25 @@ export const kycSettingsReducer = (state = InitialKYCSetting, action) => {
             return { ...state, ...action.payload };
         case types.UPDATE_KYC_SETTING:
             return { ...state, [action.payload.kind]: action.payload };
+        default:
+            return state;
+    }
+};
+
+const InitialTask = {
+    verification: 0,
+    wallet: [],
+    auction: 0,
+    direct: 0,
+    staking: []
+};
+
+export const tasksReducer = (state = InitialTask, action) => {
+    switch(action.type) {
+        case types.FETCH_TASK_SETTING:
+            const wallet = _.orderBy(action.payload.wallet, ['amount'], ['asc']);
+            const staking = _.orderBy(action.payload.staking, ['expiredTime'], ['asc']);
+            return { ...state, ...action.payload, wallet, staking };
         default:
             return state;
     }

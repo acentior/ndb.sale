@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Icon } from '@iconify/react';
 import Modal from 'react-modal';
@@ -6,43 +7,53 @@ import { Alert } from '@mui/material';
 import { device } from '../../../../utilities/device';
 import { width } from './columnWidth';
 import NumberFormat from 'react-number-format';
-
-const BalancesData = [
-    {threshold: '50', points: 500},
-    {threshold: '1k', points: 1000},
-    {threshold: '50k', points: 1500},
-    {threshold: '100k', points: 2000},
-    {threshold: '300k', points: 3000},
-    {threshold: '500k', points: 6000},
-];
+import { update_Task_Setting } from '../../../../redux/actions/tasksAction';
 
 const WalletBalance = () => {
+    const dispatch = useDispatch();
+    const { tasks } = useSelector(state => state);
+
     const [show, setShow] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [balances, setBalances] = useState([]);
     const [showError, setShowError] = useState(false);
+    const [pending, setPending] = useState(false);
 
     // Balance Data Validation
     const error = useMemo(() => {
         if(!balances.length) return {item: 'noData', desc: 'One Balance is required at least'};
         for(let i = 0; i < balances.length; i++) {
-            if(!balances[i].threshold) return {index: i, item: 'threshold', desc: 'Input is required'};
-            if(!balances[i].points) return {index: i, item: 'points', desc: 'Input is required'};
+            if(!balances[i].amount) return {index: i, item: 'amount', desc: 'Input is required'};
+            if(!balances[i].point) return {index: i, item: 'point', desc: 'Input is required'};
         }
         return {};
     }, [balances]);
 
     const openEditModal = () => {
-        setBalances(BalancesData);
+        const wallet = tasks.wallet.map(item => ({amount: item.amount, point: item.point}));
+        setBalances(wallet);
         setModalIsOpen(true);
     };
 
-    const handleSubmit = () => {
-        if(error.item) {
+    const handleSubmit = async () => {
+        if(Object.values(error).length) {
             setShowError(true);
             return;
         }
-        alert('Saved successfully');
+        setPending(true);        
+        setShowError(false);
+        const updateData = {
+            verification: tasks.verification,
+            wallet: balances.map(item => ({amount: Number(item.amount), point: Number(item.point)})),
+            auction: tasks.auction,
+            direct: tasks.direct,
+            staking: tasks.staking.map(item => ({expiredTime: item.expiredTime, ratio: item.ratio}))
+        };
+        await dispatch(update_Task_Setting(updateData));
+        setPending(false);
+    };
+
+    const closeModal = () => {
         setModalIsOpen(false);
         setShowError(false);
     };
@@ -56,10 +67,20 @@ const WalletBalance = () => {
                             <p>Wallet Balance <span style={{marginLeft: 15}}><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} /></span></p>
                         </div>
                         <div className='threshold'>
-                            <p>{BalancesData[0].threshold}</p>
+                            <NumberFormat
+                                value={tasks.wallet[0]?.amount}
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                renderText={(value, props) => <p {...props}>{value}</p>}
+                            />
                         </div>
                         <div className='points'>
-                            <p>{BalancesData[0].points}</p>
+                            <NumberFormat
+                                value={tasks.wallet[0]?.point}
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                renderText={(value, props) => <p {...props}>{value}</p>}
+                            />
                         </div>
                         <div className='edit'>
                             <p><span className='edit'><Icon icon="clarity:note-edit-line" onClick={openEditModal} /></span></p>
@@ -68,16 +89,28 @@ const WalletBalance = () => {
                 </Main>
                 <div id='wallet_balance' className='collapse'>
                     <Toggle>
-                        {BalancesData.map((value, index) => {
+                        {tasks.wallet?.map((value, index) => {
                             if(index === 0) return null;
                             return (
                                 <UnitRow key={index}>
                                     <div className='task'></div>
                                     <div className='threshold'>
-                                        <p key={index}>{value.threshold}</p>
+                                        <NumberFormat
+                                            key={index}
+                                            value={value.amount}
+                                            displayType={'text'}
+                                            thousandSeparator={true}
+                                            renderText={(value, props) => <p {...props}>{value}</p>}
+                                        />
                                     </div>
                                     <div className='points'>
-                                        <p key={index}>{value.points}</p>
+                                        <NumberFormat
+                                            key={index}
+                                            value={value.point}
+                                            displayType={'text'}
+                                            thousandSeparator={true}
+                                            renderText={(value, props) => <p {...props}>{value}</p>}
+                                        />
                                     </div>
                                     <div className='edit'></div>
                                 </UnitRow>
@@ -114,14 +147,28 @@ const WalletBalance = () => {
                             <p style={{color: 'dimgray'}}>Points</p>
                         </div>
                     </UnitRowForMobile>
-                    {BalancesData.map((value, index) => {
+                    {tasks.wallet?.map((value, index) => {
                         return (
                             <UnitRowForMobile key={index}>
                                 <div className='left'>
-                                    <p style={{fontWeight: 400}}>{value.threshold}</p>
+                                    <NumberFormat
+                                        key={index}
+                                        style={{fontWeight: 400}}
+                                        value={value.amount}
+                                        displayType={'text'}
+                                        thousandSeparator={true}
+                                        renderText={(value, props) => <p {...props}>{value}</p>}
+                                    />
                                 </div>
                                 <div className='right'>
-                                    <p style={{fontWeight: 400}}>{value.points}</p>
+                                    <NumberFormat
+                                        key={index}
+                                        style={{fontWeight: 400}}
+                                        value={value.point}
+                                        displayType={'text'}
+                                        thousandSeparator={true}
+                                        renderText={(value, props) => <p {...props}>{value}</p>}
+                                    />
                                 </div>
                             </UnitRowForMobile>
                         );
@@ -130,7 +177,7 @@ const WalletBalance = () => {
             </DataRowForMobile>
             <Modal
                 isOpen={modalIsOpen}
-                onRequestClose={() => setModalIsOpen(false)}
+                onRequestClose={closeModal}
                 ariaHideApp={false}
                 className="wallet-balance-modal"
                 overlayClassName="pwd-modal__overlay"
@@ -138,8 +185,8 @@ const WalletBalance = () => {
                 <div className="pwd-modal__header">
                     <p>Wallet Balance</p>
                     <div
-                        onClick={() => setModalIsOpen(false)}
-                        onKeyDown={() => setModalIsOpen(false)}
+                        onClick={closeModal}
+                        onKeyDown={closeModal}
                         role="button"
                         tabIndex="0"
                     >
@@ -162,19 +209,25 @@ const WalletBalance = () => {
                         return (
                             <div key={index} className='input'>
                                 <div className='input_div'>
-                                    <input className={`black_input ${showError && error.index === index && error.item === 'threshold'? 'error': ''}`}
-                                        value={value.threshold}
-                                        onChange={e => {balances[index].threshold = e.target.value; setBalances([...balances]);}}
-                                    />
-                                </div>
-                                <div className='input_div'>
-                                    <NumberFormat className={`black_input ${showError && error.index === index && error.item === 'points'? 'error': ''}`}
+                                    <NumberFormat className={`black_input ${showError && error.index === index && error.item === 'amount'? 'error': ''}`}
                                         placeholder='Enter number'
                                         thousandSeparator={true}
                                         allowNegative={false}
-                                        value={value.points}
+                                        value={value.amount}
                                         onValueChange={values => {
-                                            balances[index].points = values.value;
+                                            balances[index].amount = values.value;
+                                            setBalances([...balances]);
+                                        }}
+                                    />
+                                </div>
+                                <div className='input_div'>
+                                    <NumberFormat className={`black_input ${showError && error.index === index && error.item === 'point'? 'error': ''}`}
+                                        placeholder='Enter number'
+                                        thousandSeparator={true}
+                                        allowNegative={false}
+                                        value={value.point}
+                                        onValueChange={values => {
+                                            balances[index].point = values.value;
                                             setBalances([...balances]);
                                         }}
                                     />
@@ -196,12 +249,12 @@ const WalletBalance = () => {
                 <div className="pwd-modal__footer mt-4">
                     <button
                         className="btn previous"
-                        onClick={() => {setModalIsOpen(false); setShowError(false);}}
+                        onClick={closeModal}
                     >
                         Cancel
                     </button>
-                    <button className='btn next' onClick={handleSubmit}>
-                        Save
+                    <button className='btn next' onClick={handleSubmit} disabled={pending}>
+                        {pending? 'Saving. . .': 'Save'}
                     </button>
                 </div>
             </Modal>

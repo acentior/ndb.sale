@@ -83,7 +83,7 @@ export default function StepOne({
                                 </p>
                                 <p className="d-flex align-items-center gap-2 ms-2 item">
                                     <div className="small-white-dot"></div>
-                                    <div>Don’t fold the document</div>
+                                    <div>Don`t fold the document</div>
                                 </p>
                                 <p className="d-flex align-items-center gap-2 ms-2 item">
                                     <div className="small-white-dot"></div>
@@ -123,14 +123,14 @@ export default function StepOne({
                                                 {files[0] ? (
                                                     <p className="mt-30px">
                                                         {files[0].name}{" "}
-                                                        <span className="txt-green fw-bold">
+                                                        <span className="txt-green fw-normal">
                                                             selected
                                                         </span>
                                                     </p>
                                                 ) : (
                                                     <p className="file-browse">
                                                         Drag & drop files here or{" "}
-                                                        <span className="fw-bold">browse</span>
+                                                        <span className="fw-normal">browse</span>
                                                     </p>
                                                 )}
                                             </div>

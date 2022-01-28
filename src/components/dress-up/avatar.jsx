@@ -3,9 +3,11 @@ import { useSelector } from "react-redux"
 import AvatarImage from "../admin/shared/AvatarImage"
 
 export default function Avatar() {
-    const selected = useSelector((state) => state.auth?.user?.avatar?.selected)
+    const { avatar } = useSelector(state => state.auth.user);
+    const selected = avatar?.selected;
+    const hairColor = avatar?.hairColor;
 
-    const avatar = JSON.parse(selected ?? "[]")
+    const avatarSet = JSON.parse(selected ?? "[]")
 
-    return <AvatarImage avatar={{ avatarSet: avatar }} />
+    return <AvatarImage avatar={{ avatarSet, hairColor }} />
 }

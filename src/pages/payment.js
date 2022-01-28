@@ -46,7 +46,7 @@ const payment_types = [
 
 const SelectOption = (props) => (
     <Option {...props}>
-        <div className="d-flex justify-content-start align-items-center">
+        <div className="d-flex justify-content-center justify-content-sm-start align-items-center ">
             <img
                 src={props.data.icon}
                 style={{ width: "30px", height: "auto" }}
@@ -187,7 +187,7 @@ const Payment = () => {
                                             <div className="d-flex flex-column justify-content-between coin-address">
                                                 <div className="d-flex justify-content-between w-100">
                                                     <Select
-                                                        className="cryptocoin-select col-3"
+                                                        className="cryptocoin-select"
                                                         options={FOO_COINS}
                                                         value={coin}
                                                         onChange={(v) => {
@@ -358,7 +358,7 @@ const Payment = () => {
                                             </div>
                                         </div>
                                         <div className="mt-3 d-flex">
-                                            <div className="d-flex flex-row">
+                                            <div className="d-flex flex-row text-white">
                                                 <CheckBox
                                                     type="checkbox"
                                                     name="allow_fraction"

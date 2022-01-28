@@ -2,25 +2,28 @@ import React from "react"
 import { Link } from "gatsby"
 import { ROUTES } from "../../utilities/routes"
 import PrivacyPolicy from "./privacy-policy"
+import languageDropdown from "react-lang-dropdown"
+import languages from "../../assets/lang/languages.json"
 
 export default function PrimaryStep({ step, setState, accept, setAccept }) {
+    const [language, LanguageDropdown] = languageDropdown.useDropdown(languages)
     return (
         <div className="verify-step0 col-sm-12 col-10 mx-auto mt-5 mt-sm-0">
-            <h4 className="text-center  mt-5 mt-sm-2 mb-4">Verify your identity</h4>
+            <LanguageDropdown />
+            <h4 className="text-center  mt-5 mt-sm-2 mb-4">{language.content.verify_id}</h4>
             <p className="pre-wrap">
                 <span className="text-white fw-bold fs-18px">
-                    Identity verificaton Consent
+                    {language.content?.subtitle}
                     <br />
                 </span>
-                I declare that i am at least 16 years of age; I agree to the collection, processing
-                or storage of my personal information, including biometic data, by NDB for the
-                purpose(s) of identiy verification; that the information I provide is true and
-                accurate to the best of my knowledge; and I shall be fully responsible in case I
-                provide wrong information or any of the documents I use are fake, forged,
-                counterfeit etc.
+                {language.content?.content}
             </p>
             <div className="form-group">
-                <PrivacyPolicy agree={accept} setAgree={(res) => setAccept(res)} />
+                <PrivacyPolicy
+                    agree={accept}
+                    setAgree={(res) => setAccept(res)}
+                    lang={language.content}
+                />
             </div>
             <div className="d-flex justify-content-center gap-3 my-5 col-md-12">
                 <Link

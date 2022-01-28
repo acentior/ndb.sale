@@ -10,19 +10,29 @@ import CustomSpinner from "../common/custom-spinner"
 
 export default function NotificationSetting() {
     //Webservice
-    const { data: user_data, refetch } = useQuery(GET_USER)
+    const { data: user_data, refetch } = useQuery(GET_USER, {
+        onCompleted: () => {
+            console.log("refetch method")
+        },
+    })
     const { data: notificationTypes } = useQuery(GET_NOTICATION_TYPES, {
-        fetchPolicy: "network-only",
         onCompleted: () => setLoadingSection(false),
     })
     const [changeNotifySetting] = useMutation(USER_NOTIFICATION_SETTING, {
         onCompleted: (data) => {
-            refetch()
+            const cList = tempSetting.slice()
+            setTempSetting(
+                cList.map((item) => {
+                    return { ...item, loading: false }
+                })
+            )
+            setPendingSwitch(false)
         },
     })
 
     // Containers
     const [loadingSection, setLoadingSection] = useState(true)
+    const [pendingSwitch, setPendingSwitch] = useState(false)
     const setting = user_data?.getUser.notifySetting
     const [tempSetting, setTempSetting] = useState([])
     const notificationTypeList = notificationTypes?.getNotificationTypes
@@ -33,13 +43,9 @@ export default function NotificationSetting() {
         cList[i].status = !cList[i].status
         cList[i].loading = true
         setTempSetting(cList)
+        setPendingSwitch(true)
 
         changeNotifySetting({
-            onCompleted: () => {
-                cList[i].status = !cList[i].status
-                cList[i].loading = false
-                setTempSetting(cList)
-            },
             variables: {
                 nType: Number(cList[i].index),
                 status: cList[i].status,
@@ -94,6 +100,7 @@ export default function NotificationSetting() {
                                 offColor={tempSetting[index]?.loading ? COLOR_LOAD : COLOR_OFF}
                                 height={3}
                                 width={35}
+                                disabled={pendingSwitch}
                                 handleDiameter={12}
                                 onHandleColor={tempSetting[index]?.loading ? COLOR_LOAD : COLOR_ON}
                                 offHandleColor={

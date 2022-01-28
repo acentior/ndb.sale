@@ -1,15 +1,10 @@
-/* eslint-disable */
-
 import React, { useEffect, useState } from "react"
 import { useSelector, useDispatch } from "react-redux"
 import { useQuery, useMutation } from "@apollo/client"
-// Libraries
 import { Link } from "gatsby"
 import { isBrowser } from "./../../utilities/auth"
-// Icons
 import { Bell, Logo, NotificationBell } from "../../utilities/imgImport"
 import Loading from "../common/FadeLoading"
-
 import { useAuth } from "../../hooks/useAuth"
 import DressupModal from "../dress-up/dressup-user-modal"
 import { ROUTES } from "../../utilities/routes"
@@ -20,6 +15,7 @@ import { setCurrentAuthInfo, getAuthInfo } from "../../redux/actions/authAction"
 import { GET_ALL_UNREAD_NOTIFICATIONS } from "../../apollo/graghqls/querys/Notification"
 import { UPDATE_AVATARSET } from "../../apollo/graghqls/mutations/AvatarComponent"
 import Avatar from "../dress-up/avatar"
+import UserTier from "./user-tier"
 
 const Menu = () => {
     const dispatch = useDispatch()
@@ -193,6 +189,7 @@ const Menu = () => {
                                     <li className="px-sm-3 px-0 scale-75">
                                         <Link to={ROUTES.profile}>
                                             <Avatar className="user-avatar" />
+                                            <UserTier />
                                         </Link>
                                     </li>
                                     <DressupModal
@@ -200,9 +197,7 @@ const Menu = () => {
                                         isModalOpen={isDressUPModalOpen}
                                         onSave={(res) => {
                                             updateAvatarSet({
-                                                variables: {
-                                                    components: res,
-                                                },
+                                                variables: { ...res },
                                             })
                                         }}
                                     />
