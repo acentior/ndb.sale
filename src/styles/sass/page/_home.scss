@@ -7,14 +7,18 @@
         background-color: transparent;
     }
     .hero-image {
-        width: 100%;
+        width: 90%;
     }
     .home-section {
         background: none;
-        @extend %set-height2;
+        // @extend %set-height2;
+        height: calc(100vh - 100px);
         display: flex;
         align-items: center;
         text-align: center;
+        @include mq("tablet", max) {
+            height:  calc(100vh - 75px);
+        }
         .left-part {
             padding-left: 0%;
             @include mq("tablet", min) {
@@ -31,7 +35,7 @@
                     text-align: right;
                 }
                 .token-value {
-                    letter-spacing: 0.03em;
+                    // letter-spacing: 0.03em;
                     font-variant: small-caps;
                     text-align: right;
                 }
@@ -41,6 +45,7 @@
                     }
                     .token-value {
                         text-align: center;
+                        font-size: 100px;
                     } 
                 }
                 @include mq("phone", max) {
@@ -66,6 +71,8 @@
         }
         .right-part{
             position: relative;
+            align-items: center;
+            justify-content: flex-end;
             @include mq("tablet", max){
                 position: absolute;
                 left: 0;

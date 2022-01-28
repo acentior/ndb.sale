@@ -24,7 +24,15 @@ const Home = () => {
                                 <div className="btn-desktop mt-4">
                                     <div>
                                         <button
-                                            className="btn-green"
+                                            className="btn-green d-md-none"
+                                            onClick={() => {
+                                                navigate("/pre-sale/auction")
+                                            }}
+                                        >
+                                            Pre-Order
+                                        </button>
+                                        <button
+                                            className="btn-green d-none d-md-block"
                                             onClick={() => {
                                                 navigate("/pre-sale/auction")
                                             }}
