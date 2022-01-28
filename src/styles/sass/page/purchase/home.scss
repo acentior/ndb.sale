@@ -9,7 +9,7 @@ main.purchase-page {
         display: flex;
         align-items: center;
         @media screen and (max-width: 768px) {
-            height: calc(100% - 75px);
+            height: calc(100vh - 75px);
             background: radial-gradient(
                 37.36% 30.86% at 38.06% 59.62%,
                 rgba(0, 0, 0, 0) 0%,
@@ -18,7 +18,7 @@ main.purchase-page {
         }
         @media screen and (max-width: 575px) {
             align-items: center;
-            height: calc(100% - 75px);
+            height: calc(100vh - 75px);
             .btn-desktop {
                 display: none !important;
             }
