@@ -8,13 +8,13 @@ import Modal from "react-modal"
 import { Link } from "gatsby"
 import { Tabs, Tab, TabList, TabPanel } from "react-tabs"
 import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faTimes, faArrowLeft, faWindowClose } from "@fortawesome/free-solid-svg-icons"
+import { faTimes, faArrowLeft} from "@fortawesome/free-solid-svg-icons"
 import Header from "../../components/header"
 import ConnectWalletTab from "../../components/profile/connect-wallet-tab"
 import { getSecTomorrow, numberWithLength } from "../../utilities/number"
 import { Currencies } from "../../utilities/staticData"
 import { ROUTES } from "../../utilities/routes"
-
+import close from '../../images/close.svg'
 const modalDesc = {
     sign: [
         "To buy please sign in or sign up for an account.",
@@ -200,7 +200,7 @@ const Auction = () => {
                                 </tbody>
                             </table>
                         </div>
-                        <div className="d-block d-md-none px-2 mt-auto w-100 mb-5">
+                        <div className="d-block d-md-none px-2 mt-auto w-100 mb-5 popupshow">
                             <button className="ndb_button w-100" onClick={() => setShow(true)}>
                                 BUY
                             </button>
@@ -259,10 +259,15 @@ const Auction = () => {
                                             <span className="txt-green">10 USD</span> per token
                                             <FontAwesomeIcon
                                                 icon={faArrowLeft}
-                                                className="text-white"
+                                                className="d-block d-sm-none text-white"
                                                 onClick={() => setShow(false)}
                                                 role="button"
                                             />
+                                            <img src={close} onClick={() => setShow(false)} style={{
+                                                position:"absolute",
+                                                right:'0',
+                                                top:'0',
+                                            }} className="d-none d-sm-block d-md-none"/>
                                         </p>
                                         <p className="title" style={{ margin: "5px 0" }}>
                                             amount of Token
@@ -289,7 +294,10 @@ const Auction = () => {
                                         </div>
                                         <div className="total-price">
                                             <p className="title">total price</p>
-                                            <div className="price">{price * amount}</div>
+                                            <div className="price">{price * amount}<h3 className="symbol-label">
+                                            {Currencies[currencyId].label}
+                                        </h3></div>
+                                            
                                         </div>
                                         <p
                                             style={{

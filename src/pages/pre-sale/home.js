@@ -64,7 +64,7 @@ const Home = () => {
                                 </button>
                             </div>
                             
-                            <div className="text-decoration-underline text-center text-light">
+                            <div className="py-3 text-decoration-underline text-center text-light">
                                 Learn more
                             </div>
                         </div>

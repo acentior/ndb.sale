@@ -11,14 +11,29 @@ main.purchaseAuction-page {
                     border-bottom: 2px solid #464646;
                     td.item {
                         padding-left: 2.5vw;
+                        @media screen and (min-width:576px) and (max-width: 768px) {
+                            padding-left: 0;
+                        }
                     }
                     td.quantity {
                         text-align: center;
+                        @media screen and (min-width:576px) and (max-width: 768px) {
+                            padding-right: 0;
+                            text-align: right;
+                        }
                     }
                     @media screen and (max-width: 768px) {
                         line-height: 30px;
                     }
                 }
+            }
+            @media screen and (max-width: 768px) {
+                width: 85%;
+                margin: auto;
+            }
+            @media screen and (max-width: 575px) {
+                width: 100%;
+                margin: auto;
             }
         }
         p.title-sale-ends {
@@ -30,6 +45,10 @@ main.purchaseAuction-page {
                 font-size: 24px;
             }
             @media screen and (max-width: 768px) {
+                font-size: 48px;
+                // display: none;
+            }
+            @media screen and (max-width: 575px) {
                 font-size: 14px;
                 // display: none;
             }
@@ -58,7 +77,13 @@ main.purchaseAuction-page {
                 // height: auto;
             }
             div.table-container {
-                width: 100%;
+                width: 100%; 
+            }
+            @media screen and (min-width:576px) and (max-width: 768px) {
+                .popupshow{
+                    margin: auto !important;
+                    width: 312px !important;
+                }
             }
         }
         div.auction-right {
@@ -116,13 +141,38 @@ main.purchaseAuction-page {
                             font-size: 30px;
                             font-weight: 600;
                             margin-bottom: 0;
-                        }
-                        @media screen and (max-width: 768px) {
-                            & > div.price {
-                                width: 60%;
+                            @media screen and (min-width:576px) and (max-width: 768px) {
+                                position: absolute;
+                                top: 50%;
+                                transform: translateY(-50%);
+                                right: 10px;
+                            }
+                            @media screen and (max-width:575px) {
+                               display: none;
                             }
                         }
+                        // @media screen and (max-width: 768px) {
+                        //     & > div.price {
+                        //         width: 60%;
+                        //     }
+                        // }
                         @media screen and (max-width: 768px) {
+                            flex-direction: column;
+                            margin-top: 30px;
+                            gap:0px;
+                            p.title {
+                                width: 100%;
+                                margin: 0;
+                                margin-bottom: 15px;
+                                font-size: 24px;
+                            }
+                            & > div.price {
+                                position: relative;
+                                width: 100%;
+                                color: $green;
+                            }
+                        }
+                        @media screen and (max-width: 575px) {
                             flex-direction: column;
                             margin-top: 30px;
                             p.title {
@@ -133,6 +183,7 @@ main.purchaseAuction-page {
                             }
                             & > div.price {
                                 width: 100%;
+                                color: white;
                             }
                         }
                     }
@@ -277,10 +328,26 @@ main.purchaseAuction-page {
                     transform: translate(-50%, -50%);
                     z-index: 100;
                     background: #171717;
-                    //padding: 40px 10px 0;
+                    padding: 20px 10px;
                     & > div.buy_token {
+                        p.title{
+                            @media screen and (min-width:576px) and (max-width: 768px) {
+                                font-size: 24px;
+                                text-align: left;
+                                line-height: 1;
+                                height: auto;
+                                padding-top: 30px;
+                            }
+                        }
                         p.title:first-child {
                             @media screen and (max-width: 768px) {
+                                font-size: 36px;
+                                text-align: left    ;
+                                line-height: 1;
+                                height: auto;
+                                padding-top: 10px;
+                            }
+                            @media screen and (max-width: 575px) {
                                 font-size: 22px;
                                 text-align: center;
                                 line-height: 1;
@@ -289,8 +356,14 @@ main.purchaseAuction-page {
                         }
                         p.title {
                             @media screen and (max-width: 768px) {
+                                font-size: 24px;
+                                text-align: left;
+                                line-height: 1;
+                                height: auto;
+                            }
+                            @media screen and (max-width: 575px) {
                                 font-size: 18px;
-                                text-align: center;
+                                text-align: left;
                                 line-height: 1;
                                 height: auto;
                             }
@@ -379,7 +452,18 @@ div.slider-container {
     @media screen and (max-width: 768px) {
         flex-direction: column;
         gap: 10px;
-        margin-top: 30px;
+        margin-top: 15px;
+        & > input {
+            width: 100%;
+            margin: 0 !important;
+            line-height: 32px;
+            font-size: 18px;
+        }
+    }
+    @media screen and (max-width: 575px) {
+        flex-direction: column;
+        gap: 10px;
+        margin-top: 15px;
         & > input {
             width: 100%;
             margin: 0 !important;
