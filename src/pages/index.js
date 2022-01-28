@@ -71,7 +71,7 @@ const IndexPage = () => {
                                 </div>
                             </div>
                             <div className="col-md-1 d-none d-sm-block"></div>
-                            <div className="right-part col-md-5 d-none d-sm-block">
+                            <div className="right-part col-md-5 d-none d-sm-block d-md-flex">
                                 <img src={Hero2} alt="home hero" className="hero-image img-fluid" />
                             </div>
                         </div>
