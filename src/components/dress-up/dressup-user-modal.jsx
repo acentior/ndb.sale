@@ -21,6 +21,7 @@ const init = {
 export default function DressupModal({ isModalOpen, setIsModalOpen, onSave }) {
     const avatarComponents = useSelector((state) => state.avatarComponents)
     const selected = useSelector((state) => state.auth?.user?.avatar?.selected)
+    const hairColor = useSelector((state) => state.auth?.user?.avatar?.hairColor)
 
     let { loaded, hairStyles, facialStyles, expressions, hats, others } = avatarComponents
     // Convert the mapKey Object to the array.
@@ -40,15 +41,19 @@ export default function DressupModal({ isModalOpen, setIsModalOpen, onSave }) {
         const avatarSet = _.mapKeys(avatar, "groupId")
 
         const newState = Object.keys(init).map((key) => {
-            const index = Object.values(avatarComponents[key] ?? {}).findIndex(
+            let index = Object.values(avatarComponents[key] ?? {}).findIndex(
                 (i) => i?.compId === avatarSet?.[key.slice(0, -1)]?.compId
             )
+            if(key === 'hairColors') {
+                index = hairColors?.findIndex(item => item === hairColor);
+                return { key, index, updatable: true };
+            }
             return { key, index, updatable: index >= 0 }
         })
 
         const s = _.mapKeys(newState, "key")
         setState(s)
-    }, [isModalOpen, selected])
+    }, [isModalOpen, selected, avatarComponents, hairColor])
 
     const saveAvatarItems = () => {
         const avatarSets = Object.keys(avatarComponents)
@@ -61,7 +66,12 @@ export default function DressupModal({ isModalOpen, setIsModalOpen, onSave }) {
                     compId: Object.values(avatarComponents[key])[index]?.compId ?? 0,
                 }
             })
-        if (!!avatarSets.length) onSave(avatarSets)
+        if (!!avatarSets.length) {
+            onSave({
+                components: avatarSets,
+                hairColor: hairColors[selectedHairColor]
+            });
+        }
         setIsModalOpen(false)
     }
 
@@ -70,13 +80,19 @@ export default function DressupModal({ isModalOpen, setIsModalOpen, onSave }) {
         setIsModalOpen(false)
     }
 
-    const selectedHairColor = state.hairColors?.index ?? 0
+    const selectedHairColor =  state.hairColors?.index ?? 0
     const selectedHairStyle = state.hairStyles?.index ?? 0
     const selectedFacialStyle = state.facialStyles?.index ?? 0
     const selectedHat = state.hats?.index ?? 0
     const selectedExpression = state.expressions?.index ?? 0
     const selectedOther = state.others?.index ?? 0
 
+    const saveButtonActive =
+        state.hairStyles?.updatable &&
+        state.facialStyles?.updatable &&
+        state.expressions?.updatable &&
+        state.hats?.updatable &&
+        state.others?.updatable
     return (
         <Modal
             isOpen={isModalOpen}
@@ -86,7 +102,13 @@ export default function DressupModal({ isModalOpen, setIsModalOpen, onSave }) {
             overlayClassName="dress-up-modal__overlay"
         >
             <div className="dress-up-modal__header">
-                <div onClick={closeModal} onKeyDown={closeModal} role="button" tabIndex="0" className="close">
+                <div
+                    onClick={closeModal}
+                    onKeyDown={closeModal}
+                    role="button"
+                    tabIndex="0"
+                    className="close"
+                >
                     <img
                         width="14px"
                         height="14px"
@@ -156,7 +178,6 @@ export default function DressupModal({ isModalOpen, setIsModalOpen, onSave }) {
                             </div>
                         </div>
 
-                        {/* <span className="text-center dress-up-modal-avatar-name mt-3">Tesla</span> */}
                         <div className="dress-up-modal-sections-list">
                             {DressupData.tabs.map((item) => (
                                 <div
@@ -170,9 +191,17 @@ export default function DressupModal({ isModalOpen, setIsModalOpen, onSave }) {
                                 </div>
                             ))}
                         </div>
-                        <button className="btn-save" onClick={saveAvatarItems}>
-                            save
-                        </button>
+                        <div>
+                            <button
+                                className={`btn btn-outline-light rounded-0 px-5 py-2 fw-bold text-uppercase ${
+                                    !saveButtonActive && "btn-secondary"
+                                } ms-4`}
+                                onClick={saveAvatarItems}
+                                disabled={!saveButtonActive}
+                            >
+                                save
+                            </button>
+                        </div>
                     </div>
                 </div>
                 <div className="col-sm-8 components">

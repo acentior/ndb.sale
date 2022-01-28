@@ -1,15 +1,20 @@
 .payment-page {
+    .container {
+        @include mq("tablet", max) {
+            width: auto !important;
+        }
+    }
     .payment-wrapper {
         padding-top: 100px;
         padding-left: 60px;
         padding-right: 60px;
         @include mq("tablet", max) {
             padding-top: 75px;
+            padding-left: 0;
+            padding-right: 0;
         }
         @include mq("phone", max) {
             padding-top: 65px;
-            padding-left: 0;
-            padding-right: 0;
         }
     }
     & > section {
@@ -186,6 +191,13 @@
             .cryptocoin-select {
                 margin-bottom: 8px;
                 margin-right: 8px;
+                width: 33.33%;
+                @include mq("tablet", max) {
+                    width: 40%;
+                }
+                @include mq("phone", max) {
+                    width: 30%;
+                }
                 .css-1s2u09g-control,
                 .css-1pahdxg-control {
                     padding: 0 0 !important;
@@ -218,6 +230,9 @@
                         line-height: 22px !important;
                         text-transform: uppercase !important;
                         color: white !important;
+                        @include mq("phone", max) {
+                            display: none;
+                        }
                     }
                 }
             }
@@ -246,9 +261,11 @@
                 text-align: center;
                 width: 110px;
                 height: 110px;
+                margin-left: 18px;
+                flex-shrink: 0;
                 img {
                     width: 100%;
-                    height: auto;
+                    height: 100%;
                 }
                 @include mq("phone", max) {
                     width: 130px;

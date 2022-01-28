@@ -21,6 +21,17 @@
             }
             .tokens-lower-part {
                 width: max-content;
+                .token-left {
+                    font-weight: bold;
+                    font-size: 28px;
+                    line-height: 39px;
+                    color: white;
+                    font-variant: small-caps;
+                }
+                .token-value {
+                    letter-spacing: 0.03em;
+                    font-variant: small-caps;
+                }
                 @include mq("phone", max) {
                     width: 100%;
                 }
@@ -33,9 +44,9 @@
             font-weight: bold;
             font-size: 48px;
             line-height: 59px;
-            font-variant: small-caps;
             text-align: left;
             width: max-content;
+            font-variant: small-caps;
             @include mq("tablet", max) {
                 font-size: 38px;
                 line-height: 46px;
@@ -45,8 +56,8 @@
             font-weight: bold;
             font-size: 24px;
             line-height: 29px;
-            font-variant: small-caps;
             text-align: center;
+            font-variant: small-caps;
         }
         .btn-green {
             padding: 8px 52px;
@@ -65,10 +76,10 @@
         text-align: center;
         .time {
             font-weight: bold;
-            font-size: 40px;
-            line-height: 59px;
-            letter-spacing: 0.03em;
-            font-variant: small-caps;
+            font-weight: bold;
+            font-size: 36px;
+            line-height: 44px;
+            letter-spacing: 0.05em;
             @include mq("tablet", max) {
                 font-size: 37.8092px;
                 line-height: 46px;
@@ -79,12 +90,12 @@
                 letter-spacing: -0.02em;
             }
             &-text {
-                color: white;
                 font-weight: 500;
-                font-size: 16px;
-                line-height: 19px;
+                font-size: 14px;
+                line-height: 17px;
                 letter-spacing: -0.02em;
                 text-transform: uppercase;
+                color: #8f8f8f;
                 @include mq("tablet", max) {
                     font-size: 12px;
                     line-height: 15px;
@@ -181,8 +192,7 @@
         line-height: 29px;
         letter-spacing: 0.01em;
         font-variant: small-caps;
-        color: #FFFFFF;
-        opacity: 0.4;
+        color: #ffffff;
         @include mq("tablet", max) {
             font-size: 28px;
             line-height: 35px;
@@ -197,7 +207,6 @@
         font-weight: bold;
         font-size: 100px;
         line-height: 122px;
-        text-align: left;
         font-variant: small-caps;
         @include mq("tablet", max) {
             font-size: 78px;

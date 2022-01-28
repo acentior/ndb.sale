@@ -23,7 +23,7 @@ const GeoTable = () => {
             await dispatch(get_Disallowed_Countries());
             setLoading(false);
         })();
-    }, []);
+    }, [dispatch]);
 
     useEffect(() => {
         setPageData(Object.values(data).slice((page - 1) * limit, page * limit));

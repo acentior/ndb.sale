@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Icon } from '@iconify/react';
 import Modal from 'react-modal';
@@ -6,42 +7,53 @@ import { Alert } from '@mui/material';
 import { device } from '../../../../utilities/device';
 import { width } from './columnWidth';
 import NumberFormat from 'react-number-format';
-
-const StakingData = [
-    {threshold: 30, points: 0.0001},
-    {threshold: 60, points: 0.0001},
-    {threshold: 90, points: 0.0001},
-    {threshold: 180, points: 0.0001},
-    {threshold: 365, points: 0.0001},
-];
+import { update_Task_Setting } from '../../../../redux/actions/tasksAction';
 
 const WalletBalance = () => {
+    const dispatch = useDispatch();
+    const { tasks } = useSelector(state => state);
+
     const [show, setShow] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
     const [stakings, setStakings] = useState([]);
     const [showError, setShowError] = useState(false);
+    const [pending, setPending] = useState(false);
 
     // Balance Data Validation
     const error = useMemo(() => {
         if(!stakings.length) return {item: 'noData', desc: 'One Balance is required at least'};
         for(let i = 0; i < stakings.length; i++) {
-            if(!stakings[i].threshold) return {index: i, item: 'threshold', desc: 'Input is required'};
-            if(!stakings[i].points) return {index: i, item: 'points', desc: 'Input is required'};
+            if(!stakings[i].expiredTime) return {index: i, item: 'expiredTime', desc: 'Input is required'};
+            if(!stakings[i].ratio) return {index: i, item: 'ratio', desc: 'Input is required'};
         }
         return {};
     }, [stakings]);
 
     const openEditModal = () => {
-        setStakings(StakingData);
+        const staking = tasks.staking.map(item => ({expiredTime: item.expiredTime, ratio: item.ratio}));
+        setStakings(staking);
         setModalIsOpen(true);
     };
 
-    const handleSubmit = () => {
-        if(error.item) {
+    const handleSubmit = async () => {
+        if(Object.values(error).length) {
             setShowError(true);
             return;
         }
-        alert('Saved successfully');
+        setPending(true);        
+        setShowError(false);
+        const updateData = {
+            verification: tasks.verification,
+            wallet: tasks.wallet.map(item => ({amount: Number(item.amount), point: Number(item.point)})),
+            auction: tasks.auction,
+            direct: tasks.direct,
+            staking: stakings.map(item => ({expiredTime: item.expiredTime, ratio: item.ratio}))
+        };
+        await dispatch(update_Task_Setting(updateData));
+        setPending(false);
+    };
+
+    const closeModal = () => {
         setModalIsOpen(false);
         setShowError(false);
     };
@@ -55,28 +67,28 @@ const WalletBalance = () => {
                             <p>Ndb token staking in the wallet <span style={{marginLeft: 15}}><Icon icon={show? "ant-design:caret-up-filled": "ant-design:caret-down-filled"} /></span></p>
                         </div>
                         <div className='threshold'>
-                            <p>{StakingData[0].threshold} Days</p>
+                            <p>{tasks.staking[0]?.expiredTime} Days</p>
                         </div>
                         <div className='points'>
-                            <p>{StakingData[0].points} * x tokens * {StakingData[0].threshold}</p>
+                            <p>{tasks.staking[0]?.ratio} * x tokens * {tasks.staking[0]?.expiredTime}</p>
                         </div>
                         <div className='edit'>
                             <p><span className='edit'><Icon icon="clarity:note-edit-line" onClick={openEditModal} /></span></p>
                         </div>
-                    </UnitRow>                    
+                    </UnitRow>
                 </Main>
                 <div id='ndb_token' className='collapse'>
                     <Toggle>
-                        {StakingData.map((value, index) => {
+                        {tasks.staking.map((value, index) => {
                             if(index === 0) return null;
                             return (
                                 <UnitRow key={index}>
                                     <div className='task'></div>
                                     <div className='threshold'>
-                                        <p key={index}>{value.threshold} Days</p>
+                                        <p key={index}>{value.expiredTime} Days</p>
                                     </div>
                                     <div className='points'>
-                                        <p key={index}>{value.points} * x tokens * {value.threshold}</p>
+                                        <p key={index}>{value.ratio} * x tokens * {value.expiredTime}</p>
                                     </div>
                                     <div className='edit'></div>
                                 </UnitRow>
@@ -107,15 +119,15 @@ const WalletBalance = () => {
                 <div id='ndb_token' className='collapse'>
                     <UnitRowForMobile>
                         <div className='left'>
-                            <p style={{color: 'dimgrey'}}>Threshold {'&'} Points</p>
+                            <p style={{color: 'dimgrey'}}>expiredTime {'&'} Points</p>
                         </div>
                     </UnitRowForMobile>
-                    {StakingData.map((value, index) => {
+                    {tasks.staking.map((value, index) => {
                         return (
                             <UnitRowForMobile key={index}>
                                 <div className='left'>
-                                    <p style={{fontWeight: 400, textTransform: 'unset'}}>X tokens in {value.threshold} days staking</p>
-                                    <p style={{fontWeight: 400, color: 'dimgrey', textTransform: 'unset'}}>{value.points} * X tokens * {value.threshold}</p>
+                                    <p style={{fontWeight: 400, textTransform: 'unset'}}>X tokens in {value.expiredTime} days staking</p>
+                                    <p style={{fontWeight: 400, color: 'dimgrey', textTransform: 'unset'}}>{value.ratio} * X tokens * {value.expiredTime}</p>
                                 </div>
                             </UnitRowForMobile>
                         );
@@ -124,7 +136,7 @@ const WalletBalance = () => {
             </DataRowForMobile>
             <Modal
                 isOpen={modalIsOpen}
-                onRequestClose={() => setModalIsOpen(false)}
+                onRequestClose={closeModal}
                 ariaHideApp={false}
                 className="wallet-balance-modal"
                 overlayClassName="pwd-modal__overlay"
@@ -132,8 +144,8 @@ const WalletBalance = () => {
                 <div className="pwd-modal__header">
                     <p>Ndb token staking in the wallet</p>
                     <div
-                        onClick={() => setModalIsOpen(false)}
-                        onKeyDown={() => setModalIsOpen(false)}
+                        onClick={closeModal}
+                        onKeyDown={closeModal}
                         role="button"
                         tabIndex="0"
                     >
@@ -146,7 +158,7 @@ const WalletBalance = () => {
                 <form className="form custom_scrollbar" onSubmit={(e) => e.preventDefault()}>
                     <div className='input'>
                         <div className='input_div'>
-                            <p style={{fontSize: 12}}>Threshold</p>
+                            <p style={{fontSize: 12}}>Expire Time (Day)</p>
                         </div>
                         <div className='input_div'>
                             <p style={{fontSize: 12}}>Points</p>
@@ -156,25 +168,25 @@ const WalletBalance = () => {
                         return (
                             <div key={index} className='input'>
                                 <div className='input_div'>
-                                    <NumberFormat className={`black_input ${showError && error.index === index && error.item === 'threshold'? 'error': ''}`}
+                                    <NumberFormat className={`black_input ${showError && error.index === index && error.item === 'expiredTime'? 'error': ''}`}
                                         placeholder='Enter number'
                                         thousandSeparator={true}
                                         allowNegative={false}
-                                        value={value.threshold}
+                                        value={value.expiredTime}
                                         onValueChange={values => {
-                                            stakings[index].threshold = values.value;
+                                            stakings[index].expiredTime = values.value;
                                             setStakings([...stakings]);
                                         }}
                                     />
                                 </div>
                                 <div className='input_div'>
-                                    <NumberFormat className={`black_input ${showError && error.index === index && error.item === 'points'? 'error': ''}`}
+                                    <NumberFormat className={`black_input ${showError && error.index === index && error.item === 'ratio'? 'error': ''}`}
                                         placeholder='Enter number'
                                         thousandSeparator={true}
                                         allowNegative={false}
-                                        value={value.points}
+                                        value={value.ratio}
                                         onValueChange={values => {
-                                            stakings[index].points = values.value;
+                                            stakings[index].ratio = values.value;
                                             setStakings([...stakings]);
                                         }}
                                     />
@@ -190,18 +202,18 @@ const WalletBalance = () => {
                         );
                     })}
                     <div className='input'>
-                        <span className='add_balance'><Icon className={error.item === 'noData'? 'error': ''} icon='akar-icons:plus' onClick={() => setStakings([...stakings, {threshold: '', points: ''}])}/></span>
+                        <span className='add_balance'><Icon className={error.item === 'noData'? 'error': ''} icon='akar-icons:plus' onClick={() => setStakings([...stakings, {expiredTime: '', ratio: ''}])}/></span>
                     </div>
                 </form>
                 <div className="pwd-modal__footer mt-4">
                     <button
                         className="btn previous"
-                        onClick={() => {setModalIsOpen(false); setShowError(false);}}
+                        onClick={closeModal}
                     >
                         Cancel
                     </button>
-                    <button className='btn next' onClick={handleSubmit}>
-                        Save
+                    <button className='btn next' onClick={handleSubmit} disabled={pending}>
+                        {pending? 'Saving. . .': 'Save'}
                     </button>
                 </div>
             </Modal>

@@ -123,6 +123,8 @@ const Auction = () => {
         }
     }, [roundData])
 
+    // console.log(roundData && roundData[0]?.minPrice)
+
     // get round based data
     const [loadRoundMByNumber, { data: roundM, error: mFetched }] =
         useLazyQuery(GET_AUCTION_BY_NUMBER)

@@ -53,7 +53,7 @@ export default function StepOne({
                                 </p>
                                 <p className="d-flex align-items-center gap-2 ms-2 item">
                                     <div className="small-white-dot"></div>
-                                    <div>Don’t fold the document</div>
+                                    <div>Don`t fold the document</div>
                                 </p>
                                 <p className="d-flex align-items-center gap-2 ms-2 item">
                                     <div className="small-white-dot"></div>

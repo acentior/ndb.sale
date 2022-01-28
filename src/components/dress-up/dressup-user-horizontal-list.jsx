@@ -12,7 +12,7 @@ export default function DressupHorizontalList({
     list = [],
     topic,
     title,
-    selectedItem,
+    selectedItem = 0,
     setSelectedItem,
     secondRow,
     hairStyle,
@@ -30,6 +30,35 @@ export default function DressupHorizontalList({
         items.scrollLeft = selectedItem * 149 - 100
     }, [selectedItem, secondRow])
 
+    useEffect(() => {
+        const slider = document.querySelector(`.select${topic}_dressUp`);
+        
+        let mouseDown = false;
+        let startX, scrollLeft;
+
+        let startDragging = function (e) {
+            mouseDown = true;
+            startX = e.pageX - slider.offsetLeft;
+            scrollLeft = slider.scrollLeft;
+            };
+            let stopDragging = function (event) {
+            mouseDown = false;
+        };
+
+        slider.addEventListener('mousemove', (e) => {
+            e.preventDefault();
+            if(!mouseDown) { return; }
+            const x = e.pageX - slider.offsetLeft;
+            const scroll = x - startX;
+            slider.scrollLeft = scrollLeft - scroll;
+        });
+
+        // Add the event listeners
+        slider.addEventListener('mousedown', startDragging, false);
+        slider.addEventListener('mouseup', stopDragging, false);
+        slider.addEventListener('mouseleave', stopDragging, false);
+    }, [])
+
     return (
         <div className="row m-0">
             <div className="mb-2 ps-0">{title}</div>
@@ -37,7 +66,7 @@ export default function DressupHorizontalList({
                 id={`items-list-view-${secondRow ? "2" : "1"}`}
                 className={`row me-4 dress-up-modal-items-horizontal-list border-top border-bottom border-secondary border-1 ${
                     isScrollable ? "d-inline-block" : "d-auto"
-                }`}
+                } select${topic}_dressUp`}
             >
                 {list.length > 0
                     ? list.map((item, index) => {
@@ -61,16 +90,24 @@ export default function DressupHorizontalList({
                                       })
                                   }
                                   role="presentation"
-                                  className={`border border-4 cursor-pointer ${
-                                      selectedItem !== index
-                                          ? "border-transparent"
-                                          : status === OWNED
-                                          ? "border-success"
-                                          : status === LOCKED
-                                          ? "border-grey"
-                                          : status === UNAVAILABLE
-                                          ? "border-grey"
-                                          : "border-success"
+                                  className={`${
+                                      topic === "hairColor"
+                                          ? `border border-4 cursor-pointer ${
+                                                selectedItem !== index
+                                                    ? "border-transparent"
+                                                    : "border-success"
+                                            }`
+                                          : `border border-4 cursor-pointer ${
+                                                selectedItem !== index
+                                                    ? "border-transparent"
+                                                    : status === OWNED
+                                                    ? "border-success"
+                                                    : status === LOCKED
+                                                    ? "border-grey"
+                                                    : status === UNAVAILABLE
+                                                    ? "border-grey"
+                                                    : "border-success"
+                                            }`
                                   }`}
                               >
                                   <div className="image_div mx-auto">

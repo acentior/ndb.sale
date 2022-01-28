@@ -25,6 +25,7 @@ export const GET_USER = gql`
                 updateDate
                 deleted
                 purchased
+                hairColor
                 selected
                 prefix
                 name

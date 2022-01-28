@@ -2,18 +2,21 @@ import React, { useState } from "react"
 import { Link } from "gatsby"
 import { Icon } from "@iconify/react"
 import Modal from "react-modal"
-import InnerHTML from "dangerously-set-html-content"
+// import InnerHTML from "dangerously-set-html-content"
 // import PrivacyHTML from "../../assets/files/Privacy Policy.html"
 
-export default function PrivacyPolicy({ agree, setAgree }) {
+export default function PrivacyPolicy({ agree, setAgree, lang }) {
     const [open, setOpen] = useState(false)
     return (
         <div className="mt-5 privacy-policy">
             <div className="privacy-policy-checkout">
-                <button onClick={() => setAgree(!agree)} className="check-box">
+                <button
+                    onClick={() => setAgree(!agree)}
+                    className={agree ? "check-box check-box_checked" : "check-box"}
+                >
                     {agree && <Icon icon="akar-icons:check" />}
                 </button>
-                <div className="ms-3">I agree to the above statment, and i have read NDB&nbsp;</div>
+                <div className="ms-3">{lang?.agree}</div>
             </div>
             <Link to="#" className="txt-green link" onClick={() => setOpen(true)}>
                 Privacy Policy

@@ -13,6 +13,7 @@ import { VERIFY_KYC_MUTATION } from "../../apollo/graghqls/mutations/Auth"
 import { useMutation, useQuery } from "@apollo/client"
 import { GET_USER } from "../../apollo/graghqls/querys/Auth"
 import Loading from "../common/Loading"
+
 import { Suspense } from "react"
 const StepOne = lazy(() => import("../verify-identity/step-one"))
 
@@ -49,7 +50,7 @@ const VerificationPage = () => {
     } = useFileUpload()
     const [firstName, setFirstName] = useState("")
     const [surname, setSurname] = useState("")
-    const [dob, setDob] = useState("")
+    const [dob, setDob] = useState(new Date())
     const [stepThreeCountry, setStepThreeCountry] = useState(countries[0])
     const {
         files: stepThreeFiles,

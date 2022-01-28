@@ -42,7 +42,7 @@
         justify-content: start;
         align-items: center;
         .check-box {
-            border: 1px white solid;
+            border: 2px solid #cbcbcb;
             background-color: transparent;
             width: 20px;
             height: 20px;
@@ -51,10 +51,22 @@
             justify-content: center;
             align-items: center;
         }
+        .check-box_checked {
+            background-color: #23c865;
+        }
     }
 }
 
 .verify-company {
+    .languageDropdown {
+        position: absolute;
+        right: 50px;
+        top: 24px;
+        z-index: 200;
+        select {
+            padding: 6px;
+        }
+    }
     &_container {
         padding: 50px 10px;
         display: flex;
@@ -231,9 +243,7 @@
         &-step0 {
             max-width: 646px;
             margin: 0 auto;
-
             .pre-wrap {
-                margin-top: 60px;
                 font-size: 18px;
                 line-height: 30px;
                 @include mq("phone", max) {
@@ -272,6 +282,17 @@
         &-step1 {
             width: 365px;
             margin: 0 auto;
+            div.MuiFormControl-root {
+                background-color: #ffffff;
+            }
+            div.MuiFormControl-root div.MuiOutlinedInput-root {
+                border: 1px solid #ced4da;
+                height: 38px;
+                border-radius: 0;
+                color: black;
+                font-size: 14px;
+                width: 100%;
+            }
         }
         &-step2 {
             height: 100%;

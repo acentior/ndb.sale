@@ -7,7 +7,7 @@ import Header from "../components/header"
 import { ROUTES } from "../utilities/routes"
 import SignOutTab from "./profile/sign-out-tab"
 import { profile_tabs } from "../utilities/staticData"
-import { Bronze } from "../utilities/imgImport"
+// import { Bronze } from "../utilities/imgImport"
 import TwoFactorModal from "./profile/two-factor-modal"
 import { Tab, Tabs, TabList, TabPanel } from "react-tabs"
 import { GET_USER } from "../apollo/graghqls/querys/Auth"
@@ -73,7 +73,7 @@ const Profile = () => {
     const getSecurityStatus = (key) =>
         user?.security?.find((f) => f?.authType === key && f?.tfaEnabled)
 
-    const Tfa_Config = ({ title, method }) => {
+    const TfaConfig = ({ title, method }) => {
         const config = !!getSecurityStatus(method)
 
         return (
@@ -134,7 +134,7 @@ const Profile = () => {
                                 <div className="my-5 user-info__avatar">
                                     <Avatar />
                                 </div>
-                                <p className="user-info__name">
+                                <div className="user-info__name">
                                     {currentTier?.length > 0 ? (
                                         <div
                                             className="me-3"
@@ -146,19 +146,21 @@ const Profile = () => {
                                         <></>
                                     )}
                                     {displayName}
-                                </p>
+                                </div>
                                 <p className="silver-cnt">
                                     {nextTier.length > 0 &&
-                                        nextTier[0].point -
-                                            user.tierPoint +
+                                        nextTier[0]?.point -
+                                            user?.tierPoint +
                                             "p to " +
-                                            nextTier[0].name}
+                                            nextTier[0]?.name}
                                 </p>
                                 <div className="timeframe-bar mt-1">
                                     <div
                                         className="timeleft"
                                         style={{
-                                            width: `${(user.tierPoint / nextTier[0].point) * 100}%`,
+                                            width: `${
+                                                (user?.tierPoint / nextTier[0]?.point) * 100
+                                            }%`,
                                         }}
                                     ></div>
                                 </div>
@@ -227,7 +229,7 @@ const Profile = () => {
                                                     <h4>Increase your account security</h4>
                                                     <div className="row w-100 mx-auto">
                                                         <div className="col-sm-6 br">
-                                                            <Tfa_Config
+                                                            <TfaConfig
                                                                 title="2FA Email"
                                                                 method="email"
                                                             />
@@ -262,14 +264,14 @@ const Profile = () => {
                                                         </div>
 
                                                         <div className="col-sm-6 br">
-                                                            <Tfa_Config
+                                                            <TfaConfig
                                                                 title="2FA Mobile"
                                                                 method="phone"
                                                             />
                                                         </div>
 
                                                         <div className="col-sm-6">
-                                                            <Tfa_Config
+                                                            <TfaConfig
                                                                 title="2FA Authentication app"
                                                                 method="app"
                                                             />

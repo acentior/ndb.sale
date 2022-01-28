@@ -1,4 +1,5 @@
 import React, { useMemo, useState } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
 import styled from 'styled-components';
 import { Icon } from '@iconify/react';
 import NumberFormat from 'react-number-format';
@@ -6,28 +7,46 @@ import Modal from 'react-modal';
 import { Alert } from '@mui/material';
 import { device } from '../../../../utilities/device';
 import { width } from './columnWidth';
+import { update_Task_Setting } from '../../../../redux/actions/tasksAction';
 
 const DirectPurchase = () => {
+    const dispatch = useDispatch();
+    const { tasks } = useSelector(state => state);
+
     const [show, setShow] = useState(false);
     const [modalIsOpen, setModalIsOpen] = useState(false);
-    const [points, setPoints] = useState(null);
+    const [points, setPoints] = useState(tasks.direct);
     const [showError, setShowError] = useState(false);
+    const [pending, setPending] = useState(false);
 
     const error = useMemo(() => {
         if(!points) return 'Input is required';
         return '';
     }, [points]);
 
-    const handleSubmit = () => {
+    const handleSubmit = async () => {
         if(error) {
             setShowError(true);
             return;
         }
-        alert('Saved Successfully');
+        setPending(true);        
+        setShowError(false);
+        const updateData = {
+            verification: tasks.verification,
+            wallet: tasks.wallet.map(item => ({amount: item.amount, point: item.point})),
+            auction: tasks.auction,
+            direct: Number(points),
+            staking: tasks.staking.map(item => ({expiredTime: item.expiredTime, ratio: item.ratio}))
+        };
+        await dispatch(update_Task_Setting(updateData));
+        setPending(false);
+    };
+
+    const closeModal = () => {
         setModalIsOpen(false);
+        setPoints(tasks.direct);
         setShowError(false);
     };
-    
 
     return (
         <>
@@ -44,7 +63,12 @@ const DirectPurchase = () => {
                 </div>
                 <div className='points'>
                     <Main>
-                        <p>0.1 point/USD</p>
+                        <NumberFormat                                            
+                            value={tasks.direct}
+                            displayType={'text'}
+                            thousandSeparator={true}
+                            renderText={(value, props) => <p {...props}>{value} point/USD</p>}
+                        />
                     </Main>
                 </div>
                 <div className='edit'>
@@ -77,14 +101,19 @@ const DirectPurchase = () => {
                             <p style={{color: 'dimgrey'}}>Point per direct purchase</p>
                         </div>
                         <div className='right'>
-                            <p>0.1 point/USD</p>
+                            <NumberFormat                                            
+                                value={tasks.direct}
+                                displayType={'text'}
+                                thousandSeparator={true}
+                                renderText={(value, props) => <p {...props}>{value} point/USD</p>}
+                            />
                         </div>
                     </UnitRowForMobile>
                 </div>
             </DataRowForMobile>
             <Modal
                 isOpen={modalIsOpen}
-                onRequestClose={() => setModalIsOpen(false)}
+                onRequestClose={closeModal}
                 ariaHideApp={false}
                 className="pwd-reset-modal"
                 overlayClassName="pwd-modal__overlay"
@@ -94,8 +123,8 @@ const DirectPurchase = () => {
                         <p>Direct Purchase</p>
                     </div>
                     <div
-                        onClick={() => setModalIsOpen(false)}
-                        onKeyDown={() => setModalIsOpen(false)}
+                        onClick={closeModal}
+                        onKeyDown={closeModal}
                         role="button"
                         tabIndex="0"
                     >
@@ -117,12 +146,12 @@ const DirectPurchase = () => {
                     <div className="pwd-modal__footer mt-4">
                         <button
                             className="btn previous"
-                            onClick={() => {setModalIsOpen(false); setShowError(false);}}
+                            onClick={closeModal}
                         >
                             Cancel
                         </button>
-                        <button className='btn next' onClick={handleSubmit}>
-                            Save
+                        <button className='btn next' onClick={handleSubmit} disabled={pending}>
+                            {pending? 'Savgin. . .': 'Save'}
                         </button>
                     </div>
                 </form>

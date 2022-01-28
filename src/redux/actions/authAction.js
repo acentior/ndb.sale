@@ -20,7 +20,7 @@ export const setCurrentAuthInfo = authInfo => dispatch => {
 
 export const getAuthInfo = () => async dispatch => {
     try {
-        console.log("getAuthino")
+        // console.log("getAuthino")
         const { data } = await client.query({
             query: GET_USER
         });
