@@ -20,7 +20,7 @@ const CountDown = () => {
         }
     }, [])
     return (
-        <div className="countdown-wrapper d-flex justify-content-sm-end justify-content-center">
+        <div className="countdown-wrapper d-flex justify-content-md-end justify-content-center">
             <div className="time-section">
                 <p className="time">{numberWithLength(curTime.hours, 2)}</p>
                 <small className="time-text">hrs</small>

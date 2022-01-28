@@ -10,33 +10,69 @@
         width: 100%;
     }
     .home-section {
+        background: none;
         @extend %set-height2;
         display: flex;
         align-items: center;
         text-align: center;
         .left-part {
             padding-left: 0%;
-            @include mq("phone", min) {
+            @include mq("tablet", min) {
                 padding-left: 8%;
             }
             .tokens-lower-part {
-                width: max-content;
+                // width: max-content;
                 .token-left {
                     font-weight: bold;
-                    font-size: 28px;
+                    font-size: 32px;
                     line-height: 39px;
                     color: white;
                     font-variant: small-caps;
+                    text-align: right;
                 }
                 .token-value {
                     letter-spacing: 0.03em;
                     font-variant: small-caps;
+                    text-align: right;
+                }
+                @include mq("tablet", max) {
+                    .token-left {
+                        text-align: center;
+                    }
+                    .token-value {
+                        text-align: center;
+                    } 
                 }
                 @include mq("phone", max) {
                     width: 100%;
+                    .token-left {
+                        font-size: 24px;
+                    }
+                    .token-value {
+                        font-size: 64px;
+                    } 
                 }
                 .cta {
-                    margin-top: -20px;
+                    margin-top: 10px !important;
+                    @include mq("tablet", max) {
+                        margin-top: 60px !important;
+                    }
+                    @include mq("mobile", max) {
+                        margin-top: 40px !important;
+                    }
+                }
+
+            }
+        }
+        .right-part{
+            position: relative;
+            @include mq("tablet", max){
+                position: absolute;
+                left: 0;
+                z-index: -1;
+                bottom: 0;
+                img{
+                    width: 550px;
                 }
             }
         }
@@ -44,12 +80,14 @@
             font-weight: bold;
             font-size: 48px;
             line-height: 59px;
-            text-align: left;
-            width: max-content;
+            text-align: right;
+            // width: max-content;
             font-variant: small-caps;
+            margin-bottom: 30px;
             @include mq("tablet", max) {
-                font-size: 38px;
-                line-height: 46px;
+                font-size: 48px;
+                line-height: 59px;
+                text-align: center;
             }
         }
         .home-title-mobile {
@@ -63,15 +101,17 @@
             padding: 8px 52px;
             margin: 50px 0 24px;
             border-radius: unset;
-            font-size: 25px;
+            font-size: 30px;
             @include mq("phone", max) {
                 margin: 20px 0 5px;
             }
         }
+       
     }
 }
 
 .countdown-wrapper {
+    line-height:6px;
     .time-section {
         text-align: center;
         .time {
@@ -97,7 +137,11 @@
                 text-transform: uppercase;
                 color: #8f8f8f;
                 @include mq("tablet", max) {
-                    font-size: 12px;
+                    font-size: 14x;
+                    line-height: 15px;
+                }
+                @include mq("mobile", max) {
+                    font-size: 17x;
                     line-height: 15px;
                 }
             }

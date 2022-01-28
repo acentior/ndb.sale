@@ -26,7 +26,7 @@ const IndexPage = () => {
                 <Header />
                 <ReferToFriendsModal isModalOpen={isModalOpen} setIsModalOpen={setIsModalOpen} />
                 <section className="home-section mt-5 mt-sm-0">
-                    <div className="container h-100 d-flex flex-column justify-content-sm-center justify-content-start mt-5 mt-sm-0">
+                    <div className="container h-100 d-flex flex-column justify-content-md-center justify-content-start mt-5 mt-md-0">
                         <div className="row m-0">
                             <div className="left-part col-md-6 pe-0 pe-sm-auto">
                                 <h3 className="home-title d-sm-block d-none">
@@ -42,10 +42,13 @@ const IndexPage = () => {
                                     <CountDown />
                                 </h3>
                                 <div className="tokens-lower-part mt-5 mt-sm-0">
+                                <p className="token-left text-uppercase token-left-mobile d-sm-none d-block">
+                                        tokens left 
+                                    </p>
                                     <p className="token-value mt-2 mt-sm-0">
                                         {numberWithCommas(604800, " ")}
                                     </p>
-                                    <p className="token-left text-uppercase">
+                                    <p className="token-left text-uppercase d-sm-block d-none">
                                         tokens left in this round
                                     </p>
                                     <div className="cta mt-5 mt-sm-0 px-4 px-sm-0">
