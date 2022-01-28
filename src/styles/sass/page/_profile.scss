@@ -12,7 +12,7 @@
         flex-direction: column;
         justify-content: start;
         height: 100vh;
-        @include mq("phone", max) {
+        @include mq("laptop", max) {
             height: 100%;
         }
         .user-info {
@@ -130,6 +130,9 @@
     }
     &__right {
         padding: 0 32px;
+        @include mq("tablet", max) {
+            padding: 0;
+        }
         @include mq("phone", max) {
             padding-left: 12px;
             padding-right: 12px;
@@ -214,7 +217,7 @@
                         padding-left: 0;
                         padding-right: 0;
                     }
-                    .btn-primary {
+                    .change-pwd {
                         font-weight: bold;
                         font-size: 18px;
                         line-height: 22px;
@@ -222,7 +225,7 @@
                         text-transform: uppercase;
                         padding: 15px 26px;
                         background: #1e1e1e;
-                        @include mq("tablet", max) {
+                        @include mq("phone", max) {
                             display: none;
                         }
                     }
@@ -258,7 +261,7 @@
             .account-security {
                 margin-top: 32px;
                 .row {
-                    .col-sm-6 {
+                    .col-md-6 {
                         padding: 25px 12px;
                         display: flex;
                         align-items: center;

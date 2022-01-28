@@ -59,7 +59,7 @@ const Auction = () => {
     const roundData = data?.getAuctions?.filter(
         (item) => (item.status === 2 || item.status === 0) && item
     )
-
+    console.log(roundData && roundData[0])
     // set chart type
     const [pricce, setPrice] = useState(true)
     const [volume, setVolume] = useState(true)

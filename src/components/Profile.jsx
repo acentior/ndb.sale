@@ -21,6 +21,7 @@ import ProfileChangePasswordModal from "./profile/change-password-modal"
 import TierDetailsTab from "./profile/tier-details-tab"
 import Avatar from "../components/dress-up/avatar"
 import { GET_USER_TIERS } from "./profile/profile-queries"
+
 const Profile = () => {
     const dispatch = useDispatch()
     const [userDataLoading, setUserDataLoading] = useState(true)
@@ -129,7 +130,7 @@ const Profile = () => {
                 <Header />
                 <section className="container position-relative h-100">
                     <div className="row">
-                        <div className="col-lg-3 profile-page__left border-end border-white">
+                        <div className="col-lg-3 profile-page__left border-md-end border-white">
                             <div className="user-info">
                                 <div className="my-5 user-info__avatar">
                                     <Avatar />
@@ -199,23 +200,29 @@ const Profile = () => {
                                             <div className="account-details">
                                                 <div className="account-detail">
                                                     <div className="row w-100 mx-auto">
-                                                        <div className="col-6 br">Display name</div>
-                                                        <div className="col-6 text-end text-sm-start">
+                                                        <div className="col-6 col-sm-4 col-md-6 br">
+                                                            Display name
+                                                        </div>
+                                                        <div className="col-6 col-sm-8 col-md-6 text-end text-sm-start">
                                                             {displayName}
                                                         </div>
                                                     </div>
                                                     <div className="row w-100 mx-auto">
-                                                        <div className="col-6 br">email</div>
-                                                        <div className="col-6 text-end text-sm-start text-lowercase">
+                                                        <div className="col-6 col-sm-4 col-md-6 br">
+                                                            email
+                                                        </div>
+                                                        <div className="col-6 col-sm-8 col-md-6 text-end text-sm-start text-lowercase">
                                                             {user && user?.email}
                                                         </div>
                                                     </div>
                                                     <div className="row w-100 mx-auto change-password">
-                                                        <div className="col-6 br">Password</div>
-                                                        <div className="col-6 justify-content-sm-between justify-content-end">
+                                                        <div className="col-6 col-sm-4 col-md-6 br">
+                                                            Password
+                                                        </div>
+                                                        <div className="col-6 col-sm-8 col-md-6 justify-content-sm-between justify-content-end">
                                                             <p>********</p>
                                                             <button
-                                                                className="btn-primary"
+                                                                className="btn-primary change-pwd"
                                                                 onClick={() =>
                                                                     setIsPasswordModalOpen(true)
                                                                 }
@@ -228,14 +235,14 @@ const Profile = () => {
                                                 <div className="account-security">
                                                     <h4>Increase your account security</h4>
                                                     <div className="row w-100 mx-auto">
-                                                        <div className="col-sm-6 br">
+                                                        <div className="col-md-6 br">
                                                             <TfaConfig
                                                                 title="2FA Email"
                                                                 method="email"
                                                             />
                                                         </div>
 
-                                                        <div className="col-sm-6">
+                                                        <div className="col-md-6">
                                                             <div
                                                                 className={`status ${
                                                                     user?.verify?.kycVerified
@@ -263,14 +270,14 @@ const Profile = () => {
                                                             </div>
                                                         </div>
 
-                                                        <div className="col-sm-6 br">
+                                                        <div className="col-md-6 br">
                                                             <TfaConfig
                                                                 title="2FA Mobile"
                                                                 method="phone"
                                                             />
                                                         </div>
 
-                                                        <div className="col-sm-6">
+                                                        <div className="col-md-6">
                                                             <TfaConfig
                                                                 title="2FA Authentication app"
                                                                 method="app"

@@ -11,9 +11,6 @@
     .header-right-side {
         margin-bottom: -10px;
         margin-top: 5px;
-        @include mq("tablet", max) {
-            margin-left: 12px;
-        }
     }
     .user-dropdown {
         position: relative;
@@ -57,8 +54,25 @@
         }
     }
 
-    .sign-in {
-        margin-right: 30px;
+    .header-btn {
+        margin-right: 20px;
+        font-weight: bold;
+        font-size: 24px;
+        line-height: 30px;
+        color: $black;
+        background-color: white;
+        padding: 3px 30px;
+        text-transform: uppercase;
+        display: inline-block;
+        &.sale {
+            display: none;
+            @include mq("tablet", max) {
+                display: block;
+            }
+            @include mq("phone", max) {
+                display: none;
+            }
+        }
         @include mq("phone", max) {
             display: none;
         }
@@ -99,7 +113,7 @@
         span {
             height: 3px;
             position: relative;
-            margin-bottom: 8px;
+            margin-bottom: 9px;
             background-color: #ffffff;
             transition: all 0.3s ease;
 

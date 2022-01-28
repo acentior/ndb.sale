@@ -108,7 +108,7 @@ const Menu = () => {
                                 window.location.pathname === ROUTES.auction ||
                                 window.location.pathname === ROUTES.payment ||
                                 window.location.pathname.includes(ROUTES.admin)) && (
-                                <div className="d-none d-sm-flex justify-content-between gap-5">
+                                <div className="d-none d-md-flex justify-content-between gap-5">
                                     <Link
                                         to={ROUTES.wallet}
                                         className={`${
@@ -172,14 +172,14 @@ const Menu = () => {
                     <div className="d-flex align-items-center header-right-side">
                         <div>
                             {!auth?.isLoggedIn() ? (
-                                <Link
-                                    className="btn-primary text-uppercase d-inline-block sign-in"
-                                    to="/app/signin"
-                                >
+                                <Link className="header-btn" to="/app/signin">
                                     Sign In
                                 </Link>
                             ) : (
                                 <ul className="d-flex align-items-center">
+                                    <Link className="header-btn sale" to="/app/auction">
+                                        Sale
+                                    </Link>
                                     <li className="scale-75">
                                         <img
                                             src={newNotification ? NotificationBell : Bell}
