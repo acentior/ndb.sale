@@ -16441,6 +16441,11 @@
   "resolved" "https://registry.npmjs.org/react-is/-/react-is-17.0.2.tgz"
   "version" "17.0.2"
 
+"react-lang-dropdown@^1.0.4":
+  "integrity" "sha512-R+sFm3YNysdi+Y+AWgkHgHpfXWxXqTHBPuBeZk0mEaX4+7C4p1AQqkqafHq1DDk9mVeObU7HgBwqmtekq2o4Fg=="
+  "resolved" "https://registry.npmjs.org/react-lang-dropdown/-/react-lang-dropdown-1.0.4.tgz"
+  "version" "1.0.4"
+
 "react-lifecycles-compat@^3.0.0", "react-lifecycles-compat@^3.0.4":
   "integrity" "sha512-fBASbA6LnOU9dOU2eW7aQ8xmYBSXUIWr+UmF9b1efZBazGNO+rcXT/icdKnYm2pTwcRylVUYwW7H1PHfLekVzA=="
   "resolved" "https://registry.npmjs.org/react-lifecycles-compat/-/react-lifecycles-compat-3.0.4.tgz"
