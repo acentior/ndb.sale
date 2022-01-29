@@ -263,10 +263,10 @@
                     }
                 }
                 &__tab {
-                    text-transform: uppercase;
-                    font-weight: bold;
-                    font-size: 18px;
-                    line-height: 22px;
+                    font-weight: 700;
+                    font-variant: small-caps;
+                    font-size: 23px;
+                    line-height: 27px;
                     color: #757575;
                     &--selected {
                         background: unset;
@@ -375,6 +375,10 @@
                         border-top: 2px solid #464646;
 
                         td {
+                            div.echarts-for-react.echarts-for-echarts {
+                                margin: 0px !important;
+                                margin-left: auto !important;
+                            }
                             padding-top: 24px;
                             padding-bottom: 16px;
                         }
@@ -466,6 +470,11 @@
                 height: 22px;
                 margin-top: 4px;
                 margin-right: 18px;
+            }
+            .stake-react-list__tab {
+                .react-tabs__tab {
+                    font-weight: 500 !important;
+                }
             }
         }
     }
@@ -832,7 +841,6 @@
         font-weight: bold;
         font-size: 24px;
         line-height: 30px;
-
         letter-spacing: -0.025em;
     }
     .subtitle {
@@ -841,7 +849,6 @@
         font-size: 16px;
         line-height: 30px;
         letter-spacing: -0.01em;
-        word-spacing: 7px;
     }
     .rewards-box {
         background-color: #242424;

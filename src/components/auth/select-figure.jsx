@@ -101,11 +101,10 @@ const SelectFigure = () => {
             },
         })
     }
-
     if (loadingPage) return <Loading />
     else
         return (
-            <main className="profile-page">
+            <main className="select-figure-page">
                 <Header />
                 <section className="container position-relative h-100">
                     <div className="figure-section">
@@ -188,7 +187,7 @@ const SelectFigure = () => {
                                                         )}
                                                     </div>
                                                 </div>
-                                                <div className="mt-5 mb-4">
+                                                <div className="my-4">
                                                     {figuresArray[selectedId].abilities.map(
                                                         (item, idx) => (
                                                             <div className="row mb-1" key={idx}>
@@ -208,7 +207,7 @@ const SelectFigure = () => {
                                             </>
                                         ) : (
                                             <>
-                                                <p className="text-end">
+                                                <div className="text-end">
                                                     <div
                                                         onClick={() => setSelect(false)}
                                                         onKeyDown={() => setSelect(false)}
@@ -222,7 +221,7 @@ const SelectFigure = () => {
                                                             alt="close"
                                                         />
                                                     </div>
-                                                </p>
+                                                </div>
                                                 <div className="main-content">
                                                     <div className="d-flex align-items-end flex-column">
                                                         <div className="d-flex align-items-end justify-content-start">
@@ -267,7 +266,7 @@ const SelectFigure = () => {
                                         )}
                                     </div>
                                 </div>
-                                <div className="mt-3">
+                                <div className="mt-1">
                                     {error && (
                                         <span className="errorsapn">
                                             <FontAwesomeIcon icon={faExclamationCircle} /> {error}
@@ -301,7 +300,6 @@ const SelectFigure = () => {
                         </div>
                     </div>
                 </section>
-                <img src={Trees} alt="trees" className="trees-img w-100" />
                 <Modal
                     isOpen={modalIsOpen}
                     onRequestClose={closeModal}
@@ -310,7 +308,7 @@ const SelectFigure = () => {
                     overlayClassName="figure-modal__overlay"
                 >
                     <div className="figure-intro__box">
-                        <p className="mobile-figure-header">
+                        <div className="mobile-figure-header">
                             {figuresArray[selectedId].firstname +
                                 " " +
                                 figuresArray[selectedId].lastname}
@@ -324,7 +322,7 @@ const SelectFigure = () => {
                             >
                                 <img width="14px" height="14px" src={CloseIcon} alt="close" />
                             </div>
-                        </p>
+                        </div>
                         <div className="figure-intro__box--body">
                             {!selected ? (
                                 <>

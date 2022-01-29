@@ -1,4 +1,7 @@
-.profile-page {
+.select-figure-page {
+    menu {
+        border: none;
+    }
     .figure-section {
         max-width: 992px;
         margin: 0 auto;
@@ -29,10 +32,10 @@
             }
             &-items-section {
                 overflow: auto;
-                max-height: 400px;
+                max-height: 410px;
                 &::-webkit-scrollbar {
                     height: 0;
-                    width: 6px;
+                    width: 4px;
                 }
                 &::-webkit-scrollbar-thumb {
                     background-color: #ffffff;
@@ -82,17 +85,17 @@
     }
     &__box {
         width: 100%;
-        height: 414px;
+        height: 390px;
         border: 1px solid #ffffff;
         @include mq("phone", max) {
             border: none;
         }
         .figure-name {
             border-bottom: 1px solid white;
-            padding: 14px 0;
+            padding: 6px 0;
             font-weight: 600;
-            font-size: 20px;
-            line-height: 24px;
+            font-size: 18px;
+            line-height: 22px;
             text-align: center;
         }
         &--body {

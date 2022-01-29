@@ -40,11 +40,11 @@ export default function StakeTab() {
         console.log("clicking")
     }
     return (
-        <Tabs className="text-light">
+        <Tabs className="text-light stake-react-list__tab">
             <TabList className="py-3 px-4">
-                <Tab>Equity Value</Tab>
-                <Tab>Locked Staking</Tab>
-                <Tab>DeFi Staking</Tab>
+                <Tab>equity value</Tab>
+                <Tab>locked staking</Tab>
+                <Tab>defi staking</Tab>
             </TabList>
             <TabPanel className="px-4">
                 <div className="py-3">
@@ -170,7 +170,7 @@ export default function StakeTab() {
                                                 { id: 3, label: "90 days" },
                                             ].map((item) => (
                                                 <div
-                                                    className={`bg-dark ${
+                                                    className={`bg-black-10 ${
                                                         asset.duration === item.id &&
                                                         "active-duration"
                                                     }`}

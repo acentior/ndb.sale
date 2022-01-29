@@ -96,7 +96,7 @@ export default function StepTwo({
                                     inputFormat="yyyy-MM-dd"
                                     value={dob}
                                     onChange={(newValue) => {
-                                        setDob({ incop_date: newValue })
+                                        setDob(newValue)
                                     }}
                                     renderInput={(params) => <TextField {...params} />}
                                 />

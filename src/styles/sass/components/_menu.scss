@@ -339,8 +339,9 @@
 
 .header-avatar-user-tier {
     position: absolute;
-    bottom: 10px;
-    right: 5px;
+    bottom: 5px;
+    right: 20px;
     height: 10px;
-    transform: scale(0.55);
+    width: 10px;
+    transform: scale(0.35);
 }

@@ -151,7 +151,7 @@ const Menu = () => {
                                             window.location.pathname === ROUTES.faq && "txt-green"
                                         }`}
                                     >
-                                        faq
+                                        support
                                     </Link>
                                     {user?.role && user?.role?.includes("ROLE_ADMIN") ? (
                                         <Link
