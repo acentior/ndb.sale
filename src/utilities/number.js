@@ -90,11 +90,11 @@ export const numFormatter = (value, fixed) => {
         ? (Math.abs(Number(value)) / 1.0e9).toFixed(fixed) + "B"
         : // Six Zeroes for Millions
         Math.abs(Number(value)) >= 1.0e6
-        ? (Math.abs(Number(value)) / 1.0e6).toFixed(fixed) + "M"
-        : // Three Zeroes for Thousands
-        Math.abs(Number(value)) >= 1.0e3
-        ? (Math.abs(Number(value)) / 1.0e3).toFixed(fixed) + "K"
-        : Math.abs(Number(value))
+            ? (Math.abs(Number(value)) / 1.0e6).toFixed(fixed) + "M"
+            : // Three Zeroes for Thousands
+            Math.abs(Number(value)) >= 1.0e3
+                ? (Math.abs(Number(value)) / 1.0e3).toFixed(fixed) + "K"
+                : Math.abs(Number(value))
 }
 
 ////////////////////////////////////////////
@@ -129,7 +129,7 @@ export const getDataOnPeriod = (data, period) => {
                 zeroLabel = "Date " + startDate.getDate()
                 break
             case "1M":
-                startDate = new Date(now.getFullYear(), now.getMonth())
+                startDate = new Date(now.getFullYear(), now.getMonth(), 0)
                 zeroLabel = monthNames[startDate.getMonth()]
                 break
             case "3M":
@@ -141,7 +141,7 @@ export const getDataOnPeriod = (data, period) => {
                 zeroLabel = monthNames[startDate.getMonth()]
                 break
             case "1Y":
-                startDate = new Date(now.getFullYear(), 0, 1)
+                startDate = new Date(now.getFullYear() - 1, 0, 1)
                 zeroLabel = startDate.getFullYear() - 1 + 1 + "Y"
                 break
             case "default":
@@ -149,10 +149,10 @@ export const getDataOnPeriod = (data, period) => {
         }
         fData = data.filter((item) => item.placedAt > startDate)
     } else {
-        console.log(data)
-        var temp = data.sort((a, b) => a.placedAt - b.placedAt)
         zeroLabel = "ALL"
-        fData = data
+        data.sort((a, b) => a.placedAt - b.placedAt)
+        data.forEach(item => fData.push(item))
+        startDate = new Date(fData[0].placedAt)
     }
     return {
         fData,
@@ -182,7 +182,7 @@ export const getFormatedDateOnBids = (date, period) => {
     var year = dateObj.getFullYear()
     var hour = dateObj.getHours()
     var minute = dateObj.getMinutes()
-    if (period === "1M" || period === "6M" || period === "1Y") {
+    if (period === "1M" || period === "6M" || period === "1Y" || period === "ALL") {
         return month + " " + day + ", " + year
     } else if (period === "1D" || period === "5D") {
         return month + " " + day + " " + hour + ":" + minute

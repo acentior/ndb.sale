@@ -28,7 +28,7 @@
         }
     }
     &-small {
-        font-weight: bold;
+        font-weight: normal;
         font-size: 12px;
         line-height: 12px;
         color: white;
@@ -98,22 +98,32 @@
 
     //added
     &-no-border-green{
-        background: none;
-        border:unset;
-        color:white;
-        font-size:15px;
         font-weight: normal;
-        &:hover{
-            color:$green;
-            border:unset;
+        font-size: 12px;
+        line-height: 12px;
+        color: white;
+        padding: 7px 13px;
+        background-color: $black;
+        border: none;
+        text-transform: none;
+        margin-right: 5px;
+        width: auto;
+        &:hover {
+            color: $green;
         }
-        &:focus{
-            color:$green;
+        &:active {
+            color: $green;
+            background-color: $black;
         }
-        &:active{
-            color:$green;
+        &:focus {
+            color: $green;
         }
-
+        @include mq("tablet", max) {
+            width: 33.33%;
+        }
+    }
+    &-active-green{
+        color:$green
     }
 }
 .learn-more {
@@ -138,6 +148,7 @@
     cursor: pointer;
 
     &-wins-outlined{
+        width:calc(100% - 1px);
         color:#fff;
         background-color:#23c865 ;
         border-radius: 0;
@@ -152,10 +163,10 @@
         }
     }
     &-fails-outlined{
+        width:calc(100% - 1px);
         color:#fff;
         background-color:#f73a3a ;
         border-radius: 0;
-        margin-left: 5px;
         .btn-check:checked + &{
             color:#f73a3a;
             border-color:#f73a3a;

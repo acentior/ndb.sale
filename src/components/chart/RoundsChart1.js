@@ -25,7 +25,6 @@ const RoundsChart1 = ({ data }) => {
                 return a[0] - b[0]
             })
         )
-        console.log(ttotal, tsold)
     }, [data])
 
     const option = {
@@ -35,7 +34,7 @@ const RoundsChart1 = ({ data }) => {
             },
         },
         grid: {
-            left: 20,
+            left: 0,
             right: 10,
             bottom: "3%",
             containLabel: true,
@@ -62,6 +61,7 @@ const RoundsChart1 = ({ data }) => {
                     padding: [4, 25, 2, 25],
                 },
             },
+            offset:10
         },
         yAxis: {
             type: "value",
@@ -82,12 +82,13 @@ const RoundsChart1 = ({ data }) => {
                 formatter: function (value) {
                     return numFormatter(value, 2)
                 },
-                margin: 17,
+                margin: 30,
+                align:'left'
             },
             position: {
-                align: "right",
+                align: "left",
             },
-            offset: 20,
+            offset:40 ,
         },
         series: [
             {
@@ -120,7 +121,7 @@ const RoundsChart1 = ({ data }) => {
     return (
         <ReactEcharts
             option={option}
-            style={{ height: "500px", width: "100%" }}
+            style={{ height: "318px", width: "100%" }}
             className="echarts-for-echarts"
         />
     )
