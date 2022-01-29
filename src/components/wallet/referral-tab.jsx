@@ -5,7 +5,7 @@ export default function ReferralTab() {
         <>
             <div className="text-light my-5 wallet-referral-tab">
                 <div className="text-center">
-                    <div className="title">Inviate friends</div>
+                    <div className="title">Invite friends</div>
                     <div className="mt-2 subtitle">Earn coins together</div>
                 </div>
                 <div className="rewards-box col-md-8 mx-auto">
@@ -28,18 +28,26 @@ export default function ReferralTab() {
                                 40192842
                             </div>
                             <svg
-                                className="duplicate-icon text-dark me-3"
-                                fill="none"
-                                stroke="currentColor"
+                                className="duplicate-icon text-dark me-2"
+                                width="24"
+                                height="24"
                                 viewBox="0 0 24 24"
+                                fill="none"
                                 xmlns="http://www.w3.org/2000/svg"
                             >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
+                                <rect
+                                    x="8.70801"
+                                    y="5"
+                                    width="8.83087"
+                                    height="11.5384"
+                                    stroke="#1E1E1E"
                                     stroke-width="2"
-                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                                ></path>
+                                />
+                                <path
+                                    d="M5 8.92285V19.9997H11.7693"
+                                    stroke="#1E1E1E"
+                                    stroke-width="2"
+                                />
                             </svg>
                         </div>
                     </div>
@@ -50,18 +58,26 @@ export default function ReferralTab() {
                                 https://accounts...h=40192842
                             </div>
                             <svg
-                                className="duplicate-icon text-dark me-3"
-                                fill="none"
-                                stroke="currentColor"
+                                className="duplicate-icon text-dark me-2"
+                                width="24"
+                                height="24"
                                 viewBox="0 0 24 24"
+                                fill="none"
                                 xmlns="http://www.w3.org/2000/svg"
                             >
-                                <path
-                                    stroke-linecap="round"
-                                    stroke-linejoin="round"
+                                <rect
+                                    x="8.70801"
+                                    y="5"
+                                    width="8.83087"
+                                    height="11.5384"
+                                    stroke="#1E1E1E"
                                     stroke-width="2"
-                                    d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"
-                                ></path>
+                                />
+                                <path
+                                    d="M5 8.92285V19.9997H11.7693"
+                                    stroke="#1E1E1E"
+                                    stroke-width="2"
+                                />
                             </svg>
                         </div>
                     </div>

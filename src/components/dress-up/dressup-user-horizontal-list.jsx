@@ -57,7 +57,7 @@ export default function DressupHorizontalList({
         slider.addEventListener('mousedown', startDragging, false);
         slider.addEventListener('mouseup', stopDragging, false);
         slider.addEventListener('mouseleave', stopDragging, false);
-    }, [])
+    }, [topic])
 
     return (
         <div className="row m-0">
@@ -80,9 +80,6 @@ export default function DressupHorizontalList({
                           return (
                               <div
                                   key={index}
-                                  style={{
-                                      marginTop: "-1px",
-                                  }}
                                   onClick={() =>
                                       setSelectedItem({
                                           index,
@@ -109,6 +106,7 @@ export default function DressupHorizontalList({
                                                     : "border-success"
                                             }`
                                   }`}
+                                  style={{opacity: status === LOCKED || status === UNAVAILABLE? 0.5: 1, marginTop: -1}}
                               >
                                   <div className="image_div mx-auto">
                                       {topic !== "hairColor" && (

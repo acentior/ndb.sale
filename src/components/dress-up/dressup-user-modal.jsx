@@ -93,6 +93,16 @@ export default function DressupModal({ isModalOpen, setIsModalOpen, onSave }) {
         state.expressions?.updatable &&
         state.hats?.updatable &&
         state.others?.updatable
+
+    // console.log(
+    //     state.hairStyles?.updatable,
+    //     state.hairColors?.updatable,
+    //     state.facialStyles?.updatable,
+    //     state.expressions?.updatable,
+    //     state.hats?.updatable,
+    //     state.others?.updatable
+    // )
+
     return (
         <Modal
             isOpen={isModalOpen}
@@ -139,21 +149,21 @@ export default function DressupModal({ isModalOpen, setIsModalOpen, onSave }) {
                                         </Hair>
                                         <div
                                             style={{
-                                                top: `${expressions[selectedExpression]?.top}%`,
-                                                left: `${expressions[selectedExpression]?.left}%`,
-                                                width: `${expressions[selectedExpression]?.width}%`,
-                                            }}
-                                        >
-                                            {parse(expressions[selectedExpression]?.svg ?? "")}
-                                        </div>
-                                        <div
-                                            style={{
                                                 top: `${facialStyles[selectedFacialStyle]?.top}%`,
                                                 left: `${facialStyles[selectedFacialStyle]?.left}%`,
                                                 width: `${facialStyles[selectedFacialStyle]?.width}%`,
                                             }}
                                         >
                                             {parse(facialStyles[selectedFacialStyle]?.svg ?? "")}
+                                        </div>
+                                        <div
+                                            style={{
+                                                top: `${expressions[selectedExpression]?.top}%`,
+                                                left: `${expressions[selectedExpression]?.left}%`,
+                                                width: `${expressions[selectedExpression]?.width}%`,
+                                            }}
+                                        >
+                                            {parse(expressions[selectedExpression]?.svg ?? "")}
                                         </div>
                                         <div
                                             style={{
