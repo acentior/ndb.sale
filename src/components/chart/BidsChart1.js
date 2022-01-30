@@ -102,7 +102,6 @@ const BidsChart1 = ({ data, period }) => {
                 axisPointer: {
                     label: {
                         formatter: function (value, index) {
-                            console.log(value)
                             return getFormatedDateOnBids(value.value, period)
                         },
                         width: 70,
