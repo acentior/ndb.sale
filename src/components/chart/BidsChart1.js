@@ -81,22 +81,22 @@ const BidsChart1 = ({ data, period }) => {
                         show: false,
                     },
                 },
-                // min:stDate
+                min:stDate
             },
             {
                 type: "time",
                 axisTick: {
                     alignWithLabel: true,
                 },
-                // min: stDate,
-                nameLocation: "start",
-                name: zeroLabel,
-                nameTextStyle: {
-                    align: "left",
-                    padding: [17, 11, 10, 9],
-                    verticalAlign: "top",
-                    fontSize:13
-                },
+                min: stDate,
+                // nameLocation: "start",
+                // name: zeroLabel,
+                // nameTextStyle: {
+                //     align: "left",
+                //     padding: [17, 11, 10, 9],
+                //     verticalAlign: "top",
+                //     fontSize:13
+                // },
                 gridIndex: 1,
                 splitNumber: 5,
                 axisPointer: {
@@ -132,10 +132,10 @@ const BidsChart1 = ({ data, period }) => {
                         backgroundColor: "#23C865",
                         color: "#fff",
                         formatter: function (value, index) {
-                            return numFormatter(value.value, 0)
+                            return numFormatter(value.value, 2)
                         },
                         width: 50,
-                        padding: [4, 2, 2, 30],
+                        padding: [4, 2, 2, 20],
                     },
                     margin: "10%",
                 },
@@ -157,8 +157,11 @@ const BidsChart1 = ({ data, period }) => {
                     label: {
                         backgroundColor: "#fff",
                         color: "#7a7a7a",
-                        width: 70,
-                        padding: [4, 2, 2, 10],
+                        width: 50,
+                        padding: [4, 2, 2, 20],
+                        formatter: function (value, index) {
+                            return numFormatter(value.value.toFixed(2), 2)
+                        },
                     },
                     margin: "10%",
                     position: {

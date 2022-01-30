@@ -152,7 +152,7 @@ export const getDataOnPeriod = (data, period) => {
         zeroLabel = "ALL"
         data.sort((a, b) => a.placedAt - b.placedAt)
         data.forEach(item => fData.push(item))
-        startDate = new Date(fData[0].placedAt)
+        startDate = new Date(2021,0,1)
     }
     return {
         fData,
