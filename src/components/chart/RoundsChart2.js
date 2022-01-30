@@ -15,8 +15,8 @@ const RoundsChart2 = ({ data }) => {
     useEffect(() => {
         let trnd = []
         let rdata = []
+        
         tmpdata = data?.getRoundPerform2.slice()
-        console.log(tmpdata)
         tmpdata
             .sort((a, b) => {
                 return a.roundNumber - b.roundNumber
@@ -32,39 +32,13 @@ const RoundsChart2 = ({ data }) => {
         setChart(rdata)
     }, [data])
 
-    // useEffect(
-    //     () => {
-    //       setLoop(
-    //         setInterval(() => {
-    //           console.log("loading");
-    //         }, 1000)
-    //       );
-
-    //       return function cleanup() {
-    //         console.log("cleaning up");
-    //         clearInterval(loop);
-    //       };
-    //     },
-    //     []
-    //   );
-
-    useEffect(() => {
-        var clockId = setInterval(() => {
-            console.log("------")
-        }, 1000)
-        return () => {
-            console.log("celadsf")
-            clearInterval(clockId)
-        }
-    }, [])
-
     const option = {
         tooltip: {
             show: false,
         },
 
         grid: {
-            left: 27,
+            left: 0,
             right: 10,
             bottom: "3%",
             containLabel: true,
@@ -77,22 +51,15 @@ const RoundsChart2 = ({ data }) => {
                     backgroundColor: "#eb5454",
                     formatter: function ({ value }) {
                         xPoint = value
-                        // setDisplay(tmpdata)
-                        // curDisp = tmpdata.filter((item)=>item.roundNumber==xPoint)
-                        // for (var i=0;i<tmpdata.length;i++){
-                        //     if (tmpdata[i].roundNumber == xPoint){
-                        //         console.log(tmpdata[i])
-                        //         dispData =tmpdata[i]
-                        //     }
-                        // }
                         return value
                     },
                     padding: [4, 25, 2, 25],
                 },
             },
             axisLabel: {
-                margin: 30,
+                margin: 10,
             },
+            offset:10
         },
         yAxis: {
             axisPointer: {
@@ -100,7 +67,8 @@ const RoundsChart2 = ({ data }) => {
             },
             offset: 20,
             axisLabel: {
-                margin: 30,
+                margin: 55,
+                align:'left'
             },
             position: {
                 align: "right",
@@ -136,7 +104,7 @@ const RoundsChart2 = ({ data }) => {
                 </div>
                 <ReactEcharts
                     option={option}
-                    style={{ height: "500px", width: "100%" }}
+                    style={{ height: "318px", width: "100%" ,top:'20px'}}
                     className="echarts-for-echarts"
                 />
             </div>

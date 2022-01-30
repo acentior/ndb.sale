@@ -9,7 +9,6 @@ const ChanceChart = ({ data }) => {
     const [fails, setFails] = useState([])
 
     ///////added///////////
-    const [option, setOption] = useState({})
     const [winFlag, setWinFlag] = useState(true)
     const [failFlag, setFailFlag] = useState(true)
 
@@ -55,6 +54,7 @@ const ChanceChart = ({ data }) => {
             offset: 10,
             axisLabel: {
                 fontSize: 14,
+                margin:20
             },
             axisLine: {
                 show: false,
@@ -118,8 +118,8 @@ const ChanceChart = ({ data }) => {
     return (
         <React.Fragment>
             <div className="select-chart-type">
-                <div className="d-flex justify-content-between mt-2 ">
-                    <div>
+                <div className="d-flex mt-2 gap-1 ">
+                    <div className="col-6">
                         <input
                             type="checkbox"
                             className="btn-check"
@@ -133,7 +133,7 @@ const ChanceChart = ({ data }) => {
                             Win Rate
                         </label>
                     </div>
-                    <div>
+                    <div className="col-6">
                         <input
                             type="checkbox"
                             className="btn-check"
@@ -156,14 +156,15 @@ const ChanceChart = ({ data }) => {
                 <div style={{ position: "relative" }}>
                     <ReactEcharts
                         option={opt}
-                        style={{ height: "500px", width: "100%" }}
+                        style={{ height: "360px", width: "100%" }}
                         className="echarts-for-echarts"
                     />
                     <div
                         style={{
-                            bottom: "60px",
+                            bottom: "54px",
+                            height:"10px",
                             borderBottom: "solid 1px #a3a7af",
-                            zIndex: "9999",
+                            zIndex: "99",
                             position: "relative",
                             backgroundColor: "#1e1e1e",
                             marginRight: "21px",
@@ -177,7 +178,7 @@ const ChanceChart = ({ data }) => {
             </div>
             <div
                 style={{
-                    borderBottom: "solid 1px #a3a7af",
+                    borderTop: "solid 1px #a3a7af",
                     marginRight: "21px",
                     marginLeft: "40px",
                     color: "#fff0",

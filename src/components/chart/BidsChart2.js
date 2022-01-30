@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react"
 import ReactEcharts from "echarts-for-react"
-import { getDataOnPeriod, numFormatter, getFormatedDateOnBids } from "../../utilities/number"
+import { numFormatter } from "../../utilities/number"
 
 const BidsChart2 = ({ data }) => {
     const [total, setTotal] = useState([])
@@ -29,7 +29,7 @@ const BidsChart2 = ({ data }) => {
             },
         },
         grid: {
-            left: 0,
+            left: 5,
             right: 10,
             bottom: "3%",
             containLabel: true,
@@ -91,7 +91,7 @@ const BidsChart2 = ({ data }) => {
     return (
         <ReactEcharts
             option={option}
-            style={{ height: "500px", width: "100%" }}
+            style={{ height: "318px", width: "100%" }}
             className="echarts-for-echarts"
         />
     )

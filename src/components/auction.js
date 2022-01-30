@@ -715,7 +715,7 @@ const Auction = () => {
                                         )}
                                         {selectLabel.value === "round_performance" && (
                                             <div className=" d-flex justify-content-between pt-3 w-100 flex-wrap">
-                                                <div className="d-flex">
+                                                <div className="d-flex" style={{zIndex:'99'}}>
                                                     <button
                                                         className={`btn-small ${
                                                             reser_price ? "" : "btn-disabled"
@@ -813,7 +813,7 @@ const Auction = () => {
                                         }}
                                     >
                                         <button
-                                            className="btn-no-border-green text-uppercase btn-small  "
+                                            className="btn-no-border-green text-uppercase  "
                                             onClick={() => {
                                                 setPeriod("1D")
                                             }}
@@ -821,7 +821,7 @@ const Auction = () => {
                                             1D
                                         </button>
                                         <button
-                                            className="btn-no-border-green text-uppercase btn-small  "
+                                            className="btn-no-border-green text-uppercase  "
                                             onClick={() => {
                                                 setPeriod("5D")
                                             }}
@@ -829,7 +829,9 @@ const Auction = () => {
                                             5D
                                         </button>
                                         <button
-                                            className="btn-no-border-green text-uppercase btn-small "
+                                            className={`btn-no-border-green text-uppercase ${
+                                                period=="1M" ? "btn-active-green" : ""
+                                            }`}
                                             onClick={() => {
                                                 setPeriod("1M")
                                             }}
@@ -837,7 +839,7 @@ const Auction = () => {
                                             1M
                                         </button>
                                         <button
-                                            className="btn-no-border-green text-uppercase btn-small  "
+                                            className="btn-no-border-green text-uppercase "
                                             onClick={() => {
                                                 setPeriod("6M")
                                             }}
@@ -845,7 +847,7 @@ const Auction = () => {
                                             6M
                                         </button>
                                         <button
-                                            className="btn-no-border-green text-uppercase btn-small  "
+                                            className="btn-no-border-green text-uppercase   "
                                             onClick={() => {
                                                 setPeriod("1Y")
                                             }}
@@ -853,7 +855,7 @@ const Auction = () => {
                                             1Y
                                         </button>
                                         <button
-                                            className="btn-no-border-green text-uppercase btn-small  "
+                                            className="btn-no-border-green text-uppercase   "
                                             onClick={() => {
                                                 setPeriod("ALL")
                                             }}

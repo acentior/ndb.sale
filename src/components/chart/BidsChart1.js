@@ -16,15 +16,17 @@ const BidsChart1 = ({ data, period }) => {
         let tTotal = []
         let tAmount = []
         let list = []
-        // console.log(data)
+
         data?.getBidList.forEach((x) => list.push(x))
         list.sort((a, b) => {
             return a.placedAt - b.placedAt
         })
+
         var tmpData = getDataOnPeriod(list, period)
-        // console.log(tmpData)
+
         setZeroLabel(tmpData.zeroLabel)
-        setStartDate(tmpData.fData[0].placedAt)
+        setStartDate(tmpData.startDate)
+
         tmpData.fData.forEach((ele) => {
             tTotal.push({ value: [new Date(ele.placedAt), ele.totalPrice] })
             tAmount.push({ value: [new Date(ele.placedAt), ele.tokenAmount] })
@@ -32,7 +34,6 @@ const BidsChart1 = ({ data, period }) => {
 
         setTotal(tTotal)
         setAmount(tAmount)
-        // console.log(tTotal)
     }, [data, period])
 
     const option = {
@@ -46,16 +47,18 @@ const BidsChart1 = ({ data, period }) => {
         },
         grid: [
             {
-                left: 75,
+                left: 25,
                 right: 10,
-                top: "5%",
-                height: "50%",
+                top: "10%",
+                height: "60%",
+                containLabel:true
             },
             {
-                left: 75,
+                left: 25,
                 right: 10,
-                top: "65%",
+                top: "70%",
                 height: "30%",
+                containLabel:true
             },
         ],
         axisPointer: {
@@ -78,21 +81,28 @@ const BidsChart1 = ({ data, period }) => {
                         show: false,
                     },
                 },
-                axisLabel: {
-                    margin: 30,
-                },
+                // min:stDate
             },
             {
                 type: "time",
                 axisTick: {
                     alignWithLabel: true,
                 },
-                min: stDate,
+                // min: stDate,
+                nameLocation: "start",
+                name: zeroLabel,
+                nameTextStyle: {
+                    align: "left",
+                    padding: [17, 11, 10, 9],
+                    verticalAlign: "top",
+                    fontSize:13
+                },
                 gridIndex: 1,
-                splitNumber: 2,
+                splitNumber: 5,
                 axisPointer: {
                     label: {
                         formatter: function (value, index) {
+                            console.log(value)
                             return getFormatedDateOnBids(value.value, period)
                         },
                         width: 70,
@@ -100,7 +110,9 @@ const BidsChart1 = ({ data, period }) => {
                     },
                 },
                 axisLabel: {
-                    margin: 12,
+                    margin: 18,
+                    showMinLabel:false,
+                    hideOverlap:true,
                 },
                 scale: true,
             },
@@ -140,7 +152,7 @@ const BidsChart1 = ({ data, period }) => {
                     formatter: function (value, index) {
                         return numFormatter(value, 0)
                     },
-                    margin: 30,
+                    margin: 35,
                 },
                 axisPointer: {
                     label: {
@@ -156,8 +168,7 @@ const BidsChart1 = ({ data, period }) => {
                 },
                 offset: 20,
                 gridIndex: 1,
-                name: zeroLabel.toString(),
-                nameLocation: "start",
+                splitNumber:2
             },
         ],
         series: [
@@ -182,7 +193,7 @@ const BidsChart1 = ({ data, period }) => {
     return (
         <ReactEcharts
             option={option}
-            style={{ height: "500px", width: "100%" }}
+            style={{ height: "318px", width: "100%" }}
             className="echarts-for-echarts"
         />
     )
