@@ -88,11 +88,13 @@ const Auction = () => {
     
     useEffect(() => {
         if (!auctionLoaded && roundData) {
-            const biddingShowPriority = [2,0,1,3]
+            
+            const statPriority = [2,0,1,3]
             var pointIndex = 0
             roundData.reverse()
-            for (var i=0;i<biddingShowPriority.length;i++){
-                var curPriority = biddingShowPriority[i]        
+
+            for (var i=0;i<statPriority.length;i++){
+                var curPriority = statPriority[i]        
                 var flag = false
 
                 for (var j = 0; j< roundData.length ;j++){
