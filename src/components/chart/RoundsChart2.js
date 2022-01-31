@@ -104,7 +104,8 @@ const RoundsChart2 = ({ data }) => {
                 </div>
                 <ReactEcharts
                     option={option}
-                    style={{ height: "318px", width: "100%" ,top:'20px'}}
+                    style={{ height: "calc(100vh - 350px)", width: "auto",top:"20px" }}
+                    
                     className="echarts-for-echarts"
                 />
             </div>

@@ -1,0 +1,126 @@
+.faq-page {
+    section {
+        margin-top: 62px;
+        @include mq("tablet", max) {
+            margin-top: 40px;
+        }
+        @include mq("phone", max) {
+            margin-top: 16px;
+        }
+    }
+    .menu {
+        border-bottom: 2px solid #464646;
+    }
+    .faq__tabs {
+        display: flex;
+        height: calc(100vh - 230px);
+        @include mq("tablet", max) {
+            display: block;
+            height: auto;
+        }
+        &-list {
+            padding-right: 75px;
+            border-right: 1px solid #ffffff;
+            flex-shrink: 0;
+            @include mq("laptop", max) {
+                padding-right: 35px;
+            }
+            @include mq("tablet", max) {
+                display: flex;
+                border: unset;
+                padding-right: 0;
+            }
+        }
+        &-tab {
+            font-weight: bold;
+            font-size: 30px;
+            line-height: 37px;
+            color: #424242;
+            cursor: pointer;
+            margin-bottom: 26px;
+            text-transform: uppercase;
+            @include mq("tablet", max) {
+                width: 50%;
+                text-align: center;
+                border-bottom: 2px solid #464646;
+                margin-bottom: 45px;
+            }
+            @include mq("phone", max) {
+                font-size: 24px;
+                margin-bottom: 30px;
+            }
+            &.react-tabs__tab--selected {
+                background-color: unset;
+                color: white;
+                @include mq("tablet", max) {
+                    border-bottom: 2px solid $green;
+                }
+                &::first-letter {
+                    color: $green;
+                }
+            }
+        }
+    }
+    .sub-faq__tabs {
+        display: flex;
+        @include mq("tablet", max) {
+            display: block;
+            margin: 0 auto;
+            max-width: 470px;
+        }
+        &-list {
+            margin: 0 65px 0 35px;
+            flex-shrink: 0;
+            @include mq("laptop", max) {
+                margin: 0 45px 0 25px;
+            }
+            @include mq("tablet", max) {
+                display: flex;
+                justify-content: flex-start;
+                margin: 0;
+            }
+        }
+        &-tab {
+            margin-bottom: 34px;
+            font-weight: bold;
+            font-size: 24px;
+            line-height: 29px;
+            color: #424242;
+            cursor: pointer;
+            @include mq("tablet", max) {
+                font-size: 22px;
+                margin-bottom: 75px;
+            }
+            @include mq("phone", max) {
+                font-size: 18px;
+                margin-bottom: 30px;
+            }
+            &.react-tabs__tab--selected {
+                background-color: unset;
+                color: white;
+            }
+        }
+        .question-label {
+            font-weight: 300;
+            text-transform: uppercase;
+            font-size: 16px;
+            line-height: 20px;
+            color: white;
+            margin-bottom: 16px;
+            margin-top: 6px;
+        }
+        .faq-list {
+            padding-right: 0px;
+            @include mq("phone") {
+                padding-right: 32px;
+            }
+            @include mq("tablet") {
+                @include custom-scroll(300px);
+            }
+        }
+    }
+    .divide {
+        border-bottom: 1px solid white;
+        width: 62px;
+    }
+}
