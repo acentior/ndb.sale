@@ -2,8 +2,8 @@ import React, { useState } from "react"
 import { Link } from "gatsby"
 import { Icon } from "@iconify/react"
 import Modal from "react-modal"
-// import InnerHTML from "dangerously-set-html-content"
-// import PrivacyHTML from "../../assets/files/Privacy Policy.html"
+import InnerHTML from "dangerously-set-html-content"
+import PrivacyHTML from "../../assets/files/Privacy Policy.html"
 
 export default function PrivacyPolicy({ agree, setAgree, lang }) {
     const [open, setOpen] = useState(false)
@@ -28,7 +28,7 @@ export default function PrivacyPolicy({ agree, setAgree, lang }) {
                 className="privacy-policy-modal"
                 overlayClassName="privacy-policy-modal__overlay"
             >
-                {/* <InnerHTML html={PrivacyHTML} className="privacy-policy-modal__content" /> */}
+                <InnerHTML html={PrivacyHTML} className="privacy-policy-modal__content" />
                 <div className="privacy-policy-modal__footer">
                     <button
                         className="btn-decline me-2"

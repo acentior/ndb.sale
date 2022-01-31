@@ -109,13 +109,13 @@ const CryptoRow = ({ data }) => {
                     <p className="coin-name">{data.name}</p>
                 </div>
             </td>
-            <td>
-                <p className="coin-price">${price}</p>
+            <td className="text-center">
+                <p className="coin-price text-center">${price}</p>
                 <p
                     className={
                         numberSign(percent) === "+"
-                            ? "coin-percent txt-green"
-                            : "coin-percent txt-red"
+                            ? "coin-percent txt-green text-center"
+                            : "coin-percent txt-red text-center"
                     }
                 >
                     {numberSign(percent) + percent === undefined ? "0" : percent}%
@@ -151,12 +151,11 @@ const CryptoRow = ({ data }) => {
                             right: "0",
                         },
                     }}
-                    style={{ height: "50px", width: "150px", margin: "auto" }}
+                    style={{ height: "50px", width: "150px", margin: "auto !important" }}
                     className="echarts-for-echarts"
                 />
             </td>
-            <td className="mobile-not text-end">${!volume ? 0 : volume}</td>
-            <td className="mobile-not text-end"></td>
+            <td className="mobile-not text-center">${!volume ? 0 : volume}</td>
         </tr>
     )
 }
@@ -167,11 +166,10 @@ export default function MarketTab() {
         <table className="wallet-transaction-table">
             <thead>
                 <tr>
-                    <th>Name</th>
-                    <th className="text-end">Price</th>
+                    <th className="text-center">Name</th>
+                    <th className="text-center">Price</th>
                     <th className="laptop-not text-center">Price Chart</th>
-                    <th className="mobile-not text-end">Volume (24h)</th>
-                    <th className="mobile-not text-end"> </th>
+                    <th className="mobile-not text-center">Volume (24h)</th>
                 </tr>
             </thead>
             <div className="search">
@@ -197,7 +195,7 @@ export default function MarketTab() {
                     onChange={(e) => setSearchValue(e.target.value)}
                 />
             </div>
-            <tbody className="pe-3">
+            <tbody>
                 {market_data
                     .filter(
                         (item) =>
