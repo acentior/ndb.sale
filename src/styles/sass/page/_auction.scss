@@ -262,16 +262,13 @@
             @include mq("tablet", max) {
                 border: none;
             }
-            // @media screen and (min-width:1920px){
-            //     padding-top:50px;
-            // }
             .place-bid {
                 display: flex;
                 flex-direction: column;
-                justify-content: space-around;
-                margin-top: 32px;
+                justify-content: space-evenly;
+                margin-top: 64px;
                 margin-left:43px;
-                height: calc(100% - 205px);
+                height: calc(100% - 235px);
                 @include mq("laptop") {
                     display: flex;
                 }
@@ -378,7 +375,6 @@
     .range-input,
     .total-input {
         padding: 8px 10px;
-        margin-right: 18px;
         background: #1e1e1e;
         border: 1px solid #ffffff;
         width: 87px;
@@ -389,11 +385,10 @@
         text-align: center;
     }
     .total-input {
-        width: 250px;
+        width: auto;
         font-weight: bold;
         font-size: 30px;
         line-height: 37px;
-        margin-left: 18px;
     }
     .symbol-label {
         color: $green;

@@ -579,7 +579,7 @@ const Auction = () => {
                         <div className="auction-right col-lg-8 col-md-7">
                             <div className={`place-bid ${isBid && "d-none"}`}>
                                     <h3 className="range-label">amount of token</h3>
-                                    <div className="d-flex align-items-center mb-4">
+                                    <div className="d-flex align-items-center mb-4 gap-4">
                                         <input
                                             type="number"
                                             value={Math.max(1, amount)}
@@ -595,7 +595,7 @@ const Auction = () => {
                                         />
                                     </div>
                                     <h3 className="range-label">Per token price</h3>
-                                    <div className="d-flex align-items-center mb-4">
+                                    <div className="d-flex align-items-center mb-4 gap-4">
                                         <input
                                             type="number"
                                             value={calcPriceFromUsd(
@@ -620,7 +620,7 @@ const Auction = () => {
                                             step={100}
                                         />
                                     </div>
-                                <div className="d-flex align-items-center">
+                                <div className="d-flex align-items-center justify-content-between gap-2">
                                     <span className="range-label">Total price</span>
                                     <input
                                         className="total-input"
