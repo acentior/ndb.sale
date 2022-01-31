@@ -95,6 +95,9 @@
             @include mq("phone", max) {
                 width: 100%;
             }
+            @media screen and (min-width:1920px){
+                padding-top:15px;
+            }
             .round-tab,
             .statistics-tab {
                 .react-tabs__tab-list {
@@ -259,7 +262,9 @@
             @include mq("tablet", max) {
                 border: none;
             }
-
+            // @media screen and (min-width:1920px){
+            //     padding-top:50px;
+            // }
             .place-bid {
                 display: flex;
                 flex-direction: column;

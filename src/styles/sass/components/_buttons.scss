@@ -30,8 +30,9 @@
     &-primary-alt {
         font-weight: bold;
         font-size: 30px;
+        // line-height: 37px;
         font-family: "Montserrat";
-        line-height: 37px;
+
         color: white;
         padding: 7px 33px;
         background: $black;
@@ -54,9 +55,16 @@
             font-size: 20px;
             line-height: 24px;
         }
-        @media screen and (min-width:1920px) {
-                font-size: 50px;
-                line-height: 80px;
+        @include media-breakpoint-down(xl){
+            line-height: 37px;
+        }
+        @include media-breakpoint-between(xl,xxl){
+            font-size: 30px;
+            line-height: 50px;
+        }
+        @include media-breakpoint-up(xxl){
+            font-size: 50px;
+            line-height: 80px;
         }
     }
     &-small {
@@ -216,3 +224,27 @@
         padding:2px 10px;
     }
 }
+
+// @include media-breakpoint-up(xl){
+//     .btn-primary-alt {
+//         font-size: 50px;
+//         line-height: 80px;
+//     }
+// }
+// @include media-breakpoint-up(lg){
+//     .btn-primary-alt {
+//         font-size: 30px;
+//         line-height: 50px;
+//     }
+// }
+
+// @include mq("laptop-wide", max) {
+//     padding-right: 12px;
+// }
+// // @include media-breakpoint-down(xl){
+// //     .btn-primary-alt{
+// //         font-size: 30px;
+// //         line-height: 37px;
+
+// //     }
+// // }
