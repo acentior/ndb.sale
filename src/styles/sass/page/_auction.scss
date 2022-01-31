@@ -246,7 +246,7 @@
             &__bottom {
                 position: absolute;
                 width: calc(100% - 70px);
-                top:373px;
+                bottom:162px;
                 @include mq("phone", max) {
                     position: relative;
                     bottom: unset;
@@ -261,16 +261,20 @@
             }
 
             .place-bid {
-                display: none;
-                margin-top: 65px;
+                display: flex;
+                flex-direction: column;
+                justify-content: space-around;
+                margin-top: 32px;
                 margin-left:43px;
+                height: calc(100% - 205px);
                 @include mq("laptop") {
-                    display: block;
+                    display: flex;
                 }
             }
             .chart-area {
                 margin: 0 auto;
-                padding: 40px 0px 40px 40px;
+                padding: 40px 0px 0px 40px;
+                height: 100%;
                 @include mq("laptop") {
                     display: none;
                 }
@@ -281,6 +285,12 @@
                 .select-chart-type {
                     width: 375px;
                     z-index: 199;
+                    @include mq("laptop", max) {
+                        width: 100%;
+                    }
+                }
+                .select-chart-btn{
+                    width:367px;
                     @include mq("laptop", max) {
                         width: 100%;
                     }

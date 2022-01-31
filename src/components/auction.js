@@ -578,47 +578,51 @@ const Auction = () => {
 
                         <div className="auction-right col-lg-8 col-md-7">
                             <div className={`place-bid ${isBid && "d-none"}`}>
-                                <h3 className="range-label">amount of token</h3>
-                                <div className="d-flex align-items-center mb-4">
-                                    <input
-                                        type="number"
-                                        value={Math.max(1, amount)}
-                                        onChange={(e) => setState({ amount: e.target.value })}
-                                        className="range-input"
-                                    />
-                                    <Slider
-                                        value={Math.max(1, amount)}
-                                        onChange={(value) => setState({ amount: value })}
-                                        min={1}
-                                        max={fnSelectedRoundData()?.token}
-                                        step={1}
-                                    />
+                                <div>
+                                    <h3 className="range-label">amount of token</h3>
+                                    <div className="d-flex align-items-center mb-4">
+                                        <input
+                                            type="number"
+                                            value={Math.max(1, amount)}
+                                            onChange={(e) => setState({ amount: e.target.value })}
+                                            className="range-input"
+                                        />
+                                        <Slider
+                                            value={Math.max(1, amount)}
+                                            onChange={(value) => setState({ amount: value })}
+                                            min={1}
+                                            max={fnSelectedRoundData()?.token}
+                                            step={1}
+                                        />
+                                    </div>
                                 </div>
-                                <h3 className="range-label">Per token price</h3>
-                                <div className="d-flex align-items-center mb-4">
-                                    <input
-                                        type="number"
-                                        value={calcPriceFromUsd(
-                                            Math.max(fnSelectedRoundData()?.minPrice, price)
-                                        )}
-                                        onChange={(e) =>
-                                            setState({ price: calcPriceToUsd(e.target.value) })
-                                        }
-                                        className="range-input"
-                                    />
-                                    <Slider
-                                        value={calcPriceFromUsd(
-                                            Math.max(fnSelectedRoundData()?.minPrice, price)
-                                        )}
-                                        onChange={(value) =>
-                                            setState({ price: calcPriceToUsd(value) })
-                                        }
-                                        min={Math.ceil(
-                                            calcPriceFromUsd(fnSelectedRoundData()?.minPrice)
-                                        )}
-                                        max={10000}
-                                        step={100}
-                                    />
+                                <div>
+                                    <h3 className="range-label">Per token price</h3>
+                                    <div className="d-flex align-items-center mb-4">
+                                        <input
+                                            type="number"
+                                            value={calcPriceFromUsd(
+                                                Math.max(fnSelectedRoundData()?.minPrice, price)
+                                            )}
+                                            onChange={(e) =>
+                                                setState({ price: calcPriceToUsd(e.target.value) })
+                                            }
+                                            className="range-input"
+                                        />
+                                        <Slider
+                                            value={calcPriceFromUsd(
+                                                Math.max(fnSelectedRoundData()?.minPrice, price)
+                                            )}
+                                            onChange={(value) =>
+                                                setState({ price: calcPriceToUsd(value) })
+                                            }
+                                            min={Math.ceil(
+                                                calcPriceFromUsd(fnSelectedRoundData()?.minPrice)
+                                            )}
+                                            max={10000}
+                                            step={100}
+                                        />
+                                    </div>
                                 </div>
                                 <div className="d-flex align-items-center">
                                     <span className="range-label">Total price</span>
@@ -640,17 +644,19 @@ const Auction = () => {
                                     />
                                     <h3 className="symbol-label">{Currencies[currencyId].label}</h3>
                                 </div>
-                                <div className="mt-3 mb-2">
-                                    <p>Audited by Cyberunit</p>
+                                <div>
+                                    <div className="mt-3 mb-2">
+                                        <p>Audited by Cyberunit</p>
+                                    </div>
+                                    <button
+                                        className="btn-primary text-uppercase w-100"
+                                        onClick={() => {
+                                            bidMutation()
+                                        }}
+                                    >
+                                        {!isBid ? "Place Bid" : "Increase Bid"}
+                                    </button>
                                 </div>
-                                <button
-                                    className="btn-primary text-uppercase w-100"
-                                    onClick={() => {
-                                        bidMutation()
-                                    }}
-                                >
-                                    {!isBid ? "Place Bid" : "Increase Bid"}
-                                </button>
                             </div>
                             <div
                                 className={`chart-area ${
@@ -698,96 +704,108 @@ const Auction = () => {
                                         </div>
 
                                         {selectLabel.value === "bid_performance" && (
-                                            <div className="d-flex align-items-center pt-3 w-100 ">
-                                                <button
-                                                    className={`btn-small ${
-                                                        pricce ? "" : "btn-disabled"
-                                                    }`}
-                                                    onClick={() => {
-                                                        if (!pricce) {
-                                                            setPrice(true)
-                                                            setVolume(true)
-                                                            setPriceVolume(false)
-                                                        }
-                                                    }}
-                                                >
-                                                    Price
-                                                </button>
-                                                <button
-                                                    className={`btn-small ${
-                                                        volume ? "" : "btn-disabled"
-                                                    }`}
-                                                    onClick={() => {
-                                                        if (!volume) {
-                                                            setPrice(true)
-                                                            setVolume(true)
-                                                            setPriceVolume(false)
-                                                        }
-                                                    }}
-                                                >
-                                                    Volume
-                                                </button>
-                                                <button
-                                                    className={`btn-small ${
-                                                        price_volume ? "" : "btn-disabled"
-                                                    }`}
-                                                    onClick={() => {
-                                                        if (!price_volume) {
-                                                            setPrice(false)
-                                                            setVolume(false)
-                                                            setPriceVolume(true)
-                                                        }
-                                                    }}
-                                                >
-                                                    Price Volume
-                                                </button>
+                                            <div className="d-flex align-items-center pt-3 select-chart-btn gap-1">
+                                                <div className="col-4">
+                                                    <button
+                                                        className={`btn-small  ${
+                                                            pricce ? "" : "btn-disabled"
+                                                        }`}
+                                                        onClick={() => {
+                                                            if (!pricce) {
+                                                                setPrice(true)
+                                                                setVolume(true)
+                                                                setPriceVolume(false)
+                                                            }
+                                                        }}
+                                                    >
+                                                        Price
+                                                    </button>
+                                                </div>
+                                                <div className="col-4">
+                                                    <button
+                                                        className={`btn-small  ${
+                                                            volume ? "" : "btn-disabled"
+                                                        }`}
+                                                        onClick={() => {
+                                                            if (!volume) {
+                                                                setPrice(true)
+                                                                setVolume(true)
+                                                                setPriceVolume(false)
+                                                            }
+                                                        }}
+                                                    >
+                                                        Volume
+                                                    </button>
+                                                </div>
+                                                <div className="col-4">
+                                                    <button
+                                                        className={`btn-small ${
+                                                            price_volume ? "" : "btn-disabled"
+                                                        }`}
+                                                        onClick={() => {
+                                                            if (!price_volume) {
+                                                                setPrice(false)
+                                                                setVolume(false)
+                                                                setPriceVolume(true)
+                                                            }
+                                                        }}
+                                                    >
+                                                        Price Volume
+                                                    </button>
+                                                </div>
                                             </div>
                                         )}
                                         {selectLabel.value === "round_performance" && (
                                             <div className=" d-flex justify-content-between pt-3 w-100 flex-wrap">
-                                                <div className="d-flex" style={{zIndex:'99'}}>
-                                                    <button
-                                                        className={`btn-small ${
-                                                            reser_price ? "" : "btn-disabled"
-                                                        }`}
-                                                        onClick={() => {
-                                                            if (!reser_price) {
-                                                                setReserPrice(true)
-                                                                setSoldPrice(true)
-                                                                setPerformance(false)
-                                                            }
-                                                        }}
-                                                    >
-                                                        Reserved Price
-                                                    </button>
-                                                    <button
-                                                        className={`btn-small ${
-                                                            sold_price ? "" : "btn-disabled"
-                                                        }`}
-                                                        onClick={() => {
-                                                            if (!sold_price) {
-                                                                setReserPrice(true)
-                                                                setSoldPrice(true)
-                                                                setPerformance(false)
-                                                            }
-                                                        }}
-                                                    >
-                                                        Price Sold
-                                                    </button>
-                                                    <button
-                                                        className={`btn-small ${
-                                                            performance ? "" : "btn-disabled"
-                                                        }`}
-                                                        onClick={() => {
-                                                            if (!performance) {
-                                                                setReserPrice(false)
-                                                                setSoldPrice(false)
-                                                                setPerformance(true)
-                                                            }
-                                                        }}
-                                                    >
-                                                        Histogram
-                                                    </button>
+                                                <div className="d-flex select-chart-btn gap-1" style={{zIndex:'99'}}>
+                                                    <div className="col-4">
+                                                        <button
+                                                            className={`btn-small ${
+                                                                reser_price ? "" : "btn-disabled"
+                                                            }`}
+                                                            onClick={() => {
+                                                                if (!reser_price) {
+                                                                    setReserPrice(true)
+                                                                    setSoldPrice(true)
+                                                                    setPerformance(false)
+                                                                }
+                                                            }}
+                                                        >
+                                                            Reserved Price
+                                                        </button>
+                                                    </div>
+                                                    <div className="col-4">
+                                                        <button
+                                                            className={`btn-small ${
+                                                                sold_price ? "" : "btn-disabled"
+                                                            }`}
+                                                            onClick={() => {
+                                                                if (!sold_price) {
+                                                                    setReserPrice(true)
+                                                                    setSoldPrice(true)
+                                                                    setPerformance(false)
+                                                                }
+                                                            }}
+                                                        >
+                                                            Price Sold
+                                                        </button>
+                                                    </div>
+                                                    <div className="col-4">
+                                                        <button
+                                                            className={`btn-small ${
+                                                                performance ? "" : "btn-disabled"
+                                                            }`}
+                                                            onClick={() => {
+                                                                if (!performance) {
+                                                                    setReserPrice(false)
+                                                                    setSoldPrice(false)
+                                                                    setPerformance(true)
+                                                                }
+                                                            }}
+                                                        >
+                                                            Histogram
+                                                        </button>
+                                                    </div>
                                                 </div>
                                             </div>
                                         )}
