@@ -2,20 +2,9 @@ import React, { useCallback, useReducer, useState, useEffect } from "react"
 import { Input } from "../common/FormControl"
 import Modal from "react-modal"
 import { CloseIcon } from "../../utilities/imgImport"
-import { useMutation } from "@apollo/client"
-import { REQUEST_2FA, DISABLE_2FA, CONFIRM_REQUEST_2FA } from "../../apollo/graghqls/mutations/Auth"
-import CustomSpinner from "../common/custom-spinner"
-import { FontAwesomeIcon } from "@fortawesome/react-fontawesome"
-import { faExclamationCircle } from "@fortawesome/free-solid-svg-icons"
-
-import "react-phone-number-input/style.css"
-import ConnectMobile from "./connect-mobile"
+import { useMutation } from 
 
 const two_factors = [
-    { label: "Authenticator App", method: "app" },
-    { label: "SMS", method: "phone" },
-    { label: "Email", method: "email" },
-]
 const initial = {
     result_code: "",
     selected: 0,

@@ -97,20 +97,7 @@ const BidsChart1 = ({ data, period }) => {
                 //     verticalAlign: "top",
                 //     fontSize:13
                 // },
-                gridIndex: 1,
-                splitNumber: 5,
-                axisPointer: {
-                    label: {
-                        formatter: function (value, index) {
-                            return getFormatedDateOnBids(value.value, period)
-                        },
-                        width: 70,
-                        padding: [4, 2, 2, 5],
-                    },
-                },
-                axisLabel: {
-                    margin: 18,
-                    showMinLabel:false,
+
                     hideOverlap:true,
                 },
                 scale: true,
@@ -173,32 +160,8 @@ const BidsChart1 = ({ data, period }) => {
                 splitNumber:2
             },
         ],
-        series: [
-            {
-                name: "Price",
-                type: "bar",
-                data: amount,
-                xAxisIndex: 1,
-                yAxisIndex: 1,
-                barWidth: 15,
-            },
-            {
-                name: "Volume",
-                type: "line",
-                smooth: "true",
-
+        series: 
                 showSymbol: false,
-                data: total,
-            },
-        ],
-    }
-    return (
-        <ReactEcharts
-            option={option}
-            style={{ height: "calc(100vh - 350px)", width: "auto" }}
-            className="echarts-for-echarts"
-        />
-    )
-}
+                data:
 
 export default BidsChart1

@@ -153,81 +153,32 @@ const Menu = () => {
                                     >
                                         support
                                     </Link>
-                                    {user?.role && user?.role?.includes("ROLE_ADMIN") ? (
-                                        <Link
-                                            to={ROUTES.admin}
                                             className={`${
                                                 window.location.pathname.includes(ROUTES.admin) &&
                                                 "txt-green"
                                             }`}
-                                        >
-                                            admin
-                                        </Link>
-                                    ) : (
-                                        ""
-                                    )}
-                                </div>
+                                   
                             )}
                     </div>
                     <div className="d-flex align-items-center header-right-side">
                         <div>
-                            {!auth?.isLoggedIn() ? (
-                                <Link className="header-btn" to="/app/signin">
-                                    Sign In
-                                </Link>
-                            ) : (
-                                <ul className="d-flex align-items-center">
-                                    <Link className="header-btn sale" to="/app/auction">
-                                        Sale
-                                    </Link>
-                                    <li className="scale-75">
-                                        <img
-                                            src={newNotification ? NotificationBell : Bell}
-                                            alt="Bell Icon"
-                                        />
+                               
                                     </li>
                                     <li className="px-sm-3 px-0 scale-75">
                                         <Link to={ROUTES.profile}>
                                             <Avatar className="user-avatar" />
                                             <UserTier />
-                                        </Link>
-                                    </li>
-                                    <DressupModal
-                                        setIsModalOpen={setIsDressUPModalOpen}
-                                        isModalOpen={isDressUPModalOpen}
-                                        onSave={(res) => {
+                                        </Li
                                             updateAvatarSet({
                                                 variables: { ...res },
                                             })
-                                        }}
-                                    />
-                                </ul>
-                            )}
-                        </div>
-                        <CurrencyChoice classNames="d-sm-block d-none" />
-                        <button
-                            type="button"
-                            className="menu__toggler"
+                                      
                             onClick={() => setActive(!active)}
                         >
                             <span />
                             <span />
                             <span />
-                        </button>
-                    </div>
-
-                    <div className="menu__content">
-                        <div className="content d-md-flex align-items-center">
-                            <ul className="content__section menu__items">
-                                {navigationLinks.map((link) => (
-                                    <li className="menu__item" key={link.label}>
-                                        <a
-                                            href={link.url}
-                                            className="d-inline-block"
-                                            onClick={() => setActive(false)}
-                                        >
-                                            {link.label}
-                                        </a>
+      
                                     </li>
                                 ))}
                             </ul>

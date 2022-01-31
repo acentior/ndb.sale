@@ -82,48 +82,7 @@ const RoundsChart1 = ({ data }) => {
                 formatter: function (value) {
                     return numFormatter(value, 2)
                 },
-                margin: 30,
-                align:'left'
-            },
-            position: {
-                align: "left",
-            },
-            offset:40 ,
-        },
-        series: [
-            {
-                type: "line",
-                smooth: true,
-                data: sold,
-                color: "#23C865",
-                name: "sold",
-                showSymbol: false,
-                tooltip: {
-                    label: {
-                        backgroundColor: "#23C865",
-                    },
-                },
-            },
-            {
-                type: "line",
-                data: total,
-                color: "#FFB800",
-                name: "total",
-                showSymbol: false,
-                tooltip: {
-                    label: {
-                        backgroundColor: "#FFB800",
-                    },
-                },
-            },
-        ],
-    }
-    return (
-        <ReactEcharts
-            option={option}
-            style={{ height: "calc(100vh - 350px)", width: "auto" }}
-            className="echarts-for-echarts"
-        />
+             
     )
 }
 

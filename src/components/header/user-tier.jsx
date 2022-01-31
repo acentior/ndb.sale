@@ -11,15 +11,8 @@ export default function UserTier() {
     // Methods
     
     // Webservice
-    const { loading: userTiersLoading } = useQuery(GET_USER_TIERS, {
-        onCompleted: (data) => setUserTiersData(data.getUserTiers),
-    })
-    const { loading: userLoading } = useQuery(GET_USER, {
         onCompleted: (data) => setUserData(data.getUser),
     })
-    const loading = userTiersLoading || userLoading
-    // Render
-    if (loading) return <></>
     else
         return (
             <div

@@ -14,18 +14,6 @@ const CountrySelect = ({ value, onChange, labels, ...rest }) => (
     </select>
 )
 
-export default function ConnectMobile({ confirm }) {
-    const [country, setCountry] = useState("")
-    const [mobile, setMobile] = useState("")
-    return (
-        <div className="input_mobile">
-            <h3>Connect Mobile</h3>
-            <p className="mt-3 pb-3">You will recive a sms code to the number</p>
-            <div className="form-group">
-                <div className="mobile-input-field">
-                    <CountrySelect
-                        className="form-control"
-                        labels={en}
                         name="countrySelect"
                         onChange={(c) => {
                             const code = `+${getCountryCallingCode(c)} `

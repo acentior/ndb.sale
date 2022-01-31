@@ -10,24 +10,10 @@ const AirdropDetail = ({ clsName, airdrop, onJoinClick }) => {
                     <div className="detail-header">
                         <img src={airdrop.icon} alt="coin icon" className="detail-header__icon" />
                         <div>
-                            <p className="detail-header__name">{airdrop.name}</p>
-                            <p className="detail-header__end">{airdrop.end}</p>
-                        </div>
-                    </div>
-                    <ul className="detail-body">
-                        <li>
                             <p>Participants</p>
                             <p className="value">{airdrop.participants}</p>
                         </li>
-                        <li>
-                            <p>Number of winners</p>
-                            <p className="value">{airdrop.winners}</p>
-                        </li>
-                        <li>
-                            <p>Airdrop amount</p>
-                            <p className="coin-reward">= {airdrop.participants} USD</p>
-                        </li>
-                    </ul>
+                        <li
                     <div className="detail-footer">
                         <h6>How to participate?</h6>
                         <ul>
@@ -37,12 +23,7 @@ const AirdropDetail = ({ clsName, airdrop, onJoinClick }) => {
                                 <a
                                     className="txt-green"
                                     href="https://aluna.social/my/account/api_keys"
-                                >
-                                    https://aluna.social/my/account/api_keys
-                                </a>
-                            </li>
-                            <li>Trade with at least $1,000 volume to qualify</li>
-                            <li>Follow Facebook account</li>
+                              /li>
                         </ul>
                     </div>
                     <Link className="read-more" to="/">

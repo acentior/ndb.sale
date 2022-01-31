@@ -55,31 +55,9 @@ export default function NotificationRecent() {
             <div className="d-flex justify-content-center mt-5">
                 <CustomSpinner />
             </div>
-        )
-    else
-        return (
-            <>
-                <div className="recent-notification-wrapper pe-3">
-                    {NTList.length ? (
-                        NTList.map((item, idx) => (
-                            <div
                                 className="recent-item"
                                 key={idx}
                                 tabIndex={0}
-                                role="button"
-                                onClick={() => setRead(item)}
-                                onKeyDown={() => setRead(item)}
-                            >
-                                <div
-                                    className={`status ${
-                                        item?.pending
-                                            ? "pending"
-                                            : item?.read
-                                            ? "deactive"
-                                            : "active"
-                                    }`}
-                                ></div>
-                                <p>{item?.msg}</p>
                             </div>
                         ))
                     ) : (

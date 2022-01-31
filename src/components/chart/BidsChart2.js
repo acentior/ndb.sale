@@ -20,31 +20,6 @@ const BidsChart2 = ({ data }) => {
         setAmount(tamount)
     }, [data])
 
-    const option = {
-        color: "#C4C4C4",
-        tooltip: {
-            trigger: "axis",
-            axisPointer: {
-                type: "cross",
-            },
-        },
-        grid: {
-            left: 5,
-            right: 10,
-            bottom: "3%",
-            containLabel: true,
-        },
-        xAxis: [
-            {
-                type: "category",
-                data: amount,
-                axisTick: {
-                    alignWithLabel: true,
-                },
-                axisLabel: {
-                    formatter: function (value) {
-                        return numFormatter(value, 2)
-                    },
                 },
                 axisPointer: {
                     label: {

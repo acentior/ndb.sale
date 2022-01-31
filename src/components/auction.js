@@ -753,7 +753,7 @@ const Auction = () => {
                                         )}
                                         {selectLabel.value === "round_performance" && (
                                             <div className=" d-flex justify-content-between pt-3 w-100 flex-wrap">
-                                                <div className="d-flex select-chart-btn gap-1" style={{zIndex:'99'}}>
+                                                <div className="d-flex select-chart-btn gap-1" style={{zIndex:'1'}}>
                                                     <div className="col-4">
                                                         <button
                                                             className={`btn-small ${
@@ -783,18 +783,7 @@ const Auction = () => {
                                                                 }
                                                             }}
                                                         >
-                                                            Price Sold
-                                                        </button>
-                                                    </div>
-                                                    <div className="col-4">
-                                                        <button
-                                                            className={`btn-small ${
-                                                                performance ? "" : "btn-disabled"
-                                                            }`}
-                                                            onClick={() => {
-                                                                if (!performance) {
-                                                                    setReserPrice(false)
-                                                                    setSoldPrice(false)
+                                                e)
                                                                     setPerformance(true)
                                                                 }
                                                             }}
@@ -812,46 +801,11 @@ const Auction = () => {
                                     pricce &&
                                     volume &&
                                     !bid_perform.loading &&
-                                    !bid_perform.error && (
-                                        <BidsChart1 data={bid_perform?.data} period={period} />
-                                    )}
-                                {selectLabel.value === "bid_performance" &&
-                                    price_volume &&
-                                    !bid_perform.loading &&
-                                    !bid_perform.error && (
-                                        <BidsChart2 data={bid_perform?.data} period={period} />
-                                    )}
-
-                                {selectLabel.value === "round_performance" &&
-                                    reser_price &&
-                                    sold_price &&
+                                    !
                                     !round_perform1.loading &&
                                     !round_perform1.error && (
                                         <RoundsChart1 data={round_perform1?.data} />
-                                    )}
-                                {selectLabel.value === "round_performance" &&
-                                    performance &&
-                                    !round_perform2.loading &&
-                                    !round_perform2.error && (
-                                        <RoundsChart2 data={round_perform2?.data} />
-                                    )}
-                                {selectLabel.value === "round_chance" &&
-                                    !round_chance.loading &&
-                                    !round_chance.error && (
-                                        <React.Fragment>
-                                            <ChanceChart data={round_chance?.data} />
-                                        </React.Fragment>
-                                    )}
-                                {
-                                    selectLabel.value !== "round_chance" && 
-                                    !round_perform1.loading &&
-                                    !round_perform2.loading &&
-                                    !bid_perform.loading && (
-                                    <div
-                                        className="btnGroup "
-                                        role="group"
-                                        style={{
-                                            borderTop: "2px solid #c4c4c4",
+                      4c4",
                                             marginLeft: "76px",
                                             marginTop: "25px",
                                             paddingLeft: "18px",

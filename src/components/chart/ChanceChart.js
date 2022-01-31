@@ -154,20 +154,7 @@ const ChanceChart = ({ data }) => {
                     %
                 </div>
                 <div style={{ position: "relative" }}>
-                    <ReactEcharts
-                        option={opt}
-                        style={{ height: "calc(100vh - 296px)", width: "auto" }}
-                        
-                        className="echarts-for-echarts"
-                    />
-                    
-                </div>
-            </div>
-            <div
-                style={{
-                    borderTop: "solid 1px #a3a7af",
-                    marginRight: "21px",
-                    marginLeft: "40px",
+
                     color: "#fff0",
                 }}
             >
@@ -176,19 +163,7 @@ const ChanceChart = ({ data }) => {
             {/* <div
                 style={{
                     bottom: "56px",
-                    height:"10px",
-                    borderBottom: "solid 1px #a3a7af",
-                    zIndex: "99",
-                    position: "absolute",
-                    backgroundColor: "#1e1e1e",
-                    marginRight: "21px",
-                    marginLeft: "40px",
-                    color: "#fff0",
-                }}
-            >
-                Mask Canvas
-            </div> */}
-        </React.Fragment>
+                    heigh
     )
 }
 

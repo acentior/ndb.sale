@@ -6,17 +6,7 @@ import { USER_NOTIFICATION_SETTING } from "../../apollo/graghqls/mutations/Notif
 import { GET_USER } from "../../apollo/graghqls/querys/Auth"
 
 import { COLOR_LOAD, COLOR_OFF, COLOR_ON } from "../../utilities/staticData"
-import CustomSpinner from "../common/custom-spinner"
-
-export default function NotificationSetting() {
-    //Webservice
-    const { data: user_data, refetch } = useQuery(GET_USER, {
-        onCompleted: () => {
-            console.log("refetch method")
-        },
-    })
-    const { data: notificationTypes } = useQuery(GET_NOTICATION_TYPES, {
-        onCompleted: () => setLoadingSection(false),
+import CustomSpinne
     })
     const [changeNotifySetting] = useMutation(USER_NOTIFICATION_SETTING, {
         onCompleted: (data) => {
@@ -28,27 +18,14 @@ export default function NotificationSetting() {
             )
             setPendingSwitch(false)
         },
-    })
-
-    // Containers
-    const [loadingSection, setLoadingSection] = useState(true)
-    const [pendingSwitch, setPendingSwitch] = useState(false)
-    const setting = user_data?.getUser.notifySetting
-    const [tempSetting, setTempSetting] = useState([])
-    const notificationTypeList = notificationTypes?.getNotificationTypes
+    })tNotificationTypes
 
     // Methods
     const setChecked = (i) => {
         const cList = tempSetting.slice()
         cList[i].status = !cList[i].status
         cList[i].loading = true
-        setTempSetting(cList)
-        setPendingSwitch(true)
-
-        changeNotifySetting({
-            variables: {
-                nType: Number(cList[i].index),
-                status: cList[i].status,
+        setTempSetting
             },
         })
     }

@@ -11,12 +11,6 @@ export default function CurrencyChoice({ classNames }) {
     const toggleCurrenciesMenuContent = () => {
         const menuItem = document.querySelector(".currencies-dropdown-content")
         menuItem.classList.toggle("d-none")
-        menuItem.classList.toggle("d-block")
-    }
-    return (
-        <div className={classNames}>
-            {typeof window !== `undefined` &&
-                (window.location.pathname === ROUTES.auction ||
                     window.location.pathname === ROUTES.wallet ||
                     window.location.pathname === ROUTES.profile ||
                     window.location.pathname === ROUTES.presale_auction) && (

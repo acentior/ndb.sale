@@ -41,23 +41,7 @@ const Stepper = styled.div`
     &>div.step {
         width: 33%;
         margin: 0 0.2%;
-        height: 50px;
-        div {
-            display: flex;
-            align-items: center;
-        }
-        @media screen and (max-width: 768px) {
-            margin: 0 1%;
-        }
-    }
-`;
 
-const StepLine = styled.div`
-    border: 2px solid ${props => {
-            if(props.step <= 1) {
-                return "dimgrey";
-            } else if(props.step === 2) {
-                return "#ffffff";
             } else {
                 return "#23c865"
             }

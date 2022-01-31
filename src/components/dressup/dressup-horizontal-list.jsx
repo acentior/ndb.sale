@@ -11,19 +11,7 @@ export default function DressupHorizontalList({
 
     useEffect(() => {
         let item = document.getElementById(`items-list-view-${secondRow ? "2" : "1"}`)
-        item.scrollLeft = selectedItem * 149 - 100
-    }, [selectedItem, secondRow])
-
-    return (
-        <div className="row m-0">
-            <div className="mb-2 ps-0">{title}</div>
-            <div
-                id={`items-list-view-${secondRow ? "2" : "1"}`}
-                className={`row me-4 dressup-modal-items-horizontal-list border-top border-bottom border-secondary border-1 ${
-                    isScrollable ? "d-inline-block" : "d-auto"
-                }`}
-            >
-                {list.map((item, index) => {
+    
                     return (
                         <div
                             key={index}

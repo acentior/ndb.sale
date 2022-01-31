@@ -10,20 +10,7 @@ export default function DressupModal({ isModalOpen, setIsModalOpen }) {
     const [selectedFacialStyle, setSelectedFacialStyle] = useState(0)
     const [selectedExpression, setSelectedExpression] = useState(0)
     const [selectedHat, setSelectedHat] = useState(0)
-    const [selectedOther, setSelectedOther] = useState(0)
-    const [selectedTab, setSelectedTab] = useState(0)
-
-    const selectedHairStyleItem = DressupData.hairStyles[selectedHairStyle]
-    const selectedHairColorItem = DressupData.hairColors[selectedHairColor]
-    const selectedFacialStyleItem = DressupData.facialStyles[selectedFacialStyle]
-    const selectedExpressionItem = DressupData.expressions[selectedExpression]
-    const selectedHatItem = DressupData.hats[selectedHat]
-    const selectedOtherItem = DressupData.others[selectedOther]
-    return (
-        <Modal
-            isOpen={isModalOpen}
-            onRequestClose={() => {
-                setIsModalOpen(false)
+    con
             }}
             ariaHideApp={false}
             className="dressup-modal"
