@@ -27,6 +27,38 @@
             line-height: 24px;
         }
     }
+    &-primary-alt {
+        font-weight: bold;
+        font-size: 30px;
+        font-family: "Montserrat";
+        line-height: 37px;
+        color: white;
+        padding: 7px 33px;
+        background: $black;
+        border: 1px solid #ffffff;
+        text-transform: uppercase;
+        &:hover {
+            background: $black;
+            border: 1px solid #ffffff;
+        }
+        &:active {
+            background-color: $black;
+            border-color: white;
+        }
+        &:focus {
+            background-color: $black;
+            border-color: white;
+            box-shadow: unset;
+        }
+        @include mq("phone", max) {
+            font-size: 20px;
+            line-height: 24px;
+        }
+        @media screen and (min-width:1920px) {
+                font-size: 50px;
+                line-height: 80px;
+        }
+    }
     &-small {
         font-weight: normal;
         font-size: 12px;

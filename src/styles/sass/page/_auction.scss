@@ -288,6 +288,7 @@
                     @include mq("laptop", max) {
                         width: 100%;
                     }
+                   
                 }
                 .select-chart-btn{
                     width:367px;
@@ -295,6 +296,7 @@
                         width: 100%;
                     }
                 }
+                
                 .css-1s2u09g-control,
                 .css-1pahdxg-control {
                     background: #1e1e1e;
@@ -364,6 +366,9 @@
         font-size: 30px;
         line-height: 37px;
         text-transform: uppercase;
+        @media screen and (min-width: 1920px) {
+            font-size: 50px;
+        }
     }
     .range-input,
     .total-input {
@@ -455,5 +460,24 @@
             line-height: 37px;
             padding: 8px 44px;
         }
+    }
+}
+
+#chance-chart-mask{
+    top: "56px";
+    height:"10px";
+    border-bottom: "solid 1px #a3a7af";
+    z-index: "99";
+    position: "relative";
+    background-color: "#1e1e1e";
+    margin-right: "21px";
+    margin-left: "40px";
+    color: "#fff0";
+}
+
+.flex-p{
+    @media screen and (min-width:1920px) {
+        font-size: 30px;
+        margin-bottom: 15px;
     }
 }
