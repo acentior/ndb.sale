@@ -595,7 +595,7 @@ const Auction = () => {
                                         />
                                     </div>
                                     <h3 className="range-label">Per token price</h3>
-                                    <div className="d-flex align-items-center mb-4 gap-4">
+                                    <div className="d-flex align-items-center mb-2 gap-4">
                                         <input
                                             type="number"
                                             value={calcPriceFromUsd(
