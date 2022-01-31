@@ -349,8 +349,8 @@ const Auction = () => {
         })
     }, [selectedData])
 
-    if (loading) return <Loading />
-    else
+    // if (loading) return <Loading />
+    // else
         return (
             <main className="auction-page">
                 <Header />
@@ -578,7 +578,6 @@ const Auction = () => {
 
                         <div className="auction-right col-lg-8 col-md-7">
                             <div className={`place-bid ${isBid && "d-none"}`}>
-                                <div>
                                     <h3 className="range-label">amount of token</h3>
                                     <div className="d-flex align-items-center mb-4">
                                         <input
@@ -595,8 +594,6 @@ const Auction = () => {
                                             step={1}
                                         />
                                     </div>
-                                </div>
-                                <div>
                                     <h3 className="range-label">Per token price</h3>
                                     <div className="d-flex align-items-center mb-4">
                                         <input
@@ -623,7 +620,6 @@ const Auction = () => {
                                             step={100}
                                         />
                                     </div>
-                                </div>
                                 <div className="d-flex align-items-center">
                                     <span className="range-label">Total price</span>
                                     <input
@@ -646,10 +642,10 @@ const Auction = () => {
                                 </div>
                                 <div>
                                     <div className="mt-3 mb-2">
-                                        <p>Audited by Cyberunit</p>
+                                        <p className="flex-p">Audited by Cyberunit</p>
                                     </div>
                                     <button
-                                        className="btn-primary text-uppercase w-100"
+                                        className="btn-primary-alt text-uppercase w-100"
                                         onClick={() => {
                                             bidMutation()
                                         }}
@@ -846,7 +842,11 @@ const Auction = () => {
                                             <ChanceChart data={round_chance?.data} />
                                         </React.Fragment>
                                     )}
-                                {selectLabel.value !== "round_chance" && (
+                                {
+                                    selectLabel.value !== "round_chance" && 
+                                    !round_perform1.loading &&
+                                    !round_perform2.loading &&
+                                    !bid_perform.loading && (
                                     <div
                                         className="btnGroup "
                                         role="group"

@@ -91,7 +91,7 @@ const BidsChart2 = ({ data }) => {
     return (
         <ReactEcharts
             option={option}
-            style={{ height: "318px", width: "100%" }}
+            style={{ height: "calc(100vh - 350px)", width: "auto" }}
             className="echarts-for-echarts"
         />
     )
