@@ -46,7 +46,6 @@ const Signin = ({ error }) => {
     const [signinMutation, { loading }] = useMutation(GraphQL.SIGNIN, {
         retry: 1,
         onCompleted: (data) => {
-            console.log("signin data", data)
             setState({ tempToken: data.signin.token, twoStep: data.signin.twoStep })
 
             if (data.signin.status === "Failed") {

@@ -376,8 +376,9 @@
 
                         td {
                             div.echarts-for-react.echarts-for-echarts {
-                                margin: 0px !important;
-                                margin-left: auto !important;
+                                margin: auto;
+                                height: 50px;
+                                width: 150px;
                             }
                             padding-top: 24px;
                             padding-bottom: 16px;
